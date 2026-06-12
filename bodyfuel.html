@@ -203,6 +203,75 @@
   .cyrow{display:flex;justify-content:space-between;gap:14px;padding:8px 0;border-top:1px solid var(--line-soft);font-size:calc(14px*var(--ts,1))}
   .cyrow span{color:var(--ink-soft)}
   .cyrow b{color:var(--ink);text-align:right;font-weight:600}
+  .cyhead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .cyhead .cyd{font-family:'Schibsted Grotesk',sans-serif;font-weight:700;font-size:calc(18px*var(--ts,1));color:var(--ink);letter-spacing:-.01em}
+  .cyhead .cyp{color:var(--accent);font-weight:600;font-size:calc(13px*var(--ts,1))}
+  .cysub{margin-top:5px;font-size:calc(13.5px*var(--ts,1));color:var(--ink-soft);line-height:1.4}
+  .cysub b{color:var(--ink);font-weight:700}
+  .card.cyc-snap{padding:14px 18px}
+  .card.cyc-snap .eyebrow{margin-bottom:8px}
+  .card.wf-card{padding:14px 18px}
+  .card.wf-card .eyebrow{margin-bottom:4px}
+  .card.wf-card .wrow{padding:8px 0}
+  .card.wf-card .wl{font-size:calc(15px*var(--ts,1))}
+  .card.wf-card .chk{width:19px;height:19px;font-size:calc(12px*var(--ts,1))}
+  .card.wf-card .see-more{padding-top:8px}
+  .top-duo{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px}
+  .top-duo > .card{flex:1;min-width:0;margin-bottom:0}
+  .top-duo .eyebrow{font-size:calc(11px*var(--ts,1));letter-spacing:.06em;margin-bottom:6px}
+  .top-duo .wf-card .fmeta,.top-duo .wf-card .wh{display:none}
+  .top-duo .wf-card .wl{font-size:calc(13.5px*var(--ts,1))}
+  .top-duo .wf-card .wrow{gap:8px}
+  .top-duo .wf-card .chk{width:18px;height:18px}
+  .top-duo .wf-card .wpin{font-size:calc(15px*var(--ts,1));padding:2px}
+  .top-duo .cyc-snap .cyhead .cyd{font-size:calc(16px*var(--ts,1))}
+  .top-duo .cyc-snap .cysub{font-size:calc(12.5px*var(--ts,1))}
+  .card.glance{padding:14px 16px}
+  .glance-cyc{font-size:calc(15px*var(--ts,1));color:var(--ink);line-height:1.3}
+  .glance-cyc b{font-family:'Schibsted Grotesk',sans-serif;font-weight:700}
+  .glance-cyc .ph{color:var(--accent);font-weight:600}
+  .glance-cyc .en{color:var(--ink-soft)}
+  .glance-div{height:1px;background:var(--line-soft);margin:12px 0}
+  .glance-foc{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .glance-foc .eyebrow{margin:0 2px 0 0}
+  #focus-chips{display:flex;gap:7px;flex-wrap:wrap}
+  .fchip{display:inline-flex;align-items:center;border:1.5px solid var(--line);border-radius:999px;padding:5px 11px;font-size:calc(13px*var(--ts,1));font-weight:600;color:var(--ink-soft);background:var(--surface);cursor:pointer}
+  .fchip.done{background:var(--accent);border-color:var(--accent);color:#fff}
+  .card.glance .see-more{padding-top:11px}
+  #week-focus{display:none;margin-top:4px}
+  .glance.expanded #week-focus{display:block}
+  .glance.expanded #focus-chips{display:none}
+  .glance.expanded #week-focus .wrow.wf-extra{display:flex}
+  .scoreboard{display:flex;gap:10px;margin:-2px 0 14px}
+  .scoreboard .sb{flex:1;background:var(--surface-2);border-radius:var(--r-sm);padding:9px 13px;line-height:1.2}
+  .scoreboard .sbk{font-size:calc(10.5px*var(--ts,1));color:var(--ink-soft);font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+  .scoreboard .sbv{font-size:calc(17px*var(--ts,1));font-weight:700;color:var(--ink);margin-top:3px}
+  .scoreboard .sbv small{font-size:calc(11.5px*var(--ts,1));color:var(--ink-faint);font-weight:600}
+  .mission-edit{background:var(--surface-2);border-radius:var(--r-sm);padding:13px;margin:12px 0}
+  .mission-edit .me-row{margin-bottom:10px}
+  .mission-edit label{display:block;font-size:calc(13px*var(--ts,1));color:var(--ink-soft);font-weight:600;margin-bottom:5px}
+  .mission-edit .me-btns{display:flex;gap:8px;margin-top:2px}
+  .lib-head{display:flex;justify-content:space-between;align-items:center;width:100%;background:none;border:0;padding:0;cursor:pointer;color:inherit}
+  .lib-body{display:none;margin-top:12px}
+  .card.lib-open .lib-body{display:block}
+  .lib-chev{width:20px;height:20px;color:var(--accent);transition:transform .2s}
+  .card.lib-open .lib-chev{transform:rotate(180deg)}
+  #fuel-target-card .ftday{font-size:calc(12px*var(--ts,1));color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+  #fuel-target-card .ftrow{display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid var(--line-soft);font-size:calc(15px*var(--ts,1));color:var(--ink-soft)}
+  #fuel-target-card .ftrow:first-of-type{border-top:0}
+  #fuel-target-card .ftrow b{color:var(--ink);font-weight:700}
+  .combos{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+  .combo{display:inline-flex;align-items:center;gap:5px;background:var(--surface-2);border-radius:999px;padding:6px 12px;font-size:calc(13px*var(--ts,1));font-weight:600;color:var(--ink)}
+  .combo i{font-style:normal;font-size:calc(10px*var(--ts,1));color:var(--accent);font-weight:700;text-transform:uppercase}
+  .slift .swks{display:flex;gap:6px;flex-wrap:wrap;margin:9px 0 3px}
+  .slift .swk{flex:1;min-width:52px;background:var(--surface-2);border-radius:9px;padding:6px 4px;text-align:center;font-size:calc(13px*var(--ts,1));color:var(--ink);font-weight:600}
+  .slift .swk b{display:block;font-size:calc(10px*var(--ts,1));color:var(--ink-faint);font-weight:700;margin-bottom:2px}
+  .calc-out{margin-top:16px;background:var(--surface-2);border-radius:var(--r-sm);padding:12px 14px}
+  .calc-out .cr{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid var(--line-soft);font-size:calc(14.5px*var(--ts,1));color:var(--ink-soft)}
+  .calc-out .cr:first-child{border-top:0}
+  .calc-out .cr b{color:var(--ink);font-weight:700;white-space:nowrap}
+  .calc-out .cr.total{border-top:1.5px solid var(--line);margin-top:2px;padding-top:9px}
+  .calc-out .cr.total span,.calc-out .cr.total b{font-weight:800;color:var(--ink);font-size:calc(16px*var(--ts,1))}
   .cyc-fields{grid-template-columns:1fr;gap:14px}
   .cyc-fields .metric input{box-sizing:border-box;width:100%}
   #cy-start{min-width:0;-webkit-appearance:none;appearance:none;text-align:left}
@@ -511,23 +580,34 @@
     <!-- ============ TODAY ============ -->
     <section class="screen active" id="today">
       <div class="stack">
-        <div class="today-top"><div class="cyc-badge" id="cyc-badge" style="display:none"></div></div>
+        <div class="card glance" id="glance-card">
+          <div id="cycle-out" class="glance-cyc"></div>
+          <div class="glance-div"></div>
+          <div class="glance-foc"><span class="eyebrow">This week</span><div id="focus-chips"></div></div>
+          <button type="button" id="wf-toggle" class="see-more">See more</button>
+          <div id="wf-msg" class="wf-msg"></div>
+          <div id="week-focus"></div>
+        </div>
+
+        <div class="scoreboard" id="scoreboard"></div>
+
         <div class="card" id="mission-card"></div>
 
         <div class="card">
-          <div class="eyebrow">This week's focus</div>
-          <div id="week-focus"></div>
-          <button type="button" id="wf-toggle" class="see-more">See more</button>
-          <div id="wf-msg" class="wf-msg"></div>
-          <p class="mission-note" style="margin-top:12px">Weekly, not daily. Tick what you can — calm and consistent beats perfect.</p>
+          <div class="eyebrow">Today's training</div>
+          <div id="today-workout"></div>
+          <button class="cta ghost" data-goto="fuel" style="margin-top:14px">Open training planner</button>
         </div>
 
         <div class="card">
           <div class="eyebrow">Meal log</div>
-          <p class="muted-p" style="margin-bottom:14px">Weigh your food, add it here, and BodyFuel works out what it becomes inside your body. Your Daily Targets fill in automatically.</p>
           <div id="meal-log"></div>
+          <button class="cta ghost" id="ml-example" style="margin-top:12px">Load example day</button>
+        </div>
+
+        <div class="card">
+          <div class="eyebrow">Add food</div>
           <div class="ml-add">
-            <div class="label">Add a food</div>
             <div class="seg" data-group="ml-meal"><button class="on" data-val="breakfast">Breakfast</button><button data-val="lunch">Lunch</button><button data-val="dinner">Dinner</button><button data-val="snack">Snack</button></div>
             <select class="mealinput" id="ml-food"></select>
             <div id="ml-state"></div>
@@ -539,120 +619,13 @@
             <button class="cta" id="ml-add">Add to meal</button>
             <div class="saved-note" id="ml-saved"></div>
           </div>
-          <button class="cta ghost" id="ml-example" style="margin-top:12px">Load example day</button>
         </div>
 
-        <div class="card lesson"><div class="head"><span class="fdot g"></span><div class="txt"><div class="ttl">Balanced plate guide</div><div class="tease">A simple way to build a meal — no extra logging.</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body"><div class="pedu"><div class="pg">1 · Protein</div><div class="pd">Choose and weigh your protein first — chicken, fish, beef or eggs.</div></div><div class="pedu"><div class="pg">2 · Carb</div><div class="pd">Add cooked rice, potatoes or oats — more on training days, less on rest days.</div></div><div class="pedu"><div class="pg">3 · Fat</div><div class="pd">Add a measured amount of oil or butter — small amounts count quickly.</div></div><div class="pedu"><div class="pg">4 · Veg / salad</div><div class="pd">Add vegetables or salad for fibre and volume — or choose none.</div></div></div></div>
         <div class="card">
           <div class="eyebrow">Daily targets</div>
           <div id="daily-body"></div>
           <button class="linkbtn" id="reset-day">Reset water &amp; movement</button>
         </div>
-
-        <div class="card">
-          <div class="eyebrow">Cycle recovery</div>
-          <div id="cycle-out"></div>
-          <div class="metrics cyc-fields" style="margin-top:4px">
-            <div class="metric"><label>Last period start</label><input id="cy-start" type="date"></div>
-            <div class="metric"><label>Cycle length</label><input id="cy-len" type="number" inputmode="numeric" placeholder="28 days"></div>
-          </div>
-          <button class="cta ghost" id="cy-today" style="margin-top:12px">Period started today</button>
-          <p class="muted-p" style="margin-top:12px">Use this as a planning guide, not a medical rule.</p>
-        </div>
-        <div class="card">
-          <div class="eyebrow">Today's training</div>
-          <div id="today-workout"></div>
-          <button class="cta ghost" data-goto="fuel" style="margin-top:14px">Open training planner</button>
-        </div>
-
-        <div class="card focus">
-          <div class="eyebrow">Today's Focus</div>
-          <div class="lead" id="focus-lead"></div>
-          <div class="lines" id="focus-lines"></div>
-        </div>
-
-        <div class="card">
-          <div class="field">
-            <div class="label">Goal</div>
-            <div class="seg" data-group="t-goal">
-              <button data-val="fatloss">Fat loss</button>
-              <button data-val="musclegain">Muscle gain</button>
-              <button class="on" data-val="maintenance">Maintenance</button>
-            </div>
-          </div>
-          <div class="field">
-            <div class="label">Day type</div>
-            <div class="seg dark" data-group="t-day">
-              <button class="on" data-val="training">Training</button>
-              <button data-val="rest">Rest</button>
-              <button data-val="recovery">Recovery</button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="eyebrow">How to eat today</div>
-          <div class="target"><span class="dot p"></span><div class="tx"><b>Protein</b><span id="t-protein"></span></div></div>
-          <div class="target"><span class="dot c"></span><div class="tx"><b>Carbs</b><span id="t-carbs"></span></div></div>
-          <div class="target"><span class="dot f"></span><div class="tx"><b>Fat</b><span id="t-fat"></span></div></div>
-        </div>
-
-        <div class="card reminder">
-          <div class="blk"><div class="eyebrow">Training fuel</div><p id="rem-fuel"></p></div>
-          <div class="blk"><div class="eyebrow" style="display:flex;align-items:center;gap:8px">Recovery <button class="whybtn" data-why="sleep" style="background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.28);color:#fff">Why?</button></div><p id="rem-recovery"></p></div>
-        </div>
-        <div class="card">
-          <div class="eyebrow">Log a meal</div>
-          <input class="mealinput" id="log-meal" type="text" placeholder="What did you eat?">
-          <div class="quickfill" id="log-quick"></div>
-          <div style="margin-top:6px" id="rate-rows"></div>
-          <button class="cta" id="save-meal">Save meal log</button>
-          <div class="saved-note" id="meal-saved"></div>
-        </div>
-        <div class="card">
-          <div class="eyebrow">Weigh &amp; Learn</div>
-          <p class="muted-p" style="margin-bottom:14px">Weigh your food now and then to learn what real portions look like. This is about awareness, not strict calorie counting.</p>
-          <div class="pedu"><div class="pg">Protein</div><div class="pd">Usually <b>100–150g</b> cooked meat or fish — about a palm.</div></div>
-          <div class="pedu"><div class="pg">Carbs</div><div class="pd">Usually <b>100–200g</b> cooked rice or potatoes — more on training days, less on rest days.</div></div>
-          <div class="pedu"><div class="pg">Fat</div><div class="pd">Oil and butter are dense. <b>1 tbsp olive oil ≈ 120 kcal</b> — measure it rather than free-pouring.</div></div>
-        </div>
-        <div class="card">
-          <div class="eyebrow">Portion memory</div>
-          <div id="portion-memory"></div>
-        </div>
-        <div class="card">
-          <div class="eyebrow">Weigh a portion</div>
-          <div class="uploader" id="wp-pick"><svg viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8Z"/><circle cx="12" cy="12.5" r="3.6"/></svg><div class="ut">Add a photo</div><div class="us">Optional — stored only on your device</div></div>
-          <input id="wp-file" type="file" accept="image/*" capture="environment" style="display:none">
-          <div class="preview" id="wp-preview"></div>
-          <div style="margin-top:14px">
-            <input class="mealinput" id="wp-name" type="text" placeholder="Food name (e.g. Chicken)">
-            <input class="mealinput" id="wp-brand" type="text" placeholder="Brand (optional)">
-            <input class="mealinput" id="wp-grams" type="text" inputmode="decimal" placeholder="Weight in grams">
-            <input class="mealinput" id="wp-note" type="text" placeholder="Note (optional)">
-          </div>
-          <button class="more-link" id="wp-more">Add macros (optional) ▾</button>
-          <div class="adv" id="wp-macros">
-            <div class="pmeal-grid">
-              <div class="pmeal"><label>Protein g</label><input id="wp-p" type="text" inputmode="decimal" placeholder="0"></div>
-              <div class="pmeal"><label>Carbs g</label><input id="wp-c" type="text" inputmode="decimal" placeholder="0"></div>
-              <div class="pmeal"><label>Fat g</label><input id="wp-f" type="text" inputmode="decimal" placeholder="0"></div>
-              <div class="pmeal"><label>Fibre g</label><input id="wp-fib" type="text" inputmode="decimal" placeholder="0"></div>
-            </div>
-          </div>
-          <div class="ratergrp"><div class="rl">Cooked, raw or dry</div><div class="opts" data-rgrp="wp-state"><button data-val="cooked">Cooked</button><button data-val="raw">Raw</button><button data-val="dry">Dry</button></div></div>
-          <div class="ratergrp"><div class="rl">Meal</div><div class="opts" data-rgrp="wp-meal"><button data-val="breakfast">Breakfast</button><button data-val="lunch">Lunch</button><button data-val="dinner">Dinner</button><button data-val="snack">Snack</button></div></div>
-          <div class="ratergrp verdict-pick"><div class="rl">How was the portion?</div><div class="opts" data-rgrp="wp-verdict"><button data-val="good">Good portion</button><button data-val="much">Too much</button><button data-val="little">Not enough</button></div></div>
-          <button class="cta" id="wp-save">Save portion</button>
-          <div class="saved-note" id="wp-saved"></div>
-        </div>
-        <div class="card">
-          <div class="eyebrow">My Portion Library</div>
-          <div id="portion-list"></div>
-        </div>
-        <div class="card lesson"><div class="head"><span class="fdot g"></span><div class="txt"><div class="ttl">Green — safe foods</div><div class="tease">Build most meals from these.</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body" id="green-body"></div></div>
-        <div class="card lesson"><div class="head"><span class="fdot y"></span><div class="txt"><div class="ttl">Yellow — sometimes</div><div class="tease">Fine in smaller amounts or now and then.</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body" id="yellow-body"></div></div>
-        <div class="card lesson"><div class="head"><span class="fdot r"></span><div class="txt"><div class="ttl">Red — avoid</div><div class="tease">Kept out of all meal suggestions.</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body" id="red-body"></div></div>
       </div>
     </section>
 
@@ -709,6 +682,17 @@
     <!-- ============ MY BODY ============ -->
     <section class="screen" id="progress">
       <div class="stack">
+        <div class="card">
+          <div class="eyebrow">Cycle setup</div>
+          <p class="muted-p" style="margin-bottom:14px">Set your cycle here so the Today screen can tailor training and recovery.</p>
+          <div class="metrics cyc-fields" style="margin-top:4px">
+            <div class="metric"><label>Last period start</label><input id="cy-start" type="date"></div>
+            <div class="metric"><label>Cycle length</label><input id="cy-len" type="number" inputmode="numeric" placeholder="28 days"></div>
+          </div>
+          <button class="cta ghost" id="cy-today" style="margin-top:12px">Period started today</button>
+          <p class="muted-p" style="margin-top:12px">Use this as a planning guide, not a medical rule.</p>
+        </div>
+
         <div class="card">
           <div class="eyebrow">Weekly check-in only</div>
           <p class="muted-p" style="margin-bottom:14px">Measure once a week — same day, same conditions. Weight bounces around daily; the weekly trend is what matters. No daily weighing.</p>
@@ -768,12 +752,108 @@
           <button class="cta" id="save-profile">Save profile</button>
           <div class="saved-note" id="profile-saved"></div>
         </div>
+
+        <div class="card">
+          <div class="eyebrow">Calorie calculator</div>
+          <p class="muted-p" style="margin-bottom:14px">Uses your age, height and activity from Your profile above, plus the goal you set here.</p>
+          <div class="metrics">
+            <div class="metric"><label>Current weight (kg)</label><input id="cw-weight" type="text" inputmode="decimal"></div>
+            <div class="metric"><label>Goal weight (kg)</label><input id="cw-goalw" type="text" inputmode="decimal" placeholder="optional"></div>
+            <div class="metric"><label>Training days / week</label><input id="cw-train" type="number" inputmode="numeric" placeholder="4"></div>
+          </div>
+          <div class="label" style="margin-top:16px">Goal</div>
+          <div class="seg" data-group="cw-goal"><button data-val="loss">Fat loss</button><button data-val="maintain">Maintain</button><button data-val="build">Build</button></div>
+          <div class="label" style="margin-top:14px">Deficit speed</div>
+          <div class="seg" data-group="cw-speed"><button data-val="gentle">Gentle</button><button data-val="moderate">Moderate</button><button data-val="aggressive">Aggressive</button></div>
+          <div class="calc-out" id="calc-out"></div>
+          <p class="muted-p" style="margin-top:14px;font-size:calc(13.5px*var(--ts,1))">Your calorie target is an estimate based on your body data, activity, and goal. Adjust after 2–3 weeks based on weight trend, energy, hunger, sleep, and training recovery.</p>
+        </div>
       </div>
     </section>
 
     <!-- ============ LEARN ============ -->
     <section class="screen" id="learn">
       <div class="stack" id="learn-stack"></div>
+      <div class="stack">
+        <div class="card lesson"><div class="head"><span class="fdot g"></span><div class="txt"><div class="ttl">Balanced plate guide</div><div class="tease">A simple way to build a meal — no extra logging.</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body"><div class="pedu"><div class="pg">1 · Protein</div><div class="pd">Choose and weigh your protein first — chicken, fish, beef or eggs.</div></div><div class="pedu"><div class="pg">2 · Carb</div><div class="pd">Add cooked rice, potatoes or oats — more on training days, less on rest days.</div></div><div class="pedu"><div class="pg">3 · Fat</div><div class="pd">Add a measured amount of oil or butter — small amounts count quickly.</div></div><div class="pedu"><div class="pg">4 · Veg / salad</div><div class="pd">Add vegetables or salad for fibre and volume — or choose none.</div></div></div></div>
+        <div class="card">
+          <div class="field">
+            <div class="label">Goal</div>
+            <div class="seg" data-group="t-goal">
+              <button data-val="fatloss">Fat loss</button>
+              <button data-val="musclegain">Muscle gain</button>
+              <button class="on" data-val="maintenance">Maintenance</button>
+            </div>
+          </div>
+          <div class="field">
+            <div class="label">Day type</div>
+            <div class="seg dark" data-group="t-day">
+              <button class="on" data-val="training">Training</button>
+              <button data-val="rest">Rest</button>
+              <button data-val="recovery">Recovery</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="eyebrow">How to eat today</div>
+          <div class="target"><span class="dot p"></span><div class="tx"><b>Protein</b><span id="t-protein"></span></div></div>
+          <div class="target"><span class="dot c"></span><div class="tx"><b>Carbs</b><span id="t-carbs"></span></div></div>
+          <div class="target"><span class="dot f"></span><div class="tx"><b>Fat</b><span id="t-fat"></span></div></div>
+        </div>
+        <div class="card reminder">
+          <div class="blk"><div class="eyebrow">Training fuel</div><p id="rem-fuel"></p></div>
+          <div class="blk"><div class="eyebrow" style="display:flex;align-items:center;gap:8px">Recovery <button class="whybtn" data-why="sleep" style="background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.28);color:#fff">Why?</button></div><p id="rem-recovery"></p></div>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Weigh &amp; Learn</div>
+          <p class="muted-p" style="margin-bottom:14px">Weigh your food now and then to learn what real portions look like. This is about awareness, not strict calorie counting.</p>
+          <div class="pedu"><div class="pg">Protein</div><div class="pd">Usually <b>100–150g</b> cooked meat or fish — about a palm.</div></div>
+          <div class="pedu"><div class="pg">Carbs</div><div class="pd">Usually <b>100–200g</b> cooked rice or potatoes — more on training days, less on rest days.</div></div>
+          <div class="pedu"><div class="pg">Fat</div><div class="pd">Oil and butter are dense. <b>1 tbsp olive oil ≈ 120 kcal</b> — measure it rather than free-pouring.</div></div>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Portion memory</div>
+          <div id="portion-memory"></div>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Weigh a portion</div>
+          <div class="uploader" id="wp-pick"><svg viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8Z"/><circle cx="12" cy="12.5" r="3.6"/></svg><div class="ut">Add a photo</div><div class="us">Optional — stored only on your device</div></div>
+          <input id="wp-file" type="file" accept="image/*" capture="environment" style="display:none">
+          <div class="preview" id="wp-preview"></div>
+          <div style="margin-top:14px">
+            <input class="mealinput" id="wp-name" type="text" placeholder="Food name (e.g. Chicken)">
+            <input class="mealinput" id="wp-brand" type="text" placeholder="Brand (optional)">
+            <input class="mealinput" id="wp-grams" type="text" inputmode="decimal" placeholder="Weight in grams">
+            <input class="mealinput" id="wp-note" type="text" placeholder="Note (optional)">
+          </div>
+          <button class="more-link" id="wp-more">Add macros (optional) ▾</button>
+          <div class="adv" id="wp-macros">
+            <div class="pmeal-grid">
+              <div class="pmeal"><label>Protein g</label><input id="wp-p" type="text" inputmode="decimal" placeholder="0"></div>
+              <div class="pmeal"><label>Carbs g</label><input id="wp-c" type="text" inputmode="decimal" placeholder="0"></div>
+              <div class="pmeal"><label>Fat g</label><input id="wp-f" type="text" inputmode="decimal" placeholder="0"></div>
+              <div class="pmeal"><label>Fibre g</label><input id="wp-fib" type="text" inputmode="decimal" placeholder="0"></div>
+            </div>
+          </div>
+          <div class="ratergrp"><div class="rl">Cooked, raw or dry</div><div class="opts" data-rgrp="wp-state"><button data-val="cooked">Cooked</button><button data-val="raw">Raw</button><button data-val="dry">Dry</button></div></div>
+          <div class="ratergrp"><div class="rl">Meal</div><div class="opts" data-rgrp="wp-meal"><button data-val="breakfast">Breakfast</button><button data-val="lunch">Lunch</button><button data-val="dinner">Dinner</button><button data-val="snack">Snack</button></div></div>
+          <div class="ratergrp verdict-pick"><div class="rl">How was the portion?</div><div class="opts" data-rgrp="wp-verdict"><button data-val="good">Good portion</button><button data-val="much">Too much</button><button data-val="little">Not enough</button></div></div>
+          <button class="cta" id="wp-save">Save portion</button>
+          <div class="saved-note" id="wp-saved"></div>
+        </div>
+        <div class="card">
+          <div class="eyebrow">My Portion Library</div>
+          <div id="portion-list"></div>
+        </div>
+        <div class="card lesson"><div class="head"><span class="fdot g"></span><div class="txt"><div class="ttl">Green — safe foods</div><div class="tease">Build most meals from these.</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body" id="green-body"></div></div>
+        <div class="card lesson"><div class="head"><span class="fdot y"></span><div class="txt"><div class="ttl">Yellow — sometimes</div><div class="tease">Fine in smaller amounts or now and then.</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body" id="yellow-body"></div></div>
+        <div class="card lesson"><div class="head"><span class="fdot r"></span><div class="txt"><div class="ttl">Red — avoid</div><div class="tease">Kept out of all meal suggestions.</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body" id="red-body"></div></div>
+        <div class="card focus">
+          <div class="eyebrow">Today's Focus</div>
+          <div class="lead" id="focus-lead"></div>
+          <div class="lines" id="focus-lines"></div>
+        </div>
+      </div>
     </section>
 
 
@@ -785,14 +865,16 @@
           <div id="today-session"></div>
         </div>
 
+        <div class="card" id="fuel-target-card"></div>
+
         <div class="card">
           <div class="eyebrow">This week's plan</div>
           <div id="week-plan"></div>
         </div>
 
-        <div class="card">
-          <div class="eyebrow">Exercise library</div>
-          <div id="exercise-lib"></div>
+        <div class="card lib-card" id="exlib-card">
+          <button type="button" class="lib-head" id="exlib-toggle"><span class="eyebrow" style="margin:0">Exercise library <span id="exlib-count"></span></span><svg class="lib-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div id="exercise-lib" class="lib-body"></div>
         </div>
 
         <div class="card">
@@ -802,21 +884,15 @@
         </div>
 
         <div class="card">
-          <div class="label">When do you train?</div>
-          <div class="seg" data-group="f-time"><button class="on" data-val="morning">Morning</button><button data-val="afternoon">Afternoon</button><button data-val="evening">Evening</button></div>
-        </div>
-        <div class="card">
           <div class="fuel-block"><div class="when">Before</div><div class="body"><strong>Protein + carbs, 1–3 hours before</strong><p>A balanced meal beforehand gives you energy to train and helps you feel steady through the session.</p><div class="ex"><b>Try:</b> chicken + rice · oats + chicken</div></div></div>
           <div class="divider"></div>
           <div class="fuel-block"><div class="when after">After</div><div class="body"><strong>Protein + carbs + water, within a couple of hours</strong><p>Eating and rehydrating after training supports recovery and helps refill the energy you used.</p><div class="ex"><b>Try:</b> chicken + potatoes · rice cakes + chicken</div></div></div>
           <div class="tip" id="fuel-tip" style="margin-top:14px"></div>
         </div>
         <div class="card"><div class="eyebrow">Quick combos (tolerated foods)</div>
-          <ul class="dots">
-            <li><span class="b"></span>Chicken + rice</li><li><span class="b"></span>Chicken + potatoes</li>
-            <li><span class="b"></span>Oats + chicken</li><li><span class="b"></span>Rice cakes + chicken</li>
-            <li><span class="b"></span>Banana + oats, if tolerated</li>
-          </ul>
+          <div class="combos">
+            <span class="combo">Chicken + Rice</span><span class="combo">Chicken + Potatoes</span><span class="combo">Rice Cakes + Chicken</span><span class="combo">Oats + Chicken</span><span class="combo">Banana + Rice Cakes <i>pre</i></span><span class="combo">Banana + Chicken</span><span class="combo">Banana + Oats <i>opt</i></span>
+          </div>
         </div>
       </div>
     </section>
@@ -824,6 +900,17 @@
     <!-- ============ F*CK-IT DAY ============ -->
     <section class="screen" id="fuckit">
       <div class="stack">
+        <div class="card">
+          <div class="eyebrow">Food reactions</div>
+          <p class="muted-p" style="margin-bottom:12px">Log how a meal left you feeling — energy, digestion, fullness and any symptoms. No drama, just data.</p>
+          <div class="eyebrow">Log a meal</div>
+          <input class="mealinput" id="log-meal" type="text" placeholder="What did you eat?">
+          <div class="quickfill" id="log-quick"></div>
+          <div style="margin-top:6px" id="rate-rows"></div>
+          <button class="cta" id="save-meal">Save meal log</button>
+          <div class="saved-note" id="meal-saved"></div>
+        </div>
+
         <div class="card">
           <div class="eyebrow">F*ck-it day</div>
           <p class="muted-p" style="margin:-2px 0 16px">Not a failure box — the honest, human side. Own the off-day, log it, and carry on.</p>
@@ -850,6 +937,11 @@
           <p class="muted-p" style="margin-bottom:14px">Choose the look of the app. Your choice is saved on this device.</p>
           <div class="label">Theme</div>
           <div class="seg" data-group="theme"><button data-val="dark">Dark</button><button data-val="light">Light</button><button data-val="barbie">Barbie</button></div>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Preferences</div>
+          <div class="label">When do you train?</div>
+          <div class="seg" data-group="f-time"><button class="on" data-val="morning">Morning</button><button data-val="afternoon">Afternoon</button><button data-val="evening">Evening</button></div>
         </div>
       </div>
     </section>
@@ -886,7 +978,7 @@
   function todayISO(){var d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
 
   /* ---------- profile ---------- */
-  var PROFILE_DEFAULT={age:44,height:165,startWeight:66.1,startBF:35.5,goalBF:31.0,weeksTotal:12,activity:"moderate"};
+  var PROFILE_DEFAULT={age:44,height:165,startWeight:66.1,startBF:35.5,goalBF:31.0,weeksTotal:12,activity:"moderate",goalType:"loss",deficitSpeed:"moderate",trainDays:4};
   function loadProfile(){var p=store.get("bf_profile")||{};return Object.assign({},PROFILE_DEFAULT,p);}
   function saveProfileObj(p){store.set("bf_profile",p);}
 
@@ -910,7 +1002,18 @@
   function num(v){if(typeof v==="string")v=v.replace(",",".");v=parseFloat(v);return isNaN(v)?null:v;}
 
   /* =================== TODAY =================== */
-  function refreshToday(){renderFocus();renderEatToday();renderTodayMeals();renderReminders();renderMission();renderDailyTargets();renderTodayWorkout();renderWeekFocus();}
+  function refreshToday(){renderFocus();renderEatToday();renderTodayMeals();renderReminders();renderMission();renderDailyTargets();renderTodayWorkout();renderWeekFocus();renderScoreboard();}
+  function renderScoreboard(){
+    var el=$("#scoreboard");if(!el)return;
+    var tot=mealTotals(todayISO()),calT=calcCalories().target;
+    var calLeft=Math.max(0,Math.round(calT-tot.kcal)),pLeft=Math.max(0,Math.round(120-tot.p));
+    el.innerHTML='<div class="sb"><div class="sbk">Calories left</div><div class="sbv">'+calLeft+' <small>kcal</small></div></div>'
+      +'<div class="sb"><div class="sbk">Protein left</div><div class="sbv">'+pLeft+' <small>g</small></div></div>';
+  }
+  function missionEditor(goal,gw){return '<div class="mission-edit">'
+    +'<div class="me-row"><label>Target body fat %</label><input class="mealinput" id="me-bf" type="text" inputmode="decimal" value="'+goal.toFixed(1)+'"></div>'
+    +'<div class="me-row"><label>Target weight (optional)</label><input class="mealinput" id="me-wt" type="text" inputmode="decimal" placeholder="kg" value="'+(gw?gw:'')+'"></div>'
+    +'<div class="me-btns"><button class="cta" data-mact="save">Save</button><button class="cta ghost" data-mact="cancel">Cancel</button></div></div>';}
 
   function renderFocus(){
     var g=state.tGoal,d=state.tDay,p=plan[todayIdx()];
@@ -954,20 +1057,22 @@
     var toLose=Math.max(0,curFat-targetFat);
     var weeks=Math.max(0,Math.round(toLose/0.35));
     var whyBF=' <button class="whybtn" data-why="bodyfat">Why?</button>';
-    var rows='<div class="statline"><span class="k">Current weight</span><span class="v">'+weight.toFixed(1)+' <small>kg</small></span></div>'
+    var rows='<div class="statline"><span class="k">Progress</span><span class="v">'+prog+' <small>%</small></span></div>'
+      +'<div class="statline"><span class="k">Current weight</span><span class="v">'+weight.toFixed(1)+' <small>kg</small></span></div>'
       +'<div class="statline"><span class="k">Current body fat</span><span class="v">'+cur.toFixed(1)+' <small>%</small></span></div>'
       +(musclePct!=null?'<div class="statline"><span class="k">Muscle mass</span><span class="v">'+musclePct+' <small>%</small></span></div>':'')
       +'<div class="statline"><span class="k">Current fat mass</span><span class="v">'+curFat.toFixed(1)+' <small>kg</small></span></div>'
       +'<div class="statline"><span class="k">Lean mass</span><span class="v">'+lean.toFixed(1)+' <small>kg</small></span></div>'
-      +'<div class="statline"><span class="k">Est. target weight</span><span class="v">'+targetWeight.toFixed(1)+' <small>kg</small></span></div>'
+      +'<div class="statline"><span class="k">'+(prof.goalWeight?'Target weight':'Est. target weight')+'</span><span class="v">'+(prof.goalWeight?Number(prof.goalWeight).toFixed(1):targetWeight.toFixed(1))+' <small>kg</small></span></div>'
       +'<div class="statline"><span class="k">Weeks remaining</span><span class="v">~'+weeks+' <small>of '+prof.weeksTotal+'</small></span></div>';
     $("#mission-card").innerHTML=
       '<div class="mission-msg" style="margin-top:0;margin-bottom:18px">The goal is <i>not</i> perfection. The goal <i>is</i> to become <i>leaner, fitter, stronger,</i> and more <i>consistent</i>.</div>'
-      +'<div class="eyebrow">Mission '+goal.toFixed(0)+'%'+whyBF+'</div>'+head
+      +'<div class="eyebrow">Mission '+goal.toFixed(0)+'%'+whyBF+' <button class="whybtn" data-mact="edit">Edit</button></div>'+head
+      +(state.missionEdit?missionEditor(goal,prof.goalWeight):'')
       +'<div class="pbar"><i style="width:'+prog+'%"></i></div>'
       +rows
       +'<p class="mission-note">'+(seeded?'Showing your starting numbers — add a weekly check-in in My Body to track real progress. ':'')+prog+'% of the way from '+start.toFixed(1)+'% to '+goal.toFixed(1)+'%. Timeline is a gentle estimate assuming steady fat loss with muscle preserved — not a promise.</p>'
-      +(seeded?'<button class="cta ghost" data-goto="progress" style="margin-top:14px">Add my measurements</button>':'');
+      +(seeded?'<button class="cta ghost" data-goto="progress" style="margin-top:14px">Weekly Check-in</button>':'');
   }
 
   /* daily targets */
@@ -990,9 +1095,24 @@
     var p=loadProfile(),w=latestWeight()||p.startWeight;
     var bmr=10*w+6.25*p.height-5*p.age-161;
     var factor=ACT[p.activity||"moderate"]||1.55;
-    var tdee=bmr*factor,target=Math.round((tdee-350)/10)*10;
-    return {weight:w,bmr:Math.round(bmr),tdee:Math.round(tdee),target:target,factor:factor,act:p.activity||"moderate",deficit:350};
+    var tdee=bmr*factor;
+    var amt={gentle:250,moderate:400,aggressive:500}[p.deficitSpeed||"moderate"]||400;
+    var goal=p.goalType||"loss";
+    var adj=goal==="maintain"?0:(goal==="build"?amt:-amt);
+    var target=Math.round((tdee+adj)/10)*10;
+    return {weight:w,bmr:Math.round(bmr),tdee:Math.round(tdee),target:target,factor:factor,act:p.activity||"moderate",deficit:adj,goal:goal,speed:p.deficitSpeed||"moderate"};
   }
+  function calcBreakdownHTML(){
+    var c=calcCalories();
+    var spName={gentle:"Gentle",moderate:"Moderate",aggressive:"Aggressive"}[c.speed]||"Moderate";
+    var defLabel=c.deficit===0?"0 kcal":((c.deficit<0?"\u2212":"+")+Math.abs(c.deficit)+" kcal");
+    var defSub=c.goal==="maintain"?"maintain":(spName+(c.goal==="build"?" surplus":" deficit"));
+    return '<div class="cr"><span>BMR (Mifflin-St Jeor)</span><b>'+c.bmr+' kcal</b></div>'
+      +'<div class="cr"><span>TDEE (\u00d7'+c.factor+')</span><b>'+c.tdee+' kcal</b></div>'
+      +'<div class="cr"><span>Adjustment ('+defSub+')</span><b>'+defLabel+'</b></div>'
+      +'<div class="cr total"><span>Daily target</span><b>'+c.target+' kcal</b></div>';
+  }
+  function renderCalc(){var el=$("#calc-out");if(el)el.innerHTML=calcBreakdownHTML();}
   function carbTarget(){var c=calcCalories(),fatG=Math.max(40,Math.round(0.8*c.weight)),carbs=Math.round((c.target-120*4-fatG*9)/4/5)*5;return Math.max(80,carbs)||150;}
   function loadProtein(){var all=store.get("bf_protein")||{};return all[todayISO()]||{b:0,l:0,d:0,s:0};}
   function saveProteinDay(p){var all=store.get("bf_protein")||{};all[todayISO()]=p;store.set("bf_protein",all);}
@@ -1111,7 +1231,8 @@
   }
   function renderDailyTargets(){
     var t=loadTargets(),c=calcCalories(),ct=carbTarget(),fatGuide=Math.max(40,Math.round(0.8*c.weight)),tot=mealTotals(todayISO());
-    var html=dRow('Calories',tot.kcal,c.target,'kcal','calories')
+    var html=dRow('Calories',tot.kcal,c.target,'kcal',null)
+      +'<button type="button" class="see-more" id="why-cals" style="padding-top:4px">Why this number?</button><div id="why-cals-out" class="calc-out" style="display:none;margin-top:8px"></div>'
       +dRow('Protein',tot.p,120,'g','protein',false,'\u2248 40 g per main meal')
       +dRow('Carbs',tot.c,ct,'g',null)
       +dRow('Fat',tot.f,fatGuide,'g',null,true)
@@ -1199,8 +1320,8 @@
     var ex='<div id="ex-log" data-dayk="'+dayKey+'" data-wk="'+sessWeekKey()+'">'+p.ex.map(function(e){return renderExCard(dayKey,e,sessWeekKey());}).join("")+'</div>';
     var cardio=(p.finish||p.why==="conditioning")?cardioHTML(p):'';
     var notes=p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'';
-    host.innerHTML=nav+head+warm+meta+ex+cardio+notes+'<div class="divider"></div>'+sessionLogHTML()+whyPills(p);
-    bindExLog();bindCardio();bindWarm();bindSessionLog();
+    host.innerHTML=nav+head+sessCompleteHTML()+warm+meta+ex+cardio+notes+'<div class="divider"></div>'+sessionLogHTML()+whyPills(p);
+    bindExLog();bindCardio();bindWarm();bindSessionLog();bindSessComplete();
   }
   /* per-exercise logbook */
   function slug(s){return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}
@@ -1284,6 +1405,8 @@
   /* ---------- training session log ---------- */
   function loadTraining(){return store.get("bf_training")||{};}
   function todayLog(){var d={done:null,diff:"",knee:"",energy:"",recovery:"",notes:"",warmup:false,cardio:{duration:20,incline:"",speed:"",effort:""}};var t=loadTraining()[sessISO()];return t?Object.assign(d,t):d;}
+  function sessCompleteHTML(){var done=todayLog().done==="done";return '<div class="warmrow" style="margin-bottom:12px"><div class="warm-t"><b>Workout completed</b></div><button class="excomp'+(done?' on':'')+'" id="sess-complete">'+(done?'\u2714 Completed':'Mark complete')+'</button></div>';}
+  function bindSessComplete(){var b=$("#sess-complete");if(!b)return;b.addEventListener("click",function(){var all=loadTraining(),k=sessISO(),t=all[k]||{};t.done=(t.done==="done")?null:"done";all[k]=t;store.set("bf_training",all);renderTodaySession();});}
   function sessionLogHTML(){
     var l=todayLog();
     function seg(k,label,opts,val){return '<div class="ratergrp"><div class="rl">'+label+'</div><div class="opts" data-rgrp="'+k+'">'+opts.map(function(o){return '<button class="'+(val===o[0]?'on':'')+'" data-val="'+o[0]+'">'+o[1]+'</button>';}).join("")+'</div></div>';}
@@ -1407,6 +1530,10 @@
     defs.forEach(function(d){if(vis.indexOf(d.key)>-1)order.push(d);});
     defs.forEach(function(d){if(vis.indexOf(d.key)<0)order.push(d);});
     $("#week-focus").innerHTML=order.map(rowHtml).join("");
+    var shortLabel={protein:"Protein",sessions:"Training",walk:"Walk",rest:"Rest days",weight:"Weigh-in",portions:"Portions"};
+    var byKey={};defs.forEach(function(d){byKey[d.key]=d;});
+    var fc=$("#focus-chips");
+    if(fc)fc.innerHTML=vis.map(function(k){var d=byKey[k];if(!d)return"";var done=d.auto||!!w[k];return '<span class="fchip'+(done?' done':'')+'" data-wk="'+k+'">'+(done?'\u2713 ':'')+(shortLabel[k]||d.label)+'</span>';}).join("");
   }
 
   /* ---------- weigh & learn + week-focus events ---------- */
@@ -1437,6 +1564,7 @@
       return '<div class="lesson" style="padding:15px 0;border-bottom:1px solid var(--line-soft)"><div class="head"><div class="txt"><div class="ttl" style="font-size:calc(18px*var(--ts,1))">'+e[0]+'</div><div class="tease">'+e[1]+'</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>'
         +'<div class="body"><p>'+e[2]+'</p><div class="mini">Common mistakes</div><p style="padding-top:6px">'+e[3]+'</p></div></div>';
     }).join("");
+    var c=$("#exlib-count");if(c)c.textContent="("+exercises.length+")";
   }
 
   /* =================== MEAL BUILDER =================== */
@@ -1573,8 +1701,9 @@
     var html=row("Best energy",top("energy"))+row("Best digestion",top("digestion"))+row("Best for training",tr)+(watch?row("Worth watching",watch,true):"");
     box.innerHTML=html||'<p class="empty">Keep logging to reveal patterns.</p>';
   }
-  function fillProfileInputs(){var p=loadProfile();$("#p-age").value=p.age;$("#p-height").value=p.height;$("#p-start").value=p.startBF;$("#p-goal").value=p.goalBF;setSeg("p-activity",p.activity||"moderate");}
-  function saveProfile(){var p=loadProfile();p.age=num($("#p-age").value)||p.age;p.height=num($("#p-height").value)||p.height;p.startBF=num($("#p-start").value)||p.startBF;p.goalBF=num($("#p-goal").value)||p.goalBF;saveProfileObj(p);flash("#profile-saved","Profile saved");renderMission();}
+  function fillProfileInputs(){var p=loadProfile();$("#p-age").value=p.age;$("#p-height").value=p.height;$("#p-start").value=p.startBF;$("#p-goal").value=p.goalBF;setSeg("p-activity",p.activity||"moderate");var cw=$("#cw-weight");if(cw)cw.value=p.startWeight;var cg=$("#cw-goalw");if(cg)cg.value=p.goalWeight||"";var ct=$("#cw-train");if(ct)ct.value=p.trainDays||"";setSeg("cw-goal",p.goalType||"loss");setSeg("cw-speed",p.deficitSpeed||"moderate");renderCalc();}
+  function saveCalc(){var p=loadProfile();var w=num($("#cw-weight").value);if(w)p.startWeight=w;var gw=num($("#cw-goalw").value);p.goalWeight=gw||null;var td=num($("#cw-train").value);if(td)p.trainDays=td;saveProfileObj(p);renderCalc();renderDailyTargets();refreshToday();}
+  function saveProfile(){var p=loadProfile();p.age=num($("#p-age").value)||p.age;p.height=num($("#p-height").value)||p.height;p.startBF=num($("#p-start").value)||p.startBF;p.goalBF=num($("#p-goal").value)||p.goalBF;saveProfileObj(p);flash("#profile-saved","Profile saved");renderMission();renderCalc();renderDailyTargets();refreshToday();}
 
   /* =================== LEARN =================== */
   var lessons=[
@@ -1624,7 +1753,20 @@
 
   /* =================== FUEL =================== */
   var fuelTips={morning:"<b>Training early?</b> A smaller pre-workout snack like a banana or rice cakes often sits better — fit the bigger meal afterwards.",afternoon:"<b>Midday session?</b> Build your pre-workout meal around lunch — chicken + rice, eaten 1–3 hours ahead.",evening:"<b>Evening session?</b> Keep the post-workout meal balanced so it feels comfortable before bed."};
-  function refreshFuel(){$("#fuel-tip").innerHTML=fuelTips[state.fTime];}
+  function refreshFuel(){$("#fuel-tip").innerHTML=fuelTips[state.fTime];renderFuelTarget();}
+  function renderFuelTarget(){
+    var el=$("#fuel-target-card");if(!el)return;
+    var td=new Date().getDay(),idx=td===0?6:td-1,tp=plan[idx];
+    var type=tp.log?"training":(tp.why==="recovery"?"recovery":"rest");
+    var base=carbTarget();
+    var carbs=type==="training"?base:(type==="recovery"?Math.round(base*0.85/5)*5:Math.round(base*0.7/5)*5);
+    var water=type==="training"?"2.5":(type==="recovery"?"2.2":"2.0");
+    var label=type==="training"?"Training day":(type==="recovery"?"Active recovery":"Rest day");
+    el.innerHTML='<div class="eyebrow">Today\u2019s fuel target</div><div class="ftday">'+label+'</div>'
+      +'<div class="ftrow"><span>Protein</span><b>120 g</b></div>'
+      +'<div class="ftrow"><span>Carbs</span><b>'+carbs+' g</b></div>'
+      +'<div class="ftrow"><span>Water</span><b>'+water+' L</b></div>';
+  }
 
   /* ---------- strength progress ---------- */
   var keyLifts=[["legpress","Leg Press"],["rdl","Romanian Deadlift"],["latpull","Lat Pulldown"],["chestpress","Chest Press"]];
@@ -1632,10 +1774,11 @@
   function renderStrength(){
     var s=loadStrength();
     $("#strength-body").innerHTML=keyLifts.map(function(l){
-      var arr=s[l[0]]||[],last=arr.length?arr[arr.length-1]:null;
-      var spark=arr.length>=2?sparkOf(arr.map(function(x){return x.weight;}),"Trend"):"";
-      return '<div class="slift"><div class="sh"><span class="sn">'+l[1]+'</span><span class="sv">'+(last?last.weight+' kg':'—')+'</span></div>'
-        +'<div class="sin"><input id="st-'+l[0]+'" type="text" inputmode="decimal" placeholder="kg this week"><button data-lift="'+l[0]+'">Save</button></div>'+spark+'</div>';
+      var arr=s[l[0]]||[],recent=arr.slice(-4),last=arr.length?arr[arr.length-1]:null;
+      var wks='<div class="swks">'+[0,1,2,3].map(function(i){var e=recent[i];return '<div class="swk"><b>W'+(i+1)+'</b>'+(e?e.weight+' kg':'\u2014')+'</div>';}).join("")+'</div>';
+      return '<div class="slift"><div class="sh"><span class="sn">'+l[1]+'</span><span class="sv">'+(last?last.weight+' kg':'\u2014')+'</span></div>'
+        +wks
+        +'<div class="sin"><input id="st-'+l[0]+'" type="text" inputmode="decimal" placeholder="Add this week (kg)"><button data-lift="'+l[0]+'">Save</button></div></div>';
     }).join("");
   }
   function saveLift(k){
@@ -1870,7 +2013,7 @@
 
   /* =================== EVENTS =================== */
   function setSeg(group,val){$all('[data-group="'+group+'"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===val);});}
-  $all('.seg').forEach(function(seg){seg.addEventListener("click",function(e){var btn=e.target.closest("button");if(!btn)return;var group=seg.getAttribute("data-group"),val=btn.getAttribute("data-val");setSeg(group,val);if(group==="t-goal"){state.tGoal=val;refreshToday();renderQuickFill();}if(group==="t-day"){state.tDay=val;refreshToday();}if(group==="f-time"){state.fTime=val;refreshFuel();}if(group==="p-activity"){var pr=loadProfile();pr.activity=val;saveProfileObj(pr);renderDailyTargets();}if(group==="ml-meal"){state.mlMeal=val;}if(group==="ov-range"){state.ovRange=val;renderOverview();}if(group==="ts"){store.set("bf_textscale",val);applyTextScale(val);}if(group==="theme"){store.set("bf_theme",val);applyTheme(val);}});});
+  $all('.seg').forEach(function(seg){seg.addEventListener("click",function(e){var btn=e.target.closest("button");if(!btn)return;var group=seg.getAttribute("data-group"),val=btn.getAttribute("data-val");setSeg(group,val);if(group==="t-goal"){state.tGoal=val;refreshToday();renderQuickFill();}if(group==="t-day"){state.tDay=val;refreshToday();}if(group==="f-time"){state.fTime=val;refreshFuel();}if(group==="p-activity"){var pr=loadProfile();pr.activity=val;saveProfileObj(pr);renderDailyTargets();renderCalc();refreshToday();}if(group==="cw-goal"){var p2=loadProfile();p2.goalType=val;saveProfileObj(p2);renderCalc();renderDailyTargets();refreshToday();}if(group==="cw-speed"){var p3=loadProfile();p3.deficitSpeed=val;saveProfileObj(p3);renderCalc();renderDailyTargets();refreshToday();}if(group==="ml-meal"){state.mlMeal=val;}if(group==="ov-range"){state.ovRange=val;renderOverview();}if(group==="ts"){store.set("bf_textscale",val);applyTextScale(val);}if(group==="theme"){store.set("bf_theme",val);applyTheme(val);}});});
   $("#today-session").addEventListener("click",function(e){var b=e.target.closest("[data-dnav]");if(!b)return;gotoSessDate(b.getAttribute("data-dnav"));});
   $("#overview-body").addEventListener("click",function(e){var b=e.target.closest("[data-ovmore]");if(!b)return;var box=document.getElementById("ovd-"+b.getAttribute("data-ovmore"));if(!box)return;var open=box.classList.toggle("open");b.textContent=open?"Hide details ▴":"Show details ▾";});
   $all('[data-build]').forEach(function(box){box.addEventListener("click",function(e){var t=e.target.closest(".tag");if(!t)return;var cat=t.getAttribute("data-bcat"),item=t.getAttribute("data-item"),sel=state.build[cat]||[];if(item==="None"){sel=[];}else{var i=sel.indexOf(item);if(i>=0)sel.splice(i,1);else sel.push(item);}state.build[cat]=sel;renderBuildChips();renderBuilt();});});
@@ -1896,7 +2039,7 @@
   $("#save-meal").addEventListener("click",saveMealLog);
   $("#save-profile").addEventListener("click",saveProfile);
 
-  document.addEventListener("click",function(e){var w=e.target.closest("[data-why]");if(w){openWhy(w.getAttribute("data-why"));return;}var h=e.target.closest(".lesson > .head");if(h){h.parentNode.classList.toggle("open");}});
+  document.addEventListener("click",function(e){var wc=e.target.closest("#why-cals");if(wc){var box=document.getElementById("why-cals-out");if(box){var show=box.style.display==="none";box.style.display=show?"block":"none";if(show)box.innerHTML=calcBreakdownHTML();wc.textContent=show?"Hide breakdown":"Why this number?";}return;}var w=e.target.closest("[data-why]");if(w){openWhy(w.getAttribute("data-why"));return;}var h=e.target.closest(".lesson > .head");if(h){h.parentNode.classList.toggle("open");}});
   $("#wp-more").addEventListener("click",function(){var a=$("#wp-macros");a.classList.toggle("on");$("#wp-more").textContent=a.classList.contains("on")?"Hide macros ▴":"Add macros (optional) ▾";});
   $("#ml-food").addEventListener("change",function(){state.mlFood=this.value;state.mlState=null;renderMlState();});
   $("#ml-state").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;state.mlState=b.getAttribute("data-val");$all("#ml-state button").forEach(function(x){x.classList.toggle("on",x===b);});});
@@ -1965,15 +2108,12 @@
     if($("#cy-len"))$("#cy-len").value=c.len||"";
     var day=cycleDayOf(c);
     if(day==null){
-      if(out)out.innerHTML='<p class="muted-p" style="margin-bottom:4px">Enter your last period start date below and your app shows your cycle day, phase and recovery guidance \u2014 updated automatically each day.</p>';
+      if(out)out.innerHTML='<span class="en">Set your last period start in the Body tab to see your cycle day, phase and recovery here.</span>';
       if(badge)badge.style.display="none";
       return;
     }
     var p=cyclePhase(day);
-    if(out)out.innerHTML='<div class="cyday">Cycle Day '+day+'</div><div class="cyphase">'+p.phase+' phase</div>'
-      +'<div class="cyrow"><span>Energy</span><b>'+p.energy+'</b></div>'
-      +'<div class="cyrow"><span>Recovery</span><b>'+p.rec+'</b></div>'
-      +'<div class="cyrow"><span>Training</span><b>'+p.train+'</b></div>';
+    if(out)out.innerHTML='<b>Cycle Day '+day+'</b> <span class="ph">'+p.phase+'</span> · <span class="en">'+p.energy+'</span>';
     if(badge){badge.style.display="";badge.innerHTML='<div class="cd">Cycle Day '+day+'</div><div class="cp">'+p.phase+'</div><div class="ce">'+p.energy+'</div>';}
   }
   function initCycle(){
@@ -2002,7 +2142,11 @@
   populateFoodSelect();renderMealLog();renderOverview();applyTextScale(store.get("bf_textscale")||"1");applyTheme(store.get("bf_theme")||"dark");
   renderPortionMemory();renderPortionList();syncWpButtons();
   renderWeekFocus();
-  (function(){var wfT=$("#wf-toggle");if(wfT)wfT.addEventListener("click",function(){var wf=$("#week-focus");wfT.textContent=wf.classList.toggle("expanded")?"See less":"See more";});})();
+  (function(){var wfT=$("#wf-toggle");if(wfT)wfT.addEventListener("click",function(){var g=$("#glance-card");wfT.textContent=g.classList.toggle("expanded")?"See less":"See more";});})();
+  (function(){var fc=$("#focus-chips");if(fc)fc.addEventListener("click",function(e){var c=e.target.closest("[data-wk]");if(!c)return;var w=loadWeek(),k=c.getAttribute("data-wk");w[k]=!w[k];saveWeek(w);renderWeekFocus();});})();
+  (function(){var t=$("#exlib-toggle");if(t)t.addEventListener("click",function(){var c=$("#exlib-card");if(c)c.classList.toggle("lib-open");});})();
+  (function(){["cw-weight","cw-goalw","cw-train"].forEach(function(id){var el=$("#"+id);if(el)el.addEventListener("input",saveCalc);});})();
+  (function(){var mc=$("#mission-card");if(mc)mc.addEventListener("click",function(e){var b=e.target.closest("[data-mact]");if(!b)return;var a=b.getAttribute("data-mact");if(a==="edit"){state.missionEdit=true;renderMission();}else if(a==="cancel"){state.missionEdit=false;renderMission();}else if(a==="save"){var prof=loadProfile();var bf=num($("#me-bf").value);if(bf)prof.goalBF=bf;var wt=num($("#me-wt").value);prof.goalWeight=wt||null;saveProfileObj(prof);state.missionEdit=false;renderMission();refreshToday();}});})();
   initFk();
   initCycle();
 })();
