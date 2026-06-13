@@ -1805,26 +1805,34 @@
     return tessP;
   }
   function numv(s){return s==null?null:parseFloat(String(s).replace(",","."));}
-  function grabNum(t,re){var m=re.exec(t);return m?numv(m[1]):null;}
+  function nVal(line){var c=line.replace(/\([^)]*\)/g,"");var mm=c.match(/(\d+(?:[.,]\d+)?)\s*g(?![a-z])/g);if(mm&&mm.length){return numv((/(\d+(?:[.,]\d+)?)/.exec(mm[mm.length-1]))[1]);}return null;}
   function parseLabel(text){
-    var t=" "+String(text).toLowerCase().replace(/\s+/g," ")+" ",p={};
-    p.kcal=grabNum(t,/(\d{2,4})\s*k?cal/);
-    p.protein=grabNum(t,/protein[^0-9]{0,14}(\d+(?:[.,]\d+)?)\s*g/);
-    p.carbs=grabNum(t,/carbohydrate[^0-9]{0,16}(\d+(?:[.,]\d+)?)\s*g/);
-    p.sugar=grabNum(t,/sugars?[^0-9]{0,14}(\d+(?:[.,]\d+)?)\s*g/);
-    p.sat=grabNum(t,/satur[a-z]*[^0-9]{0,14}(\d+(?:[.,]\d+)?)\s*g/);
-    p.fat=grabNum(t,/(?:^|[^a-z])fat[^a-z0-9]{0,14}(\d+(?:[.,]\d+)?)\s*g/);
-    p.fibre=grabNum(t,/fib(?:re|er)[^0-9]{0,14}(\d+(?:[.,]\d+)?)\s*g/);
-    p.salt=grabNum(t,/salt[^0-9]{0,14}(\d+(?:[.,]\d+)?)\s*g/);
-    var sm=/(?:serving size|per serving|portion)[^0-9]{0,16}(\d+(?:[.,]\d+)?)\s*g/.exec(t);
-    p.serving=sm?numv(sm[1]):null;
-    p.per100=/per\s*100\s*g|\/\s*100\s*g|100\s*g/.test(t);
-    var im=/ingredients?\s*[:\-]?\s*([a-z0-9 ,.\-()%\/&'+]{8,500})/.exec(t);
-    if(im){var ing=im[1].split(/(?:nutrition|typical values|allergy|allergen|store |best before|per 100|energy )/)[0].trim();p.ingredients=ing.replace(/\s+/g," ");}
+    var raw=String(text),t=" "+raw.toLowerCase().replace(/\r/g,"")+" ",lines=raw.toLowerCase().split(/\n+/),p={};
+    var em=/(\d{2,4})\s*kcal/.exec(t)||/energ\w*[^0-9]{0,30}(\d{2,4})/.exec(t);p.kcal=em?numv(em[1]):null;
+    var fields=[
+      {k:"sat",inc:/satur|m[æae]ttede|m[äa]ttad|ges[äa]ttig|satur[ée]|saturad/,exc:/mono|poly|enkelt|fleru/},
+      {k:"fat",inc:/\bfat\b|\bfedt\b|\bfett\b|lipid|grasa|grassi|mati[eè]res grasses/,exc:/satur|m[æae]ttede|fedtsyr|fettsyr/},
+      {k:"carbs",inc:/carbohydrate|carbo|kulhydrat|kolhydrat|karbohydrat|kohlenhydrat|glucid|hidratos/},
+      {k:"sugar",inc:/sugar|sukkerart|sukker|socker|zucker|az[uú]car|sucre|zuccher/},
+      {k:"fibre",inc:/fib(?:re|er)|kostfib|ballaststoff|fibra/},
+      {k:"salt",inc:/\bsalt\b|\bsel\b|\bsale\b|\bsal\b/},
+      {k:"protein",inc:/protein|prote[ií]|eiwei/}
+    ];
+    fields.forEach(function(f){for(var i=0;i<lines.length;i++){var ln=lines[i];if(f.inc.test(ln)&&!(f.exc&&f.exc.test(ln))){var v=nVal(ln);if(v!=null){p[f.k]=v;break;}}}});
+    var sm=/(?:serving size|per serving|portion|pr\.? ?portion)[^0-9]{0,16}(\d+(?:[.,]\d+)?)\s*g/.exec(t);p.serving=sm?numv(sm[1]):null;
+    p.per100=/per\s*100\s*g|\/\s*100\s*g|pr\.? ?100\s*g|100\s*g/.test(t);
+    var im=/(?:ingredient[a-z]*|ingrediens[a-z]*|zutaten|ingr[ée]dient[a-z]*|ingredienti|ingredientes)\s*[:\-]?\s*([\s\S]{8,600})/i.exec(raw);
+    if(im){var ing=im[1].toLowerCase().split(/n[æae]ringsindhold|nutrition|typical values|n[äa]ringsv|opbevaring|store at|best before|bedst f[øo]r|per 100|pr\.? ?100|energ/)[0];p.ingredients=ing.replace(/\s+/g," ").trim().replace(/[•.,\s]+$/,"");}
     return p;
   }
   function rateFrom(p){var r={};if(p.protein!=null)r.protein=p.protein>=12?"high":p.protein>=6?"mod":"low";if(p.sugar!=null)r.sugar=p.sugar>=15?"high":p.sugar>=5?"mod":"low";if(p.fibre!=null)r.fibre=p.fibre>=6?"high":p.fibre>=3?"mod":"low";return r;}
-  function flagsFrom(ing){ing=(ing||"").toLowerCase();var f={};if(/gluten[ -]?free/.test(ing))f.gluten="free";else if(/wheat|barley|\brye\b|\bmalt(?:ed|ing)?\b|spelt|semolina|couscous|gluten/.test(ing))f.gluten="contains";if(/dairy[ -]?free|lactose[ -]?free/.test(ing))f.dairy="free";else if(/milk|lactose|whey|casein|cheese|butter|cream|yog/.test(ing))f.dairy="contains";if(/aged|cured|fermented|vinegar|soy sauce|salami|anchov|mackerel|sardine|tuna|smoked|sauerkraut|kombucha|tomato paste|matured/.test(ing))f.histamine="trigger";return f;}
+  function flagsFrom(ing){ing=(ing||"").toLowerCase();var f={};
+    if(/gluten[ -]?fri|gluten[ -]?free/.test(ing))f.gluten="free";
+    else if(/wheat|hvede|vete|weizen|barley|\bbyg\b|\brug\b|\brye\b|\bmalt(?:ed|ing)?\b|spelt|semolina|couscous|gluten/.test(ing))f.gluten="contains";
+    if(/dairy[ -]?free|lactose[ -]?free|laktosefri/.test(ing))f.dairy="free";
+    else if(/milk|m[æae]lk|mj[öo]lk|milch|lait|leche|latte|lactos|laktos|whey|valle|casein|kasein|cheese|\bost\b|butter|sm[øo]r|cream|fl[øo]de|yog/.test(ing))f.dairy="contains";
+    if(/aged|cured|fermented|fermenter|g[æae]rekstrakt|yeast extract|gjær|vinegar|eddike|soy sauce|sojasauce|salami|anchov|ansjos|mackerel|makrel|sardine|tuna|tun|smoked|r[øo]get|sauerkraut|kombucha|tomato paste|tomatpure|matured/.test(ing))f.histamine="trigger";
+    return f;}
   function jobFrom(p){if(p.protein!=null&&p.protein>=15)return "protein";if(p.sugar!=null&&p.sugar>=15)return "treat";if(p.carbs!=null&&p.carbs>=40&&(p.protein==null||p.protein<10))return "fuel";if(p.kcal!=null&&p.kcal<=60)return "volume";return "convenience";}
   function foodScore(p){var s=50;if(p.protein!=null)s+=p.protein>=20?25:p.protein>=12?18:p.protein>=6?10:0;if(p.fibre!=null)s+=p.fibre>=6?12:p.fibre>=3?6:0;if(p.sugar!=null)s-=p.sugar>=22?20:p.sugar>=15?12:p.sugar>=5?5:0;if(p.sat!=null)s-=p.sat>=5?10:p.sat>=1.5?4:0;if(p.salt!=null)s-=p.salt>=1.5?8:p.salt>=0.6?4:0;return Math.max(0,Math.min(100,Math.round(s)));}
   function scoreWord(s){return s>=75?"Excellent":s>=55?"Good":s>=40?"OK":"Treat";}
@@ -1850,7 +1858,7 @@
     if(!src){flash("#fa-saved","Add a photo first");return;}
     if(st)st.innerHTML="Reading the label\u2026 this can take a few seconds.";
     $("#fa-ocr-result").innerHTML="";
-    loadTesseract().then(function(T){return T.recognize(src,"eng");}).then(function(res){
+    loadTesseract().then(function(T){return T.recognize(src,"eng+dan");}).then(function(res){
       var text=(res&&res.data&&res.data.text)||"",p=parseLabel(text);
       var got=[p.kcal,p.protein,p.carbs,p.fat].filter(function(x){return x!=null;}).length;
       if(got<2){if(st)st.innerHTML="I couldn\u2019t read this clearly. Try taking the photo closer, brighter, and straight-on.";return;}
