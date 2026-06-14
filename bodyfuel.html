@@ -8,7 +8,8 @@
 <meta name="apple-mobile-web-app-title" content="Body Fuel Lab">
 <meta name="theme-color" content="#161019">
 <title>Body Fuel Lab</title>
-<link rel="apple-touch-icon" id="bf-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23F23BA0'/%3E%3Cstop offset='1' stop-color='%23C8137A'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='180' height='180' fill='url(%23g)'/%3E%3Ctext x='90' y='98' font-family='Georgia,serif' font-size='124' fill='%23fff' text-anchor='middle' dominant-baseline='central'%3EB%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Schibsted+Grotesk:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
@@ -2559,20 +2560,6 @@
   (function(){var t=$("#adv-toggle");if(t)t.addEventListener("click",function(){var m=$("#adv-metrics");if(!m)return;var hidden=m.style.display==="none";m.style.display=hidden?"":"none";t.textContent=hidden?"Hide advanced measurements":"Show advanced measurements";});})();
   initFk();
   initCycle();
-  (function(){
-    function draw(){try{
-      var s=180,c=document.createElement("canvas");c.width=c.height=s;var x=c.getContext("2d");if(!x)return;
-      var g=x.createLinearGradient(0,0,s,s);g.addColorStop(0,"#F23BA0");g.addColorStop(.55,"#E91E8C");g.addColorStop(1,"#C8137A");
-      x.fillStyle=g;x.fillRect(0,0,s,s);
-      x.fillStyle="#fff";x.textAlign="center";x.textBaseline="middle";
-      x.font="600 122px 'DM Serif Display', Georgia, 'Times New Roman', serif";
-      x.fillText("B",s/2,s/2+4);
-      var url=c.toDataURL("image/png");
-      var l=document.getElementById("bf-touch-icon");if(!l){l=document.createElement("link");l.id="bf-touch-icon";l.rel="apple-touch-icon";document.head.appendChild(l);}
-      l.setAttribute("href",url);
-    }catch(e){}}
-    try{ if(document.fonts&&document.fonts.ready){document.fonts.ready.then(draw);setTimeout(draw,1200);} else {draw();} }catch(e){draw();}
-  })();
 })();
 </script>
 </body>
