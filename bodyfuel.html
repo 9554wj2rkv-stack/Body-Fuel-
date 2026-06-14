@@ -1060,7 +1060,7 @@
 
 <script>
 (function(){
-  window.onerror=function(msg,src,ln,col){try{var d=document.getElementById("__bferr");if(!d){d=document.createElement("div");d.id="__bferr";d.style.cssText="position:fixed;left:0;right:0;top:0;z-index:99999;background:#b00020;color:#fff;font:13px/1.45 -apple-system,system-ui,sans-serif;padding:12px 14px;white-space:pre-wrap";(document.body||document.documentElement).appendChild(d);}d.textContent="Body Fuel Lab error:\n"+msg+"\n(line "+ln+":"+col+")";}catch(e){}return false;};
+  window.onerror=function(msg,src,ln,col){try{if(!msg||/script error/i.test(String(msg))||((!src||src==="")&&!ln&&!col))return false;var d=document.getElementById("__bferr");if(!d){d=document.createElement("div");d.id="__bferr";d.style.cssText="position:fixed;left:0;right:0;top:0;z-index:99999;background:#b00020;color:#fff;font:13px/1.45 -apple-system,system-ui,sans-serif;padding:12px 14px;white-space:pre-wrap";(document.body||document.documentElement).appendChild(d);}d.textContent="Body Fuel Lab error:\n"+msg+"\n(line "+ln+":"+col+")";}catch(e){}return false;};
   var store=(function(){var mem={},ok=false;try{localStorage.setItem('__t','1');localStorage.removeItem('__t');ok=true;}catch(e){}
     return{get:function(k){try{return ok?JSON.parse(localStorage.getItem(k)):(mem[k]||null);}catch(e){return mem[k]||null;}},
       set:function(k,v){try{ok?localStorage.setItem(k,JSON.stringify(v)):(mem[k]=v);return true;}catch(e){mem[k]=v;return false;}}};})();
@@ -1334,9 +1334,9 @@
     var day=loadMealDay();if(!day[it.meal])day[it.meal]=[];day[it.meal].push(it);saveMealDay(day);
     $("#ml-grams").value="";$("#ml-oil").value="";$("#ml-notes").value="";
     flash("#ml-saved","Added to "+it.meal);
-    renderMealLog();renderDailyTargets();renderWeekFocus();renderWeeklyReview();
+    renderMealLog();renderDailyTargets();renderWeekFocus();renderWeeklyReview();renderScoreboard();
   }
-  function removeMealItem(id){var day=loadMealDay();["breakfast","lunch","dinner","snack"].forEach(function(mk){day[mk]=(day[mk]||[]).filter(function(x){return x.id!==id;});});saveMealDay(day);renderMealLog();renderDailyTargets();renderWeekFocus();renderWeeklyReview();}
+  function removeMealItem(id){var day=loadMealDay();["breakfast","lunch","dinner","snack"].forEach(function(mk){day[mk]=(day[mk]||[]).filter(function(x){return x.id!==id;});});saveMealDay(day);renderMealLog();renderDailyTargets();renderWeekFocus();renderWeeklyReview();renderScoreboard();}
   function loadExampleDay(){
     saveMealDay({breakfast:[
       {id:'ex1',meal:'breakfast',key:'gf_oats',name:'Gluten-free oats (dry)',state:'dry',grams:45,oil:5,notes:''},
@@ -1346,7 +1346,7 @@
       {id:'ex4',meal:'lunch',key:'jasmine_rice',name:'Jasmine rice',state:'cooked',grams:120,oil:5,notes:''},
       {id:'ex5',meal:'lunch',key:'salad',name:'Mixed salad leaves',state:'raw',grams:120,oil:0,notes:''}
     ],dinner:[],snack:[]});
-    renderMealLog();renderDailyTargets();renderWeekFocus();renderWeeklyReview();flash("#ml-saved","Example day loaded");
+    renderMealLog();renderDailyTargets();renderWeekFocus();renderWeeklyReview();renderScoreboard();flash("#ml-saved","Example day loaded");
   }
 
   /* ---------- daily targets (display-only) ---------- */
@@ -1865,10 +1865,10 @@
     return tessP;
   }
   function numv(s){return s==null?null:parseFloat(String(s).replace(",","."));}
-  function nVal(line){var c=line.replace(/\([^)]*\)/g,"");var mm=c.match(/(\d+(?:[.,]\d+)?)\s*g(?![a-z])/g);if(mm&&mm.length){return numv((/(\d+(?:[.,]\d+)?)/.exec(mm[mm.length-1]))[1]);}return null;}
+  function nVal(line){var c=line.replace(/\([^)]*\)/g,"").replace(/[\u2026]/g," ").replace(/\.{2,}/g," ");var mm=c.match(/(\d+(?:[.,]\d+)?)\s*g(?![a-z])/gi);if(mm&&mm.length){return numv((/(\d+(?:[.,]\d+)?)/.exec(mm[mm.length-1]))[1]);}var re=/(\d+(?:[.,]\d+)?)\s*(%|mg|kj|µg|mcg|kcal)?/gi,m,last=null;while((m=re.exec(c))){if(!m[2])last=m[1];}return last!=null?numv(last):null;}
   function parseLabel(text){
-    var raw=String(text),t=" "+raw.toLowerCase().replace(/\r/g,"")+" ",lines=raw.toLowerCase().split(/\n+/),p={};
-    var em=/(\d{2,4})\s*kcal/.exec(t)||/energ\w*[^0-9]{0,30}(\d{2,4})/.exec(t);p.kcal=em?numv(em[1]):null;
+    var raw=String(text).replace(/[\u2026]/g," ").replace(/\.{2,}/g," "),t=" "+raw.toLowerCase().replace(/\r/g,"")+" ",lines=raw.toLowerCase().split(/\n+/),p={};
+    var em=/(\d{1,4})\s*kcal/i.exec(t);if(em){p.kcal=numv(em[1]);}else{var ej=/(\d{2,4})\s*kj/i.exec(t);if(ej){p.kcal=Math.round(numv(ej[1])/4.184);}else{var ee=/energ\w*[^0-9]{0,30}(\d{2,4})/i.exec(t);p.kcal=ee?numv(ee[1]):null;}}
     var fields=[
       {k:"sat",inc:/satur|m[æae]ttede|m[äa]ttad|ges[äa]ttig|satur[ée]|saturad/,exc:/mono|poly|enkelt|fleru/},
       {k:"fat",inc:/\bfat\b|\bfedt\b|\bfett\b|lipid|grasa|grassi|mati[eè]res grasses/,exc:/satur|m[æae]ttede|fedtsyr|fettsyr/},
@@ -1914,12 +1914,27 @@
       +'<div class="rl" style="margin-top:14px">Personal flags</div>'+flags
       +'<div class="fa-exp" style="margin-top:12px">Food job, goal fit and verdict are filled in below — adjust any rating if the label scanned imperfectly.</div>';
   }
+  function ocrPrep(src){return new Promise(function(res){
+    try{
+      var img=new Image(),isStr=(typeof src==="string"),url=isStr?src:URL.createObjectURL(src);
+      img.onload=function(){try{
+        var w=img.width,h=img.height,maxd=Math.max(w,h),sc=maxd<1500?1500/maxd:(maxd>2600?2600/maxd:1);
+        var cw=Math.round(w*sc),ch=Math.round(h*sc),cv=document.createElement("canvas");cv.width=cw;cv.height=ch;
+        var x=cv.getContext("2d");x.drawImage(img,0,0,cw,ch);if(!isStr)URL.revokeObjectURL(url);
+        var im=x.getImageData(0,0,cw,ch),d=im.data;
+        for(var i=0;i<d.length;i+=4){var g=0.299*d[i]+0.587*d[i+1]+0.114*d[i+2];g=(g-128)*1.45+132;d[i]=d[i+1]=d[i+2]=g<0?0:g>255?255:g;}
+        x.putImageData(im,0,0);res(cv.toDataURL("image/png"));
+      }catch(e){res(src);}};
+      img.onerror=function(){if(!isStr)URL.revokeObjectURL(url);res(src);};
+      img.src=url;
+    }catch(e){res(src);}
+  });}
   function analyseLabel(){
     var src=state.fa.file||state.fa.photo,st=$("#fa-ocr-status");
     if(!src){flash("#fa-saved","Add a photo first");return;}
     if(st)st.innerHTML="Reading the label\u2026 this can take a few seconds.";
     $("#fa-ocr-result").innerHTML="";
-    loadTesseract().then(function(T){return T.recognize(src,"eng+dan");}).then(function(res){
+    loadTesseract().then(function(T){return ocrPrep(src).then(function(pre){return T.recognize(pre,"eng+dan");});}).then(function(res){
       var text=(res&&res.data&&res.data.text)||"",p=parseLabel(text);
       var got=[p.kcal,p.protein,p.carbs,p.fat].filter(function(x){return x!=null;}).length;
       if(got<2){if(st)st.innerHTML="I couldn\u2019t read this clearly. Try taking the photo closer, brighter, and straight-on.";return;}
