@@ -1024,7 +1024,9 @@
 
         <div class="card" id="habits-card">
           <div class="eyebrow">Daily habits</div>
-          <label class="hab-row"><input type="checkbox" id="hab-creatine"> Creatine taken today</label>
+          <div style="color:var(--ink-soft);font-size:calc(13.5px*var(--ts,1));margin-bottom:8px">Creatine today &middot; 5 g morning + 5 g evening</div>
+          <label class="hab-row"><input type="checkbox" id="hab-creatine-am"> Morning &middot; 5 g</label>
+          <label class="hab-row"><input type="checkbox" id="hab-creatine-pm"> Evening &middot; 5 g</label>
           <div class="hab-stat" id="hab-creatine-stat"></div>
         </div>
 
@@ -1163,7 +1165,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 14"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 15"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -1218,14 +1220,15 @@
   /* mission */
   function loadEntries(){return store.get("bf_progress")||[];}
   function loadHabits(){return store.get("bf_habits")||{};}
-  function creatineDone(d){var h=loadHabits();return !!(h.creatine&&h.creatine[d]);}
-  function toggleCreatine(on){var h=loadHabits();h.creatine=h.creatine||{};var d=todayISO();if(on)h.creatine[d]=true;else delete h.creatine[d];store.set("bf_habits",h);}
-  function creatineWeek(){var h=loadHabits(),c=h.creatine||{},n=0;Object.keys(c).forEach(function(k){if(c[k]&&inThisWeek(k))n++;});return {done:n,total:7,pct:Math.round(n/7*100)};}
+  function creatineSlots(d){var h=loadHabits(),v=h.creatine&&h.creatine[d];if(v===true)return {am:true,pm:true};return v||{};}
+  function creatineDoses(d){var s=creatineSlots(d);return (s.am?1:0)+(s.pm?1:0);}
+  function setCreatineSlot(slot,on){var h=loadHabits();h.creatine=h.creatine||{};var d=todayISO(),cur=h.creatine[d];if(cur===true)cur={am:true,pm:true};cur=cur||{};cur[slot]=!!on;if(!cur.am&&!cur.pm)delete h.creatine[d];else h.creatine[d]=cur;store.set("bf_habits",h);}
+  function creatineWeek(){var h=loadHabits(),c=h.creatine||{},doses=0;Object.keys(c).forEach(function(k){if(inThisWeek(k)){var v=c[k];if(v===true)doses+=2;else if(v)doses+=(v.am?1:0)+(v.pm?1:0);}});return {done:doses,total:14,pct:Math.round(doses/14*100)};}
   function loadEnergyMap(){return store.get("bf_energy")||{};}
   function energyToday(){return loadEnergyMap()[todayISO()]||null;}
   function setEnergyToday(v){var m=loadEnergyMap();m[todayISO()]=v;store.set("bf_energy",m);}
   function energyWeekCounts(){var m=loadEnergyMap(),o={high:0,medium:0,low:0};Object.keys(m).forEach(function(k){if(inThisWeek(k)&&o[m[k]]!=null)o[m[k]]++;});return o;}
-  function renderHabits(){var cb=$("#hab-creatine");if(cb)cb.checked=creatineDone(todayISO());var st=$("#hab-creatine-stat");if(st){var w=creatineWeek();st.innerHTML='Creatine consistency: <b>'+w.done+'/'+w.total+' days ('+w.pct+'%)</b>';}}
+  function renderHabits(){var s=creatineSlots(todayISO()),am=$("#hab-creatine-am"),pm=$("#hab-creatine-pm");if(am)am.checked=!!s.am;if(pm)pm.checked=!!s.pm;var st=$("#hab-creatine-stat");if(st){var w=creatineWeek();st.innerHTML='Creatine this week: <b>'+w.done+'/'+w.total+' doses ('+w.pct+'%)</b>';}}
   function renderEnergy(){var v=energyToday();setSeg("energy",v||"");}
   function renderMission(){
     var prof=loadProfile(),start=prof.startBF,goal=prof.goalBF;
@@ -2953,7 +2956,7 @@
   (function(){var t=$("#sprog-toggle");if(t)t.addEventListener("click",function(){var c=$("#sprog-card");if(c)c.classList.toggle("lib-open");});})();
   (function(){["cw-weight","cw-goalw","cw-train"].forEach(function(id){var el=$("#"+id);if(el)el.addEventListener("input",saveCalc);});})();
   (function(){var mc=$("#mission-card");if(mc)mc.addEventListener("click",function(e){var b=e.target.closest("[data-mact]");if(!b)return;var a=b.getAttribute("data-mact");if(a==="edit"){state.missionEdit=true;renderMission();}else if(a==="cancel"){state.missionEdit=false;renderMission();}else if(a==="save"){var prof=loadProfile();var bf=num($("#me-bf").value);if(bf)prof.goalBF=bf;var wt=num($("#me-wt").value);prof.goalWeight=wt||null;saveProfileObj(prof);state.missionEdit=false;renderMission();refreshToday();}});})();
-  (function(){var cb=$("#hab-creatine");if(cb)cb.addEventListener("change",function(){toggleCreatine(cb.checked);renderHabits();renderWeeklyReview();});})();
+  (function(){var am=$("#hab-creatine-am"),pm=$("#hab-creatine-pm");function bind(el,slot){if(el)el.addEventListener("change",function(){setCreatineSlot(slot,el.checked);renderHabits();renderWeeklyReview();});}bind(am,"am");bind(pm,"pm");})();
   (function(){var t=$("#adv-toggle");if(t)t.addEventListener("click",function(){var m=$("#adv-metrics");if(!m)return;var hidden=m.style.display==="none";m.style.display=hidden?"":"none";t.textContent=hidden?"Hide advanced measurements":"Show advanced measurements";});})();
   initFk();
   initCycle();
