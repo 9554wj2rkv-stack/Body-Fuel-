@@ -444,6 +444,19 @@
   .prod-photos img{flex:1;min-width:0;width:100%;border-radius:var(--r-sm);object-fit:cover;max-height:220px;background:var(--surface-2);border:1px solid var(--line);display:block}
   .prod-edit-row{display:flex;gap:8px;margin-top:14px}
   .prod-edit-row .cta{margin-top:0}
+  .bg-rating{display:flex;align-items:center;gap:10px;margin-top:6px;flex-wrap:wrap}
+  .bg-mean{color:var(--ink-soft);font-size:calc(14.5px*var(--ts,1))}
+  .bg-sec{margin-top:15px}
+  .bg-h{font-family:var(--font-b);font-weight:700;font-size:calc(14.5px*var(--ts,1));margin-bottom:7px}
+  .bg-why{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:calc(14px*var(--ts,1))}
+  .bg-why.good span{color:var(--green)}
+  .bg-why.watch{margin-top:5px}
+  .bg-why.watch span{color:var(--ink-soft)}
+  .bg-rec{font-size:calc(14.5px*var(--ts,1));color:var(--ink-soft)}
+  .bg-rec b{color:var(--ink)}
+  .bg-fit{margin-top:8px;color:var(--ink-soft);font-size:calc(13.5px*var(--ts,1))}
+  .bg-why.fit{margin-top:7px}
+  .bg-why.fit span{color:var(--ink)}
 
   /* profile */
   .pchips{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
@@ -1150,7 +1163,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 12"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 14"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -1931,7 +1944,17 @@
   function nVal(line){var c=line.replace(/\([^)]*\)/g,"").replace(/[\u2026]/g," ").replace(/[.\u00B7\u2022_\-]{2,}/g," ");var mm=c.match(/(\d+(?:[.,]\d+)?)\s*g(?![a-z])/gi);if(mm&&mm.length){return numv((/(\d+(?:[.,]\d+)?)/.exec(mm[mm.length-1]))[1]);}var re=/(\d+(?:[.,]\d+)?)\s*(%|mg|kj|µg|mcg|kcal)?/gi,m,last=null;while((m=re.exec(c))){if(!m[2])last=m[1];}return last!=null?numv(last):null;}
   function parseLabel(text){
     var raw=String(text).replace(/[\u2026]/g," ").replace(/[.\u00B7\u2022_\-]{2,}/g," ").replace(/(\d(?:[.,]\d+)?)\s+(kcal|kj|mg|µg|mcg|g)\b/gi,"$1$2"),t=" "+raw.toLowerCase().replace(/\r/g,"")+" ",lines=raw.toLowerCase().split(/\n+/),p={};
-    var em=/(\d{1,4})\s*kcal/i.exec(t);if(em){p.kcal=numv(em[1]);}else{var ej=/(\d{2,4})\s*kj/i.exec(t);if(ej){p.kcal=Math.round(numv(ej[1])/4.184);}else{var ee=/energ\w*[^0-9]{0,30}(\d{2,4})/i.exec(t);p.kcal=ee?numv(ee[1]):null;}}
+    var em=/(\d{1,5})\s*kcal/i.exec(t);
+    if(em){p.kcal=numv(em[1]);}
+    else{
+      var eline="";for(var _ei=0;_ei<lines.length;_ei++){if(/energ|energy/i.test(lines[_ei])){eline=lines[_ei];break;}}
+      if(eline){
+        var enums=(eline.match(/\d+(?:[.,]\d+)?/g)||[]).map(function(x){return numv(x);}).filter(function(x){return x!=null&&x>=10;});
+        if(enums.length>=2){enums.sort(function(a,b){return a-b;});p.kcal=Math.round(enums[0]);}
+        else if(enums.length===1){p.kcal=/kj/i.test(eline)?Math.round(enums[0]/4.184):Math.round(enums[0]);}
+        else p.kcal=null;
+      }else{var ej=/(\d{2,5})\s*kj/i.exec(t);p.kcal=ej?Math.round(numv(ej[1])/4.184):null;}
+    }
     var fields=[
       {k:"sat",inc:/satur|m[æae]ttede|m[äa]ttad|ges[äa]ttig|satur[ée]|saturad/,exc:/mono|poly|enkelt|fleru/},
       {k:"fat",inc:/\bfat\b|\bfedt\b|\bfett\b|lipid|grasa|grassi|mati[eè]res grasses/,exc:/satur|m[æae]ttede|fedtsyr|fettsyr/},
@@ -1976,7 +1999,8 @@
       +'<div class="rl" style="margin-top:14px">Scores (1\u201310)</div>'+scoreRowHTML(p)+'<button class="linkbtn" id="fa-why-scores" style="margin-top:8px">Why these scores?</button><div id="fa-why-out" class="fa-exp" style="display:none;white-space:pre-line;margin-top:6px"></div>'
       +'<div class="rl" style="margin-top:14px">Detected'+(p.per100?" (per 100g)":"")+'</div>'+nutr
       +'<div class="rl" style="margin-top:14px">Personal flags</div>'+flags
-      +'<div class="fa-exp" style="margin-top:12px">Food job, goal fit and verdict are filled in below — adjust any rating if the label scanned imperfectly.</div>';
+      +guidanceHTML(p,{portion:state.fa.portion,weekly:state.fa.weekly,roles:state.fa.roles,ingredients:p.ingredients},"fa-g")
+      +'<div class="fa-exp" style="margin-top:12px">Food job, goal fit and verdict are filled in below \u2014 adjust any rating if the label scanned imperfectly.</div>';
   }
   function ocrPrep(src){return new Promise(function(res){
     try{
@@ -2052,7 +2076,7 @@
   function catEmoji(k){for(var i=0;i<FOOD_CATS.length;i++)if(FOOD_CATS[i][0]===k)return FOOD_CATS[i][1];return "";}
   function normFood(it){
     if(!it)return it;
-    it.tags=it.tags||{};it.categories=it.categories||[];
+    it.tags=it.tags||{};it.categories=it.categories||[];it.roles=it.roles||[];
     it.body=it.body||{good:[],warn:[],custom:""};
     if(!it.body.good)it.body.good=[];if(!it.body.warn)it.body.warn=[];if(it.body.custom==null)it.body.custom="";
     it.nutr=it.nutr||{};
@@ -2077,6 +2101,110 @@
     return parts.join("\n\n")||"Add some nutrition numbers to see the scores.";}
   function scardHTML(v,l){return '<div class="score-card"><div class="sv">'+(v==null?"\u2014":v)+'</div><div class="sl">'+l+'</div></div>';}
   function scoreRowHTML(nu){return '<div class="score-row">'+scardHTML(bodyFuel10(nu),"Body Fuel")+scardHTML(proteinScore(nu),"Protein")+scardHTML(satietyScore(nu),"Satiety")+'</div>';}
+  var FOOD_ROLES=[["proteinfood","Protein food"],["carbfuel","Carb fuel"],["fatsource","Fat source"],["fibrefood","Fibre food"],["treatfood","Treat food"],["drink","Drink"],["supplement","Supplement"]];
+  function targetInfo(){var stored=store.get("bf_profile"),c=calcCalories();return {kcal:c.target||1600,protein:120,isSet:!!(stored&&(stored.startWeight||stored.height||stored.age||stored.goalType||stored.goalWeight))};}
+  function processingLevel(ing){
+    if(!ing)return null;ing=(""+ing).toLowerCase();
+    var markers=["syrup","sirup","glukose","glucose","fructose","fruktose","maltodextrin","dextrose","aroma","flavour","flavor","emulsif","emulgator","stabilis","stabiliz","farvestof","colour","sweetener","s\u00f8destof","hydrogen","h\u00e6rdet","modified starch","modificeret","invert"];
+    var hits=0;markers.forEach(function(m){if(ing.indexOf(m)>=0)hits++;});
+    var commas=(ing.match(/,/g)||[]).length;
+    if(hits>=2||commas>=10)return 2;
+    if(hits>=1||commas>=5)return 1;
+    return 0;
+  }
+  function ratingProfile(nu,ing){
+    if(!nu||nu.kcal==null)return {rating:null,good:[],watch:[],score:0};
+    var k=nu.kcal,p=nu.protein,fb=nu.fibre,sg=nu.sugar,sat=nu.sat,salt=nu.salt;
+    var ss=satietyScore(nu),proc=processingLevel(ing),score=0,good=[],watch=[];
+    if(p!=null){if(p>=15){score+=3;good.push("High protein");}else if(p>=10){score+=2;good.push("Good protein");}else if(p>=5){score+=1;}else{score-=1;watch.push("Low protein");}}
+    if(fb!=null){if(fb>=6){score+=2;good.push("High fibre");}else if(fb>=3){score+=1;good.push("Some fibre");}}
+    if(sg!=null){if(sg>=22.5){score-=3;watch.push("Very high sugar");}else if(sg>=15){score-=2;watch.push("High sugar");}else if(sg>=10){score-=1;watch.push("Some added sugar");}else if(sg<=5){good.push("Low sugar");}}
+    if(sat!=null){if(sat>=10){score-=2;watch.push("High saturated fat");}else if(sat>=5){score-=1;watch.push("Some saturated fat");}}
+    if(salt!=null&&salt>=1.5){score-=1;watch.push("High salt");}
+    if(k<=80){score+=1;good.push("Low calories");}else if(k>=400){score-=2;watch.push("Calorie dense");}else if(k>=300){score-=1;watch.push("Fairly calorie dense");}
+    if(ss!=null){if(ss>=7){score+=1;good.push("Keeps you full");}else if(ss<=3){score-=1;watch.push("Low satiety");}}
+    if(proc===2){score-=2;watch.push("Highly processed");}else if(proc===1){score-=1;}else if(proc===0){good.push("Simple ingredients");}
+    if(((k>=350)||(sg!=null&&sg>=15))&&(p==null||p<10))watch.push("Easy to overeat");
+    var lowProtein=(p!=null&&p<5),strongPF=(p!=null&&p>=10)&&(fb!=null&&fb>=5),rating;
+    if((sg!=null&&sg>15&&!strongPF)||(sg!=null&&sg>=12&&lowProtein)||(sat!=null&&sat>=8&&lowProtein)||(proc===2&&sg!=null&&sg>=12)||(k>450&&(ss==null||ss<=4))){rating="red";}
+    else{rating=score>=3?"green":(score<=-3?"red":"yellow");}
+    if(rating!=="red"&&k<60&&(sg==null||sg<10))rating="green";
+    function uniq(a){return a.filter(function(x,i){return a.indexOf(x)===i;});}
+    return {rating:rating,score:score,good:uniq(good),watch:uniq(watch),proc:proc,ss:ss};
+  }
+  function ratingFromNutrition(nu,ing){return ratingProfile(nu,ing).rating;}
+  function ratingMeaning(c){return c==="green"?"Supports your goal and is easy to use regularly.":c==="red"?"Easy to overeat or doesn\u2019t support your goal well \u2014 plan it carefully.":"Can fit your plan, but portion matters.";}
+  function fitInsight(nu,rating){
+    if(!nu||nu.kcal==null)return "";
+    var p=nu.protein,k=nu.kcal;
+    if(p!=null&&p>=10&&k<200)return "Strong fat-loss and strength pick \u2014 high protein supports muscle, and it\u2019s light enough to keep you in a deficit.";
+    if(rating==="green")return "Easy to use daily \u2014 it supports a calorie deficit and your protein goal without much thought.";
+    if(rating==="red")return "Best as a planned, measured treat \u2014 a small portion keeps it from crowding out protein or pushing you over your calories.";
+    if(p!=null&&p>=10)return "Useful protein \u2014 just keep the portion in check so the calories still fit your day.";
+    return "Can work in your plan in a measured portion \u2014 pair it with a protein source to stay fuller for longer.";
+  }
+  function whyReasons(nu,ing){var rp=ratingProfile(nu,ing);return {good:rp.good,watch:rp.watch};}
+  function portionFor(nu,rating){
+    if(!nu||nu.kcal==null)return null;var k=nu.kcal;
+    if(rating==="red"||k>350)return {def:25,min:20,max:30};
+    if(k<60)return {def:(nu.serving||200),min:null,max:null};
+    if(k<200)return {def:150,min:100,max:200};
+    return {def:100,min:80,max:120};
+  }
+  function weeklyGuideText(rating,nu){if(rating==="green")return "Daily option";if(rating==="red")return "Occasional planned treat";var k=(nu&&nu.kcal!=null)?nu.kcal:300;return k<300?"3\u20135 times per week":"1\u20132 times per week";}
+  function suggestRoles(nu){var r=[];if(!nu)return r;if(nu.protein!=null&&nu.protein>=10)r.push("proteinfood");if(nu.carbs!=null&&nu.carbs>=20&&(nu.protein==null||nu.protein<10))r.push("carbfuel");if(nu.fat!=null&&nu.fat>=20)r.push("fatsource");if(nu.fibre!=null&&nu.fibre>=5)r.push("fibrefood");if(nu.sugar!=null&&nu.sugar>=15)r.push("treatfood");return r;}
+  function bodyLesson(nu,rating){
+    if(!nu||nu.kcal==null)return "Add the calories to get tailored guidance.";
+    var k=nu.kcal,p=nu.protein,fb=nu.fibre;
+    if(k>350)return "This food is calorie dense, so it fits your fat-loss goal best in a smaller portion. It\u2019s not wrong to eat \u2014 the amount is what matters.";
+    if(p!=null&&p>=10&&k<200)return "This food is high in protein and fairly low in calories, which makes it useful for fat loss \u2014 it supports fullness and muscle recovery.";
+    if(fb!=null&&fb>=5)return "This food brings good fibre, which helps you feel full and supports digestion while you\u2019re eating in a calorie deficit.";
+    if(k<60)return "This is light and low in calories, so it slots easily into your day in normal servings.";
+    return "This food can fit your goal in sensible portions \u2014 keep an eye on the amount and how it fits your daily calories.";
+  }
+  function fitText(pk,pp,ti){if(pk==null)return "";var parts=["That portion is \u2248"+Math.round(pk/ti.kcal*100)+"% of your \u2248"+ti.kcal+" kcal day"];if(pp!=null)parts.push("and gives "+pp+"g toward your "+ti.protein+"g protein");return parts.join(" ")+".";}
+  function guidanceRecalc(pfx,nu){
+    var pi=document.getElementById(pfx+"-portion");if(!pi)return null;
+    var s=(pi.value||"").trim(),v=s?parseFloat(s.replace(",",".")):null;if(v!=null&&isNaN(v))v=null;
+    var pk=(v!=null&&nu&&nu.kcal!=null)?Math.round(nu.kcal*v/100):null;
+    var pp=(v!=null&&nu&&nu.protein!=null)?Math.round(nu.protein*v/100*10)/10:null;
+    var ke=document.getElementById(pfx+"-pk");if(ke)ke.value=(pk!=null?pk+" kcal":"\u2014");
+    var pe=document.getElementById(pfx+"-pp");if(pe)pe.value=(pp!=null?pp+" g":"\u2014");
+    var fe=document.getElementById(pfx+"-fit");if(fe)fe.textContent=fitText(pk,pp,targetInfo());
+    return v;
+  }
+  function guidanceHTML(nu,cur,pfx){
+    cur=cur||{};
+    var rp=ratingProfile(nu,cur.ingredients),rating=cur.rating||rp.rating||"yellow",ti=targetInfo(),g=portionFor(nu,rating);
+    var portion=(cur.portion!=null?cur.portion:(g?g.def:100));
+    var pk=(nu&&nu.kcal!=null)?Math.round(nu.kcal*portion/100):null;
+    var pp=(nu&&nu.protein!=null)?Math.round(nu.protein*portion/100*10)/10:null;
+    var weekly=(cur.weekly!=null?cur.weekly:"");
+    var roles=(cur.roles&&cur.roles.length)?cur.roles:suggestRoles(nu);
+    var why={good:rp.good,watch:rp.watch};
+    function wopt(v,l){return '<option value="'+v+'"'+(String(weekly)===v?" selected":"")+'>'+l+'</option>';}
+    function badge(c){return '<span class="badge '+c+'">'+(c==="green"?"Green":c==="red"?"Red":"Yellow")+'</span>';}
+    var out='<div class="rl" style="margin-top:18px">Body Fuel Guidance</div>';
+    out+='<div class="bg-rating">'+badge(rating)+'<span class="bg-mean">'+ratingMeaning(rating)+'</span></div>';
+    if(nu&&nu.kcal!=null&&nu.kcal>900)out+='<div class="warn" style="margin-top:8px">Possible scanner error \u2014 please check the calories manually.</div>';
+    out+='<div class="bg-sec"><div class="bg-h">Why this rating?</div>';
+    if(why.good.length)out+='<div class="bg-why good">'+why.good.map(function(x){return '<span>\u2713 '+x+'</span>';}).join("")+'</div>';
+    if(why.watch.length)out+='<div class="bg-why watch">'+why.watch.map(function(x){return '<span>\u26a0 '+x+'</span>';}).join("")+'</div>';
+    if(!why.good.length&&!why.watch.length)out+='<p class="muted-p">Add more label values for a fuller picture.</p>';
+    out+='<div class="bg-why fit"><span>\ud83d\udca1 '+fitInsight(nu,rating)+'</span></div></div>';
+    out+='<div class="bg-sec"><div class="bg-h">What this means</div><p class="muted-p">'+bodyLesson(nu,rating)+'</p></div>';
+    out+='<div class="bg-sec"><div class="bg-h">Smart portion guide</div>'
+      +'<div class="pmeal-grid"><div class="pmeal"><label>Suggested portion (g)</label><input id="'+pfx+'-portion" type="text" inputmode="decimal" value="'+esc(""+portion)+'"></div>'
+      +'<div class="pmeal"><label>Calories in portion</label><input id="'+pfx+'-pk" type="text" value="'+(pk!=null?pk+" kcal":"\u2014")+'" readonly></div></div>'
+      +'<div class="pmeal" style="margin-top:10px"><label>Protein in portion</label><input id="'+pfx+'-pp" type="text" value="'+(pp!=null?pp+" g":"\u2014")+'" readonly></div>'
+      +(g&&g.min!=null?'<p class="muted-p" style="margin-top:8px">Suggested range: '+g.min+'\u2013'+g.max+' g.</p>':'<p class="muted-p" style="margin-top:8px">A normal serving works here.</p>')
+      +'<p class="bg-fit" id="'+pfx+'-fit">'+fitText(pk,pp,ti)+'</p></div>';
+    out+='<div class="bg-sec"><div class="bg-h">Weekly guide</div><div class="bg-rec">Recommended: <b>'+weeklyGuideText(rating,nu)+'</b></div>'
+      +'<div class="pmeal" style="margin-top:10px"><label>How often do I want to allow this?</label><select class="mealinput" id="'+pfx+'-weekly">'+wopt("","\u2014 choose \u2014")+wopt("0","0 / week")+wopt("1","1 / week")+wopt("2","2 / week")+wopt("3","3 / week")+wopt("flex","Flexible")+'</select></div></div>';
+    out+='<div class="bg-sec"><div class="bg-h">Food role</div><div class="chipwrap">'+FOOD_ROLES.map(function(rl){return '<button type="button" class="pchip'+(roles.indexOf(rl[0])>=0?" on":"")+'" data-prole="'+rl[0]+'">'+rl[1]+'</button>';}).join("")+'</div></div>';
+    if(!ti.isSet)out+='<p class="muted-p" style="margin-top:10px">Set your profile targets for more accurate guidance.</p>';
+    return out;
+  }
   function matchLibFilter(it,f){
     if(f==="all")return true;
     if(f==="green"||f==="yellow"||f==="red")return foodColor(it)===f;
@@ -2142,6 +2270,7 @@
       +'<div class="prod-sec"><div class="rl">Body Fuel scores</div>'+scores+'</div>'
       +'<div class="prod-sec"><div class="rl">Nutrition'+(nu.per100===false?"":" (per 100g)")+'</div>'+nutrBlock+'</div>'
       +(warns?'<div class="prod-sec">'+warns+'</div>':'')
+      +guidanceHTML(nu,{portion:it.portion,weekly:it.weeklyAllow,roles:it.roles,rating:color,ingredients:it.ingredients},"pg")
       +'<div class="prod-sec"><div class="rl">Categories</div>'+cats+'</div>'
       +'<div class="prod-sec"><div class="rl">Tags</div>'+tags+'</div>'
       +'<div class="prod-sec"><div class="rl">How did this food affect me?</div>'+good+warn+'<textarea class="mealinput" id="prod-bodynote" placeholder="Add your own note\u2026" style="margin-top:10px">'+esc(it.body.custom||"")+'</textarea></div>'
@@ -2199,14 +2328,18 @@
     var pp=state.fa.parsed||{};
     var nutr={kcal:(pp.kcal!=null?pp.kcal:null),protein:(pp.protein!=null?pp.protein:null),carbs:(pp.carbs!=null?pp.carbs:null),fat:(pp.fat!=null?pp.fat:null),fibre:(pp.fibre!=null?pp.fibre:null),sugar:(pp.sugar!=null?pp.sugar:null),salt:(pp.salt!=null?pp.salt:null),serving:(pp.serving!=null?pp.serving:null),per100:pp.per100!==false};
     var ingredients=(($("#fa-ingredients")||{}).value||"").trim()||pp.ingredients||"";
-    var item={id:String(Date.now()),name:name,brand:$("#fa-brand").value.trim(),notes:$("#fa-notes").value.trim(),cat:catFromVerdict(v),verdict:v,ratings:Object.assign({},state.fa.ratings),photoFront:state.fa.frontPhoto||null,photoLabel:state.fa.photo||null,photo:state.fa.photo||null,nutr:nutr,kcal100:nutr.kcal,serving:nutr.serving,ingredients:ingredients,tags:{},categories:[],body:{good:[],warn:[],custom:""},treat:null,date:todayISO()};
+    var nutRating=ratingFromNutrition(nutr,ingredients);
+    var roles=(state.fa.roles&&state.fa.roles.length)?state.fa.roles.slice():suggestRoles(nutr);
+    var portion=(state.fa.portion!=null?state.fa.portion:((portionFor(nutr,nutRating||"yellow")||{}).def!=null?(portionFor(nutr,nutRating||"yellow")||{}).def:null));
+    var weeklyAllow=(state.fa.weekly!=null&&state.fa.weekly!=="")?state.fa.weekly:null;
+    var item={id:String(Date.now()),name:name,brand:$("#fa-brand").value.trim(),notes:$("#fa-notes").value.trim(),cat:(nutRating||catFromVerdict(v)),verdict:v,ratings:Object.assign({},state.fa.ratings),photoFront:state.fa.frontPhoto||null,photoLabel:state.fa.photo||null,photo:state.fa.photo||null,nutr:nutr,kcal100:nutr.kcal,serving:nutr.serving,ingredients:ingredients,tags:{},categories:[],roles:roles,portion:portion,weeklyAllow:weeklyAllow,body:{good:[],warn:[],custom:""},treat:null,date:todayISO()};
     var lib=loadLib();lib.unshift(item);
     if(!store.set("bf_library",lib)){item.photoFront=null;if(!store.set("bf_library",lib)){item.photoLabel=null;item.photo=null;store.set("bf_library",lib);}flash("#fa-saved","Saved (photos too large to store)");}
     else flash("#fa-saved","Saved to your library");
     $("#fa-name").value="";$("#fa-brand").value="";$("#fa-notes").value="";$("#fa-preview").innerHTML="";if($("#fa-front-preview"))$("#fa-front-preview").innerHTML="";
     if($("#fa-ingredients"))$("#fa-ingredients").value="";if($("#fa-ingred-out"))$("#fa-ingred-out").innerHTML="";
     if($("#fa-ocr-result"))$("#fa-ocr-result").innerHTML="";if($("#fa-ocr-status"))$("#fa-ocr-status").innerHTML="";if($("#fa-analyse"))$("#fa-analyse").style.display="none";
-    state.fa={photo:null,file:null,frontPhoto:null,ratings:{},verdict:null,verdictManual:false};
+    state.fa={photo:null,file:null,frontPhoto:null,ratings:{},verdict:null,verdictManual:false,portion:null,weekly:null,roles:null};
     renderFaRaters();renderLib();renderTreatVault();
   }
 
@@ -2658,7 +2791,16 @@
   if($("#lib-search"))$("#lib-search").addEventListener("input",renderLib);
   if($("#lib-sort"))$("#lib-sort").addEventListener("change",function(){state.libSort=this.value;renderLib();});
   $("#lib-list").addEventListener("click",function(e){var o=e.target.closest("[data-open]");if(o)openProduct(o.getAttribute("data-open"));});
-  (function(){var r=$("#fa-ocr-result");if(r)r.addEventListener("click",function(e){var w=e.target.closest("#fa-why-scores");if(!w)return;var o=document.getElementById("fa-why-out");if(o){var show=o.style.display==="none";o.style.display=show?"block":"none";if(show)o.textContent=scoreExplain(state.fa.parsed||{});w.textContent=show?"Hide":"Why these scores?";}});})();
+  (function(){var r=$("#fa-ocr-result");if(!r)return;
+    r.addEventListener("click",function(e){
+      var w=e.target.closest("#fa-why-scores");
+      if(w){var o=document.getElementById("fa-why-out");if(o){var show=o.style.display==="none";o.style.display=show?"block":"none";if(show)o.textContent=scoreExplain(state.fa.parsed||{});w.textContent=show?"Hide":"Why these scores?";}return;}
+      var rl=e.target.closest("[data-prole]");
+      if(rl){var k=rl.getAttribute("data-prole");if(!state.fa.roles)state.fa.roles=suggestRoles(state.fa.parsed);var i=state.fa.roles.indexOf(k);if(i>=0)state.fa.roles.splice(i,1);else state.fa.roles.push(k);rl.classList.toggle("on");return;}
+    });
+    r.addEventListener("input",function(e){if(e.target.id==="fa-g-portion")state.fa.portion=guidanceRecalc("fa-g",state.fa.parsed);});
+    r.addEventListener("change",function(e){if(e.target.id==="fa-g-weekly")state.fa.weekly=e.target.value;});
+  })();
   (function(){var ov=$("#prod-overlay");if(!ov)return;
     ov.addEventListener("click",function(e){
       if(e.target.closest("#prod-back")){closeProduct();return;}
@@ -2677,10 +2819,15 @@
       var pg=e.target.closest("[data-pgood]");if(pg){var g=pg.getAttribute("data-pgood");updateFood(state.prodId,function(it){var i=it.body.good.indexOf(g);if(i>=0)it.body.good.splice(i,1);else it.body.good.push(g);});renderProduct();return;}
       var pw=e.target.closest("[data-pwarn]");if(pw){var wv=pw.getAttribute("data-pwarn");updateFood(state.prodId,function(it){var i=it.body.warn.indexOf(wv);if(i>=0)it.body.warn.splice(i,1);else it.body.warn.push(wv);});renderProduct();return;}
       var pr=e.target.closest("[data-prate]");if(pr){var col=pr.getAttribute("data-prate");updateFood(state.prodId,function(it){it.cat=col;it.verdict=(col==="green"?"good":col==="red"?"rare":"sometimes");});renderProduct();return;}
+      var prole=e.target.closest("[data-prole]");if(prole){var rk=prole.getAttribute("data-prole");updateFood(state.prodId,function(it){it.roles=it.roles||[];var i=it.roles.indexOf(rk);if(i>=0)it.roles.splice(i,1);else it.roles.push(rk);});prole.classList.toggle("on");return;}
     });
     ov.addEventListener("input",function(e){
       if(e.target.id==="prod-notes"){var v=e.target.value;updateFood(state.prodId,function(it){it.notes=v;});}
       else if(e.target.id==="prod-bodynote"){var v2=e.target.value;updateFood(state.prodId,function(it){it.body.custom=v2;});}
+      else if(e.target.id==="pg-portion"){var it0=normFood(findLib(state.prodId)),pv=guidanceRecalc("pg",it0?it0.nutr:{});updateFood(state.prodId,function(it){it.portion=pv;});}
+    });
+    ov.addEventListener("change",function(e){
+      if(e.target.id==="pg-weekly"){var wv2=e.target.value;updateFood(state.prodId,function(it){it.weeklyAllow=wv2;});}
     });
   })();
   if($("#tv-filter"))$("#tv-filter").addEventListener("click",function(e){var b=e.target.closest("[data-tvf]");if(!b)return;state.tvFilter=b.getAttribute("data-tvf");renderTreatVault();});
