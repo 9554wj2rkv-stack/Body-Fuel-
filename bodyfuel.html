@@ -491,6 +491,15 @@
   .mc-checks{display:flex;flex-wrap:wrap;gap:7px}
   .mc-chk{font-size:calc(13px*var(--ts,1));border:1px solid var(--line);border-radius:999px;padding:5px 11px;color:var(--ink-soft);background:var(--surface-2)}
   .mc-chk.on{border-color:var(--green);color:var(--ink);background:rgba(111,191,130,.16)}
+  .cons-streak{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
+  .cons-num{font-family:var(--font-d);font-size:calc(42px*var(--ts,1));line-height:1;color:var(--accent-deep)}
+  .cons-lbl{font-size:calc(13px*var(--ts,1));color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;font-weight:700}
+  .cons-row{margin-top:12px}
+  .cons-top{display:flex;justify-content:space-between;font-size:calc(13.5px*var(--ts,1));margin-bottom:5px;color:var(--ink-soft)}
+  .cons-top b{color:var(--ink)}
+  .cons-boost{margin-top:16px;display:flex;gap:10px;align-items:flex-start;background:linear-gradient(135deg,rgba(233,30,140,.15),rgba(233,30,140,.05));border:1px solid rgba(233,30,140,.28);border-radius:13px;padding:13px 15px;font-size:calc(14.5px*var(--ts,1));line-height:1.45;color:var(--ink);font-weight:500}
+  .cons-spark{flex:none;font-size:1.05em}
+  .cons-gentle{margin-top:15px;font-size:calc(14px*var(--ts,1));color:var(--ink-soft);line-height:1.45}
   .fk-reflect{margin-top:14px;background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:14px 15px}
   .fkr-open{font-size:calc(15px*var(--ts,1));line-height:1.45;margin:0 0 12px}
   .fkr-h{font-size:calc(11.5px*var(--ts,1));text-transform:uppercase;letter-spacing:.04em;color:var(--ink-faint);font-weight:700;margin:12px 0 7px}
@@ -1210,7 +1219,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 21"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 23"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -1696,11 +1705,21 @@
     function seg(group,opts,val){return '<div class="seg" data-group="'+group+'">'+opts.map(function(o){return '<button class="'+(String(val)===String(o[0])?'on':'')+'" data-val="'+o[0]+'">'+o[1]+'</button>';}).join("")+'</div>';}
     var head='<div class="cardio-head"><span class="label" style="margin:0">Cardio finish</span><div class="seg cd-onseg" data-group="cd-on"><button class="'+(on?'':'on')+'" data-val="off">Off</button><button class="'+(on?'on':'')+'" data-val="on">On</button></div></div>';
     var tip=p?cardioTip(p.why):"";
+    var stairs=c.mode==="stairs",both=c.mode==="both";
+    var inclineFields='<div class="pmeal"><label>Incline %</label><input id="cd-incline" type="text" inputmode="decimal" placeholder="8–12" value="'+esc(c.incline)+'"></div><div class="pmeal"><label>Speed km/h</label><input id="cd-speed" type="text" inputmode="decimal" placeholder="4.8–5.8" value="'+esc(c.speed)+'"></div>';
+    var levelField='<div class="pmeal"><label>StairMaster level</label><input id="cd-level" type="text" inputmode="decimal" placeholder="6–9" value="'+esc(c.level)+'"></div>';
+    var fields=both
+      ? '<div class="pmeal-grid" style="margin-top:10px">'+inclineFields+'</div><div class="pmeal-grid" style="margin-top:8px">'+levelField+'<div class="pmeal"></div></div>'
+      : stairs
+        ? '<div class="pmeal-grid" style="margin-top:10px">'+levelField+'<div class="pmeal"></div></div>'
+        : '<div class="pmeal-grid" style="margin-top:10px">'+inclineFields+'</div>';
+    var rec=both?"Suggested: split your time \u2014 e.g. 10 min StairMaster + 10 min incline walk.":stairs?"Suggested: level 6\u20139 \u00b7 steady, conversational pace":"Suggested: 8\u201312% incline \u00b7 4.8\u20135.8 km/h \u00b7 easy-to-moderate pace";
     var body=on?(
-      '<div class="label" style="margin-top:12px">Duration</div>'+seg("cd-dur",[[15,"15 min"],[20,"20 min"],[25,"25 min"]],c.duration)
-      +'<div class="pmeal-grid" style="margin-top:10px"><div class="pmeal"><label>Incline %</label><input id="cd-incline" type="text" inputmode="decimal" placeholder="8–12" value="'+esc(c.incline)+'"></div><div class="pmeal"><label>Speed km/h</label><input id="cd-speed" type="text" inputmode="decimal" placeholder="4.8–5.8" value="'+esc(c.speed)+'"></div></div>'
+      '<div class="label" style="margin-top:12px">Machine</div>'+seg("cd-mode",[["incline","Incline Walk"],["stairs","StairMaster"],["both","Both"]],c.mode)
+      +'<div class="label" style="margin-top:12px">Duration</div>'+seg("cd-dur",[[15,"15 min"],[20,"20 min"],[25,"25 min"]],c.duration)
+      +fields
       +(tip?'<div class="cd-tip">'+tip+'</div>':'')
-      +'<div class="cd-rec">Suggested: 8\u201312% incline \u00b7 4.8\u20135.8 km/h \u00b7 easy-to-moderate pace</div>')
+      +'<div class="cd-rec">'+rec+'</div>')
       :'<p class="muted-p" style="margin-top:8px">No cardio finish today.</p>';
     return '<div class="cardio" style="margin-top:8px">'+head+body+'</div>';
   }
@@ -2937,11 +2956,38 @@
       +ds.items.map(function(it){return '<span class="mc-chk'+(it.done?' on':'')+'">'+(it.done?'\u2713':'\u25CB')+' '+it.label+'</span>';}).join('')+'</div></div>';
     return ovCard("Mission control",s);
   }
+  function dayLogged(iso){var ml=(store.get("bf_meallog")||{})[iso];if(!ml)return false;return ["breakfast","lunch","dinner","snack"].some(function(k){return (ml[k]||[]).length>0;});}
+  function dayTrained(iso){var t=(store.get("bf_training")||{})[iso];return !!(t&&t.done==="done");}
+  function dayActive(iso){return dayLogged(iso)||dayTrained(iso);}
+  function isoBack(n){var d=new Date();d.setDate(d.getDate()-n);return ovIso(d);}
+  function activeStreak(){var start;if(dayActive(isoBack(0)))start=0;else if(dayActive(isoBack(1)))start=1;else return 0;var n=0;for(var i=start;i<400;i++){if(dayActive(isoBack(i)))n++;else break;}return n;}
+  function loggedDays(win){var n=0;for(var i=0;i<win;i++)if(dayLogged(isoBack(i)))n++;return n;}
+  function trainedDays(win){var n=0;for(var i=0;i<win;i++)if(dayTrained(isoBack(i)))n++;return n;}
+  function consistencyBoost(streak,lg,tr){
+    if(streak>=14)return "Two weeks unbroken \u2014 this isn\u2019t a phase any more, it\u2019s who you are. Be proud of that.";
+    if(streak>=7)return "Seven days straight. You\u2019ve proven you can see something through \u2014 keep going.";
+    if(streak>=3)return streak+" days in a row. This is exactly how momentum is built \u2014 keep stacking them.";
+    if(lg>=5)return "You\u2019ve logged "+lg+" of the last 7 days \u2014 that steady consistency is what truly moves the needle.";
+    if(tr>=3)return "Three sessions trained this week \u2014 you showed up when it counted. Strong work.";
+    if(tr>=2||lg>=3)return "You\u2019re showing up, and that\u2019s the whole game. Every log and every session counts.";
+    return null;
+  }
+  function consistencyHTML(){
+    var streak=activeStreak(),lg=loggedDays(7),tr=trainedDays(7);
+    function row(label,val,max){var pct=Math.min(100,Math.round(val/max*100));return '<div class="cons-row"><div class="cons-top"><span>'+label+'</span><span><b>'+val+'</b> / '+max+'</span></div><div class="pbar"><i style="width:'+pct+'%"></i></div></div>';}
+    var s='<div class="cons-streak"><span class="cons-num">'+streak+'</span><span class="cons-lbl">day'+(streak===1?'':'s')+' in a row</span></div>'
+      +row("Days logged (last 7)",lg,7)
+      +row("Training days (last 7)",tr,7);
+    var boost=consistencyBoost(streak,lg,tr);
+    s+=boost?'<div class="cons-boost"><span class="cons-spark">\u2728</span><span>'+boost+'</span></div>'
+      :'<p class="cons-gentle">Every day counts. Log a meal or finish a session today to begin your streak \u2014 small steps, repeated, are how this sticks.</p>';
+    return ovCard("Consistency",s);
+  }
   function renderOverview(){
     var host=$("#overview-body");if(!host)return;
     var mc=missionControlHTML();
     var entries=loadEntries(),ml=store.get("bf_meallog")||{},tr=store.get("bf_training")||{};
-    if(!entries.length&&!Object.keys(ml).length&&!Object.keys(tr).length){host.innerHTML=mc+ovCard("Getting started",'<p class="ov-empty">Start with one body check-in, one logged meal, and one training session. Your weekly trend will build from there.</p>');return;}
+    if(!entries.length&&!Object.keys(ml).length&&!Object.keys(tr).length){host.innerHTML=mc+ovCard("Getting started",'<p class="ov-empty">Start with one body check-in, one logged meal, and one training session. Your weekly trend will build from there.</p>')+consistencyHTML();return;}
     var R=ovRange(state.ovRange),wk=R.weeks,sessT=3*wk,pmax=7*wk;
     var cur=bodyAvg(R.days),prev=bodyAvg(R.prev),nu=nutAvg(R.days),ts=trainSummary(R.days),sess=ts.strength+ts.cond;
     function brow(k,cu,pv,lb,u,dp){return '<div class="ov-row"><span class="k">'+k+'</span><span class="v">'+ovArrow(cu,pv==null?null:pv,lb,u,dp)+'</span></div>';}
@@ -2960,7 +3006,7 @@
     var sc=ovScore(R);
     function scoreRow(it){return '<div class="ov-srow"><div class="ov-srow-top"><span class="k">'+it.label+'</span><span class="v">'+it.ten+'/10</span></div><div class="pbar"><i style="width:'+Math.round(it.ratio*100)+'%"></i></div></div>';}
     html+=ovCard("Body Fuel Score",'<div class="ov-scorebig">'+sc.overall+'<small style="font-family:var(--font-b);font-size:calc(15px*var(--ts,1));color:var(--ink-faint);font-weight:700"> / 100</small></div><div class="ov-scorecap">Built from your habits this '+(wk>1?wk+" weeks":"week")+' \u2014 consistency, not the scale.</div>'+sc.items.map(scoreRow).join(""));
-    host.innerHTML=html;
+    host.innerHTML=html+consistencyHTML();
   }
 
   /* =================== EVENTS =================== */
