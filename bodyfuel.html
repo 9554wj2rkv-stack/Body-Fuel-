@@ -1210,7 +1210,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 19"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 21"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -1566,7 +1566,9 @@
   var DEFAULT_WMAP={1:"lower",3:"upper",5:"fullbody",6:"recovery"};
   function loadWeekPlans(){return store.get("bf_weekplan")||{};}
   function weekPlanMap(wk){var all=loadWeekPlans();return all[wk]||DEFAULT_WMAP;}
-  function setDayType(wk,idx,type){var all=loadWeekPlans();var m=all[wk]?Object.assign({},all[wk]):Object.assign({},DEFAULT_WMAP);if(type==="rest")delete m[idx];else m[idx]=type;all[wk]=m;store.set("bf_weekplan",all);rebuildPlan();}
+  function setDayType(wk,idx,type){var all=loadWeekPlans();var m=all[wk]?Object.assign({},all[wk]):Object.assign({},DEFAULT_WMAP);if(type==="rest")delete m[idx];else m[idx]=type;all[wk]=m;store.set("bf_weekplan",all);
+    var mon=new Date(wk+"T00:00:00");if(!isNaN(mon)){var dd=new Date(mon);dd.setDate(dd.getDate()+idx);var iso=ovIso(dd),tr=loadTraining();if(tr[iso]&&tr[iso].done==="done"){tr[iso].type=type;store.set("bf_training",tr);}}
+    rebuildPlan();}
   function dayEntry(wk,idx){var t=weekPlanMap(wk)[idx]||"rest";var tpl=SESST[t]||SESST.rest;return Object.assign({d:DAYABBR[idx]},tpl);}
   function planFor(dateObj){var wk=weekKey(dateObj),arr=[];for(var i=0;i<7;i++)arr.push(dayEntry(wk,i));return arr;}
   function rebuildPlan(){plan=planFor(new Date());}
@@ -1728,32 +1730,39 @@
       return '<div class="lesson'+(i===ti?' open':'')+'" style="padding:14px 0;border-bottom:1px solid var(--line-soft)"><div class="head"><span style="width:42px;flex:none;font-size:calc(13px*var(--ts,1));font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:'+(i===ti?'var(--accent-deep)':'var(--ink-faint)')+'">'+p.d+'</span><div class="txt"><div class="ttl" style="font-size:calc(18px*var(--ts,1))">'+p.t+'</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body">'+dayDetail(p)+'</div></div>';
     }).join("");
   }
-  var WP_TYPES=[["rest","Rest day"],["lower","Lower Body"],["upper","Upper Body"],["fullbody","Full Body"],["conditioning","Conditioning + Core"],["recovery","Walk / Recovery"]];
+  var WP_TYPES=[["rest","Rest day"],["lower","Lower Body"],["upper","Upper Body"],["fullbody","Full Body"],["conditioning","Conditioning + Core"],["recovery","Recovery Day"]];
   function isStrengthType(t){return t==="lower"||t==="upper"||t==="fullbody";}
-  function strengthDoneThisWeek(){var t=loadTraining(),wk=weekKey(new Date()),map=weekPlanMap(wk),n=0;Object.keys(t).forEach(function(k){if(!inThisWeek(k)||t[k].done!=="done")return;var d=new Date(k+"T00:00:00").getDay(),idx=d===0?6:d-1;if(isStrengthType(map[idx]))n++;});return n;}
-  function renderWPSummary(){var box=$("#wp-summary");if(!box)return;var wk=weekKey(new Date()),map=weekPlanMap(wk),planned=0;for(var i=0;i<7;i++)if(isStrengthType(map[i]))planned++;var done=strengthDoneThisWeek();box.innerHTML='<b>'+planned+'</b> strength session'+(planned===1?'':'s')+' planned this week · aim for 3 — <b>'+done+'</b> completed so far.';}
+  function planWeekDate(){var d=new Date();d.setDate(d.getDate()+(state.planWeekOffset||0)*7);return d;}
+  function planWeekKey(){return weekKey(planWeekDate());}
+  function wkSelLabel(){var off=state.planWeekOffset||0;if(off===0)return "This week";var m=mondayOf(planWeekDate()),mo=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][m.getMonth()];return "Week of "+m.getDate()+" "+mo;}
+  function strengthDoneInWeek(wk){var t=loadTraining(),map=weekPlanMap(wk),mon=new Date(wk+"T00:00:00"),end=new Date(mon);end.setDate(end.getDate()+7);var n=0;Object.keys(t).forEach(function(k){if(t[k].done!=="done")return;var d=new Date(k+"T00:00:00");if(d<mon||d>=end)return;var type=t[k].type;if(!type){var wd=d.getDay(),idx=wd===0?6:wd-1;type=map[idx];}if(isStrengthType(type))n++;});return n;}
+  function strengthDoneThisWeek(){return strengthDoneInWeek(weekKey(new Date()));}
+  function renderWPSummary(){var box=$("#wp-summary");if(!box)return;var off=state.planWeekOffset||0,wk=planWeekKey(),map=weekPlanMap(wk),planned=0;for(var i=0;i<7;i++)if(isStrengthType(map[i]))planned++;var done=strengthDoneInWeek(wk);box.innerHTML='<b>'+planned+'</b> strength session'+(planned===1?'':'s')+' planned '+(off===0?'this week':'that week')+' · aim for 3 — <b>'+done+'</b> completed'+(off===0?' so far':'')+'.';}
   function renderWeekPlanner(){
     var host=$("#weekplanner");if(!host)return;
-    var wk=weekKey(new Date()),map=weekPlanMap(wk);
-    host.innerHTML=DAYABBR.map(function(d,i){
+    var wk=planWeekKey(),map=weekPlanMap(wk);
+    var nav='<div class="daynav"><button class="dn-btn" data-wknav="prev" aria-label="Previous week">‹</button><div class="dn-label">'+wkSelLabel()+'</div><button class="dn-btn'+((state.planWeekOffset||0)>=0?' off':'')+'" data-wknav="next" aria-label="Next week">›</button></div>';
+    var rows=DAYABBR.map(function(d,i){
       var type=map[i]||"rest",train=type!=="rest";
       var sel='<select class="wp-sel'+(train?' on':'')+'" data-wpsel="'+i+'">'+WP_TYPES.map(function(o){return '<option value="'+o[0]+'"'+(type===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join("")+'</select>';
       return '<div class="wp-row"><span class="wp-day">'+dayName[d]+'</span>'+sel+'</div>';
     }).join("");
+    host.innerHTML=nav+rows;
     renderWPSummary();
   }
   function refreshPlanViews(){rebuildPlan();renderWeekPlanner();if($("#week-plan"))renderWeekPlan();if($("#today-session"))renderTodaySession();if($("#today-workout"))renderTodayWorkout();if(typeof renderFuelTarget==="function")renderFuelTarget();if(typeof renderWeekFocus==="function")renderWeekFocus();}
   var wpBound=false;
   function bindWeekPlanner(){
     var host=$("#weekplanner");if(!host||wpBound)return;wpBound=true;
-    host.addEventListener("change",function(e){var s=e.target.closest("[data-wpsel]");if(!s)return;var i=+s.getAttribute("data-wpsel");setDayType(weekKey(new Date()),i,s.value);refreshPlanViews();});
+    host.addEventListener("change",function(e){var s=e.target.closest("[data-wpsel]");if(!s)return;var i=+s.getAttribute("data-wpsel");setDayType(planWeekKey(),i,s.value);refreshPlanViews();});
+    host.addEventListener("click",function(e){var n=e.target.closest("[data-wknav]");if(!n)return;var off=state.planWeekOffset||0;off+=(n.getAttribute("data-wknav")==="next"?1:-1);if(off>0)off=0;state.planWeekOffset=off;renderWeekPlanner();});
   }
 
   /* ---------- training session log ---------- */
   function loadTraining(){return store.get("bf_training")||{};}
   function todayLog(){var d={done:null,diff:"",knee:"",energy:"",recovery:"",notes:"",warmup:false,cardio:{duration:20,incline:"",speed:"",effort:"",mode:"incline",level:"",pace:""}};var t=loadTraining()[sessISO()];return t?Object.assign(d,t):d;}
   function sessCompleteHTML(){var done=todayLog().done==="done";return '<div class="warmrow" style="margin-bottom:12px"><div class="warm-t"><b>Workout completed</b></div><button class="excomp'+(done?' on':'')+'" id="sess-complete">'+(done?'\u2714 Completed':'Mark complete')+'</button></div>';}
-  function bindSessComplete(){var b=$("#sess-complete");if(!b)return;b.addEventListener("click",function(){var all=loadTraining(),k=sessISO(),t=all[k]||{};t.done=(t.done==="done")?null:"done";all[k]=t;store.set("bf_training",all);renderTodaySession();});}
+  function bindSessComplete(){var b=$("#sess-complete");if(!b)return;b.addEventListener("click",function(){var all=loadTraining(),k=sessISO(),t=all[k]||{};if(t.done==="done"){t.done=null;}else{t.done="done";t.type=weekPlanMap(sessWeekKey())[sessIdx()]||"rest";}all[k]=t;store.set("bf_training",all);renderTodaySession();if($("#wp-summary"))renderWPSummary();});}
   function sessionLogHTML(){
     var l=todayLog();
     function seg(k,label,opts,val){return '<div class="ratergrp"><div class="rl">'+label+'</div><div class="opts" data-rgrp="'+k+'">'+opts.map(function(o){return '<button class="'+(val===o[0]?'on':'')+'" data-val="'+o[0]+'">'+o[1]+'</button>';}).join("")+'</div></div>';}
@@ -1777,8 +1786,9 @@
     var all=loadTraining(),l=all[sessISO()]||{};
     l.done=state.tlog.done;l.diff=state.tlog.diff;l.knee=state.tlog.knee;l.energy=state.tlog.energy;l.recovery=state.tlog.recovery;
     l.notes=$("#tl-notes").value.trim();
+    if(l.done==="done")l.type=weekPlanMap(sessWeekKey())[sessIdx()]||"rest";
     all[sessISO()]=l;store.set("bf_training",all);
-    flash("#training-saved","Session saved");renderWeekFocus();renderWeeklyReview();
+    flash("#training-saved","Session saved");renderWeekFocus();renderWeeklyReview();if($("#wp-summary"))renderWPSummary();
   }
   /* ---- recovery day · core chooser · post-workout check-in ---- */
   var CORE_OPTS=["Plank","Dead Bug","Pallof Press"];
@@ -2871,7 +2881,7 @@
     var wk=weekKey(new Date()),map=weekPlanMap(wk),t=loadTraining(),planned=0;
     for(var i=0;i<7;i++)if(isStrengthType(map[i]))planned++;
     var completed=strengthDoneThisWeek(),moved=Math.max(0,planned-completed),recDone=0;
-    Object.keys(t).forEach(function(k){if(!inThisWeek(k)||t[k].done!=="done")return;var d=new Date(k+"T00:00:00").getDay(),idx=d===0?6:d-1;if(map[idx]==="recovery")recDone++;});
+    Object.keys(t).forEach(function(k){if(!inThisWeek(k)||t[k].done!=="done")return;var type=t[k].type;if(!type){var d=new Date(k+"T00:00:00").getDay(),idx=d===0?6:d-1;type=map[idx];}if(type==="recovery")recDone++;});
     return {planned:planned,completed:completed,moved:moved,recDone:recDone};
   }
   function ovRecapCard(){
