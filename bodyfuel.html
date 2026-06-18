@@ -500,6 +500,14 @@
   .cons-boost{margin-top:16px;display:flex;gap:10px;align-items:flex-start;background:linear-gradient(135deg,rgba(233,30,140,.15),rgba(233,30,140,.05));border:1px solid rgba(233,30,140,.28);border-radius:13px;padding:13px 15px;font-size:calc(14.5px*var(--ts,1));line-height:1.45;color:var(--ink);font-weight:500}
   .cons-spark{flex:none;font-size:1.05em}
   .cons-gentle{margin-top:15px;font-size:calc(14px*var(--ts,1));color:var(--ink-soft);line-height:1.45}
+  .cyc-head{margin-bottom:14px}
+  .cyc-phase{font-family:var(--font-d);font-size:calc(26px*var(--ts,1));letter-spacing:-.01em;margin-top:3px;line-height:1.05}
+  .cyc-energy{font-size:calc(13px*var(--ts,1));color:var(--ink-soft);margin-top:4px}
+  .cyc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .cyc-tile{background:var(--surface-2);border:1px solid var(--line);border-radius:13px;padding:12px 13px}
+  .cyc-lbl{font-size:calc(11px*var(--ts,1));text-transform:uppercase;letter-spacing:.05em;font-weight:700;color:var(--accent-deep);margin-bottom:6px}
+  .cyc-txt{font-size:calc(13px*var(--ts,1));line-height:1.4;color:var(--ink-soft)}
+  .vest-row{margin-top:6px}
   .fk-reflect{margin-top:14px;background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:14px 15px}
   .fkr-open{font-size:calc(15px*var(--ts,1));line-height:1.45;margin:0 0 12px}
   .fkr-h{font-size:calc(11.5px*var(--ts,1));text-transform:uppercase;letter-spacing:.04em;color:var(--ink-faint);font-weight:700;margin:12px 0 7px}
@@ -749,13 +757,13 @@
       <div class="stack">
         <div id="checkin-nudge"></div>
         <div class="card glance" id="glance-card">
-          <div id="cycle-out" class="glance-cyc"></div>
-          <div class="glance-div"></div>
-          <div class="glance-foc"><span class="eyebrow">This week</span><div id="focus-chips"></div></div>
+          <div class="glance-foc"><span class="eyebrow">This Week's Focus</span><div id="focus-chips"></div></div>
           <button type="button" id="wf-toggle" class="see-more">See more</button>
           <div id="wf-msg" class="wf-msg"></div>
           <div id="week-focus"></div>
         </div>
+
+        <div class="card cyc-card" id="cycle-insight" style="display:none"></div>
 
         <div class="card" id="mission-card"></div>
 
@@ -1219,7 +1227,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 23"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 25"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -1636,7 +1644,7 @@
     var cardio=(p.finish||p.why==="conditioning")?cardioHTML(p):'';
     var notes=p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'';
     var pcs=postCheckinHTML();
-    host.innerHTML=nav+head+sessCompleteHTML()+warm+meta+ex+cardio+(pcs?'<div class="divider"></div>'+pcs:'')+notes+'<div class="divider"></div>'+sessionLogHTML()+whyPills(p);
+    host.innerHTML=nav+head+sessCompleteHTML()+warm+meta+ex+cardio+vestHTML()+(pcs?'<div class="divider"></div>'+pcs:'')+notes+'<div class="divider"></div>'+sessionLogHTML()+whyPills(p);
     bindExLog();bindCardio();bindWarm();bindSessionLog();bindSessComplete();bindCheckin();
   }
   /* per-exercise logbook */
@@ -1727,6 +1735,7 @@
   function setCardioMode(mode){var all=loadTraining(),l=all[sessISO()]||{};l.cardio=l.cardio||{duration:20,incline:"",speed:"",effort:"",mode:"incline",level:"",pace:""};l.cardio.mode=mode;all[sessISO()]=l;store.set("bf_training",all);if(state.tlog)state.tlog.cardio=l.cardio;renderTodaySession();}
   function setCardioOn(on){var all=loadTraining(),l=all[sessISO()]||{};l.cardioOn=on;all[sessISO()]=l;store.set("bf_training",all);if(state.tlog)state.tlog.cardioOn=on;renderTodaySession();}
   function bindWarm(){var b=$("#warm-toggle");if(!b)return;b.addEventListener("click",function(){var all=loadTraining(),l=all[sessISO()]||{};l.warmup=!l.warmup;all[sessISO()]=l;store.set("bf_training",all);if(state.tlog)state.tlog.warmup=l.warmup;b.classList.toggle("on",l.warmup);b.textContent=l.warmup?'Done':'Mark done';});}
+  function vestHTML(){var l=todayLog();return '<label class="mobitem vest-row"><input type="checkbox" id="vest-cb"'+(l.vest?' checked':'')+'><span>Weight vest used (5 kg)</span></label>';}
   function bindCardio(){
     var onSeg=$('[data-group="cd-on"]');
     if(onSeg)onSeg.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;setCardioOn(b.getAttribute("data-val")==="on");});
@@ -1738,6 +1747,7 @@
     if(eff)eff.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;setSeg("cd-eff",b.getAttribute("data-val"));saveCardio("effort",b.getAttribute("data-val"));});
     if(inc)inc.addEventListener("change",function(){saveCardio("incline",inc.value.trim().replace(",","."));});
     if(sp)sp.addEventListener("change",function(){saveCardio("speed",sp.value.trim().replace(",","."));});
+    var vest=$("#vest-cb");if(vest)vest.addEventListener("change",function(){var all=loadTraining(),l=all[sessISO()]||{};l.vest=vest.checked;all[sessISO()]=l;store.set("bf_training",all);if(state.tlog)state.tlog.vest=l.vest;});
     var sMin=$("#cd-stairs-min"),iMin=$("#cd-incline-min");
     if(sMin)sMin.addEventListener("change",function(){saveCardio("stairsMin",sMin.value.trim().replace(",","."));});
     if(iMin)iMin.addEventListener("change",function(){saveCardio("inclineMin",iMin.value.trim().replace(",","."));});
@@ -3171,19 +3181,33 @@
     if(day<=16)return{phase:"Ovulation",energy:"Peak energy",rec:"Good but be mindful",train:"Normal / moderate strength"};
     return{phase:"Luteal",energy:"Easing down",rec:"Variable",train:"Moderate strength, more rest if tired"};
   }
+  var CYCLE_INFO={
+    Menstrual:{exercise:"Gentle \u2014 walking, mobility and light strength. Honour the lower energy.",food:"Iron-rich, warming foods. Plenty of fluids and a little magnesium.",supps:"Iron (if low), magnesium, omega-3.",sleep:"Rest needs run higher now \u2014 give yourself an earlier night."},
+    Follicular:{exercise:"Energy is rising \u2014 a great window to build strength and add load.",food:"Fresh and protein-forward, with lots of veg and fibre.",supps:"B-vitamins, vitamin D, omega-3.",sleep:"Sleep usually steadies \u2014 keep a consistent rhythm."},
+    Ovulation:{exercise:"Peak energy \u2014 heavier lifts, push a little if you feel strong.",food:"Anti-inflammatory: berries, flaxseed, fibre-rich veg.",supps:"Antioxidants, vitamin E, omega-3.",sleep:"May feel lighter \u2014 wind down well and limit late caffeine."},
+    Luteal:{exercise:"Energy eases \u2014 moderate strength, and more rest when you need it.",food:"Steady blood sugar: protein with complex carbs. Meet cravings kindly.",supps:"Magnesium, calcium and B6 can ease PMS.",sleep:"Sleep can dip pre-period \u2014 cool room, earlier nights."}
+  };
   function renderCycle(){
-    var c=loadCycle(),out=$("#cycle-out"),badge=$("#cyc-badge");
+    var c=loadCycle(),out=$("#cycle-out"),badge=$("#cyc-badge"),ci=$("#cycle-insight");
     if($("#cy-start"))$("#cy-start").value=c.start||"";
     if($("#cy-len"))$("#cy-len").value=c.len||"";
     var day=cycleDayOf(c);
     if(day==null){
       if(out)out.innerHTML='<span class="en">Set your last period start in the Body tab to see your cycle day, phase and recovery here.</span>';
       if(badge)badge.style.display="none";
+      if(ci)ci.style.display="none";
       return;
     }
     var p=cyclePhase(day);
     if(out)out.innerHTML='<b>Cycle Day '+day+'</b> <span class="ph">'+p.phase+'</span> · <span class="en">'+p.energy+'</span>';
     if(badge){badge.style.display="";badge.innerHTML='<div class="cd">Cycle Day '+day+'</div><div class="cp">'+p.phase+'</div><div class="ce">'+p.energy+'</div>';}
+    if(ci){
+      var info=CYCLE_INFO[p.phase]||{};
+      function tile(lbl,txt){return '<div class="cyc-tile"><div class="cyc-lbl">'+lbl+'</div><div class="cyc-txt">'+esc(txt||"")+'</div></div>';}
+      ci.innerHTML='<div class="cyc-head"><div class="eyebrow">Cycle · Day '+day+'</div><div class="cyc-phase">'+p.phase+' Phase</div><div class="cyc-energy">'+p.energy+'</div></div>'
+        +'<div class="cyc-grid">'+tile("Exercise",info.exercise)+tile("Food",info.food)+tile("Supplements",info.supps)+tile("Sleep",info.sleep)+'</div>';
+      ci.style.display="";
+    }
   }
   function initCycle(){
     renderCycle();
