@@ -785,6 +785,7 @@
             <div class="eyebrow" style="display:flex;justify-content:space-between;align-items:center;margin:0 0 4px">Add food <button type="button" class="linkbtn" id="ml-close">Close</button></div>
             <div class="seg" data-group="ml-meal"><button class="on" data-val="breakfast">Breakfast</button><button data-val="lunch">Lunch</button><button data-val="dinner">Dinner</button><button data-val="snack">Snack</button></div>
             <select class="mealinput" id="ml-food"></select>
+            <button type="button" class="linkbtn" id="ml-manual" style="margin-top:8px">✎ Enter macros manually</button>
             <div id="ml-state"></div>
             <div class="pmeal-grid" id="ml-grams-row" style="margin-top:10px">
               <div class="pmeal"><label>Grams</label><input id="ml-grams" type="text" inputmode="decimal" placeholder="g"></div>
@@ -1227,7 +1228,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 25"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 26"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -1476,15 +1477,20 @@
     state.mlFood=FOODDB[0].k;$("#ml-food").value=state.mlFood;renderMlState();
   }
   function renderMlState(){
-    var gr=$("#ml-grams-row");
+    var gr=$("#ml-grams-row"),sel=$("#ml-food"),mtog=$("#ml-manual");
     if(state.mlFood==="__custom__"){
       if(gr)gr.style.display="none";
-      $("#ml-state").innerHTML='<input class="mealinput" id="cf-name" type="text" placeholder="Food name" style="margin-top:10px">'
+      if(sel)sel.style.display="none";
+      if(mtog)mtog.textContent="\u2039 Back to food list";
+      $("#ml-state").innerHTML='<input class="mealinput" id="cf-name" type="text" placeholder="Food name (e.g. protein bar)" style="margin-top:10px">'
         +'<div class="pmeal-grid" style="margin-top:10px"><div class="pmeal"><label>Calories</label><input id="cf-kcal" type="text" inputmode="decimal" placeholder="kcal"></div><div class="pmeal"><label>Protein (g)</label><input id="cf-p" type="text" inputmode="decimal" placeholder="g"></div></div>'
-        +'<div class="pmeal-grid" style="margin-top:10px"><div class="pmeal"><label>Carbs (g)</label><input id="cf-c" type="text" inputmode="decimal" placeholder="optional"></div><div class="pmeal"><label>Fat (g)</label><input id="cf-f" type="text" inputmode="decimal" placeholder="optional"></div></div>';
+        +'<div class="pmeal-grid" style="margin-top:10px"><div class="pmeal"><label>Carbs (g)</label><input id="cf-c" type="text" inputmode="decimal" placeholder="optional"></div><div class="pmeal"><label>Fat (g)</label><input id="cf-f" type="text" inputmode="decimal" placeholder="optional"></div></div>'
+        +'<div class="pmeal-grid" style="margin-top:10px"><div class="pmeal"><label>Fibre (g)</label><input id="cf-fib" type="text" inputmode="decimal" placeholder="optional"></div><div class="pmeal"></div></div>';
       return;
     }
     if(gr)gr.style.display="";
+    if(sel)sel.style.display="";
+    if(mtog)mtog.textContent="\u270e Enter macros manually";
     var d=byKey[state.mlFood];if(!d){$("#ml-state").innerHTML='';return;}
     var sh='';
     if(d.serv){sh+='<div class="serv-row" id="ml-serv">'+d.serv.map(function(s){return '<button type="button" class="serv-chip'+(state.mlServ===s[1]?' on':'')+'" data-serv="'+s[1]+'">'+s[0]+' \u00b7 '+s[1]+'g</button>';}).join('')+'<button type="button" class="serv-chip'+(state.mlServ==='custom'?' on':'')+'" data-serv="custom">Custom</button></div>';}
@@ -1498,7 +1504,7 @@
       var nm=($("#cf-name").value||"").trim(),kc=num($("#cf-kcal").value);
       if(!nm){flash("#ml-saved","Enter a food name");return;}
       if(kc==null){flash("#ml-saved","Enter the calories");return;}
-      var ci={id:String(Date.now())+Math.round(Math.random()*999),meal:state.mlMeal,key:"custom",custom:true,name:nm,macros:{kcal:kc,p:num($("#cf-p").value)||0,c:num($("#cf-c").value)||0,f:num($("#cf-f").value)||0,fib:0},notes:($("#ml-notes").value||"").trim()};
+      var ci={id:String(Date.now())+Math.round(Math.random()*999),meal:state.mlMeal,key:"custom",custom:true,name:nm,macros:{kcal:kc,p:num($("#cf-p").value)||0,c:num($("#cf-c").value)||0,f:num($("#cf-f").value)||0,fib:num($("#cf-fib").value)||0},notes:($("#ml-notes").value||"").trim()};
       var cday=loadMealDay();if(!cday[ci.meal])cday[ci.meal]=[];cday[ci.meal].push(ci);saveMealDay(cday);
       $("#ml-notes").value="";renderMlState();
       flash("#ml-saved","Added to "+ci.meal);
@@ -3099,6 +3105,7 @@
   (function(){var ms=$("#ml-state");if(!ms)return;ms.addEventListener("click",function(e){var b=e.target.closest("[data-serv]");if(!b)return;var v=b.getAttribute("data-serv");if(v==="custom"){state.mlServ="custom";if($("#ml-grams")){$("#ml-grams").value="";$("#ml-grams").focus();}}else{state.mlServ=+v;if($("#ml-grams"))$("#ml-grams").value=v;}$all("#ml-serv .serv-chip").forEach(function(x){x.classList.toggle("on",x.getAttribute("data-serv")===v);});});})();
   $("#ml-state").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;state.mlState=b.getAttribute("data-val");$all("#ml-state button").forEach(function(x){x.classList.toggle("on",x===b);});});
   $("#ml-add").addEventListener("click",addMealItem);
+  (function(){var mt=$("#ml-manual");if(!mt)return;mt.addEventListener("click",function(){var sel=$("#ml-food");if(state.mlFood==="__custom__"){var back=state.mlPrevFood||(FOODDB[0]&&FOODDB[0].k);state.mlFood=back;state.mlState=null;var d=byKey[back];state.mlServ=(d&&d.defg)?d.defg:null;if(sel)sel.value=back;renderMlState();if(d&&d.defg&&$("#ml-grams"))$("#ml-grams").value=d.defg;}else{state.mlPrevFood=state.mlFood;state.mlFood="__custom__";if(sel)sel.value="__custom__";renderMlState();var nm=$("#cf-name");if(nm)nm.focus();}});})();
   (function(){var t=$("#ml-toggle"),c=$("#ml-close"),f=$("#ml-add-form");function open(){if(f)f.style.display="block";if(t)t.style.display="none";}function close(){if(f)f.style.display="none";if(t)t.style.display="block";}if(t)t.addEventListener("click",open);if(c)c.addEventListener("click",close);})();
   $("#meal-log").addEventListener("click",function(e){var b=e.target.closest("[data-mlrm]");if(!b)return;removeMealItem(b.getAttribute("data-mlrm"));});
   $("#ml-example").addEventListener("click",loadExampleDay);
