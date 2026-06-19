@@ -1691,7 +1691,7 @@
       +'<li><b>Measure your fats.</b> Oils and butter are easy to over-pour \u2014 weigh them.</li>'
       +'<li><b>Eat back around training.</b> Put more of your carbs near your workout for energy and recovery.</li>'
       +'</ul>'
-      +tRow("water","Water",t.water,2500,"ml",[["+250 ml",250],["+500 ml",500]],true,true)
+      +(trackOn("water")?tRow("water","Water",t.water,2500,"ml",[["+250 ml",250],["+500 ml",500]],true,true):"")
       +'<div class="gtarget"><div class="gh"><span class="gname">Movement <button class="whybtn" data-why="movement">Why?</button></span><span class="gval">'+(t.movement?'Done':'Not yet')+'</span></div>'
       +'<div class="pbar"><i style="width:'+(t.movement?100:0)+'%"></i></div>'
       +'<div class="incs"><button class="'+(t.movement?'done':'')+'" data-mv="1">'+(t.movement?'Completed':'Mark done')+'</button></div></div>';
@@ -3400,6 +3400,7 @@
   };
   function renderCycle(){
     var c=loadCycle(),out=$("#cycle-out"),badge=$("#cyc-badge"),ci=$("#cycle-insight");
+    if(!trackOn("cycle")){if(out)out.innerHTML="";if(badge)badge.style.display="none";if(ci)ci.style.display="none";return;}
     if($("#cy-start"))$("#cy-start").value=c.start||"";
     if($("#cy-len"))$("#cy-len").value=c.len||"";
     var day=cycleDayOf(c);
