@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Body Fuel Lab">
-<meta name="theme-color" content="#161019">
+<meta name="theme-color" content="#241629">
 <title>Body Fuel Lab</title>
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="apple-touch-icon.png">
@@ -15,30 +15,34 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Schibsted+Grotesk:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#161019; --surface:#211829; --surface-2:#2A1F34;
-    --ink:#F2E9F1; --ink-soft:#BBA7C4; --ink-faint:#8B7795;
-    --line:#3A2C46; --line-soft:#2C2138;
-    --accent:#B96AD9; --accent-deep:#9A4FBC; --accent-soft:#33203F;
-    --header-bg:rgba(22,16,25,.82); --nav-bg:rgba(22,16,25,.88);
+    --bg:#241629; --surface:#2E1B35; --surface-2:#3A2444;
+    --ink:#F3E9F2; --ink-soft:#C5AFCD; --ink-faint:#937F9D;
+    --line:#43304F; --line-soft:#33243D;
+    --accent:#B96AD9; --accent-deep:#9A4FBC; --accent-soft:#3A2348;
+    --header-bg:rgba(36,22,41,.82); --nav-bg:rgba(36,22,41,.88);
     --green:#6FBF82; --amber:#E0B24D; --red:#E27A66;
     --p:#D98A63; --c:#E0B24D; --v:#6FBF82; --f:#8AA6D6;
     --shadow:0 1px 2px rgba(0,0,0,.30), 0 10px 28px rgba(0,0,0,.45);
     --shadow-sm:0 1px 2px rgba(0,0,0,.30), 0 6px 18px rgba(0,0,0,.38);
     --r:18px; --r-sm:13px;
-    --font-d:'DM Serif Display',Georgia,serif; --font-b:'DM Sans',-apple-system,sans-serif;
+    --font-d:'DM Serif Display',Georgia,serif; --font-b:'DM Sans',-apple-system,sans-serif; --font-a:'Schibsted Grotesk',sans-serif;
     --maxw:448px; --ts:1;
   }
   html[data-theme="light"]{
-    --bg:#F6F2F7; --surface:#FFFFFF; --surface-2:#F0EAF3;
-    --ink:#241A2B; --ink-soft:#6B5E76; --ink-faint:#9B8FA6;
-    --line:#E4DCEA; --line-soft:#EEE8F2;
-    --accent:#9A4FBC; --accent-deep:#7E3CA0; --accent-soft:#F1E6F7;
-    --green:#3F9D5B; --amber:#B07D1A; --red:#CC5A45;
-    --p:#C06A3F; --c:#B07D1A; --v:#3F9D5B; --f:#5A78B0;
-    --shadow:0 1px 2px rgba(60,40,70,.07), 0 10px 28px rgba(60,40,70,.10);
-    --shadow-sm:0 1px 2px rgba(60,40,70,.07), 0 6px 18px rgba(60,40,70,.09);
-    --header-bg:rgba(246,242,247,.85); --nav-bg:rgba(255,255,255,.9);
+    --bg:#FFF4F8; --surface:#FFFDF9; --surface-2:#F7E6D6;
+    --ink:#2A1B18; --ink-soft:#7A5B63; --ink-faint:#9A858A;
+    --line:#F0C7D7; --line-soft:#FBE7EF;
+    --accent:#EC5AA6; --accent-deep:#BB9135; --accent-soft:#F6E7CE;
+    --green:#5C9469; --amber:#C28A2E; --red:#D2627A;
+    --p:#E58AAC; --c:#CDA23E; --v:#5C9469; --f:#9488A8;
+    --shadow:0 1px 2px rgba(190,110,150,.08), 0 10px 28px rgba(190,110,150,.13);
+    --shadow-sm:0 1px 2px rgba(190,110,150,.08), 0 6px 18px rgba(190,110,150,.11);
+    --header-bg:rgba(255,244,248,.85); --nav-bg:rgba(255,253,249,.92);
   }
+  html[data-theme="light"] .brand h1 span{color:#A07A29}
+  /* Typography (independent of theme) — Signature = default :root fonts */
+  html[data-type="modern"]{--font-d:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;--font-b:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;--font-a:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  html[data-type="simple"]{--font-d:"Helvetica Neue",Helvetica,system-ui,Arial,"Segoe UI",Roboto,sans-serif;--font-b:"Helvetica Neue",Helvetica,system-ui,Arial,"Segoe UI",Roboto,sans-serif;--font-a:"Helvetica Neue",Helvetica,system-ui,Arial,"Segoe UI",Roboto,sans-serif;}
   html[data-theme="barbie"]{
     --bg:#FFE6F2; --surface:#FFFFFF; --surface-2:#FFD9EC;
     --ink:#3D0A24; --ink-soft:#8A335C; --ink-faint:#BE6F96;
@@ -200,13 +204,13 @@
   .wdots{display:flex;gap:9px;margin-top:10px}
   .wdot{width:15px;height:15px;border-radius:50%;border:1.5px solid var(--line);background:transparent;transition:.18s}
   .wdot.f{background:var(--accent);border-color:var(--accent)}
-  .cyday{font-family:'Schibsted Grotesk',sans-serif;font-weight:700;font-size:calc(22px*var(--ts,1));color:var(--ink);letter-spacing:-.01em}
+  .cyday{font-family:var(--font-a);font-weight:700;font-size:calc(22px*var(--ts,1));color:var(--ink);letter-spacing:-.01em}
   .cyphase{color:var(--accent);font-weight:600;font-size:calc(14px*var(--ts,1));margin:2px 0 12px}
   .cyrow{display:flex;justify-content:space-between;gap:14px;padding:8px 0;border-top:1px solid var(--line-soft);font-size:calc(14px*var(--ts,1))}
   .cyrow span{color:var(--ink-soft)}
   .cyrow b{color:var(--ink);text-align:right;font-weight:600}
   .cyhead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
-  .cyhead .cyd{font-family:'Schibsted Grotesk',sans-serif;font-weight:700;font-size:calc(18px*var(--ts,1));color:var(--ink);letter-spacing:-.01em}
+  .cyhead .cyd{font-family:var(--font-a);font-weight:700;font-size:calc(18px*var(--ts,1));color:var(--ink);letter-spacing:-.01em}
   .cyhead .cyp{color:var(--accent);font-weight:600;font-size:calc(13px*var(--ts,1))}
   .cysub{margin-top:5px;font-size:calc(13.5px*var(--ts,1));color:var(--ink-soft);line-height:1.4}
   .cysub b{color:var(--ink);font-weight:700}
@@ -230,7 +234,7 @@
   .top-duo .cyc-snap .cysub{font-size:calc(12.5px*var(--ts,1))}
   .card.glance{padding:14px 16px}
   .glance-cyc{font-size:calc(15px*var(--ts,1));color:var(--ink);line-height:1.3}
-  .glance-cyc b{font-family:'Schibsted Grotesk',sans-serif;font-weight:700}
+  .glance-cyc b{font-family:var(--font-a);font-weight:700}
   .glance-cyc .ph{color:var(--accent);font-weight:600}
   .glance-cyc .en{color:var(--ink-soft)}
   .glance-div{height:1px;background:var(--line-soft);margin:12px 0}
@@ -342,7 +346,7 @@
   .bf-row .from{font-family:var(--font-d);font-size:calc(24px*var(--ts,1));font-weight:500;color:var(--ink-soft);letter-spacing:-.01em}
   .bf-row .to{font-family:var(--font-d);font-size:calc(24px*var(--ts,1));font-weight:600;color:var(--accent);letter-spacing:-.01em}
   .mission-pct{font-size:calc(14px*var(--ts,1));font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
-  .mission-msg{font-family:'Schibsted Grotesk',sans-serif;font-weight:700;font-size:calc(18px*var(--ts,1));line-height:1.3;margin-top:16px;color:var(--ink);letter-spacing:-.01em}
+  .mission-msg{font-family:var(--font-a);font-weight:700;font-size:calc(18px*var(--ts,1));line-height:1.3;margin-top:16px;color:var(--ink);letter-spacing:-.01em}
   .mission-msg i{font-weight:400;font-style:italic}
   .mission-note{font-size:calc(14px*var(--ts,1));color:var(--ink-faint);margin-top:8px;line-height:1.5}
 
@@ -529,6 +533,42 @@
   .rt-btn.primary{background:var(--accent);color:#fff;border-color:transparent}
   .rt-btn:disabled{opacity:.4;cursor:default}
   .rt-pref{margin-top:11px;font-size:calc(13px*var(--ts,1));color:var(--ink-soft);text-align:center}
+  .msec-head{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:0;cursor:pointer;padding:0;text-align:left}
+  .msec-head .eyebrow{margin:0}
+  .msec-head .chev{width:20px;height:20px;flex:none;color:var(--ink-faint);transition:transform .3s ease,color .2s}
+  .msec.open .msec-head .chev{transform:rotate(180deg);color:var(--accent)}
+  .msec-body{display:none;margin-top:14px}
+  .msec.open .msec-body{display:block}
+  .tpref{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line-soft);font-size:calc(15px*var(--ts,1));color:var(--ink)}
+  .tpref:last-child{border-bottom:0}
+  .tpref .sub{font-size:calc(12px*var(--ts,1));color:var(--ink-faint);margin-top:2px}
+  .tsw{appearance:none;-webkit-appearance:none;width:46px;height:27px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line);position:relative;cursor:pointer;flex:none;transition:.2s}
+  .tsw::after{content:"";position:absolute;top:2px;left:2px;width:21px;height:21px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+  .tsw:checked{background:var(--accent);border-color:transparent}
+  .tsw:checked::after{left:21px}
+  .goalseg{display:flex;flex-wrap:wrap;gap:7px;margin-top:4px}
+  .goalseg button{border:1px solid var(--line);background:var(--surface-2);color:var(--ink-soft);border-radius:11px;padding:9px 14px;font-family:var(--font-b);font-weight:600;font-size:calc(14px*var(--ts,1));cursor:pointer}
+  .goalseg button.on{background:var(--accent);color:#fff;border-color:transparent}
+  .rule-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line-soft)}
+  .rule-row:last-of-type{border-bottom:0}
+  .rule-txt{flex:1;font-size:calc(15px*var(--ts,1));color:var(--ink);line-height:1.4}
+  .rule-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex:none}
+  .add-rule-row{display:flex;gap:8px;margin-top:13px}
+  .add-rule-row input{flex:1}
+  .ach-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .ach{border:1px solid var(--line);border-radius:13px;padding:13px 10px;text-align:center;background:var(--surface-2)}
+  .ach.unlocked{border-color:var(--accent);background:var(--accent-soft)}
+  .ach.locked{opacity:.5}
+  .ach .ico{font-size:24px;line-height:1}
+  .ach .nm{font-size:calc(12.5px*var(--ts,1));font-weight:700;margin-top:7px;color:var(--ink);line-height:1.25}
+  .ach .st{font-size:calc(10.5px*var(--ts,1));color:var(--ink-faint);margin-top:3px;text-transform:uppercase;letter-spacing:.04em;font-weight:700}
+  .menu-btn{display:block;width:100%;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:12px;padding:13px;font-family:var(--font-b);font-weight:700;font-size:calc(15px*var(--ts,1));cursor:pointer;margin-bottom:10px;text-align:center}
+  .menu-btn:last-child{margin-bottom:0}
+  .menu-btn.danger{color:var(--red);border-color:var(--red)}
+  .about-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--line-soft);font-size:calc(14.5px*var(--ts,1));color:var(--ink-soft)}
+  .about-row:last-child{border-bottom:0}
+  .about-row b{color:var(--ink);font-weight:700}
+  .about-row b.ink-faint{color:var(--ink-faint);font-weight:600}
   .fk-reflect{margin-top:14px;background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:14px 15px}
   .fkr-open{font-size:calc(15px*var(--ts,1));line-height:1.45;margin:0 0 12px}
   .fkr-h{font-size:calc(11.5px*var(--ts,1));text-transform:uppercase;letter-spacing:.04em;color:var(--ink-faint);font-weight:700;margin:12px 0 7px}
@@ -1217,14 +1257,52 @@
       <div class="stack">
         <div class="card">
           <div class="eyebrow">Appearance</div>
-          <p class="muted-p" style="margin-bottom:14px">Choose the look of the app. Your choice is saved on this device.</p>
+          <p class="muted-p" style="margin-bottom:14px">Theme controls colours. Typography controls fonts. Both save on this device.</p>
           <div class="label">Theme</div>
-          <div class="seg" data-group="theme"><button data-val="dark">Dark</button><button data-val="light">Light</button><button data-val="barbie">Barbie</button></div>
+          <div class="seg" data-group="theme"><button data-val="dark">Midnight</button><button data-val="light">Royal</button><button data-val="barbie">Barbie</button></div>
+          <div class="label" style="margin-top:16px">Typography</div>
+          <div class="seg" data-group="typography"><button data-val="signature">Signature</button><button data-val="modern">Modern</button><button data-val="simple">Simple</button></div>
         </div>
-        <div class="card">
-          <div class="eyebrow">Preferences</div>
-          <div class="label">When do you train?</div>
-          <div class="seg" data-group="f-time"><button class="on" data-val="morning">Morning</button><button data-val="afternoon">Afternoon</button><button data-val="evening">Evening</button></div>
+
+        <div class="card msec open" data-msec="goal">
+          <button type="button" class="msec-head"><span class="eyebrow">My goal</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body" id="menu-goal"></div>
+        </div>
+
+        <div class="card msec" data-msec="track">
+          <button type="button" class="msec-head"><span class="eyebrow">Health tracking</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body" id="menu-track"></div>
+        </div>
+
+        <div class="card msec" data-msec="rules">
+          <button type="button" class="msec-head"><span class="eyebrow">My rules</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body" id="menu-rules"></div>
+        </div>
+
+        <div class="card msec" data-msec="ach">
+          <button type="button" class="msec-head"><span class="eyebrow">Achievements</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body" id="menu-ach"></div>
+        </div>
+
+        <div class="card msec" data-msec="data">
+          <button type="button" class="msec-head"><span class="eyebrow">Data &amp; backup</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body">
+            <p class="muted-p" style="margin:2px 0 12px">Your data lives only on this device. Back it up or move it to a new phone.</p>
+            <button type="button" class="menu-btn" id="data-export">Export data</button>
+            <label class="menu-btn" for="data-import-file" style="display:block;text-align:center">Import / restore data<input type="file" id="data-import-file" accept="application/json,.json" style="display:none"></label>
+            <button type="button" class="menu-btn danger" id="data-clear">Clear all data</button>
+          </div>
+        </div>
+
+        <div class="card msec" data-msec="about">
+          <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body">
+            <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you learn your body, fuel it properly, train with intention, and build a body you feel strong in.</p>
+            <div class="about-row"><span>Version</span><b>Build 34</b></div>
+            <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
+            <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
+            <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
+          </div>
         </div>
       </div>
     </section>
@@ -1280,7 +1358,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 30"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 33"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -1409,7 +1487,7 @@
     var tdee=bmr*factor;
     var amt={gentle:250,moderate:400,aggressive:500}[p.deficitSpeed||"moderate"]||400;
     var goal=p.goalType||"loss";
-    var adj=goal==="maintain"?0:(goal==="build"?amt:-amt);
+    var adj=(goal==="maintain"||goal==="recomp")?0:(goal==="build"?amt:-amt);
     var target=Math.round((tdee+adj)/10)*10;
     return {weight:w,bmr:Math.round(bmr),tdee:Math.round(tdee),target:target,factor:factor,act:p.activity||"moderate",deficit:adj,goal:goal,speed:p.deficitSpeed||"moderate"};
   }
@@ -3081,7 +3159,7 @@
     return "Stay consistent";
   }
   function missionControlHTML(){
-    var p=loadProfile(),gmap={loss:"Fat loss",maintain:"Maintenance",build:"Muscle gain"};
+    var p=loadProfile(),gmap={loss:"Fat loss",maintain:"Maintenance",build:"Muscle gain",recomp:"Recomposition"};
     var goal=gmap[p.goalType]||"Fat loss",cw=latestWeight(),gw=p.goalWeight;
     var prog=missionProgress(p),cyc=cycleDayOf(loadCycle());
     var s='<div class="mc-grid">'
@@ -3153,7 +3231,7 @@
 
   /* =================== EVENTS =================== */
   function setSeg(group,val){$all('[data-group="'+group+'"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===val);});}
-  $all('.seg').forEach(function(seg){seg.addEventListener("click",function(e){var btn=e.target.closest("button");if(!btn)return;var group=seg.getAttribute("data-group"),val=btn.getAttribute("data-val");setSeg(group,val);if(group==="t-goal"){state.tGoal=val;refreshToday();renderQuickFill();}if(group==="t-day"){state.tDay=val;refreshToday();}if(group==="f-time"){state.fTime=val;refreshFuel();}if(group==="p-activity"){var pr=loadProfile();pr.activity=val;saveProfileObj(pr);renderDailyTargets();renderCalc();refreshToday();}if(group==="cw-goal"){var p2=loadProfile();p2.goalType=val;saveProfileObj(p2);renderCalc();renderDailyTargets();refreshToday();}if(group==="cw-speed"){var p3=loadProfile();p3.deficitSpeed=val;saveProfileObj(p3);renderCalc();renderDailyTargets();refreshToday();}if(group==="ml-meal"){state.mlMeal=val;}if(group==="energy"){setEnergyToday(val);renderWeeklyReview();}if(group==="ov-range"){state.ovRange=val;renderOverview();}if(group==="ts"){store.set("bf_textscale",val);applyTextScale(val);}if(group==="theme"){store.set("bf_theme",val);applyTheme(val);}});});
+  $all('.seg').forEach(function(seg){seg.addEventListener("click",function(e){var btn=e.target.closest("button");if(!btn)return;var group=seg.getAttribute("data-group"),val=btn.getAttribute("data-val");setSeg(group,val);if(group==="t-goal"){state.tGoal=val;refreshToday();renderQuickFill();}if(group==="t-day"){state.tDay=val;refreshToday();}if(group==="f-time"){state.fTime=val;refreshFuel();}if(group==="p-activity"){var pr=loadProfile();pr.activity=val;saveProfileObj(pr);renderDailyTargets();renderCalc();refreshToday();}if(group==="cw-goal"){var p2=loadProfile();p2.goalType=val;saveProfileObj(p2);renderCalc();renderDailyTargets();refreshToday();}if(group==="cw-speed"){var p3=loadProfile();p3.deficitSpeed=val;saveProfileObj(p3);renderCalc();renderDailyTargets();refreshToday();}if(group==="ml-meal"){state.mlMeal=val;}if(group==="energy"){setEnergyToday(val);renderWeeklyReview();}if(group==="ov-range"){state.ovRange=val;renderOverview();}if(group==="ts"){applyTextScale(val);}if(group==="typography"){applyTypography(val);}if(group==="theme"){store.set("bf_theme",val);applyTheme(val);}});});
   $("#today-session").addEventListener("click",function(e){var b=e.target.closest("[data-dnav]");if(!b)return;gotoSessDate(b.getAttribute("data-dnav"));});
   $("#overview-body").addEventListener("click",function(e){var b=e.target.closest("[data-ovmore]");if(!b)return;var box=document.getElementById("ovd-"+b.getAttribute("data-ovmore"));if(!box)return;var open=box.classList.toggle("open");b.textContent=open?"Hide details ▴":"Show details ▾";});
   $all('[data-build]').forEach(function(box){box.addEventListener("click",function(e){var t=e.target.closest(".tag");if(!t)return;var cat=t.getAttribute("data-bcat"),item=t.getAttribute("data-item"),sel=state.build[cat]||[];if(item==="None"){sel=[];}else{var i=sel.indexOf(item);if(i>=0)sel.splice(i,1);else sel.push(item);}state.build[cat]=sel;renderBuildChips();renderBuilt();});});
@@ -3364,9 +3442,12 @@
   renderLearn();
 
   refreshFuel();renderExerciseLib();renderTodaySession();renderWeekPlan();renderStrength();renderWeekPlanner();bindWeekPlanner();rtInit();
-  function applyTheme(v){document.documentElement.setAttribute("data-theme",v);$all('[data-group="theme"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===v);});var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute("content",v==="light"?"#F6F2F7":(v==="barbie"?"#FFE6F2":"#161019"));}
-  function applyTextScale(v){document.documentElement.style.setProperty("--ts",v);$all('[data-group="ts"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===v);});}
-  populateFoodSelect();renderMealLog();renderOverview();applyTextScale(store.get("bf_textscale")||"1");applyTheme(store.get("bf_theme")||"dark");
+  function applyTheme(v){document.documentElement.setAttribute("data-theme",v);$all('[data-group="theme"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===v);});var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute("content",v==="light"?"#FFF4F8":(v==="barbie"?"#FFE6F2":"#241629"));}
+  var TYP_FACTOR={signature:1,modern:1,simple:1.05};
+  function applyScale(){var ts=parseFloat(store.get("bf_textscale")||"1")||1;var typ=store.get("bf_typography")||"signature";document.documentElement.style.setProperty("--ts",(ts*(TYP_FACTOR[typ]||1)).toFixed(3));}
+  function applyTextScale(v){store.set("bf_textscale",v);$all('[data-group="ts"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===v);});applyScale();}
+  function applyTypography(v){store.set("bf_typography",v);document.documentElement.setAttribute("data-type",v);$all('[data-group="typography"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===v);});applyScale();}
+  populateFoodSelect();renderMealLog();renderOverview();applyTypography(store.get("bf_typography")||"signature");applyTextScale(store.get("bf_textscale")||"1");applyTheme(store.get("bf_theme")||"dark");
   renderPortionMemory();renderPortionList();syncWpButtons();
   renderWeekFocus();
   renderWeekBadge();var _wb=$("#hdr-week");if(_wb)_wb.style.display="block";
