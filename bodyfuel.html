@@ -539,6 +539,7 @@
   .msec.open .msec-head .chev{transform:rotate(180deg);color:var(--accent)}
   .msec-body{display:none;margin-top:14px}
   .msec.open .msec-body{display:block}
+  .drop-sub{font-size:calc(13px*var(--ts,1));color:var(--ink-soft);margin-top:3px;font-weight:400}
   .tpref{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line-soft);font-size:calc(15px*var(--ts,1));color:var(--ink)}
   .tpref:last-child{border-bottom:0}
   .tpref .sub{font-size:calc(12px*var(--ts,1));color:var(--ink-faint);margin-top:2px}
@@ -1002,8 +1003,9 @@
           <div class="body"><div id="review-body"></div></div>
         </div>
 
-        <div class="card">
-          <div class="eyebrow">Your profile</div>
+        <div class="card msec">
+          <button type="button" class="msec-head"><div><div class="eyebrow">Your profile</div><div class="drop-sub">Age, height, conditions, preferences</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body">
           <div class="metrics">
             <div class="metric"><label>Age</label><input id="p-age" type="number" inputmode="numeric"></div>
             <div class="metric"><label>Height (cm)</label><input id="p-height" type="number" inputmode="numeric"></div>
@@ -1023,6 +1025,7 @@
           </div>
           <button class="cta" id="save-profile">Save profile</button>
           <div class="saved-note" id="profile-saved"></div>
+          </div>
         </div>
 
         <div class="card">
@@ -1209,11 +1212,14 @@
           <div id="notes-history"></div>
         </div>
 
-        <div class="card">
+        <div class="card msec">
+          <button type="button" class="msec-head"><div><div class="eyebrow">Training food guide</div><div class="drop-sub">What to eat before and after training</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body">
           <div class="fuel-block"><div class="when">Before</div><div class="body"><strong>Protein + carbs, 1–3 hours before</strong><p>A balanced meal beforehand gives you energy to train and helps you feel steady through the session.</p><div class="ex"><b>Try:</b> chicken + rice · oats + chicken</div></div></div>
           <div class="divider"></div>
           <div class="fuel-block"><div class="when after">After</div><div class="body"><strong>Protein + carbs + water, within a couple of hours</strong><p>Eating and rehydrating after training supports recovery and helps refill the energy you used.</p><div class="ex"><b>Try:</b> chicken + potatoes · rice cakes + chicken</div></div></div>
           <div class="tip" id="fuel-tip" style="margin-top:14px"></div>
+          </div>
         </div>
         <div class="card"><div class="eyebrow">Quick combos (tolerated foods)</div>
           <div class="combos">
@@ -1264,13 +1270,13 @@
           <div class="seg" data-group="typography"><button data-val="signature">Signature</button><button data-val="modern">Modern</button><button data-val="simple">Simple</button></div>
         </div>
 
-        <div class="card msec open" data-msec="goal">
-          <button type="button" class="msec-head"><span class="eyebrow">My goal</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-          <div class="msec-body" id="menu-goal"></div>
+        <div class="card msec open" data-msec="profile">
+          <button type="button" class="msec-head"><span class="eyebrow">Profile</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body" id="menu-profile"></div>
         </div>
 
         <div class="card msec" data-msec="track">
-          <button type="button" class="msec-head"><span class="eyebrow">Health tracking</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <button type="button" class="msec-head"><span class="eyebrow">Tracking Preferences</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body" id="menu-track"></div>
         </div>
 
@@ -1279,15 +1285,11 @@
           <div class="msec-body" id="menu-rules"></div>
         </div>
 
-        <div class="card msec" data-msec="ach">
-          <button type="button" class="msec-head"><span class="eyebrow">Achievements</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-          <div class="msec-body" id="menu-ach"></div>
-        </div>
-
         <div class="card msec" data-msec="data">
           <button type="button" class="msec-head"><span class="eyebrow">Data &amp; backup</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 12px">Your data lives only on this device. Back it up or move it to a new phone.</p>
+            <div class="about-row" style="margin-bottom:12px"><span>Last backup</span><b id="data-backup-status" class="ink-faint">Never backed up</b></div>
             <button type="button" class="menu-btn" id="data-export">Export data</button>
             <label class="menu-btn" for="data-import-file" style="display:block;text-align:center">Import / restore data<input type="file" id="data-import-file" accept="application/json,.json" style="display:none"></label>
             <button type="button" class="menu-btn danger" id="data-clear">Clear all data</button>
@@ -1297,8 +1299,8 @@
         <div class="card msec" data-msec="about">
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
-            <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you learn your body, fuel it properly, train with intention, and build a body you feel strong in.</p>
-            <div class="about-row"><span>Version</span><b>Build 34</b></div>
+            <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
+            <div class="about-row"><span>Version</span><b>Build 36</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1358,7 +1360,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 34"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 36"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -1691,7 +1693,7 @@
       +'<li><b>Measure your fats.</b> Oils and butter are easy to over-pour \u2014 weigh them.</li>'
       +'<li><b>Eat back around training.</b> Put more of your carbs near your workout for energy and recovery.</li>'
       +'</ul>'
-      +(trackOn("water")?tRow("water","Water",t.water,2500,"ml",[["+250 ml",250],["+500 ml",500]],true,true):"")
+      +tRow("water","Water",t.water,2500,"ml",[["+250 ml",250],["+500 ml",500]],true,true)
       +'<div class="gtarget"><div class="gh"><span class="gname">Movement <button class="whybtn" data-why="movement">Why?</button></span><span class="gval">'+(t.movement?'Done':'Not yet')+'</span></div>'
       +'<div class="pbar"><i style="width:'+(t.movement?100:0)+'%"></i></div>'
       +'<div class="incs"><button class="'+(t.movement?'done':'')+'" data-mv="1">'+(t.movement?'Completed':'Mark done')+'</button></div></div>';
@@ -3303,7 +3305,7 @@
   (function(){var sm=$("#save-meal");if(sm)sm.addEventListener("click",saveMealLog);})();
   $("#save-profile").addEventListener("click",saveProfile);
 
-  document.addEventListener("click",function(e){var wc=e.target.closest("#why-cals");if(wc){var box=document.getElementById("why-cals-out");if(box){var show=box.style.display==="none";box.style.display=show?"block":"none";if(show)box.innerHTML=calcBreakdownHTML();wc.textContent=show?"Hide breakdown":"Why this number?";}return;}var w=e.target.closest("[data-why]");if(w){openWhy(w.getAttribute("data-why"));return;}var h=e.target.closest(".lesson > .head");if(h){h.parentNode.classList.toggle("open");}});
+  document.addEventListener("click",function(e){var wc=e.target.closest("#why-cals");if(wc){var box=document.getElementById("why-cals-out");if(box){var show=box.style.display==="none";box.style.display=show?"block":"none";if(show)box.innerHTML=calcBreakdownHTML();wc.textContent=show?"Hide breakdown":"Why this number?";}return;}var w=e.target.closest("[data-why]");if(w){openWhy(w.getAttribute("data-why"));return;}var h=e.target.closest(".lesson > .head");if(h){h.parentNode.classList.toggle("open");}var mh=e.target.closest(".msec-head");if(mh&&!mh.closest("#menu")){mh.closest(".msec").classList.toggle("open");}});
   $("#wp-more").addEventListener("click",function(){var a=$("#wp-macros");a.classList.toggle("on");$("#wp-more").textContent=a.classList.contains("on")?"Hide macros ▴":"Add macros (optional) ▾";});
   $("#ml-food").addEventListener("change",function(){state.mlFood=this.value;state.mlState=null;var d=byKey[this.value];state.mlServ=(d&&d.defg)?d.defg:null;renderMlState();if(d&&d.defg&&$("#ml-grams"))$("#ml-grams").value=d.defg;});
   (function(){var ms=$("#ml-state");if(!ms)return;ms.addEventListener("click",function(e){var b=e.target.closest("[data-serv]");if(!b)return;var v=b.getAttribute("data-serv");if(v==="custom"){state.mlServ="custom";if($("#ml-grams")){$("#ml-grams").value="";$("#ml-grams").focus();}}else{state.mlServ=+v;if($("#ml-grams"))$("#ml-grams").value=v;}$all("#ml-serv .serv-chip").forEach(function(x){x.classList.toggle("on",x.getAttribute("data-serv")===v);});});})();
@@ -3454,56 +3456,50 @@
   function setTrackPref(k,v){var p=trackPrefs();p[k]=v;store.set("bf_trackprefs",p);}
   function applyTrackPrefs(){var ec=$("#energy-card");if(ec)ec.style.display=trackOn("energy")?"":"none";var hc=$("#habits-card");if(hc)hc.style.display=trackOn("creatine")?"":"none";if(typeof renderCycle==="function")renderCycle();if(typeof renderDailyTargets==="function")renderDailyTargets();}
 
-  var GOALS=[["loss","Fat loss"],["recomp","Recomposition"],["build","Muscle gain"],["maintain","Maintenance"]];
-  function renderMenuGoal(){var box=$("#menu-goal");if(!box)return;var p=loadProfile(),gm=store.get("bf_goalmeta")||{};var cur=p.goalType||"loss";
-    box.innerHTML='<p class="muted-p" style="margin:2px 0 12px">Set the goal you\u2019re working toward. Detailed measurements stay in the Body tab.</p>'
-      +'<div class="label">Main goal</div><div class="goalseg" id="goal-main">'+GOALS.map(function(g){return '<button type="button" data-val="'+g[0]+'"'+(cur===g[0]?' class="on"':'')+'>'+g[1]+'</button>';}).join("")+'</div>'
-      +'<div class="pmeal-grid" style="margin-top:14px"><div class="pmeal"><label>Target weight (kg)</label><input id="goal-wt" type="text" inputmode="decimal" placeholder="\u2014" value="'+(p.goalWeight!=null?esc(p.goalWeight):"")+'"></div><div class="pmeal"><label>Target body fat %</label><input id="goal-bf" type="text" inputmode="decimal" placeholder="\u2014" value="'+(p.goalBF!=null?esc(p.goalBF):"")+'"></div></div>'
-      +'<div class="pmeal" style="margin-top:10px"><label>Target date (optional)</label><input id="goal-date" type="date" value="'+esc(gm.targetDate||"")+'"></div>'
-      +'<button type="button" class="cta" id="goal-save" style="margin-top:14px">Save goal</button><div class="saved-note" id="goal-saved"></div>';
+  function ageFromBirthday(bd){try{var d=new Date(bd+"T00:00:00");if(isNaN(d.getTime()))return null;var n=new Date();var a=n.getFullYear()-d.getFullYear();var m=n.getMonth()-d.getMonth();if(m<0||(m===0&&n.getDate()<d.getDate()))a--;return a;}catch(e){return null;}}
+  var PF_ACTS=[["sedentary","Sedentary"],["light","Light"],["moderate","Moderate"],["high","High"]];
+  var PF_SEXES=[["female","Female"],["male","Male"]];
+  function renderMenuProfile(){var box=$("#menu-profile");if(!box)return;var p=loadProfile();var sex=p.sex||"female",act=p.activity||"moderate";
+    box.innerHTML='<p class="muted-p" style="margin:2px 0 12px">Basic setup used for your estimates. Weight, body fat and goals live in the Body tab.</p>'
+      +'<div class="pmeal-grid"><div class="pmeal"><label>Height (cm)</label><input id="pf-height" type="text" inputmode="decimal" placeholder="\u2014" value="'+(p.height!=null?esc(p.height):"")+'"></div><div class="pmeal"><label>Birthday</label><input id="pf-bday" type="date" value="'+esc(p.birthday||"")+'"></div></div>'
+      +'<div class="label" style="margin-top:14px">Sex</div><div class="goalseg" id="pf-sex">'+PF_SEXES.map(function(s){return '<button type="button" data-val="'+s[0]+'"'+(sex===s[0]?' class="on"':'')+'>'+s[1]+'</button>';}).join("")+'</div>'
+      +'<div class="label" style="margin-top:14px">Activity level</div><div class="goalseg" id="pf-act">'+PF_ACTS.map(function(a){return '<button type="button" data-val="'+a[0]+'"'+(act===a[0]?' class="on"':'')+'>'+a[1]+'</button>';}).join("")+'</div>'
+      +'<button type="button" class="cta" id="pf-save" style="margin-top:14px">Save profile</button><div class="saved-note" id="pf-saved"></div>';
   }
-  function saveMenuGoal(){var p=loadProfile();var sel=$("#goal-main .on");if(sel)p.goalType=sel.getAttribute("data-val");var gw=num($("#goal-wt").value);p.goalWeight=gw||null;var gb=num($("#goal-bf").value);if(gb)p.goalBF=gb;saveProfileObj(p);var gm=store.get("bf_goalmeta")||{};gm.targetDate=($("#goal-date").value||"");store.set("bf_goalmeta",gm);flash("#goal-saved","Goal saved");if(typeof renderMission==="function")renderMission();if(typeof renderCalc==="function")renderCalc();renderDailyTargets();refreshToday();}
+  function saveMenuProfile(){var p=loadProfile();var h=num($("#pf-height").value);if(h)p.height=h;var bd=($("#pf-bday").value||"");p.birthday=bd;if(bd){var age=ageFromBirthday(bd);if(age!=null&&age>0&&age<120)p.age=age;}var sx=$("#pf-sex .on");if(sx)p.sex=sx.getAttribute("data-val");var ac=$("#pf-act .on");if(ac)p.activity=ac.getAttribute("data-val");saveProfileObj(p);flash("#pf-saved","Profile saved");if(typeof renderCalc==="function")renderCalc();renderDailyTargets();refreshToday();}
 
-  var TRACKS=[["cycle","Menstrual cycle"],["creatine","Creatine"],["energy","Energy"],["sleep","Sleep"],["water","Water"],["steps","Steps"],["supplements","Supplements"]];
+  var TRACKS=[["cycle","Menstrual cycle"],["creatine","Creatine"],["energy","Energy"],["sleep","Sleep"]];
   function renderTrackPrefs(){var box=$("#menu-track");if(!box)return;
-    box.innerHTML='<p class="muted-p" style="margin:2px 0 12px">Turn tracking on or off. Turning one off hides its card or field across the app.</p>'
+    box.innerHTML='<p class="muted-p" style="margin:2px 0 12px">Turn tracking on or off. Turning one off hides its card or field across the app. Sleep is manual entry only.</p>'
       +TRACKS.map(function(t){var on=trackOn(t[0]);return '<label class="tpref"><span>'+t[1]+'</span><input type="checkbox" class="tsw" data-track="'+t[0]+'"'+(on?" checked":"")+'></label>';}).join("");
   }
 
-  var DEFAULT_RULES=["Protein at every meal","Train 3x per week","Creatine daily","Walk when energy is low","No guilt, just return"];
-  function loadRules(){var r=store.get("bf_rules");if(r==null){r=DEFAULT_RULES.slice();store.set("bf_rules",r);}return r;}
+  var EXAMPLE_RULES=["Protein at every meal","Train 3x per week","Creatine daily","Walk when energy is low","No guilt, just return"];
+  function loadRules(){var r=store.get("bf_rules");return Array.isArray(r)?r:[];}
   function saveRules(r){store.set("bf_rules",r);}
   function renderRules(){var box=$("#menu-rules");if(!box)return;var rules=loadRules(),ei=state.ruleEdit;
     var rows=rules.map(function(r,i){if(ei===i){return '<div class="rule-row"><input type="text" id="rule-edit-'+i+'" value="'+esc(r)+'" style="flex:1"><button type="button" class="linkbtn" data-ract="save" data-ri="'+i+'" style="margin:0 0 0 6px">Save</button><button type="button" class="linkbtn" data-ract="cancel" data-ri="'+i+'" style="margin:0 0 0 6px">Cancel</button></div>';}
       return '<div class="rule-row"><span class="rule-dot"></span><span class="rule-txt">'+esc(r)+'</span><button type="button" class="linkbtn" data-ract="edit" data-ri="'+i+'" style="margin:0 0 0 4px">Edit</button><button type="button" class="linkbtn" data-ract="del" data-ri="'+i+'" style="margin:0 0 0 6px">Delete</button></div>';}).join("");
-    if(!rules.length)rows='<p class="muted-p" style="margin:2px 0 6px">No rules yet \u2014 add your first one below.</p>';
+    if(!rules.length)rows='<p class="muted-p" style="margin:2px 0 4px">No rules yet. Add your own \u2014 for example: '+EXAMPLE_RULES.join(" \u00b7 ")+'.</p>';
     box.innerHTML=rows+'<div class="add-rule-row"><input type="text" id="rule-new" placeholder="Add a rule\u2026"><button type="button" class="cta" id="rule-add" style="width:auto;flex:none;padding:0 18px;margin:0">Add</button></div>';
   }
 
-  function workoutsDone(){var t=loadTraining(),n=0;Object.keys(t).forEach(function(k){if(t[k]&&t[k].done==="done")n++;});return n;}
-  function trackedDays(){var set={},ml=store.get("bf_meallog")||{};Object.keys(ml).forEach(function(k){set[k]=1;});var tr=loadTraining();Object.keys(tr).forEach(function(k){if(tr[k]&&tr[k].done==="done")set[(k||"").slice(0,10)]=1;});(loadEntries()||[]).forEach(function(e){if(e.date)set[e.date]=1;});return Object.keys(set).length;}
-  function creatineStreakMax(){var h=loadHabits().creatine||{},days={};Object.keys(h).forEach(function(d){var v=h[d];if(v===true||(v&&(v.am||v.pm)))days[d]=1;});var best=0;Object.keys(days).forEach(function(d){var n=0,dt=new Date(d+"T00:00:00");while(days[ovIso(dt)]){n++;dt.setDate(dt.getDate()-1);}if(n>best)best=n;});return best;}
-  function renderAchievements(){var box=$("#menu-ach");if(!box)return;var p=loadProfile();var wd=workoutsDone(),td=trackedDays(),lw=latestWeight(),sw=p.startWeight,strk=(typeof activeStreak==="function")?activeStreak():0,cs=creatineStreakMax();
-    var list=[["\ud83c\udfcb\ufe0f","First workout",wd>=1],["\ud83d\udcaa","10 workouts",wd>=10],["\ud83d\udcc5","30 days tracked",td>=30],["\u2696\ufe0f","First kg lost",(lw!=null&&sw!=null&&lw<=sw-1)],["\ud83d\udd25","7-day streak",strk>=7],["\u2728","Creatine 7 in a row",cs>=7]];
-    var unlocked=list.filter(function(a){return a[2];}).length;
-    box.innerHTML='<p class="muted-p" style="margin:2px 0 12px">'+unlocked+' of '+list.length+' unlocked \u2014 they fill in as you build consistency.</p>'
-      +'<div class="ach-grid">'+list.map(function(a){return '<div class="ach '+(a[2]?"unlocked":"locked")+'"><div class="ico">'+(a[2]?a[0]:"\ud83d\udd12")+'</div><div class="nm">'+a[1]+'</div><div class="st">'+(a[2]?"Unlocked":"Locked")+'</div></div>';}).join("")+'</div>';
-  }
+  function renderDataStatus(){var el=$("#data-backup-status");if(!el)return;var lb=store.get("bf_lastbackup");if(lb){var d=new Date(lb);el.textContent="Last backup: "+(isNaN(d.getTime())?lb:d.toLocaleDateString());el.classList.remove("ink-faint");}else{el.textContent="Never backed up";el.classList.add("ink-faint");}}
 
-  function renderMenu(){renderMenuGoal();renderTrackPrefs();renderRules();renderAchievements();}
+  function renderMenu(){renderMenuProfile();renderTrackPrefs();renderRules();renderDataStatus();}
 
   function allBfKeys(){var ks=[];try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf("bf_")===0)ks.push(k);}}catch(e){}
-    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta"];
+    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup"];
     return ks;}
-  function exportData(){try{var data={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)data[k]=v;});var payload={app:"Body Fuel Lab",version:"build 34",exported:new Date().toISOString(),data:data};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="bodyfuel-backup-"+todayISO()+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);}catch(e){alert("Could not export data on this device.");}}
+  function exportData(){try{var data={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)data[k]=v;});var payload={app:"Body Fuel Lab",version:"build 35",exported:new Date().toISOString(),data:data};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="bodyfuel-backup-"+todayISO()+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Could not export data on this device.");}}
   function importData(file){if(!file)return;var r=new FileReader();r.onload=function(){try{var obj=JSON.parse(r.result);var data=(obj&&obj.data)?obj.data:obj;if(!data||typeof data!=="object")throw 0;var n=0;Object.keys(data).forEach(function(k){if(k.indexOf("bf_")===0){store.set(k,data[k]);n++;}});if(!n)throw 0;alert("Restored "+n+" items. The app will now reload.");location.reload();}catch(e){alert("That file could not be read as a Body Fuel Lab backup.");}};r.readAsText(file);}
   function clearAllData(){if(!confirm("This permanently deletes ALL your Body Fuel Lab data on this device. This cannot be undone."))return;if(!confirm("Are you absolutely sure? Tap OK to erase everything."))return;allBfKeys().forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});location.reload();}
 
   (function(){var m=$("#menu");if(!m)return;
     m.addEventListener("click",function(e){
       var h=e.target.closest(".msec-head");if(h){h.closest(".msec").classList.toggle("open");return;}
-      var gb=e.target.closest("#goal-main button");if(gb){$all("#goal-main button").forEach(function(b){b.classList.remove("on");});gb.classList.add("on");return;}
-      if(e.target.closest("#goal-save")){saveMenuGoal();return;}
+      var pfg=e.target.closest("#pf-sex button, #pf-act button");if(pfg){var grp=pfg.parentNode;$all("button",grp).forEach(function(b){b.classList.remove("on");});pfg.classList.add("on");return;}
+      if(e.target.closest("#pf-save")){saveMenuProfile();return;}
       var ra=e.target.closest("[data-ract]");if(ra){var act=ra.getAttribute("data-ract"),ri=parseInt(ra.getAttribute("data-ri"),10),rules=loadRules();
         if(act==="edit"){state.ruleEdit=ri;renderRules();}
         else if(act==="cancel"){state.ruleEdit=null;renderRules();}
