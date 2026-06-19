@@ -1080,6 +1080,7 @@
           <div class="eyebrow">Energy for training</div>
           <p class="muted-p" style="margin-top:-4px">How strong and fresh do you feel to train today?</p>
           <div class="seg" data-group="energy" id="energy-seg" style="margin-top:6px"><button data-val="high">High</button><button data-val="medium">Medium</button><button data-val="low">Low</button></div>
+          <div class="hab-stat" id="energy-trend" style="margin-top:10px"></div>
         </div>
 
         <div class="card" id="fuel-target-card"></div>
@@ -1228,7 +1229,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 26"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 28"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -1289,10 +1290,20 @@
   function creatineWeek(){var h=loadHabits(),c=h.creatine||{},doses=0;Object.keys(c).forEach(function(k){if(inThisWeek(k)){var v=c[k];if(v===true)doses+=2;else if(v)doses+=(v.am?1:0)+(v.pm?1:0);}});return {done:doses,total:14,pct:Math.round(doses/14*100)};}
   function loadEnergyMap(){return store.get("bf_energy")||{};}
   function energyToday(){return loadEnergyMap()[todayISO()]||null;}
+  function energyTrend(){
+    var m=loadEnergyMap(),map={high:3,medium:2,low:1},seq=[];
+    for(var i=6;i>=0;i--){var v=m[isoBack(i)];if(v&&map[v])seq.push(map[v]);}
+    if(seq.length<3)return {enough:false};
+    var avg=seq.reduce(function(a,b){return a+b;},0)/seq.length;
+    var half=Math.floor(seq.length/2),older=seq.slice(0,half),newer=seq.slice(seq.length-half);
+    var oa=older.reduce(function(a,b){return a+b;},0)/older.length,na=newer.reduce(function(a,b){return a+b;},0)/newer.length;
+    var dir=(na-oa>0.3)?"Improving":(na-oa<-0.3)?"Declining":"Stable";
+    return {enough:true,avg:avg,dir:dir};
+  }
   function setEnergyToday(v){var m=loadEnergyMap();m[todayISO()]=v;store.set("bf_energy",m);}
   function energyWeekCounts(){var m=loadEnergyMap(),o={high:0,medium:0,low:0};Object.keys(m).forEach(function(k){if(inThisWeek(k)&&o[m[k]]!=null)o[m[k]]++;});return o;}
   function renderHabits(){var s=creatineSlots(todayISO()),am=$("#hab-creatine-am"),pm=$("#hab-creatine-pm");if(am)am.checked=!!s.am;if(pm)pm.checked=!!s.pm;var st=$("#hab-creatine-stat");if(st){var w=creatineWeek();st.innerHTML='Creatine this week: <b>'+w.done+'/'+w.total+' doses ('+w.pct+'%)</b>';}}
-  function renderEnergy(){var v=energyToday();setSeg("energy",v||"");}
+  function renderEnergy(){var v=energyToday();setSeg("energy",v||"");var et=$("#energy-trend");if(et){var t=energyTrend();et.innerHTML=t.enough?'7-day energy: <b>'+t.avg.toFixed(1)+'/3 \u00b7 '+t.dir+'</b>':'Not enough data yet.';}}
   function renderMission(){
     var prof=loadProfile(),start=prof.startBF,goal=prof.goalBF;
     var entries=loadEntries(),latest=null;
@@ -1945,10 +1956,13 @@
   function weightLoggedThisWeek(){return loadEntries().some(function(e){return inThisWeek(e.date)&&e.weight!=null;});}
   function bfStart(){var s=store.get("bf_start");if(s)return s;var dates=[];(loadEntries()||[]).forEach(function(e){if(e.date)dates.push(e.date);});var ml=store.get("bf_meallog")||{};Object.keys(ml).forEach(function(k){dates.push(k);});var tr=store.get("bf_training")||{};Object.keys(tr).forEach(function(k){dates.push(k);});dates=dates.filter(Boolean).sort();s=dates.length?dates[0]:todayISO();store.set("bf_start",s);return s;}
   function bfWeek(){var st=new Date(bfStart()+"T00:00:00"),now=new Date();var days=Math.floor((now-st)/86400000);return Math.max(1,Math.floor(days/7)+1);}
+  var PHASE_LEN=12;
+  function bfPhase(){return Math.floor((bfWeek()-1)/PHASE_LEN)+1;}
+  function bfPhaseWeek(){return ((bfWeek()-1)%PHASE_LEN)+1;}
   function plannedStrengthThisWeek(){var map=weekPlanMap(weekKey(new Date())),n=0;for(var i=0;i<7;i++)if(isStrengthType(map[i]))n++;return n;}
   function loggingDaysThisWeek(){var all=store.get("bf_meallog")||{},n=0;Object.keys(all).forEach(function(k){if(inThisWeek(k)){var t=mealTotals(k);if(t&&(t.kcal>0||t.p>0))n++;}});return n;}
   function weeklyConsistency(){var protein=proteinDaysThisWeek()/7,pl=plannedStrengthThisWeek()||3,train=Math.min(1,strengthDoneThisWeek()/pl),activity=walkDoneThisWeek()?1:0,logging=loggingDaysThisWeek()/7;return {protein:protein,train:train,activity:activity,logging:logging,overall:Math.round((protein+train+activity+logging)/4*100)};}
-  function renderWeekBadge(){var b=$("#hdr-week");if(b)b.textContent="Week "+bfWeek();}
+  function renderWeekBadge(){var b=$("#hdr-week");if(b)b.textContent="Phase "+bfPhase()+" \u00b7 Week "+bfPhaseWeek();}
   function loadPicks(){var p=store.get("bf_focuspick");if(!Array.isArray(p)){p=["protein","sessions","walk"];store.set("bf_focuspick",p);}return p;}
   function savePicks(p){store.set("bf_focuspick",p);}
   function autoDone(k){if(k==="protein")return proteinDaysThisWeek()>=7;if(k==="sessions")return trainingDoneThisWeek()>=3;if(k==="weight")return weightLoggedThisWeek();if(k==="portions")return portionsThisWeek()>=3;return false;}
@@ -2647,7 +2661,7 @@
 
   /* =================== FUEL =================== */
   var fuelTips={morning:"<b>Training early?</b> A smaller pre-workout snack like a banana or rice cakes often sits better — fit the bigger meal afterwards.",afternoon:"<b>Midday session?</b> Build your pre-workout meal around lunch — chicken + rice, eaten 1–3 hours ahead.",evening:"<b>Evening session?</b> Keep the post-workout meal balanced so it feels comfortable before bed."};
-  function refreshFuel(){$("#fuel-tip").innerHTML=fuelTips[state.fTime];renderFuelTarget();}
+  function refreshFuel(){$("#fuel-tip").innerHTML=fuelTips[state.fTime];renderFuelTarget();renderEnergy();renderHabits();}
   function renderFuelTarget(){
     var el=$("#fuel-target-card");if(!el)return;
     var td=new Date().getDay(),idx=td===0?6:td-1,tp=plan[idx];
@@ -2726,7 +2740,7 @@
     var cw=creatineWeek(),crStr=cw.done+"/"+cw.total+" ("+cw.pct+"%)";
     var rows=[["Weight change",wchg],["Waist change",waistchg],["Body fat change",fatchg],["Training completed",strengthDoneThisWeek()+" / "+pl],["Training energy",enStr],["Creatine consistency",crStr],["Protein goal days",proteinDaysThisWeek()+" / 7"],["Activity completed",walkDoneThisWeek()?"Yes":"No"],["Days logged",loggingDaysThisWeek()+" / 7"],["Consistency score",c.overall+"%"]];
     var statHtml=rows.map(function(x){return '<div class="statline"><span class="k">'+x[0]+'</span><span class="v" style="font-size:calc(17px*var(--ts,1))">'+x[1]+'</span></div>';}).join("");
-    $("#review-body").innerHTML='<div class="eyebrow" style="margin:10px 0 2px">Week '+bfWeek()+' summary</div><p class="muted-p" style="margin:2px 0 8px">Consistency and habits — not a countdown to a date.</p>'+statHtml
+    $("#review-body").innerHTML='<div class="eyebrow" style="margin:10px 0 2px">Phase '+bfPhase()+' \u00b7 Week '+bfPhaseWeek()+' summary</div><p class="muted-p" style="margin:2px 0 8px">Journey week '+bfWeek()+' \u2014 consistency and habits, not a countdown to a date.</p>'+statHtml
       +'<div class="label" style="margin-top:16px">Wins</div><textarea class="mealinput" id="review-wins" placeholder="What went well?">'+esc(r.wins)+'</textarea>'
       +'<div class="label">Challenges</div><textarea class="mealinput" id="review-challenges" placeholder="What was tricky?">'+esc(r.challenges)+'</textarea>'
       +'<div class="label" style="margin-top:4px">Next week — choose one</div><div class="chips" style="margin-top:4px">'+focusOptions.map(function(o){return '<span class="tag'+(r.focus===o?' on':'')+'" data-focus="'+esc(o)+'"><span class="b"></span>'+o+'</span>';}).join("")+'</div>';
@@ -2957,10 +2971,10 @@
   function missionControlHTML(){
     var p=loadProfile(),gmap={loss:"Fat loss",maintain:"Maintenance",build:"Muscle gain"};
     var goal=gmap[p.goalType]||"Fat loss",cw=latestWeight(),gw=p.goalWeight;
-    var prog=missionProgress(p),wk=weekNumber(p),cyc=cycleDayOf(loadCycle());
+    var prog=missionProgress(p),cyc=cycleDayOf(loadCycle());
     var s='<div class="mc-grid">'
       +'<div class="mc-stat"><div class="k">Goal</div><div class="v">'+goal+'</div></div>'
-      +'<div class="mc-stat"><div class="k">Week</div><div class="v">'+wk+(p.weeksTotal?' / '+p.weeksTotal:'')+'</div></div>'
+      +'<div class="mc-stat"><div class="k">Phase '+bfPhase()+'</div><div class="v">Wk '+bfPhaseWeek()+' / '+PHASE_LEN+'</div></div>'
       +'<div class="mc-stat"><div class="k">Weight</div><div class="v">'+(cw!=null?cw.toFixed(1)+' kg':'\u2014')+'</div></div>'
       +'<div class="mc-stat"><div class="k">'+(gw?'Goal weight':'Goal body fat')+'</div><div class="v">'+(gw?Number(gw).toFixed(1)+' kg':(p.goalBF!=null?p.goalBF.toFixed(1)+' %':'\u2014'))+'</div></div>';
     if(cyc!=null)s+='<div class="mc-stat"><div class="k">Cycle day</div><div class="v">'+cyc+'</div></div>';
