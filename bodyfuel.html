@@ -1146,11 +1146,6 @@
     <!-- ============ TRAINING & FUEL ============ -->
     <section class="screen" id="fuel">
       <div class="stack">
-        <div class="card">
-          <div class="eyebrow">Today's session</div>
-          <div id="today-session"></div>
-        </div>
-
         <div class="card" id="rest-timer-card">
           <div class="eyebrow">Rest timer</div>
           <div class="rt-display" id="rt-display">1:00</div>
@@ -1173,6 +1168,11 @@
             <button type="button" class="rt-btn" id="rt-reset">Reset</button>
           </div>
           <div class="rt-pref" id="rt-pref"></div>
+        </div>
+
+        <div class="card">
+          <div class="eyebrow">Today's session</div>
+          <div id="today-session"></div>
         </div>
 
         <div class="card" id="energy-card">
@@ -1311,7 +1311,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 42</b></div>
+            <div class="about-row"><span>Version</span><b>Build 44</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1371,7 +1371,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 42"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 44"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -1581,7 +1581,8 @@
   function dchLabel(iso){if(iso===todayISO())return "Today";var y=new Date();y.setDate(y.getDate()-1);if(iso===ovIso(y))return "Yesterday";var d=new Date(iso+"T00:00:00"),wd=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()],mo=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][d.getMonth()];return wd+" "+d.getDate()+" "+mo;}
   var DCH={
     ml:{get:function(){return mlSel();},set:function(iso){state.mlDate=(iso===todayISO()?null:iso);renderMealLog();if(typeof renderSleep==="function")renderSleep();}},
-    sess:{get:function(){return sessISO();},set:function(iso){state.sessDate=(iso===todayISO()?null:iso);renderTodaySession();}}
+    sess:{get:function(){return sessISO();},set:function(iso){state.sessDate=(iso===todayISO()?null:iso);renderTodaySession();}},
+    sleep:{get:function(){return sleepSel();},set:function(iso){state.sleepDate=(iso===todayISO()?null:iso);if(typeof renderSleep==="function")renderSleep();}}
   };
   function dayNavHTML(ch){var iso=DCH[ch].get(),atToday=(iso===todayISO());
     return '<div class="daynav"><button type="button" class="dn-btn" data-dnav2="prev" data-dch="'+ch+'" aria-label="Previous day">\u2039</button>'
@@ -1593,13 +1594,15 @@
   function migrateMealLog(){var ml=store.get("bf_meallog");if(ml&&typeof ml==="object"&&(Array.isArray(ml.breakfast)||Array.isArray(ml.lunch)||Array.isArray(ml.dinner)||Array.isArray(ml.snack))){var flat={breakfast:ml.breakfast||[],lunch:ml.lunch||[],dinner:ml.dinner||[],snack:ml.snack||[]},dated={};Object.keys(ml).forEach(function(k){if(["breakfast","lunch","dinner","snack"].indexOf(k)<0)dated[k]=ml[k];});dated[todayISO()]=flat;store.set("bf_meallog",dated);}}
   function loadMealDay(){var all=store.get("bf_meallog")||{};return all[mlSel()]||{breakfast:[],lunch:[],dinner:[],snack:[]};}
   function saveMealDay(day){var all=store.get("bf_meallog")||{};all[mlSel()]=day;store.set("bf_meallog",all);}
-  function loadSleep(){var all=store.get("bf_sleep")||{};return all[mlSel()]||null;}
-  function saveSleepEntry(e){var all=store.get("bf_sleep")||{};if(e==null)delete all[mlSel()];else all[mlSel()]=e;store.set("bf_sleep",all);}
+  function sleepSel(){return state.sleepDate||todayISO();}
+  function loadSleep(){var all=store.get("bf_sleep")||{};return all[sleepSel()]||null;}
+  function saveSleepEntry(e){var all=store.get("bf_sleep")||{};if(e==null)delete all[sleepSel()];else all[sleepSel()]=e;store.set("bf_sleep",all);}
   function renderSleep(){var card=$("#sleep-card");if(!card)return;
     if(!trackOn("sleep")){card.style.display="none";return;}
     card.style.display="";
     var box=$("#sleep-checkin");if(!box)return;var e=loadSleep()||{},q=e.quality||"";
-    box.innerHTML='<p class="muted-p" style="margin:2px 0 12px">Log how you slept for '+mlDateLabel().toLowerCase()+'. Manual entry only.</p>'
+    box.innerHTML='<div class="label">Sleep date</div>'+dayNavHTML("sleep")
+      +'<p class="muted-p" style="margin:2px 0 12px">Log how you slept for '+dchLabel(sleepSel()).toLowerCase()+'. Manual entry only.</p>'
       +'<div class="pmeal-grid"><div class="pmeal"><label>Hours</label><input id="sl-h" type="number" inputmode="numeric" min="0" max="24" placeholder="\u2014" value="'+(e.h!=null?esc(e.h):"")+'"></div><div class="pmeal"><label>Minutes</label><input id="sl-m" type="number" inputmode="numeric" min="0" max="59" placeholder="\u2014" value="'+(e.m!=null?esc(e.m):"")+'"></div></div>'
       +'<div class="pmeal" style="margin-top:10px"><label>Sleep score (optional)</label><input id="sl-score" type="number" inputmode="numeric" min="0" max="100" placeholder="\u2014" value="'+(e.score!=null?esc(e.score):"")+'"></div>'
       +'<div class="label" style="margin-top:14px">Sleep quality</div><div class="goalseg" id="sl-quality">'+[["poor","Poor"],["ok","OK"],["good","Good"]].map(function(o){return '<button type="button" data-val="'+o[0]+'"'+(q===o[0]?' class="on"':'')+'>'+o[1]+'</button>';}).join("")+'</div>'
@@ -2081,10 +2084,7 @@
     var e=loadEnergyMap()[todayISO()]||"",s=creatineSlots(todayISO());
     function eb(v,lab){return '<button class="'+(e===v?'on':'')+'" data-val="'+v+'">'+lab+'</button>';}
     return '<div class="label">Post-workout check-in</div>'
-      +'<div class="ratergrp"><div class="rl">Energy today</div><div class="opts" data-rgrp="ci-energy">'+eb("low","Low")+eb("medium","Medium")+eb("high","High")+'</div></div>'
-      +'<div class="rl" style="margin-top:12px">Creatine</div>'
-      +'<label class="mobitem"><input type="checkbox" id="ci-cre-am"'+(s.am?' checked':'')+'><span>Morning 5 g</span></label>'
-      +'<label class="mobitem"><input type="checkbox" id="ci-cre-pm"'+(s.pm?' checked':'')+'><span>Evening 5 g</span></label>';
+      +'<div class="ratergrp"><div class="rl">Energy today</div><div class="opts" data-rgrp="ci-energy">'+eb("low","Low")+eb("medium","Medium")+eb("high","High")+'</div></div>';
   }
   function bindRecovery(){
     var rm=$('[data-group="rec-mode"]');if(rm)rm.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;setSeg("rec-mode",b.getAttribute("data-val"));saveCardio("mode",b.getAttribute("data-val"));});
