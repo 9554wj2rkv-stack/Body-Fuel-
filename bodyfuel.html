@@ -689,6 +689,8 @@
   .daynav .dn-label{flex:1;text-align:center;font-family:var(--font-b);font-size:calc(13px*var(--ts,1));font-weight:700;color:var(--ink)}
   .daynav .dn-btn{flex:none;width:40px;height:40px;border:1px solid var(--line);background:var(--surface-2);border-radius:11px;color:var(--accent);font-size:calc(22px*var(--ts,1));line-height:1;cursor:pointer}
   .daynav .dn-btn.off{opacity:.3;pointer-events:none}
+  .daynav .dn-label.dn-pick{position:relative;cursor:pointer}
+  .daynav .dn-label .dn-date{position:absolute;inset:0;width:100%;height:100%;opacity:0;border:0;padding:0;margin:0;cursor:pointer;-webkit-appearance:none;appearance:none}
   .exlog .exin{display:flex;align-items:flex-end;gap:8px;margin-top:9px}
   .exlog .exin .exset{display:flex;flex-direction:column;gap:3px}
   .exlog .exin .exset label{font-size:calc(10.5px*var(--ts,1));color:var(--ink-faint);font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding-left:2px}
@@ -1309,7 +1311,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 40</b></div>
+            <div class="about-row"><span>Version</span><b>Build 41</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1369,7 +1371,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 40"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 41"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -1576,7 +1578,18 @@
   function mlDateObj(){return new Date(mlSel()+"T00:00:00");}
   function mlDateLabel(){var iso=mlSel();if(iso===todayISO())return "Today";var y=new Date();y.setDate(y.getDate()-1);if(iso===ovIso(y))return "Yesterday";var d=mlDateObj(),wd=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()],mo=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][d.getMonth()];return wd+" "+d.getDate()+" "+mo;}
   function gotoMlDate(which){if(which==="today"){state.mlDate=null;renderMealLog();if(typeof renderSleep==="function")renderSleep();return;}var d=mlDateObj();d.setDate(d.getDate()+(which==="next"?1:-1));var iso=ovIso(d);if(iso>todayISO())return;state.mlDate=(iso===todayISO())?null:iso;renderMealLog();if(typeof renderSleep==="function")renderSleep();}
-  function renderMlNav(){var n=$("#ml-nav");if(!n)return;var atToday=mlSel()===todayISO();n.innerHTML='<div class="daynav"><button type="button" class="dn-btn" data-mlnav="prev" aria-label="Previous day">\u2039</button><div class="dn-label">'+mlDateLabel()+'</div><button type="button" class="dn-btn'+(atToday?' off':'')+'" data-mlnav="next" aria-label="Next day">\u203a</button></div>'+(atToday?'':'<button type="button" class="linkbtn" data-mlnav="today" style="margin:-4px 0 12px">Back to today</button>');}
+  function dchLabel(iso){if(iso===todayISO())return "Today";var y=new Date();y.setDate(y.getDate()-1);if(iso===ovIso(y))return "Yesterday";var d=new Date(iso+"T00:00:00"),wd=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()],mo=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][d.getMonth()];return wd+" "+d.getDate()+" "+mo;}
+  var DCH={
+    ml:{get:function(){return mlSel();},set:function(iso){state.mlDate=(iso===todayISO()?null:iso);renderMealLog();if(typeof renderSleep==="function")renderSleep();}},
+    sess:{get:function(){return sessISO();},set:function(iso){state.sessDate=(iso===todayISO()?null:iso);renderTodaySession();}}
+  };
+  function dayNavHTML(ch){var iso=DCH[ch].get(),atToday=(iso===todayISO());
+    return '<div class="daynav"><button type="button" class="dn-btn" data-dnav2="prev" data-dch="'+ch+'" aria-label="Previous day">\u2039</button>'
+      +'<div class="dn-label dn-pick">'+dchLabel(iso)+' \u25be<input type="date" class="dn-date" data-dch="'+ch+'" max="'+todayISO()+'" value="'+iso+'" aria-label="Pick a date"></div>'
+      +'<button type="button" class="dn-btn'+(atToday?' off':'')+'" data-dnav2="next" data-dch="'+ch+'" aria-label="Next day">\u203a</button></div>'
+      +(atToday?'':'<button type="button" class="linkbtn" data-dnav2="today" data-dch="'+ch+'" style="margin:-4px 0 12px">Back to today</button>');}
+  function dchGoto(ch,which){var cur=DCH[ch].get(),iso;if(which==="today"){iso=todayISO();}else{var d=new Date(cur+"T00:00:00");d.setDate(d.getDate()+(which==="next"?1:-1));iso=ovIso(d);}if(iso>todayISO())return;DCH[ch].set(iso);}
+  function renderMlNav(){var n=$("#ml-nav");if(!n)return;n.innerHTML=dayNavHTML("ml");}
   function migrateMealLog(){var ml=store.get("bf_meallog");if(ml&&typeof ml==="object"&&(Array.isArray(ml.breakfast)||Array.isArray(ml.lunch)||Array.isArray(ml.dinner)||Array.isArray(ml.snack))){var flat={breakfast:ml.breakfast||[],lunch:ml.lunch||[],dinner:ml.dinner||[],snack:ml.snack||[]},dated={};Object.keys(ml).forEach(function(k){if(["breakfast","lunch","dinner","snack"].indexOf(k)<0)dated[k]=ml[k];});dated[todayISO()]=flat;store.set("bf_meallog",dated);}}
   function loadMealDay(){var all=store.get("bf_meallog")||{};return all[mlSel()]||{breakfast:[],lunch:[],dinner:[],snack:[]};}
   function saveMealDay(day){var all=store.get("bf_meallog")||{};all[mlSel()]=day;store.set("bf_meallog",all);}
@@ -1810,7 +1823,7 @@
   function renderTodaySession(){
     var p=dayEntry(sessWeekKey(),sessIdx()),host=$("#today-session");
     var atToday=sessISO()===todayISO();
-    var nav='<div class="daynav"><button class="dn-btn" data-dnav="prev" aria-label="Previous day">‹</button><div class="dn-label">'+sessLabel()+'</div><button class="dn-btn'+(atToday?' off':'')+'" data-dnav="next" aria-label="Next day">›</button></div>'+(atToday?'':'<button class="linkbtn" data-dnav="today" style="margin:-4px 0 12px">Back to today</button>');
+    var nav=dayNavHTML("sess");
     var head='<div class="built" style="margin-bottom:10px">'+dayName[p.d]+' — '+p.t+'</div>';
     if(p.why==="recovery"){
       var pcr=postCheckinHTML();
@@ -3557,7 +3570,8 @@
 
   migrateMealLog();
   populateFoodSelect();renderMealLog();renderOverview();applyTypography(store.get("bf_typography")||"signature");applyTextScale(store.get("bf_textscale")||"1");applyTheme(store.get("bf_theme")||"dark");
-  (function(){var n=$("#ml-nav");if(n)n.addEventListener("click",function(e){var b=e.target.closest("[data-mlnav]");if(b)gotoMlDate(b.getAttribute("data-mlnav"));});})();
+  document.addEventListener("click",function(e){var b=e.target.closest("[data-dnav2]");if(b)dchGoto(b.getAttribute("data-dch"),b.getAttribute("data-dnav2"));});
+  document.addEventListener("change",function(e){var d=e.target.closest(".dn-date");if(!d)return;var iso=d.value;if(!iso)return;if(iso>todayISO())iso=todayISO();var ch=d.getAttribute("data-dch");if(DCH[ch])DCH[ch].set(iso);});
   renderSleep();
   renderWater();
   (function(){var d=$("#dt-card");if(d&&store.get("bf_dtopen")===true)d.classList.add("open");})();
