@@ -641,6 +641,10 @@
   .pmeal{min-width:0}
   .pmeal input{width:100%;box-sizing:border-box;min-width:0;border:1px solid var(--line);background:var(--surface-2);border-radius:11px;padding:11px 12px;font-family:var(--font-b);font-size:calc(17px*var(--ts,1))}
   .pmeal input[type=date]{-webkit-appearance:none;appearance:none;max-width:100%}
+  .csm-badge{display:inline-block;font-size:calc(12px*var(--ts,1));font-weight:700;padding:4px 11px;border-radius:999px;letter-spacing:.01em}
+  .csm-badge.green{background:rgba(95,148,105,.18);color:#74b585}
+  .csm-badge.yellow{background:rgba(205,162,62,.2);color:#d2a53e}
+  .csm-badge.grey{background:var(--surface-2);color:var(--ink-faint)}
   .pmeal input:focus{outline:none;border-color:var(--accent);background:var(--surface-2)}
 
   .cal-line{display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:var(--font-d);font-weight:600;font-size:calc(17px*var(--ts,1));color:var(--accent-deep);padding-bottom:14px;margin-bottom:8px;border-bottom:1px solid var(--line-soft);letter-spacing:-.01em}
@@ -982,6 +986,11 @@
           <p class="muted-p" style="margin-top:12px">Use this as a planning guide, not a medical rule.</p>
         </div>
 
+        <div class="card" id="cyclesmart-card">
+          <div class="eyebrow">Cycle Smart Body Tracking</div>
+          <div id="cyclesmart"></div>
+        </div>
+
         <div class="card">
           <div class="eyebrow">Weekly check-in only</div>
           <p class="muted-p" style="margin-bottom:14px">Complete your weekly review on Saturday or Sunday. Measure under the same conditions each time — weight bounces around daily, so it's the weekly trend that matters, not any single day.</p>
@@ -992,6 +1001,7 @@
             <div class="metric"><label>Weight (kg)</label><input id="m-weight" type="text" inputmode="decimal" placeholder="—"></div>
             <div class="metric"><label>Body fat %</label><input id="m-fat" type="text" inputmode="decimal" placeholder="—"></div>
             <div class="metric"><label>Muscle mass %</label><input id="m-muscle" type="text" inputmode="decimal" placeholder="—"></div>
+            <div class="metric"><label>Skeletal muscle (kg)</label><input id="m-smm" type="text" inputmode="decimal" placeholder="—"></div>
             <div class="metric"><label>Fat mass (kg)</label><input id="m-fatmass" type="number" placeholder="auto" readonly></div>
             <div class="metric"><label>Lean mass (kg)</label><input id="m-leanmass" type="number" placeholder="auto" readonly></div>
           </div>
@@ -1012,7 +1022,17 @@
             <div class="metric"><label>Calf R (cm)</label><input id="m-calfR" type="text" inputmode="decimal" placeholder="—"></div>
           </div>
           <div style="margin-top:13px"><textarea class="mealinput" id="m-notes" placeholder="Notes (optional)"></textarea></div>
-          <button class="cta" id="save-metrics">Save this week</button>
+          <div class="eyebrow" style="margin:16px 0 8px">Cycle context</div>
+          <div class="metrics">
+            <div class="metric"><label>Cycle day</label><input id="m-cycleday" type="number" inputmode="numeric" placeholder="—"></div>
+            <div class="metric"><label>HRT week</label><input id="m-hrtweek" type="number" inputmode="numeric" placeholder="—"></div>
+            <div class="metric"><label>Training week</label><input id="m-trainweek" type="number" inputmode="numeric" placeholder="—"></div>
+          </div>
+          <div class="label" style="margin-top:12px">Cycle phase</div>
+          <div class="goalseg" id="m-phase"><button type="button" class="on" data-val="">Auto</button><button type="button" data-val="Menstrual">Menstrual</button><button type="button" data-val="Follicular">Follicular</button><button type="button" data-val="Ovulation">Ovulation</button><button type="button" data-val="Luteal">Luteal</button></div>
+          <div class="label" style="margin-top:12px">Creatine</div>
+          <div class="goalseg" id="m-creatine"><button type="button" data-val="yes">Yes</button><button type="button" class="on" data-val="no">No</button></div>
+          <button class="cta" id="save-metrics" style="margin-top:14px">Save this week</button>
           <div class="saved-note" id="metrics-saved"></div>
         </div>
 
@@ -1335,7 +1355,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 49</b></div>
+            <div class="about-row"><span>Version</span><b>Build 50</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1395,7 +1415,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 49"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 50"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -2823,18 +2843,72 @@
   function biLabel(){if(biIsCurrent())return"This week";var m=biMonday(),cur=mondayOf(new Date());var wk=Math.round((cur-m)/6048e5);var lab=m.toLocaleDateString(undefined,{day:"numeric",month:"short"});return wk+(wk===1?" week ago":" weeks ago")+" \u00b7 "+lab;}
   function entryForWeek(wk){var e=loadEntries();for(var i=e.length-1;i>=0;i--){if(weekKey(new Date(e[i].date+"T00:00:00"))===wk)return e[i];}return null;}
   function renderCheckinNav(){var n=$("#ci-nav");if(!n)return;n.innerHTML='<button class="dn-btn" data-binav="prev" aria-label="Previous week">\u2039</button><div class="dn-label">'+biLabel()+'</div><button class="dn-btn" data-binav="next"'+(biIsCurrent()?" disabled":"")+' aria-label="Next week">\u203a</button>';}
-  function renderCheckin(){renderCheckinNav();fillMetricInputs();var b=$("#ci-back");if(b)b.style.display=biIsCurrent()?"none":"block";}
+  function renderCheckin(){renderCheckinNav();fillMetricInputs();var b=$("#ci-back");if(b)b.style.display=biIsCurrent()?"none":"block";if(typeof renderCycleSmart==="function")renderCycleSmart();}
   function gotoBodyWeek(which){var m=biMonday();if(which==="current"){state.bodyWeek=null;renderCheckin();return;}if(which==="prev")m.setDate(m.getDate()-7);if(which==="next")m.setDate(m.getDate()+7);var cur=mondayOf(new Date());if(m>cur)return;state.bodyWeek=(weekKey(m)===weekKey(cur))?null:weekKey(m);renderCheckin();}
-  function fillMetricInputs(){var ent=entryForWeek(biWeekKey());[["m-weight","weight"],["m-fat","fat"],["m-muscle","muscle"],["m-waist","waist"],["m-hip","hip"],["m-booty","booty"],["m-chest","chest"],["m-armL","armL"],["m-armR","armR"],["m-thighL","thighL"],["m-thighR","thighR"],["m-calfL","calfL"],["m-calfR","calfR"]].forEach(function(p){$("#"+p[0]).value=(ent&&ent[p[1]]!=null&&ent[p[1]]!=="")?ent[p[1]]:"";});$("#m-notes").value=(ent&&ent.notes)?ent.notes:"";recomputeComposition();}
+  function fillMetricInputs(){var ent=entryForWeek(biWeekKey());[["m-weight","weight"],["m-fat","fat"],["m-muscle","muscle"],["m-waist","waist"],["m-hip","hip"],["m-booty","booty"],["m-chest","chest"],["m-armL","armL"],["m-armR","armR"],["m-thighL","thighL"],["m-thighR","thighR"],["m-calfL","calfL"],["m-calfR","calfR"]].forEach(function(p){$("#"+p[0]).value=(ent&&ent[p[1]]!=null&&ent[p[1]]!=="")?ent[p[1]]:"";});$("#m-notes").value=(ent&&ent.notes)?ent.notes:"";
+    (function(){function setSeg(sel,val){var seg=$(sel);if(!seg)return;$all("button",seg).forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===String(val));});}
+      $("#m-smm").value=(ent&&ent.smm!=null)?ent.smm:"";$("#m-hrtweek").value=(ent&&ent.hrtWeek!=null)?ent.hrtWeek:"";$("#m-trainweek").value=(ent&&ent.trainingWeek!=null)?ent.trainingWeek:"";
+      var cd=(ent&&ent.cycleDay!=null)?ent.cycleDay:cycleDayForDate(loadCycle(),biIsCurrent()?todayISO():biWeekKey());$("#m-cycleday").value=cd!=null?cd:"";
+      setSeg("#m-phase",(ent&&ent.phase)||"");setSeg("#m-creatine",(ent&&ent.creatine)?"yes":"no");})();
+    recomputeComposition();}
   function saveMetrics(){
-    var entry={date:biIsCurrent()?todayISO():biWeekKey(),weight:num($("#m-weight").value),fat:num($("#m-fat").value),muscle:num($("#m-muscle").value),waist:num($("#m-waist").value),hip:num($("#m-hip").value),booty:num($("#m-booty").value),chest:num($("#m-chest").value),armL:num($("#m-armL").value),armR:num($("#m-armR").value),thighL:num($("#m-thighL").value),thighR:num($("#m-thighR").value),calfL:num($("#m-calfL").value),calfR:num($("#m-calfR").value),notes:$("#m-notes").value.trim()};
+    var phB=$("#m-phase .on"),crB=$("#m-creatine .on");
+    var entry={date:biIsCurrent()?todayISO():biWeekKey(),weight:num($("#m-weight").value),fat:num($("#m-fat").value),muscle:num($("#m-muscle").value),waist:num($("#m-waist").value),hip:num($("#m-hip").value),booty:num($("#m-booty").value),chest:num($("#m-chest").value),armL:num($("#m-armL").value),armR:num($("#m-armR").value),thighL:num($("#m-thighL").value),thighR:num($("#m-thighR").value),calfL:num($("#m-calfL").value),calfR:num($("#m-calfR").value),smm:num($("#m-smm").value),cycleDay:num($("#m-cycleday").value),hrtWeek:num($("#m-hrtweek").value),trainingWeek:num($("#m-trainweek").value),phase:(phB&&phB.getAttribute("data-val"))||null,creatine:crB?crB.getAttribute("data-val")==="yes":false,notes:$("#m-notes").value.trim()};
     if(entry.weight!=null&&entry.fat!=null){entry.fatmass=+(entry.weight*entry.fat/100).toFixed(1);entry.leanmass=+(entry.weight-entry.fatmass).toFixed(1);}
     var e=loadEntries(),wk=biWeekKey(),idx=-1;
     for(var i=0;i<e.length;i++){if(weekKey(new Date(e[i].date+"T00:00:00"))===wk){idx=i;break;}}
     if(idx>=0)e[idx]=entry;else e.push(entry);
     e.sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0;});
-    store.set("bf_progress",e);flash("#metrics-saved","Saved for "+(biIsCurrent()?"this week":biLabel()));renderTrend();renderMission();renderWeekFocus();renderWeeklyReview();renderCheckinNav();renderCheckinNudge();
+    store.set("bf_progress",e);flash("#metrics-saved","Saved for "+(biIsCurrent()?"this week":biLabel()));renderTrend();renderMission();renderWeekFocus();renderWeeklyReview();renderCheckinNav();renderCheckinNudge();if(typeof renderCycleSmart==="function")renderCycleSmart();
   }
+  /* ===== Cycle Smart Body Tracking ===== */
+  function smartPhase(day){if(day==null||day==="")return "";day=+day;if(isNaN(day))return "";if(day>=1&&day<=5)return "Menstrual";if(day<=12)return "Follicular";if(day<=17)return "Ovulation";return "Luteal";}
+  function cycleDayForDate(c,iso){if(!c||!c.start)return null;var len=c.len||28;var s=new Date(c.start+"T00:00:00"),t=new Date(iso+"T00:00:00");var diff=Math.floor((t-s)/864e5);if(diff<0)return null;return (diff%len)+1;}
+  function csmEntryPhase(e){if(!e)return "";if(e.phase)return e.phase;return smartPhase(e.cycleDay);}
+  function csmEntries(){return loadEntries().slice().sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0;});}
+  function csmCurrent(){var e=csmEntries();return e.length?e[e.length-1]:null;}
+  function csmAvgPair(a,b){var v=[];if(a!=null)v.push(+a);if(b!=null)v.push(+b);if(!v.length)return null;return v.reduce(function(s,x){return s+x;},0)/v.length;}
+  function csmFieldVal(e,key){if(!e)return null;if(key==="__arms")return csmAvgPair(e.armL,e.armR);if(key==="__thighs")return csmAvgPair(e.thighL,e.thighR);return e[key]!=null?+e[key]:null;}
+  var CSM_FIELDS=[["weight","Weight","kg"],["fat","Body fat","%"],["waist","Waist","cm"],["hip","Hips","cm"],["booty","Booty","cm"],["muscle","Muscle mass","%"],["smm","Skeletal muscle","kg"],["__arms","Arms","cm"],["__thighs","Thighs","cm"]];
+  function csmRef(cur,mode){var e=csmEntries();if(!cur)return null;var idx=e.indexOf(cur),prev=e.slice(0,idx);
+    if(mode==="last")return prev.length?prev[prev.length-1]:null;
+    if(mode==="phase"){var ph=csmEntryPhase(cur);if(!ph)return null;for(var i=prev.length-1;i>=0;i--){if(csmEntryPhase(prev[i])===ph)return prev[i];}return null;}
+    if(mode==="day"){var cd=cur.cycleDay;if(cd==null)return null;var best=null,bd=99;for(var j=prev.length-1;j>=0;j--){var d=prev[j].cycleDay;if(d==null)continue;var diff=Math.abs(d-cd);if(diff<=2&&diff<bd){bd=diff;best=prev[j];}}return best;}
+    return null;}
+  function csmBadge(cur,ref,mode){if(!ref)return ["grey","Not enough data yet"];if(mode==="phase"||mode==="day")return ["green","Reliable comparison"];if(csmEntryPhase(cur)&&csmEntryPhase(cur)===csmEntryPhase(ref))return ["green","Reliable comparison"];return ["yellow","Cycle-affected comparison"];}
+  function csmCmpRows(cur,ref){return CSM_FIELDS.map(function(f){var a=csmFieldVal(cur,f[0]),b=csmFieldVal(ref,f[0]);if(a==null||b==null)return "";var d=a-b,mag=Math.round(Math.abs(d)*10)/10,ds=(Math.abs(d)<0.05?"\u2014 ":(d>0?"+":"\u2212")+mag+" ")+f[2];return '<div class="about-row"><span>'+f[1]+'</span><b>'+ds+'</b></div>';}).filter(Boolean).join("");}
+  function csmAvgField(es,k){var v=es.filter(function(x){return x[k]!=null;}).map(function(x){return +x[k];});if(!v.length)return null;return v.reduce(function(s,x){return s+x;},0)/v.length;}
+  function csmPatternHTML(){var e=csmEntries(),phases=["Menstrual","Follicular","Ovulation","Luteal"];
+    var rows=phases.map(function(ph){var es=e.filter(function(x){return csmEntryPhase(x)===ph;});if(es.length<2)return '<div class="about-row"><span>'+ph+'</span><b class="ink-faint">Need 2+ entries</b></div>';
+      var w=csmAvgField(es,"weight"),wa=csmAvgField(es,"waist"),hp=csmAvgField(es,"hip"),bo=csmAvgField(es,"booty"),parts=[];
+      if(w!=null)parts.push(w.toFixed(1)+" kg");if(wa!=null)parts.push("waist "+wa.toFixed(1));if(hp!=null)parts.push("hips "+hp.toFixed(1));if(bo!=null)parts.push("booty "+bo.toFixed(1));
+      return '<div class="about-row"><span>'+ph+' avg</span><b>'+(parts.join(" \u00b7 ")||"\u2014")+'</b></div>';}).join("");
+    return '<div class="label" style="margin-top:16px">Personal pattern</div><div style="margin-top:2px">'+rows+'</div>';}
+  function csmInsight(cur){if(!cur)return "Add a measurement to see your cycle-aware insight.";var ph=csmEntryPhase(cur),phl=ph?ph.toLowerCase():"same-phase",ref=csmRef(cur,"phase");
+    if(!ref)return "First "+(ph?phl+" ":"")+"measurement logged. Add another "+(ph?phl+" ":"same-phase ")+"entry and you'll get a like-for-like comparison here.";
+    function d(k){return (cur[k]!=null&&ref[k]!=null)?+(+cur[k]-+ref[k]).toFixed(1):null;}
+    var w=d("weight"),waist=d("waist"),mus=d("muscle"),smm=d("smm"),lift=((mus!=null&&mus>0)||(smm!=null&&smm>0)),hrt=cur.hrtWeek!=null?" and HRT week "+cur.hrtWeek:"";
+    if(waist!=null&&waist<0&&(lift||(w!=null&&w<=0))){var p=["Compared with your last "+phl+" measurement, waist is down "+Math.abs(waist)+" cm"];if(lift)p.push("muscle is up");return p.join(" and ")+". That points to real progress despite normal cycle fluctuation.";}
+    if(w!=null&&w>0)return "Weight is up "+Math.abs(w)+" kg, but you're in "+phl+" phase"+hrt+" \u2014 expect some water shift. Waist and strength trends matter more than the scale this week.";
+    if(w!=null&&w<0)return "Weight is down "+Math.abs(w)+" kg vs your last "+phl+" check-in"+(waist!=null&&waist<0?", and waist is down "+Math.abs(waist)+" cm":"")+". Comparing same-phase keeps this honest.";
+    return "Compared with your last "+phl+" measurement, things look broadly stable. Keep comparing same-phase for the clearest read.";}
+  function renderCycleSmart(){var box=$("#cyclesmart");if(!box)return;var cur=csmCurrent();
+    if(!cur){box.innerHTML='<p class="muted-p" style="margin:2px 0 0">Save a check-in below (with your cycle day) to unlock cycle-aware comparisons, phase averages and insights.</p>';return;}
+    var ph=csmEntryPhase(cur),rows=[];
+    if(cur.cycleDay!=null)rows.push(["Cycle day",cur.cycleDay]);
+    if(ph)rows.push(["Phase",ph+" phase"]);
+    if(cur.hrtWeek!=null)rows.push(["HRT week",cur.hrtWeek]);
+    rows.push(["Creatine",cur.creatine?"Yes":"No"]);
+    if(cur.trainingWeek!=null)rows.push(["Training week",cur.trainingWeek]);
+    var ctx=rows.map(function(r){return '<div class="about-row"><span>'+r[0]+'</span><b>'+r[1]+'</b></div>';}).join("");
+    var interp='<p class="muted-p" style="margin:10px 0 0">Measurements may be affected by water retention, hormone adjustment, creatine and cycle phase. Compare with the same cycle phase for better accuracy.</p>';
+    var mode=state.bodyCmpMode||"last";
+    var btns='<div class="goalseg" id="csm-cmp" style="margin:14px 0 10px"><button type="button"'+(mode==="last"?' class="on"':'')+' data-val="last">Last check-in</button><button type="button"'+(mode==="phase"?' class="on"':'')+' data-val="phase">Same phase</button><button type="button"'+(mode==="day"?' class="on"':'')+' data-val="day">Same cycle day</button></div>';
+    var ref=csmRef(cur,mode),bd=csmBadge(cur,ref,mode),bdg='<span class="csm-badge '+bd[0]+'">'+bd[1]+'</span>',res;
+    if(!ref)res='<p class="muted-p" style="margin:8px 0 0">No earlier '+(mode==="phase"?"same-phase":mode==="day"?"same cycle-day (\u00b12)":"")+' entry yet to compare against.</p>';
+    else{var rl=mode==="last"?"last check-in":mode==="phase"?("last "+(ph?ph.toLowerCase():"same-phase")):("cycle day "+ref.cycleDay),rh=csmCmpRows(cur,ref);res='<div class="muted-p" style="margin:8px 0 6px">vs '+rl+' \u00b7 '+dchLabel(ref.date)+'</div>'+(rh||'<p class="muted-p">No overlapping fields to compare.</p>');}
+    var ins='<div class="label" style="margin-top:16px">Body insight</div><p class="muted-p" style="margin:6px 0 0">'+csmInsight(cur)+'</p>';
+    box.innerHTML=ctx+interp+btns+bdg+res+csmPatternHTML()+ins;}
   function arrow(d){return d>0?"+":d<0?"\u2212":"";}
   function delta(key,days){var e=loadEntries().filter(function(x){return x[key]!=null;});if(e.length<2)return null;var last=e[e.length-1],target=new Date(last.date);target.setDate(target.getDate()-days);var ref=null;for(var i=0;i<e.length-1;i++){if(new Date(e[i].date)<=target)ref=e[i];}if(!ref)ref=e[0];if(ref===last)return null;return last[key]-ref[key];}
   function sparkOf(vals,label){if(vals.length<2)return "";var min=Math.min.apply(null,vals),max=Math.max.apply(null,vals),rng=(max-min)||1,W=100,H=38,pad=3;var pts=vals.map(function(v,i){var x=pad+i*(W-2*pad)/(vals.length-1);var y=pad+(1-(v-min)/rng)*(H-2*pad);return [x,y];});var d="M"+pts.map(function(p){return p[0].toFixed(1)+","+p[1].toFixed(1);}).join(" L");var lp=pts[pts.length-1];return '<div class="label" style="margin:16px 0 0">'+label+'</div><svg class="spark" viewBox="0 0 100 38" preserveAspectRatio="none"><path d="'+d+'"/><circle cx="'+lp[0].toFixed(1)+'" cy="'+lp[1].toFixed(1)+'" r="2.2"/></svg>';}
@@ -3413,6 +3487,7 @@
   (function(){var rr=$("#rate-rows");if(rr)rr.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;state.rating[b.parentNode.getAttribute("data-dim")]=b.getAttribute("data-val");renderRateRows();});})();
   (function(){var lq=$("#log-quick");if(lq)lq.addEventListener("click",function(e){var q=e.target.closest(".q");if(!q)return;$("#log-meal").value=q.getAttribute("data-fill");});})();
   $("#save-metrics").addEventListener("click",saveMetrics);
+  document.addEventListener("click",function(e){var pb=e.target.closest("#m-phase button,#m-creatine button");if(pb){var g=pb.parentNode;$all("button",g).forEach(function(x){x.classList.remove("on");});pb.classList.add("on");return;}var cb=e.target.closest("#csm-cmp button");if(cb){state.bodyCmpMode=cb.getAttribute("data-val");renderCycleSmart();}});
   (function(){var n=$("#ci-nav");if(n)n.addEventListener("click",function(e){var b=e.target.closest("[data-binav]");if(b&&!b.disabled)gotoBodyWeek(b.getAttribute("data-binav"));});var bk=$("#ci-back");if(bk)bk.addEventListener("click",function(){gotoBodyWeek("current");});})();
   $("#m-weight").addEventListener("input",recomputeComposition);
   $("#m-fat").addEventListener("input",recomputeComposition);
