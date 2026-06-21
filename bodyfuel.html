@@ -638,7 +638,9 @@
   .pmeal-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
   .pmeal label{display:block;font-size:calc(13px*var(--ts,1));font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:5px}
   .pmeal label small{font-weight:600;letter-spacing:0;text-transform:none;color:var(--ink-faint);margin-left:4px}
-  .pmeal input{width:100%;border:1px solid var(--line);background:var(--surface-2);border-radius:11px;padding:11px 12px;font-family:var(--font-b);font-size:calc(17px*var(--ts,1))}
+  .pmeal{min-width:0}
+  .pmeal input{width:100%;box-sizing:border-box;min-width:0;border:1px solid var(--line);background:var(--surface-2);border-radius:11px;padding:11px 12px;font-family:var(--font-b);font-size:calc(17px*var(--ts,1))}
+  .pmeal input[type=date]{-webkit-appearance:none;appearance:none;max-width:100%}
   .pmeal input:focus{outline:none;border-color:var(--accent);background:var(--surface-2)}
 
   .cal-line{display:flex;align-items:center;justify-content:space-between;gap:10px;font-family:var(--font-d);font-weight:600;font-size:calc(17px*var(--ts,1));color:var(--accent-deep);padding-bottom:14px;margin-bottom:8px;border-bottom:1px solid var(--line-soft);letter-spacing:-.01em}
@@ -841,6 +843,31 @@
           <button class="cta ghost" data-goto="fuel" style="margin-top:14px">Open training planner</button>
         </div>
 
+        <div class="card" id="food-summary-card">
+          <div class="eyebrow">Food</div>
+          <div id="food-summary"></div>
+          <button class="cta ghost" data-goto="food" style="margin-top:12px">Open Food Log</button>
+        </div>
+
+        <div class="card" id="sleep-card">
+          <div class="eyebrow">Sleep Check-In</div>
+          <div id="sleep-checkin"></div>
+        </div>
+
+        <div class="card msec" id="dt-card" data-persist="bf_dtopen">
+          <button type="button" class="msec-head"><span class="eyebrow">Daily targets</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body">
+            <div id="daily-body"></div>
+            <button class="linkbtn" id="reset-day">Reset water &amp; movement</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============ FOOD ============ -->
+    <section class="screen" id="food">
+      <div class="stack">
         <div class="card">
           <div class="eyebrow">Meal log</div>
           <div id="ml-nav"></div>
@@ -866,22 +893,8 @@
             <div class="saved-note" id="ml-saved"></div>
           </div>
         </div>
-
-        <div class="card" id="sleep-card">
-          <div class="eyebrow">Sleep Check-In</div>
-          <div id="sleep-checkin"></div>
-        </div>
-
-        <div class="card msec" id="dt-card" data-persist="bf_dtopen">
-          <button type="button" class="msec-head"><span class="eyebrow">Daily targets</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-          <div class="msec-body">
-            <div id="daily-body"></div>
-            <button class="linkbtn" id="reset-day">Reset water &amp; movement</button>
-          </div>
-        </div>
       </div>
     </section>
-
     <!-- ============ PLATE / MEAL BUILDER ============ -->
 
 
@@ -950,7 +963,7 @@
             <li><span class="b"></span>More protein and fibre usually means a more filling food.</li>
             <li><span class="b"></span>Long lists of unfamiliar names usually mean more processing.</li>
           </ul>
-          <button class="cta ghost" data-goto="learn" style="margin-top:14px">Open Food Label Academy</button>
+          <button class="cta ghost" data-goto="menu" style="margin-top:14px">Open Food Label Academy</button>
         </div>
       </div>
     </section>
@@ -1062,89 +1075,7 @@
     </section>
 
     <!-- ============ LEARN ============ -->
-    <section class="screen" id="learn">
-      <div class="stack" id="learn-stack"></div>
-      <div class="stack">
-        <div class="card lesson"><div class="head"><span class="fdot g"></span><div class="txt"><div class="ttl">Balanced plate guide</div><div class="tease">A simple way to build a meal — no extra logging.</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body"><div class="pedu"><div class="pg">1 · Protein</div><div class="pd">Choose and weigh your protein first — chicken, fish, beef or eggs.</div></div><div class="pedu"><div class="pg">2 · Carb</div><div class="pd">Add cooked rice, potatoes or oats — more on training days, less on rest days.</div></div><div class="pedu"><div class="pg">3 · Fat</div><div class="pd">Add a measured amount of oil or butter — small amounts count quickly.</div></div><div class="pedu"><div class="pg">4 · Veg / salad</div><div class="pd">Add vegetables or salad for fibre and volume — or choose none.</div></div></div></div>
-        <div class="card">
-          <div class="field">
-            <div class="label">Goal</div>
-            <div class="seg" data-group="t-goal">
-              <button data-val="fatloss">Fat loss</button>
-              <button data-val="musclegain">Muscle gain</button>
-              <button class="on" data-val="maintenance">Maintenance</button>
-            </div>
-          </div>
-          <div class="field">
-            <div class="label">Day type</div>
-            <div class="seg dark" data-group="t-day">
-              <button class="on" data-val="training">Training</button>
-              <button data-val="rest">Rest</button>
-              <button data-val="recovery">Recovery</button>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="eyebrow">How to eat today</div>
-          <div class="target"><span class="dot p"></span><div class="tx"><b>Protein</b><span id="t-protein"></span></div></div>
-          <div class="target"><span class="dot c"></span><div class="tx"><b>Carbs</b><span id="t-carbs"></span></div></div>
-          <div class="target"><span class="dot f"></span><div class="tx"><b>Fat</b><span id="t-fat"></span></div></div>
-        </div>
-        <div class="card reminder">
-          <div class="blk"><div class="eyebrow">Training fuel</div><p id="rem-fuel"></p></div>
-          <div class="blk"><div class="eyebrow" style="display:flex;align-items:center;gap:8px">Recovery <button class="whybtn" data-why="sleep" style="background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.28);color:#fff">Why?</button></div><p id="rem-recovery"></p></div>
-        </div>
-        <div class="card">
-          <div class="eyebrow">Weigh &amp; Learn</div>
-          <p class="muted-p" style="margin-bottom:14px">Weigh your food now and then to learn what real portions look like. This is about awareness, not strict calorie counting.</p>
-          <div class="pedu"><div class="pg">Protein</div><div class="pd">Usually <b>100–150g</b> cooked meat or fish — about a palm.</div></div>
-          <div class="pedu"><div class="pg">Carbs</div><div class="pd">Usually <b>100–200g</b> cooked rice or potatoes — more on training days, less on rest days.</div></div>
-          <div class="pedu"><div class="pg">Fat</div><div class="pd">Oil and butter are dense. <b>1 tbsp olive oil ≈ 120 kcal</b> — measure it rather than free-pouring.</div></div>
-        </div>
-        <div class="card">
-          <div class="eyebrow">Portion memory</div>
-          <div id="portion-memory"></div>
-        </div>
-        <div class="card">
-          <div class="eyebrow">Weigh a portion</div>
-          <div class="uploader" id="wp-pick"><svg viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8Z"/><circle cx="12" cy="12.5" r="3.6"/></svg><div class="ut">Add a photo</div><div class="us">Optional — stored only on your device</div></div>
-          <input id="wp-file" type="file" accept="image/*" capture="environment" style="display:none">
-          <div class="preview" id="wp-preview"></div>
-          <div style="margin-top:14px">
-            <input class="mealinput" id="wp-name" type="text" placeholder="Food name (e.g. Chicken)">
-            <input class="mealinput" id="wp-brand" type="text" placeholder="Brand (optional)">
-            <input class="mealinput" id="wp-grams" type="text" inputmode="decimal" placeholder="Weight in grams">
-            <input class="mealinput" id="wp-note" type="text" placeholder="Note (optional)">
-          </div>
-          <button class="more-link" id="wp-more">Add macros (optional) ▾</button>
-          <div class="adv" id="wp-macros">
-            <div class="pmeal-grid">
-              <div class="pmeal"><label>Protein g</label><input id="wp-p" type="text" inputmode="decimal" placeholder="0"></div>
-              <div class="pmeal"><label>Carbs g</label><input id="wp-c" type="text" inputmode="decimal" placeholder="0"></div>
-              <div class="pmeal"><label>Fat g</label><input id="wp-f" type="text" inputmode="decimal" placeholder="0"></div>
-              <div class="pmeal"><label>Fibre g</label><input id="wp-fib" type="text" inputmode="decimal" placeholder="0"></div>
-            </div>
-          </div>
-          <div class="ratergrp"><div class="rl">Cooked, raw or dry</div><div class="opts" data-rgrp="wp-state"><button data-val="cooked">Cooked</button><button data-val="raw">Raw</button><button data-val="dry">Dry</button></div></div>
-          <div class="ratergrp"><div class="rl">Meal</div><div class="opts" data-rgrp="wp-meal"><button data-val="breakfast">Breakfast</button><button data-val="lunch">Lunch</button><button data-val="dinner">Dinner</button><button data-val="snack">Snack</button></div></div>
-          <div class="ratergrp verdict-pick"><div class="rl">How was the portion?</div><div class="opts" data-rgrp="wp-verdict"><button data-val="good">Good portion</button><button data-val="much">Too much</button><button data-val="little">Not enough</button></div></div>
-          <button class="cta" id="wp-save">Save portion</button>
-          <div class="saved-note" id="wp-saved"></div>
-        </div>
-        <div class="card">
-          <div class="eyebrow">My Portion Library</div>
-          <div id="portion-list"></div>
-        </div>
-        <div class="card lesson"><div class="head"><span class="fdot g"></span><div class="txt"><div class="ttl">Green — safe foods</div><div class="tease">Build most meals from these.</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body" id="green-body"></div></div>
-        <div class="card lesson"><div class="head"><span class="fdot y"></span><div class="txt"><div class="ttl">Yellow — sometimes</div><div class="tease">Fine in smaller amounts or now and then.</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body" id="yellow-body"></div></div>
-        <div class="card lesson"><div class="head"><span class="fdot r"></span><div class="txt"><div class="ttl">Red — avoid</div><div class="tease">Kept out of all meal suggestions.</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body" id="red-body"></div></div>
-        <div class="card focus">
-          <div class="eyebrow">Today's Focus</div>
-          <div class="lead" id="focus-lead"></div>
-          <div class="lines" id="focus-lines"></div>
-        </div>
-      </div>
-    </section>
+
 
 
     <!-- ============ TRAINING & FUEL ============ -->
@@ -1157,9 +1088,9 @@
           <div class="rt-quick" id="rt-quick">
             <button type="button" data-rt="30">30s</button>
             <button type="button" data-rt="60">60s</button>
-            <button type="button" data-rt="90">90s</button>
-            <button type="button" data-rt="120">120s</button>
-            <button type="button" data-rt="180">180s</button>
+            <button type="button" data-rt="90">1.5 min</button>
+            <button type="button" data-rt="120">2 min</button>
+            <button type="button" data-rt="180">3 min</button>
           </div>
           <div class="pmeal-grid" style="margin-top:10px">
             <div class="pmeal"><label>Minutes</label><input id="rt-min" type="text" inputmode="numeric" placeholder="0"></div>
@@ -1300,6 +1231,95 @@
           <div class="msec-body" id="menu-rules"></div>
         </div>
 
+        <div class="card msec">
+          <button type="button" class="msec-head"><span class="eyebrow">Learn / Education</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body">
+
+      <div class="stack" id="learn-stack"></div>
+      <div class="stack">
+        <div class="card lesson"><div class="head"><span class="fdot g"></span><div class="txt"><div class="ttl">Balanced plate guide</div><div class="tease">A simple way to build a meal — no extra logging.</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body"><div class="pedu"><div class="pg">1 · Protein</div><div class="pd">Choose and weigh your protein first — chicken, fish, beef or eggs.</div></div><div class="pedu"><div class="pg">2 · Carb</div><div class="pd">Add cooked rice, potatoes or oats — more on training days, less on rest days.</div></div><div class="pedu"><div class="pg">3 · Fat</div><div class="pd">Add a measured amount of oil or butter — small amounts count quickly.</div></div><div class="pedu"><div class="pg">4 · Veg / salad</div><div class="pd">Add vegetables or salad for fibre and volume — or choose none.</div></div></div></div>
+        <div class="card">
+          <div class="field">
+            <div class="label">Goal</div>
+            <div class="seg" data-group="t-goal">
+              <button data-val="fatloss">Fat loss</button>
+              <button data-val="musclegain">Muscle gain</button>
+              <button class="on" data-val="maintenance">Maintenance</button>
+            </div>
+          </div>
+          <div class="field">
+            <div class="label">Day type</div>
+            <div class="seg dark" data-group="t-day">
+              <button class="on" data-val="training">Training</button>
+              <button data-val="rest">Rest</button>
+              <button data-val="recovery">Recovery</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="eyebrow">How to eat today</div>
+          <div class="target"><span class="dot p"></span><div class="tx"><b>Protein</b><span id="t-protein"></span></div></div>
+          <div class="target"><span class="dot c"></span><div class="tx"><b>Carbs</b><span id="t-carbs"></span></div></div>
+          <div class="target"><span class="dot f"></span><div class="tx"><b>Fat</b><span id="t-fat"></span></div></div>
+        </div>
+        <div class="card reminder">
+          <div class="blk"><div class="eyebrow">Training fuel</div><p id="rem-fuel"></p></div>
+          <div class="blk"><div class="eyebrow" style="display:flex;align-items:center;gap:8px">Recovery <button class="whybtn" data-why="sleep" style="background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.28);color:#fff">Why?</button></div><p id="rem-recovery"></p></div>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Weigh &amp; Learn</div>
+          <p class="muted-p" style="margin-bottom:14px">Weigh your food now and then to learn what real portions look like. This is about awareness, not strict calorie counting.</p>
+          <div class="pedu"><div class="pg">Protein</div><div class="pd">Usually <b>100–150g</b> cooked meat or fish — about a palm.</div></div>
+          <div class="pedu"><div class="pg">Carbs</div><div class="pd">Usually <b>100–200g</b> cooked rice or potatoes — more on training days, less on rest days.</div></div>
+          <div class="pedu"><div class="pg">Fat</div><div class="pd">Oil and butter are dense. <b>1 tbsp olive oil ≈ 120 kcal</b> — measure it rather than free-pouring.</div></div>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Portion memory</div>
+          <div id="portion-memory"></div>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Weigh a portion</div>
+          <div class="uploader" id="wp-pick"><svg viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L16 6h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8Z"/><circle cx="12" cy="12.5" r="3.6"/></svg><div class="ut">Add a photo</div><div class="us">Optional — stored only on your device</div></div>
+          <input id="wp-file" type="file" accept="image/*" capture="environment" style="display:none">
+          <div class="preview" id="wp-preview"></div>
+          <div style="margin-top:14px">
+            <input class="mealinput" id="wp-name" type="text" placeholder="Food name (e.g. Chicken)">
+            <input class="mealinput" id="wp-brand" type="text" placeholder="Brand (optional)">
+            <input class="mealinput" id="wp-grams" type="text" inputmode="decimal" placeholder="Weight in grams">
+            <input class="mealinput" id="wp-note" type="text" placeholder="Note (optional)">
+          </div>
+          <button class="more-link" id="wp-more">Add macros (optional) ▾</button>
+          <div class="adv" id="wp-macros">
+            <div class="pmeal-grid">
+              <div class="pmeal"><label>Protein g</label><input id="wp-p" type="text" inputmode="decimal" placeholder="0"></div>
+              <div class="pmeal"><label>Carbs g</label><input id="wp-c" type="text" inputmode="decimal" placeholder="0"></div>
+              <div class="pmeal"><label>Fat g</label><input id="wp-f" type="text" inputmode="decimal" placeholder="0"></div>
+              <div class="pmeal"><label>Fibre g</label><input id="wp-fib" type="text" inputmode="decimal" placeholder="0"></div>
+            </div>
+          </div>
+          <div class="ratergrp"><div class="rl">Cooked, raw or dry</div><div class="opts" data-rgrp="wp-state"><button data-val="cooked">Cooked</button><button data-val="raw">Raw</button><button data-val="dry">Dry</button></div></div>
+          <div class="ratergrp"><div class="rl">Meal</div><div class="opts" data-rgrp="wp-meal"><button data-val="breakfast">Breakfast</button><button data-val="lunch">Lunch</button><button data-val="dinner">Dinner</button><button data-val="snack">Snack</button></div></div>
+          <div class="ratergrp verdict-pick"><div class="rl">How was the portion?</div><div class="opts" data-rgrp="wp-verdict"><button data-val="good">Good portion</button><button data-val="much">Too much</button><button data-val="little">Not enough</button></div></div>
+          <button class="cta" id="wp-save">Save portion</button>
+          <div class="saved-note" id="wp-saved"></div>
+        </div>
+        <div class="card">
+          <div class="eyebrow">My Portion Library</div>
+          <div id="portion-list"></div>
+        </div>
+        <div class="card lesson"><div class="head"><span class="fdot g"></span><div class="txt"><div class="ttl">Green — safe foods</div><div class="tease">Build most meals from these.</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body" id="green-body"></div></div>
+        <div class="card lesson"><div class="head"><span class="fdot y"></span><div class="txt"><div class="ttl">Yellow — sometimes</div><div class="tease">Fine in smaller amounts or now and then.</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body" id="yellow-body"></div></div>
+        <div class="card lesson"><div class="head"><span class="fdot r"></span><div class="txt"><div class="ttl">Red — avoid</div><div class="tease">Kept out of all meal suggestions.</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body" id="red-body"></div></div>
+        <div class="card focus">
+          <div class="eyebrow">Today's Focus</div>
+          <div class="lead" id="focus-lead"></div>
+          <div class="lines" id="focus-lines"></div>
+        </div>
+      </div>
+    
+          </div>
+        </div>
+
         <div class="card msec" data-msec="data">
           <button type="button" class="msec-head"><span class="eyebrow">Data &amp; backup</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
@@ -1315,7 +1335,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 45</b></div>
+            <div class="about-row"><span>Version</span><b>Build 48</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1334,10 +1354,10 @@
   <nav>
     <button data-tab="overview"><svg viewBox="0 0 24 24"><path d="M4 5v14M4 19h16"/><path d="m7 14 3-4 3 2 4-6"/></svg>Overview</button>
     <button class="on" data-tab="today"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/></svg>Today</button>
+    <button data-tab="food"><svg viewBox="0 0 24 24"><path d="M3 11h18"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 4v3"/></svg>Food</button>
     <button data-tab="fuel"><svg viewBox="0 0 24 24"><path d="M3 13h4l2-6 4 12 2-6h6"/></svg>Fuel</button>
     <button data-tab="progress"><svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="m4 15 4-5 4 3 7-8"/><circle cx="19" cy="5" r="0.6"/></svg>Body</button>
     <button data-tab="detect"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/></svg>Scan</button>
-    <button data-tab="learn"><svg viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3V4Z"/><path d="M5 17a3 3 0 0 1 3-3h11"/><path d="M9 8h6M9 11h4"/></svg>Learn</button>
     <button data-tab="fuckit"><svg viewBox="0 0 24 24"><path d="M8 9a4 4 0 0 1 8 0"/><path d="M8 9h8l-4 12z"/></svg>F*ck-it</button>
     <button data-tab="menu"><svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg>Menu</button>
   </nav>
@@ -1375,7 +1395,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],detect:["Food Analysis","Check and save foods — offline · build 45"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 48"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -1689,7 +1709,9 @@
     });
     $("#meal-log").innerHTML=mealSummaryHTML(grand)+html;
     renderMlNav();
+    if(typeof renderFoodSummary==="function")renderFoodSummary();
   }
+  function renderFoodSummary(){var box=$("#food-summary");if(!box)return;var t=mealTotals(todayISO()),tgt=calcCalories().target;box.innerHTML='<div class="about-row" style="border-bottom:0;padding:2px 0"><span>Food today</span><b>'+Math.round(t.kcal)+' / '+tgt+' kcal</b></div>';}
   function populateFoodSelect(){
     var cats=["Protein","Carb","Veg & fruit","Fat","Extra"];
     $("#ml-food").innerHTML='<option value="__custom__">\u270e Type a food manually\u2026</option>'+cats.map(function(cat){return '<optgroup label="'+cat+'">'+FOODDB.filter(function(f){return f.cat===cat;}).map(function(f){return '<option value="'+f.k+'">'+f.name+'</option>';}).join('')+'</optgroup>';}).join('');
