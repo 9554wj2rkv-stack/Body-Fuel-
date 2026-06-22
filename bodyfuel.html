@@ -993,15 +993,17 @@
     <!-- ============ MY BODY ============ -->
     <section class="screen" id="progress">
       <div class="stack">
-        <div class="card">
-          <div class="eyebrow">Cycle setup</div>
-          <p class="muted-p" style="margin-bottom:14px">Set your cycle here so the Today screen can tailor training and recovery.</p>
-          <div class="metrics cyc-fields" style="margin-top:4px">
-            <div class="metric"><label>Last period start</label><input id="cy-start" type="date"></div>
-            <div class="metric"><label>Cycle length</label><input id="cy-len" type="number" inputmode="numeric" placeholder="28 days"></div>
+        <div class="card msec" id="cycle-setup-card" data-persist="bf_cycopen">
+          <button type="button" class="msec-head"><div><div class="eyebrow">Cycle setup</div><div class="drop-sub" id="cy-summary"></div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body">
+            <p class="muted-p" style="margin:0 0 12px">Set your cycle here so the Today screen can tailor training and recovery.</p>
+            <div class="metrics cyc-fields" style="margin-top:4px">
+              <div class="metric"><label>Last period start</label><input id="cy-start" type="date"></div>
+              <div class="metric"><label>Cycle length</label><input id="cy-len" type="number" inputmode="numeric" placeholder="28 days"></div>
+            </div>
+            <button class="cta ghost" id="cy-today" style="margin-top:12px">Period started today</button>
+            <p class="muted-p" style="margin-top:12px">Use this as a planning guide, not a medical rule.</p>
           </div>
-          <button class="cta ghost" id="cy-today" style="margin-top:12px">Period started today</button>
-          <p class="muted-p" style="margin-top:12px">Use this as a planning guide, not a medical rule.</p>
         </div>
 
         <div class="card" id="cyclesmart-card">
@@ -1378,7 +1380,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 52</b></div>
+            <div class="about-row"><span>Version</span><b>Build 53</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1438,7 +1440,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 52"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 53"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -3631,8 +3633,10 @@
     Ovulation:{exercise:"Peak energy \u2014 heavier lifts, push a little if you feel strong.",food:"Anti-inflammatory: berries, flaxseed, fibre-rich veg.",supps:"Antioxidants, vitamin E, omega-3.",sleep:"May feel lighter \u2014 wind down well and limit late caffeine."},
     Luteal:{exercise:"Energy eases \u2014 moderate strength, and more rest when you need it.",food:"Steady blood sugar: protein with complex carbs. Meet cravings kindly.",supps:"Magnesium, calcium and B6 can ease PMS.",sleep:"Sleep can dip pre-period \u2014 cool room, earlier nights."}
   };
+  function cycSetupSummary(c){var day=cycleDayOf(c);if(!c.start||day==null)return "Not set up yet \u2014 tap to add your last period date";var ph=cyclePhase(day).phase;var d=new Date(c.start+"T00:00:00"),ds=isNaN(d)?c.start:(d.getDate()+" "+["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][d.getMonth()]+" "+d.getFullYear());return "Day "+day+" \u00b7 "+ph+" phase \u00b7 Last period: "+ds;}
   function renderCycle(){
     var c=loadCycle(),out=$("#cycle-out"),badge=$("#cyc-badge"),ci=$("#cycle-insight");
+    var sm=$("#cy-summary");if(sm)sm.textContent=cycSetupSummary(c);
     if(!trackOn("cycle")){if(out)out.innerHTML="";if(badge)badge.style.display="none";if(ci)ci.style.display="none";return;}
     if($("#cy-start"))$("#cy-start").value=c.start||"";
     if($("#cy-len"))$("#cy-len").value=c.len||"";
@@ -3759,6 +3763,7 @@
   (function(){var c=$("#sleep-trend-card");if(!c)return;c.addEventListener("click",function(e){if(e.target.closest("#sleep-hist-toggle")){state.sleepHistOpen=!state.sleepHistOpen;renderSleepTrend();return;}var rb=e.target.closest("#sleep-hist-range button");if(rb){state.sleepHistRange=+rb.getAttribute("data-val");renderSleepTrend();}});})();
   renderWater();
   (function(){var d=$("#dt-card");if(d&&store.get("bf_dtopen")===true)d.classList.add("open");})();
+  (function(){var cc=$("#cycle-setup-card");if(!cc)return;var c=loadCycle();if(!c.start)cc.classList.add("open");else if(store.get("bf_cycopen")===true)cc.classList.add("open");})();
   (function(){var c=$("#sleep-card");if(!c)return;c.addEventListener("click",function(e){var qb=e.target.closest("#sl-quality button");if(qb){$all("#sl-quality button").forEach(function(b){b.classList.remove("on");});qb.classList.add("on");return;}if(e.target.closest("#sl-save")){saveSleep();}});})();
   renderMenu();applyTrackPrefs();
   renderPortionMemory();renderPortionList();syncWpButtons();
