@@ -186,6 +186,24 @@
   .statline .k{font-size:calc(15.5px*var(--ts,1));color:var(--ink-soft)}
   .statline .v{font-family:var(--font-d);font-size:calc(19px*var(--ts,1));font-weight:600}
   .statline .v small{font-family:var(--font-b);font-size:calc(13.5px*var(--ts,1));font-weight:600;margin-left:7px;color:var(--ink-faint);letter-spacing:.02em}
+  .metric-row{display:grid;grid-template-columns:minmax(95px,1fr) auto;gap:12px;align-items:start;padding:10px 0;border-bottom:1px solid var(--line-soft)}
+  .metric-row:last-child{border-bottom:0}
+  .metric-label{min-width:0;font-size:calc(15px*var(--ts,1));color:var(--ink-soft);padding-top:3px}
+  .metric-value-block{text-align:right;min-width:150px}
+  .metric-value-line{white-space:nowrap;font-family:var(--font-d);font-size:calc(19px*var(--ts,1));font-weight:600;color:var(--ink)}
+  .metric-change-line{font-size:calc(12.5px*var(--ts,1));color:var(--ink-faint);line-height:1.3;margin-top:2px}
+  .wh-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:4px}
+  .wh-table{width:100%;border-collapse:collapse;font-size:calc(13.5px*var(--ts,1));min-width:380px}
+  .wh-table th{text-align:left;font-size:calc(10.5px*var(--ts,1));text-transform:uppercase;letter-spacing:.04em;color:var(--ink-faint);font-weight:700;padding:0 12px 7px 0;white-space:nowrap}
+  .wh-table td{padding:9px 12px 9px 0;border-top:1px solid var(--line-soft);color:var(--ink-soft);white-space:nowrap}
+  .wh-table th:first-child,.wh-table td:first-child{padding-left:2px}
+  .wh-row{cursor:pointer}
+  .wh-row .wh-w{color:var(--ink);font-weight:700}
+  .wh-detail>td{padding:0 0 11px;border-top:0}
+  .wh-detail-wrap{display:flex;flex-wrap:wrap;gap:6px;padding:2px 2px 0;white-space:normal}
+  .wh-chip{background:var(--surface-2);border:1px solid var(--line-soft);border-radius:8px;padding:4px 9px;font-size:calc(12.5px*var(--ts,1));color:var(--ink-soft)}
+  .wh-chip b{color:var(--ink)}
+  .wh-more{margin-top:10px}
   .spark{width:100%;height:54px;margin-top:8px;display:block}
   .spark path{fill:none;stroke:var(--accent);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   .spark circle{fill:var(--accent)}
@@ -1042,6 +1060,11 @@
         </div>
 
         <div class="card">
+          <div class="eyebrow">Weigh-in history</div>
+          <div id="weighin-history"></div>
+        </div>
+
+        <div class="card">
           <div class="eyebrow">What your logs show</div>
           <div id="insights-body"></div>
         </div>
@@ -1355,7 +1378,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 51</b></div>
+            <div class="about-row"><span>Version</span><b>Build 52</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1415,7 +1438,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 51"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 52"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -2859,7 +2882,7 @@
     for(var i=0;i<e.length;i++){if(weekKey(new Date(e[i].date+"T00:00:00"))===wk){idx=i;break;}}
     if(idx>=0)e[idx]=entry;else e.push(entry);
     e.sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0;});
-    store.set("bf_progress",e);flash("#metrics-saved","Saved for "+(biIsCurrent()?"this week":biLabel()));renderTrend();renderMission();renderWeekFocus();renderWeeklyReview();renderCheckinNav();renderCheckinNudge();if(typeof renderCycleSmart==="function")renderCycleSmart();
+    store.set("bf_progress",e);flash("#metrics-saved","Saved for "+(biIsCurrent()?"this week":biLabel()));renderTrend();renderMission();renderWeekFocus();renderWeeklyReview();renderCheckinNav();renderCheckinNudge();if(typeof renderCycleSmart==="function")renderCycleSmart();if(typeof renderWeighInHistory==="function")renderWeighInHistory();
   }
   /* ===== Cycle Smart Body Tracking ===== */
   function smartPhase(day){if(day==null||day==="")return "";day=+day;if(isNaN(day))return "";if(day>=1&&day<=5)return "Menstrual";if(day<=12)return "Follicular";if(day<=17)return "Ovulation";return "Luteal";}
@@ -2917,8 +2940,8 @@
     var withW=all.filter(function(x){return x.weight!=null;});
     if(!withW.length){box.innerHTML='<p class="empty">Save a weekly check-in to start your trends. One entry isn\'t a trend — a few weeks of consistency is what reveals real change.</p>';return;}
     var last=all[all.length-1];
-    function stat(key,label,unit){var es=all.filter(function(x){return x[key]!=null&&x[key]!=="";});if(!es.length)return "";var cur=+es[es.length-1][key],sub="";if(es.length>=2){var dw=cur-(+es[es.length-2][key]);sub+=arrow(dw)+Math.abs(dw).toFixed(1)+" vs last";}if(es.length>=2){var dt=cur-(+es[0][key]);sub+=(sub?" \u00b7 ":"")+arrow(dt)+Math.abs(dt).toFixed(1)+" since start";}return '<div class="statline"><span class="k">'+label+'</span><span class="v">'+cur+(unit?' '+unit:'')+(sub?'<small>'+sub+'</small>':'')+'</span></div>';}
-    function calc(label,val,unit){return '<div class="statline"><span class="k">'+label+'</span><span class="v">'+val+(unit?' <small>'+unit+'</small>':'')+'</span></div>';}
+    function stat(key,label,unit){var es=all.filter(function(x){return x[key]!=null&&x[key]!=="";});if(!es.length)return "";var cur=+es[es.length-1][key],sub="";if(es.length>=2){var dw=cur-(+es[es.length-2][key]);sub+=arrow(dw)+Math.abs(dw).toFixed(1)+" vs last";}if(es.length>=2){var dt=cur-(+es[0][key]);sub+=(sub?" \u00b7 ":"")+arrow(dt)+Math.abs(dt).toFixed(1)+" since start";}return '<div class="metric-row"><div class="metric-label">'+label+'</div><div class="metric-value-block"><div class="metric-value-line">'+cur+(unit?' '+unit:'')+'</div>'+(sub?'<div class="metric-change-line">'+sub+'</div>':'')+'</div></div>';}
+    function calc(label,val,unit){return '<div class="metric-row"><div class="metric-label">'+label+'</div><div class="metric-value-block"><div class="metric-value-line">'+val+(unit?' '+unit:'')+'</div></div></div>';}
     var html=stat("weight","Weight","kg")+stat("fat","Body fat","%")+stat("muscle","Muscle mass","%");
     if(last.weight!=null&&last.fat!=null){var fm=last.weight*last.fat/100,lm=last.weight-fm;html+=calc("Fat mass",fm.toFixed(1),"kg")+calc("Lean mass",lm.toFixed(1),"kg");if(last.muscle!=null)html+=calc("Muscle mass",(last.weight*last.muscle/100).toFixed(1),"kg");}
     html+=stat("waist","Waist","cm")+stat("hip","Hips","cm")+stat("booty","Booty","cm")+stat("chest","Bust","cm")+stat("armL","Upper arm L","cm")+stat("armR","Upper arm R","cm")+stat("thighL","Thigh L","cm")+stat("thighR","Thigh R","cm")+stat("calfL","Calf L","cm")+stat("calfR","Calf R","cm");
@@ -2928,7 +2951,26 @@
     html+=sparkOf(fatMass,"Fat-loss trend (fat mass kg)");
     box.innerHTML=html;
   }
+  function whShortDate(iso){var d=new Date(iso+"T00:00:00");if(isNaN(d))return iso;return d.getDate()+" "+["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][d.getMonth()];}
+  function whCycleCell(e){var parts=[];if(e.cycleDay!=null&&e.cycleDay!=="")parts.push("Day "+e.cycleDay);var ph=e.phase||(typeof smartPhase==="function"?smartPhase(e.cycleDay):"");if(ph)parts.push(ph);return parts.length?parts.join(" \u00b7 "):"\u2014";}
+  function whCell(v,unit){return (v!=null&&v!=="")?(v+(unit?" "+unit:"")):"\u2014";}
+  function whDetail(e){var f=[["waist","Waist","cm"],["hip","Hips","cm"],["booty","Booty","cm"],["chest","Bust","cm"],["armL","Upper arm L","cm"],["armR","Upper arm R","cm"],["thighL","Thigh L","cm"],["thighR","Thigh R","cm"],["calfL","Calf L","cm"],["calfR","Calf R","cm"],["smm","Skeletal muscle","kg"]];
+    var parts=f.filter(function(x){return e[x[0]]!=null&&e[x[0]]!=="";}).map(function(x){return '<span class="wh-chip">'+x[1]+': <b>'+e[x[0]]+" "+x[2]+'</b></span>';});
+    if(e.hrtWeek!=null&&e.hrtWeek!=="")parts.push('<span class="wh-chip">HRT wk <b>'+e.hrtWeek+'</b></span>');
+    if(e.trainingWeek!=null&&e.trainingWeek!=="")parts.push('<span class="wh-chip">Training wk <b>'+e.trainingWeek+'</b></span>');
+    parts.push('<span class="wh-chip">Creatine: <b>'+(e.creatine?"Yes":"No")+'</b></span>');
+    if(e.notes)parts.push('<span class="wh-chip">'+esc(e.notes)+'</span>');
+    return '<div class="wh-detail-wrap">'+(parts.length?parts.join(""):'<span class="wh-chip">No extra measurements for this date</span>')+'</div>';}
+  function renderWeighInHistory(){var box=$("#weighin-history");if(!box)return;
+    var all=loadEntries().slice().filter(function(x){return x&&(x.weight!=null||x.fat!=null||x.muscle!=null||x.waist!=null);});
+    all.sort(function(a,b){return a.date<b.date?1:a.date>b.date?-1:0;});
+    if(!all.length){box.innerHTML='<p class="muted-p" style="margin:2px 0 0">No check-ins logged yet. Save a weekly check-in to build your history.</p>';return;}
+    var lim=state.weighInAll?all.length:12,shown=all.slice(0,lim);
+    var rows=shown.map(function(e){return '<tr class="wh-row" data-wh="'+e.date+'"><td>'+whShortDate(e.date)+'</td><td>'+whCycleCell(e)+'</td><td class="wh-w">'+whCell(e.weight,"kg")+'</td><td>'+whCell(e.fat,"%")+'</td><td>'+whCell(e.muscle,"%")+'</td></tr><tr class="wh-detail" data-whd="'+e.date+'" style="display:none"><td colspan="5">'+whDetail(e)+'</td></tr>';}).join("");
+    var more=(!state.weighInAll&&all.length>12)?'<button type="button" class="linkbtn wh-more" id="wh-more">Show more ('+(all.length-12)+' older)</button>':'';
+    box.innerHTML='<div class="wh-scroll"><table class="wh-table"><thead><tr><th>Date</th><th>Cycle</th><th>Weight</th><th>Body fat</th><th>Muscle</th></tr></thead><tbody>'+rows+'</tbody></table></div>'+more;}
   var rateDims=[["energy","Energy"],["digestion","Digestion"],["fullness","Fullness"],["headache","Headache"],["joint","Joint pain"],["cravings","Cravings"]];
+  function renderRateRows(){var host=$("#rate-rows");if(!host)return;host.innerHTML=rateDims.map(function(d){return '<div class="rate"><div class="rl">'+d[1]+'</div><div class="opts" data-dim="'+d[0]+'">'+[["1","Low"],["2","OK"],["3","High"]].map(function(o){var on=state.rating[d[0]]==o[0]?" on":"";return '<button class="'+on.trim()+'" data-val="'+o[0]+'">'+o[1]+'</button>';}).join("")+'</div></div>';}).join("");}
   function renderRateRows(){var host=$("#rate-rows");if(!host)return;host.innerHTML=rateDims.map(function(d){return '<div class="rate"><div class="rl">'+d[1]+'</div><div class="opts" data-dim="'+d[0]+'">'+[["1","Low"],["2","OK"],["3","High"]].map(function(o){var on=state.rating[d[0]]==o[0]?" on":"";return '<button class="'+on.trim()+'" data-val="'+o[0]+'">'+o[1]+'</button>';}).join("")+'</div></div>';}).join("");}
   function renderQuickFill(){var host=$("#log-quick");if(!host)return;var pm=planMeals[state.tGoal];host.innerHTML=[pm.b,pm.l,pm.d,"Chicken + rice","Oats + chicken"].map(function(o){return '<span class="q" data-fill="'+esc(o)+'">'+o+'</span>';}).join("");}
   function saveMealLog(){
@@ -3631,6 +3673,8 @@
   renderFoodLists();
   renderFaRaters();renderLib();renderTreatVault();
   renderCheckin();renderTrend();renderRateRows();renderQuickFill();renderInsights();fillProfileInputs();renderWeeklyReview();
+  if(typeof renderWeighInHistory==="function")renderWeighInHistory();
+  (function(){var h=$("#weighin-history");if(!h)return;h.addEventListener("click",function(e){if(e.target.closest("#wh-more")){state.weighInAll=true;renderWeighInHistory();return;}var row=e.target.closest(".wh-row");if(row){var d=h.querySelector('.wh-detail[data-whd="'+row.getAttribute("data-wh")+'"]');if(d)d.style.display=(!d.style.display||d.style.display==="none")?"":"none";}});})();
   renderLearn();
 
   if(typeof exHistBackfill==="function")exHistBackfill();
