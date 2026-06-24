@@ -1385,7 +1385,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 57</b></div>
+            <div class="about-row"><span>Version</span><b>Build 58</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1445,7 +1445,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 57"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 58"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -3065,17 +3065,6 @@
   var fuelTips={morning:"<b>Training early?</b> A smaller pre-workout snack like a banana or rice cakes often sits better — fit the bigger meal afterwards.",afternoon:"<b>Midday session?</b> Build your pre-workout meal around lunch — chicken + rice, eaten 1–3 hours ahead.",evening:"<b>Evening session?</b> Keep the post-workout meal balanced so it feels comfortable before bed."};
   /* ---- rest timer (one timer for the whole workout; per-exercise keys can extend rtPrefData later) ---- */
   var rt={dur:60,rem:60,running:false,active:false,endAt:0,startedAt:0,timer:null,_ac:null,alarm:null,alarmEnd:0,doneFired:false};
-  var BF_SW={supported:("serviceWorker"in navigator),reg:null,state:"not registered"};
-  var rtDiag={lastNotifyAt:null,lastNotifyOk:null,lastNotifyErr:"",lastAlarmAt:null};
-  function bfRegisterSW(){
-    if(!BF_SW.supported){BF_SW.state="unsupported";console.log("[BF] service worker unsupported");if(typeof renderRtDiag==="function")renderRtDiag();return;}
-    try{
-      navigator.serviceWorker.register("sw.js").then(function(reg){
-        BF_SW.reg=reg;BF_SW.state="registered";console.log("[BF] service worker registered",reg);
-        navigator.serviceWorker.ready.then(function(r){BF_SW.reg=r;BF_SW.state="active";console.log("[BF] service worker active");if(typeof renderRtDiag==="function")renderRtDiag();});
-      }).catch(function(err){BF_SW.state="error: "+(err&&err.message||err);console.warn("[BF] service worker register failed",err);if(typeof renderRtDiag==="function")renderRtDiag();});
-    }catch(e){BF_SW.state="error: "+e.message;console.warn("[BF] service worker register threw",e);}
-  }
   function rtFmt(s){s=Math.max(0,s|0);var m=Math.floor(s/60),ss=s%60;return m+":"+(ss<10?"0":"")+ss;}
   function rtLabelSec(s){var m=Math.floor(s/60),ss=s%60;if(m&&ss)return m+" min "+ss+" sec";if(m)return m+" min";return ss+" sec";}
   function rtPrefData(){return store.get("bf_resttimer")||{counts:{}};}
@@ -3089,34 +3078,18 @@
   function rtRemNow(){return (rt.running&&rt.endAt)?Math.max(0,Math.ceil((rt.endAt-Date.now())/1000)):rt.rem;}
   function rtPrimeAudio(){try{var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;if(!rt._ac)rt._ac=new AC();if(rt._ac.state==="suspended")rt._ac.resume();}catch(e){}}
   function rtBuzzOnce(){try{if(!rt._ac)return;var ctx=rt._ac,t=ctx.currentTime;[300,372,455].forEach(function(f){var o=ctx.createOscillator(),g=ctx.createGain();o.type="square";o.frequency.value=f;o.connect(g);g.connect(ctx.destination);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.32,t+0.015);g.gain.setValueAtTime(0.32,t+0.62);g.gain.exponentialRampToValueAtTime(0.0001,t+0.78);o.start(t);o.stop(t+0.8);});}catch(e){}}
-  function rtVibe(){if("vibrate"in navigator&&typeof navigator.vibrate==="function"){try{var ok=navigator.vibrate([450,150,450,150,600]);console.log("[BF] vibration attempted ->",ok);return ok;}catch(e){console.error("[BF] vibration failed",e);return false;}}console.log("[BF] vibration unsupported on this device (iOS PWA does not support navigator.vibrate)");return false;}
+  function rtVibe(){if(navigator.vibrate){try{navigator.vibrate([450,150,450,150,600]);}catch(e){}}}
   function rtStopAlarm(){if(rt.alarm){clearInterval(rt.alarm);rt.alarm=null;}rt.alarmEnd=0;if(navigator.vibrate){try{navigator.vibrate(0);}catch(e){}}}
-  function rtAlarmStart(){rtStopAlarm();rtPrimeAudio();var s=rtSettings();rt.alarmEnd=Date.now()+24000;rtDiag.lastAlarmAt=new Date().toLocaleTimeString();console.log("[BF] alarm started, sound:",s.sound);function cyc(){if(Date.now()>=rt.alarmEnd){rtStopAlarm();return;}rtPlaySelected();if(rtSettings().vibrate)rtVibe();}cyc();rt.alarm=setInterval(cyc,s.sound==="voice"?2600:1100);if(typeof renderRtDiag==="function")renderRtDiag();}
-  function rtNotifyAsk(){try{if("Notification"in window&&Notification.permission==="default"){console.log("[BF] requesting notification permission");return Notification.requestPermission();}}catch(e){console.warn("[BF] permission request failed",e);}return null;}
-  function rtNotify(){
-    rtDiag.lastNotifyAt=new Date().toLocaleTimeString();
-    console.log("[BF] notification requested");
-    var title="Rest Complete \u2014 Ready for Next Set",opts={body:"Time for your next set.",tag:"bf-rest",renotify:true};
-    try{
-      if(!("Notification"in window)){rtDiag.lastNotifyOk=false;rtDiag.lastNotifyErr="Notification API unsupported";console.warn("[BF] notification failed: API unsupported");if(typeof renderRtDiag==="function")renderRtDiag();return;}
-      if(Notification.permission!=="granted"){rtDiag.lastNotifyOk=false;rtDiag.lastNotifyErr="permission "+Notification.permission;console.warn("[BF] notification failed: permission",Notification.permission);if(typeof renderRtDiag==="function")renderRtDiag();return;}
-      if(BF_SW.reg&&typeof BF_SW.reg.showNotification==="function"){
-        BF_SW.reg.showNotification(title,opts);
-        rtDiag.lastNotifyOk=true;rtDiag.lastNotifyErr="";console.log("[BF] notification sent via service worker");
-      }else if(typeof Notification==="function"){
-        new Notification(title,opts);
-        rtDiag.lastNotifyOk=true;rtDiag.lastNotifyErr="constructor (may be ignored on iOS)";console.log("[BF] notification sent via constructor (iOS may suppress)");
-      }else{rtDiag.lastNotifyOk=false;rtDiag.lastNotifyErr="no notification method available";console.warn("[BF] notification failed: no method");}
-    }catch(err){rtDiag.lastNotifyOk=false;rtDiag.lastNotifyErr=err.message;console.error("[BF] notification failed",err);}
-    if(typeof renderRtDiag==="function")renderRtDiag();
-  }
+  function rtAlarmStart(){rtStopAlarm();rtPrimeAudio();var s=rtSettings();rt.alarmEnd=Date.now()+24000;function cyc(){if(Date.now()>=rt.alarmEnd){rtStopAlarm();return;}rtPlaySelected();if(rtSettings().vibrate)rtVibe();}cyc();rt.alarm=setInterval(cyc,s.sound==="voice"?2600:1100);}
+  function rtNotifyAsk(){try{if("Notification"in window&&Notification.permission==="default")Notification.requestPermission();}catch(e){}}
+  function rtNotify(){try{if("Notification"in window&&Notification.permission==="granted")new Notification("Rest Complete \u2014 Ready for Next Set");}catch(e){}}
   function rtTick(){var rem=rtRemNow();rt.rem=rem;rtRender();if(rt.running&&rem<=0){rt.running=false;rtClear();rt.active=false;rt.rem=0;rtSave();rtRender();rtDone();}}
   function rtRun(){rtClear();rtStopAlarm();rt.doneFired=false;rt.running=true;rt.active=true;rt.startedAt=Date.now();rt.endAt=Date.now()+rt.rem*1000;rtSave();rt.timer=setInterval(rtTick,250);rtTick();}
-  function rtStartDur(sec){if(!sec||sec<1)return;console.log("[BF] timer started:",sec,"s");rtStopAlarm();rtPrimeAudio();if(rtSettings().notify)rtNotifyAsk();rt.dur=sec;rt.rem=sec;rtMsg("");rtBumpPref(sec);rtRun();}
+  function rtStartDur(sec){if(!sec||sec<1)return;rtStopAlarm();rtPrimeAudio();if(rtSettings().notify)rtNotifyAsk();rt.dur=sec;rt.rem=sec;rtMsg("");rtBumpPref(sec);rtRun();}
   function rtPause(){if(rt.running){rt.rem=rtRemNow();rtClear();rt.endAt=0;rtSave();rtRender();}}
   function rtResume(){if(!rt.running&&rt.active&&rt.rem>0){rtPrimeAudio();rtRun();}}
   function rtReset(){rtStopAlarm();rtClear();rt.active=false;rt.endAt=0;rt.rem=rt.dur;rtMsg("");rtSave();rtRender();}
-  function rtDone(){if(rt.doneFired)return;rt.doneFired=true;console.log("[BF] timer completed");rtMsg("Rest complete \u2014 ready for next set");rtAlarmStart();if(rtSettings().notify)rtNotify();rtRender();}
+  function rtDone(){if(rt.doneFired)return;rt.doneFired=true;rtMsg("Rest complete \u2014 ready for next set");rtAlarmStart();if(rtSettings().notify)rtNotify();rtRender();}
   function rtInit(){
     rt.dur=rtDefaultRest();rt.rem=rt.dur;
     var saved=rtLoad();
@@ -3145,23 +3118,6 @@
       });
       rc.addEventListener("click",function(e){
         if(e.target.closest("#rtset-test")){rtPlaySelected();return;}
-        if(e.target.closest("#rtset-testnotif")){
-          console.log("[BF] manual test notification triggered");
-          var msg=$("#rtset-diag-msg");
-          function fire(){rtPlaySelected();rtVibe();rtNotify();if(msg)msg.textContent=rtDiag.lastNotifyOk?"Notification sent. If you saw nothing, the OS suppressed it (see status above).":("Notification failed: "+(rtDiag.lastNotifyErr||"unknown")+".");renderRtDiag();}
-          if("Notification"in window&&Notification.permission==="default"){var p=rtNotifyAsk();if(p&&p.then){p.then(function(){fire();});}else{fire();}}
-          else{fire();}
-          return;
-        }
-        if(e.target.closest("#rtset-testvibe")){
-          var m2=$("#rtset-diag-msg");
-          if("vibrate"in navigator&&typeof navigator.vibrate==="function"){
-            console.log("[BF] manual vibration test");
-            try{var ok=navigator.vibrate([600,200,600,200,800]);if(m2)m2.textContent=ok?"Vibration triggered.":"Vibration call returned false (device may be in silent/Low Power mode).";}
-            catch(err){if(m2)m2.textContent="Vibration error: "+err.message;}
-          }else{console.log("[BF] vibration unsupported");if(m2)m2.textContent="iOS does not support vibration for this app type.";}
-          return;
-        }
         var vb=e.target.closest("#rtset-vol button");if(vb){rtSetSetting("volume",vb.getAttribute("data-val"));rtSegOn("#rtset-vol",vb);return;}
         var rb=e.target.closest("#rtset-rest button");if(rb){var val=rb.getAttribute("data-val");rtSegOn("#rtset-rest",rb);var cw=$("#rtset-custom-wrap");if(val==="custom"){if(cw)cw.style.display="block";}else{if(cw)cw.style.display="none";rtSetSetting("defaultRest",+val);if(!rt.active){rt.dur=rtDefaultRest();rt.rem=rt.dur;rtRender();}}return;}
       });
@@ -3183,7 +3139,7 @@
     bell:{label:"Boxing Bell",play:function(ctx,v){function strike(){[1050,1600,2400].forEach(function(f,i){rtTone(ctx,"triangle",f,v*(0.72-i*0.2),0.7,0.004);});}strike();setTimeout(function(){try{strike();}catch(e){}},260);}},
     voice:{label:"Voice Coach",play:function(ctx,v){rtSpeak(v);}}
   };
-  function rtPlaySelected(){rtPrimeAudio();var snd=RT_SOUNDS[rtSettings().sound]||RT_SOUNDS.buzzer;try{snd.play(rt._ac,rtVolGain());console.log("[BF] audio played:",rtSettings().sound);}catch(e){console.error("[BF] audio failed",e);}}
+  function rtPlaySelected(){rtPrimeAudio();var snd=RT_SOUNDS[rtSettings().sound]||RT_SOUNDS.buzzer;try{snd.play(rt._ac,rtVolGain());}catch(e){}}
   function rtSegOn(sel,btn){var seg=$(sel);if(!seg)return;$all("button",seg).forEach(function(b){b.classList.remove("on");});if(btn)btn.classList.add("on");}
   function renderRtSettings(){var box=$("#menu-rtset");if(!box)return;var s=rtSettings();
     var sndOpts=Object.keys(RT_SOUNDS).map(function(k){return '<option value="'+k+'"'+(s.sound===k?" selected":"")+'>'+RT_SOUNDS[k].label+'</option>';}).join("");
@@ -3197,31 +3153,7 @@
       +'<label class="tpref"><span>Show notification when finished</span><input type="checkbox" class="tsw" data-rtset="notify"'+(s.notify?" checked":"")+'></label>'
       +'<label class="tpref"><span>Auto-start rest timer after a set</span><input type="checkbox" class="tsw" data-rtset="autostart"'+(s.autostart?" checked":"")+'></label>'
       +'<div class="label" style="margin-top:14px">Default rest time</div>'+seg("rtset-rest",[["30","30 sec"],["60","60 sec"],["90","90 sec"],["120","120 sec"],["180","180 sec"],["custom","Custom"]],restCur)
-      +'<div id="rtset-custom-wrap" style="margin-top:10px;display:'+(restCur==="custom"?"block":"none")+'"><div class="pmeal"><label>Custom seconds</label><input id="rtset-custom" type="number" inputmode="numeric" placeholder="seconds" value="'+(restCur==="custom"?dr:"")+'"></div></div>'
-      +'<div class="label" style="margin-top:18px">Rest timer diagnostics</div><div id="rtset-diag"></div>'
-      +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button type="button" class="cta ghost" id="rtset-testnotif" style="flex:1;min-width:150px">Send test notification</button><button type="button" class="cta ghost" id="rtset-testvibe" style="flex:1;min-width:130px">Test vibration</button></div>'
-      +'<p class="muted-p" id="rtset-diag-msg" style="margin:8px 0 0;min-height:1px"></p>';
-    renderRtDiag();
-  }
-  function rtBool(b){return b===true?"Yes":b===false?"No":"\u2014";}
-  function renderRtDiag(){var box=$("#rtset-diag");if(!box)return;
-    var perm=("Notification"in window)?Notification.permission:"unsupported";
-    var standalone=(window.navigator.standalone===true)||(window.matchMedia&&window.matchMedia("(display-mode: standalone)").matches)||false;
-    var vib=("vibrate"in navigator&&typeof navigator.vibrate==="function");
-    var aud=!!(window.AudioContext||window.webkitAudioContext);
-    var ns=(rtDiag.lastNotifyOk==null)?"\u2014":(rtBool(rtDiag.lastNotifyOk)+(rtDiag.lastNotifyErr?" \u2014 "+rtDiag.lastNotifyErr:""));
-    var rows=[
-      ["Notification permission",perm],
-      ["Service worker status",BF_SW.state],
-      ["PWA installed",rtBool(standalone)],
-      ["Timer running",rtBool(!!rt.running)],
-      ["Last notification attempt",rtDiag.lastNotifyAt||"\u2014"],
-      ["Last notification success",ns],
-      ["Last alarm trigger",rtDiag.lastAlarmAt||"\u2014"],
-      ["Vibration supported",rtBool(vib)],
-      ["Audio supported",rtBool(aud)]
-    ];
-    box.innerHTML=rows.map(function(r){return '<div class="about-row"><span>'+r[0]+'</span><b style="font-weight:600;text-align:right;max-width:62%;word-break:break-word">'+esc(String(r[1]))+'</b></div>';}).join("");
+      +'<div id="rtset-custom-wrap" style="margin-top:10px;display:'+(restCur==="custom"?"block":"none")+'"><div class="pmeal"><label>Custom seconds</label><input id="rtset-custom" type="number" inputmode="numeric" placeholder="seconds" value="'+(restCur==="custom"?dr:"")+'"></div></div>';
   }
   function refreshFuel(){$("#fuel-tip").innerHTML=fuelTips[state.fTime];renderFuelTarget();renderEnergy();renderHabits();renderNotesHistory();bindNotesHistory();rtRender();rtRenderPref();}
   function renderFuelTarget(){
@@ -3825,7 +3757,7 @@
   renderLearn();
 
   if(typeof exHistBackfill==="function")exHistBackfill();
-  refreshFuel();renderExerciseLib();renderTodaySession();renderWeekPlan();renderStrength();renderWeekPlanner();bindWeekPlanner();rtInit();bfRegisterSW();
+  refreshFuel();renderExerciseLib();renderTodaySession();renderWeekPlan();renderStrength();renderWeekPlanner();bindWeekPlanner();rtInit();
   function applyTheme(v){document.documentElement.setAttribute("data-theme",v);$all('[data-group="theme"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===v);});var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute("content",v==="light"?"#FFF4F8":(v==="barbie"?"#FFE6F2":"#241629"));}
   var TYP_FACTOR={signature:1,modern:1,simple:1.05};
   function applyScale(){var ts=parseFloat(store.get("bf_textscale")||"1")||1;var typ=store.get("bf_typography")||"signature";document.documentElement.style.setProperty("--ts",(ts*(TYP_FACTOR[typ]||1)).toFixed(3));}
