@@ -1365,6 +1365,11 @@
           </div>
         </div>
 
+        <div class="card msec" data-msec="rtset" id="menu-rtset-card">
+          <button type="button" class="msec-head"><span class="eyebrow">Rest timer settings</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body" id="menu-rtset"></div>
+        </div>
+
         <div class="card msec" data-msec="data">
           <button type="button" class="msec-head"><span class="eyebrow">Data &amp; backup</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
@@ -1380,7 +1385,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 55</b></div>
+            <div class="about-row"><span>Version</span><b>Build 56</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1440,7 +1445,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 55"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 56"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -3075,18 +3080,18 @@
   function rtBuzzOnce(){try{if(!rt._ac)return;var ctx=rt._ac,t=ctx.currentTime;[300,372,455].forEach(function(f){var o=ctx.createOscillator(),g=ctx.createGain();o.type="square";o.frequency.value=f;o.connect(g);g.connect(ctx.destination);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.32,t+0.015);g.gain.setValueAtTime(0.32,t+0.62);g.gain.exponentialRampToValueAtTime(0.0001,t+0.78);o.start(t);o.stop(t+0.8);});}catch(e){}}
   function rtVibe(){if(navigator.vibrate){try{navigator.vibrate([450,150,450,150,600]);}catch(e){}}}
   function rtStopAlarm(){if(rt.alarm){clearInterval(rt.alarm);rt.alarm=null;}rt.alarmEnd=0;if(navigator.vibrate){try{navigator.vibrate(0);}catch(e){}}}
-  function rtAlarmStart(){rtStopAlarm();rtPrimeAudio();rt.alarmEnd=Date.now()+24000;function cyc(){if(Date.now()>=rt.alarmEnd){rtStopAlarm();return;}rtBuzzOnce();rtVibe();}cyc();rt.alarm=setInterval(cyc,1100);}
+  function rtAlarmStart(){rtStopAlarm();rtPrimeAudio();var s=rtSettings();rt.alarmEnd=Date.now()+24000;function cyc(){if(Date.now()>=rt.alarmEnd){rtStopAlarm();return;}rtPlaySelected();if(rtSettings().vibrate)rtVibe();}cyc();rt.alarm=setInterval(cyc,s.sound==="voice"?2600:1100);}
   function rtNotifyAsk(){try{if("Notification"in window&&Notification.permission==="default")Notification.requestPermission();}catch(e){}}
   function rtNotify(){try{if("Notification"in window&&Notification.permission==="granted")new Notification("Rest Complete \u2014 Ready for Next Set");}catch(e){}}
   function rtTick(){var rem=rtRemNow();rt.rem=rem;rtRender();if(rt.running&&rem<=0){rt.running=false;rtClear();rt.active=false;rt.rem=0;rtSave();rtRender();rtDone();}}
   function rtRun(){rtClear();rtStopAlarm();rt.doneFired=false;rt.running=true;rt.active=true;rt.startedAt=Date.now();rt.endAt=Date.now()+rt.rem*1000;rtSave();rt.timer=setInterval(rtTick,250);rtTick();}
-  function rtStartDur(sec){if(!sec||sec<1)return;rtStopAlarm();rtPrimeAudio();rtNotifyAsk();rt.dur=sec;rt.rem=sec;rtMsg("");rtBumpPref(sec);rtRun();}
+  function rtStartDur(sec){if(!sec||sec<1)return;rtStopAlarm();rtPrimeAudio();if(rtSettings().notify)rtNotifyAsk();rt.dur=sec;rt.rem=sec;rtMsg("");rtBumpPref(sec);rtRun();}
   function rtPause(){if(rt.running){rt.rem=rtRemNow();rtClear();rt.endAt=0;rtSave();rtRender();}}
   function rtResume(){if(!rt.running&&rt.active&&rt.rem>0){rtPrimeAudio();rtRun();}}
   function rtReset(){rtStopAlarm();rtClear();rt.active=false;rt.endAt=0;rt.rem=rt.dur;rtMsg("");rtSave();rtRender();}
-  function rtDone(){if(rt.doneFired)return;rt.doneFired=true;rtMsg("Rest complete \u2014 ready for next set");rtAlarmStart();rtNotify();rtRender();}
+  function rtDone(){if(rt.doneFired)return;rt.doneFired=true;rtMsg("Rest complete \u2014 ready for next set");rtAlarmStart();if(rtSettings().notify)rtNotify();rtRender();}
   function rtInit(){
-    var d=rtPrefData();rt.dur=d.pref||60;rt.rem=rt.dur;
+    rt.dur=rtDefaultRest();rt.rem=rt.dur;
     var saved=rtLoad();
     if(saved&&typeof saved==="object"){
       if(saved.dur)rt.dur=saved.dur;
@@ -3103,6 +3108,52 @@
     var re=$("#rt-resume");if(re)re.addEventListener("click",rtResume);
     var rs=$("#rt-reset");if(rs)rs.addEventListener("click",rtReset);
     document.addEventListener("visibilitychange",function(){if(!document.hidden&&rt.running){rtPrimeAudio();rtTick();}});
+    if(typeof renderRtSettings==="function")renderRtSettings();
+    var rc=$("#menu-rtset-card");
+    if(rc){
+      rc.addEventListener("change",function(e){var t=e.target;
+        if(t.id==="rtset-sound"){rtSetSetting("sound",t.value);return;}
+        if(t.classList&&t.classList.contains("tsw")&&t.hasAttribute("data-rtset")){rtSetSetting(t.getAttribute("data-rtset"),t.checked);return;}
+        if(t.id==="rtset-custom"){var v=parseInt(t.value,10);if(v>0){rtSetSetting("defaultRest",v);if(!rt.active){rt.dur=rtDefaultRest();rt.rem=rt.dur;rtRender();}}return;}
+      });
+      rc.addEventListener("click",function(e){
+        if(e.target.closest("#rtset-test")){rtPlaySelected();return;}
+        var vb=e.target.closest("#rtset-vol button");if(vb){rtSetSetting("volume",vb.getAttribute("data-val"));rtSegOn("#rtset-vol",vb);return;}
+        var rb=e.target.closest("#rtset-rest button");if(rb){var val=rb.getAttribute("data-val");rtSegOn("#rtset-rest",rb);var cw=$("#rtset-custom-wrap");if(val==="custom"){if(cw)cw.style.display="block";}else{if(cw)cw.style.display="none";rtSetSetting("defaultRest",+val);if(!rt.active){rt.dur=rtDefaultRest();rt.rem=rt.dur;rtRender();}}return;}
+      });
+    }
+  }
+  var RT_DEFAULTS={sound:"buzzer",volume:"high",vibrate:true,notify:true,autostart:false,defaultRest:60};
+  function rtSettings(){var s=store.get("bf_rtsettings")||{},o={};Object.keys(RT_DEFAULTS).forEach(function(k){o[k]=(s[k]!=null)?s[k]:RT_DEFAULTS[k];});return o;}
+  function rtSetSetting(k,v){var s=rtSettings();s[k]=v;store.set("bf_rtsettings",s);}
+  function rtDefaultRest(){var d=+rtSettings().defaultRest;return (d>0&&d<3600)?d:60;}
+  function rtAutoStartOn(){return !!rtSettings().autostart;}
+  var RT_VOL={low:0.14,medium:0.28,high:0.45,max:0.7};
+  function rtVolGain(){return RT_VOL[rtSettings().volume]||0.45;}
+  function rtTone(ctx,type,freq,vol,dur,attack){try{var o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.value=freq;o.connect(g);g.connect(ctx.destination);var t=ctx.currentTime;g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(0.002,vol),t+(attack||0.02));g.gain.exponentialRampToValueAtTime(0.0001,t+dur);o.start(t);o.stop(t+dur+0.03);}catch(e){}}
+  function rtSpeak(v){try{if(window.speechSynthesis){var u=new SpeechSynthesisUtterance("Rest complete. Ready for the next set.");u.volume=Math.min(1,v*1.8);u.rate=1;window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}else if(rt._ac){RT_SOUNDS.ding.play(rt._ac,v);}}catch(e){}}
+  var RT_SOUNDS={
+    ding:{label:"Soft Ding",play:function(ctx,v){rtTone(ctx,"sine",880,v*0.6,0.55,0.02);rtTone(ctx,"sine",1320,v*0.22,0.5,0.02);}},
+    buzzer:{label:"Gym Buzzer",play:function(ctx,v){[300,372,455].forEach(function(f){rtTone(ctx,"square",f,v,0.78,0.015);});}},
+    airhorn:{label:"Air Horn",play:function(ctx,v){[150,225,300].forEach(function(f){rtTone(ctx,"sawtooth",f,v*0.92,0.95,0.05);});}},
+    bell:{label:"Boxing Bell",play:function(ctx,v){function strike(){[1050,1600,2400].forEach(function(f,i){rtTone(ctx,"triangle",f,v*(0.72-i*0.2),0.7,0.004);});}strike();setTimeout(function(){try{strike();}catch(e){}},260);}},
+    voice:{label:"Voice Coach",play:function(ctx,v){rtSpeak(v);}}
+  };
+  function rtPlaySelected(){rtPrimeAudio();var snd=RT_SOUNDS[rtSettings().sound]||RT_SOUNDS.buzzer;try{snd.play(rt._ac,rtVolGain());}catch(e){}}
+  function rtSegOn(sel,btn){var seg=$(sel);if(!seg)return;$all("button",seg).forEach(function(b){b.classList.remove("on");});if(btn)btn.classList.add("on");}
+  function renderRtSettings(){var box=$("#menu-rtset");if(!box)return;var s=rtSettings();
+    var sndOpts=Object.keys(RT_SOUNDS).map(function(k){return '<option value="'+k+'"'+(s.sound===k?" selected":"")+'>'+RT_SOUNDS[k].label+'</option>';}).join("");
+    function seg(id,opts,cur){return '<div class="goalseg" id="'+id+'">'+opts.map(function(o){return '<button type="button" data-val="'+o[0]+'"'+(String(cur)===String(o[0])?' class="on"':'')+'>'+o[1]+'</button>';}).join("")+'</div>';}
+    var presets=[30,60,90,120,180],dr=+s.defaultRest,restCur=presets.indexOf(dr)>=0?String(dr):"custom";
+    box.innerHTML='<div class="label">Timer sound</div>'
+      +'<select class="mealinput" id="rtset-sound" style="margin-top:6px">'+sndOpts+'</select>'
+      +'<button type="button" class="linkbtn" id="rtset-test" style="margin-top:8px">\u25b6 Test sound</button>'
+      +'<div class="label" style="margin-top:14px">Volume</div>'+seg("rtset-vol",[["low","Low"],["medium","Medium"],["high","High"],["max","Maximum"]],s.volume)
+      +'<label class="tpref" style="margin-top:14px"><span>Vibrate on completion</span><input type="checkbox" class="tsw" data-rtset="vibrate"'+(s.vibrate?" checked":"")+'></label>'
+      +'<label class="tpref"><span>Show notification when finished</span><input type="checkbox" class="tsw" data-rtset="notify"'+(s.notify?" checked":"")+'></label>'
+      +'<label class="tpref"><span>Auto-start rest timer after a set</span><input type="checkbox" class="tsw" data-rtset="autostart"'+(s.autostart?" checked":"")+'></label>'
+      +'<div class="label" style="margin-top:14px">Default rest time</div>'+seg("rtset-rest",[["30","30 sec"],["60","60 sec"],["90","90 sec"],["120","120 sec"],["180","180 sec"],["custom","Custom"]],restCur)
+      +'<div id="rtset-custom-wrap" style="margin-top:10px;display:'+(restCur==="custom"?"block":"none")+'"><div class="pmeal"><label>Custom seconds</label><input id="rtset-custom" type="number" inputmode="numeric" placeholder="seconds" value="'+(restCur==="custom"?dr:"")+'"></div></div>';
   }
   function refreshFuel(){$("#fuel-tip").innerHTML=fuelTips[state.fTime];renderFuelTarget();renderEnergy();renderHabits();renderNotesHistory();bindNotesHistory();rtRender();rtRenderPref();}
   function renderFuelTarget(){
@@ -3748,10 +3799,10 @@
 
   function renderDataStatus(){var el=$("#data-backup-status");if(!el)return;var lb=store.get("bf_lastbackup");if(lb){var d=new Date(lb);el.textContent="Last backup: "+(isNaN(d.getTime())?lb:d.toLocaleDateString());el.classList.remove("ink-faint");}else{el.textContent="Never backed up";el.classList.add("ink-faint");}}
 
-  function renderMenu(){renderMenuProfile();renderTrackPrefs();renderRules();renderDataStatus();}
+  function renderMenu(){renderMenuProfile();renderTrackPrefs();renderRules();renderDataStatus();if(typeof renderRtSettings==="function")renderRtSettings();}
 
   function allBfKeys(){var ks=[];try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf("bf_")===0)ks.push(k);}}catch(e){}
-    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup"];
+    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings"];
     return ks;}
   function exportData(){try{var data={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)data[k]=v;});var payload={app:"Body Fuel Lab",version:"build 35",exported:new Date().toISOString(),data:data};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="bodyfuel-backup-"+todayISO()+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Could not export data on this device.");}}
   function importData(file){if(!file)return;var r=new FileReader();r.onload=function(){try{var obj=JSON.parse(r.result);var data=(obj&&obj.data)?obj.data:obj;if(!data||typeof data!=="object")throw 0;var n=0;Object.keys(data).forEach(function(k){if(k.indexOf("bf_")===0){store.set(k,data[k]);n++;}});if(!n)throw 0;alert("Restored "+n+" items. The app will now reload.");location.reload();}catch(e){alert("That file could not be read as a Body Fuel Lab backup.");}};r.readAsText(file);}
@@ -3773,7 +3824,7 @@
       if(e.target.closest("#data-clear")){clearAllData();return;}
     });
     m.addEventListener("change",function(e){
-      var sw=e.target.closest(".tsw");if(sw){setTrackPref(sw.getAttribute("data-track"),sw.checked);applyTrackPrefs();return;}
+      var sw=e.target.closest(".tsw[data-track]");if(sw){setTrackPref(sw.getAttribute("data-track"),sw.checked);applyTrackPrefs();return;}
       var imp=e.target.closest("#data-import-file");if(imp&&imp.files&&imp.files[0]){importData(imp.files[0]);}
     });
   })();
