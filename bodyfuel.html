@@ -817,6 +817,32 @@
   nav button.on{color:var(--accent)}
   nav button.on svg{stroke-width:2}
   nav button:active{transform:scale(.94)}
+  .sud-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .sud-status{font-size:.72rem;color:var(--ink-faint);font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+  .sud-mist{font-size:.82rem;color:var(--ink-soft)}
+  .sud-mist.warn{color:var(--red);font-weight:600}
+  .sud-time{font-size:.82rem;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .sud-grid{display:grid;grid-template-columns:repeat(9,1fr);background:var(--surface);border:2px solid var(--ink-faint);border-radius:8px;overflow:hidden;aspect-ratio:1/1;max-width:330px;margin:0 auto}
+  .sud-cell{position:relative;aspect-ratio:1/1;border:0;background:var(--surface);color:var(--ink-soft);font-size:1.05rem;font-weight:500;display:flex;align-items:center;justify-content:center;cursor:pointer;border-right:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);padding:0;font-family:var(--font-b);-webkit-tap-highlight-color:transparent}
+  .sud-cell.peer{background:var(--surface-2)}
+  .sud-cell.same{background:var(--accent-soft);color:var(--accent);font-weight:700}
+  .sud-cell.given{color:var(--ink);font-weight:700}
+  .sud-cell.sel{background:var(--accent);color:#fff}
+  .sud-cell.bad{color:var(--red);font-weight:700}
+  .sud-cell.r3{border-right:2px solid var(--ink-faint)}
+  .sud-cell.b3{border-bottom:2px solid var(--ink-faint)}
+  .sud-notes{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);width:100%;height:100%;font-size:.42rem;line-height:1;color:var(--ink-faint);font-weight:600}
+  .sud-notes i{display:flex;align-items:center;justify-content:center;font-style:normal}
+  .sud-pad{display:grid;grid-template-columns:repeat(9,1fr);gap:4px;margin:12px auto 0;max-width:330px}
+  .sud-pad button{padding:10px 0;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:8px;font-size:1.02rem;font-weight:600;cursor:pointer;font-family:var(--font-b)}
+  .sud-pad button:active{background:var(--accent-soft)}
+  .sud-tools{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px auto 0;max-width:330px}
+  .sud-tool{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:0;color:var(--ink-soft);font-size:.72rem;cursor:pointer;font-family:var(--font-b);padding:4px 0}
+  .sud-tool .sti{font-size:1.25rem;line-height:1}
+  .sud-tool.on{color:var(--accent)}
+  .sud-foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;gap:10px}
+  .sud-foot .muted-p{margin:0;text-align:right;flex:1}
+  .sud-empty{padding:22px 10px;text-align:center;color:var(--ink-faint);font-size:.92rem}
 </style>
 </head>
 <body>
@@ -1150,6 +1176,22 @@
           <div class="rt-pref" id="rt-pref"></div>
         </div>
 
+        <div class="card msec" id="sudoku-card" data-persist="bf_sudopen">
+          <button type="button" class="msec-head"><span class="eyebrow">Brain training · Sudoku</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body">
+            <div class="sud-head"><span class="sud-status" id="sud-status">Hard</span><span class="sud-mist" id="sud-mist">Mistakes: 0/3</span><span class="sud-time" id="sud-time">0:00</span></div>
+            <div class="sud-grid" id="sud-grid"></div>
+            <div class="sud-pad" id="sud-pad"></div>
+            <div class="sud-tools" id="sud-tools">
+              <button type="button" class="sud-tool" data-sudtool="undo"><span class="sti">↶</span><span>Undo</span></button>
+              <button type="button" class="sud-tool" data-sudtool="erase"><span class="sti">⌫</span><span>Erase</span></button>
+              <button type="button" class="sud-tool" id="sud-pencilbtn" data-sudtool="pencil"><span class="sti">✎</span><span>Pencil</span></button>
+              <button type="button" class="sud-tool" data-sudtool="hint"><span class="sti">💡</span><span>Hint</span></button>
+            </div>
+            <div class="sud-foot"><button type="button" class="linkbtn" id="sud-new">New puzzle</button><p class="muted-p" id="sud-msg"></p></div>
+          </div>
+        </div>
+
         <div class="card">
           <div class="eyebrow">Today's session</div>
           <div id="today-session"></div>
@@ -1385,7 +1427,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 58</b></div>
+            <div class="about-row"><span>Version</span><b>Build 60</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1445,7 +1487,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 58"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 60"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -3155,6 +3197,61 @@
       +'<div class="label" style="margin-top:14px">Default rest time</div>'+seg("rtset-rest",[["30","30 sec"],["60","60 sec"],["90","90 sec"],["120","120 sec"],["180","180 sec"],["custom","Custom"]],restCur)
       +'<div id="rtset-custom-wrap" style="margin-top:10px;display:'+(restCur==="custom"?"block":"none")+'"><div class="pmeal"><label>Custom seconds</label><input id="rtset-custom" type="number" inputmode="numeric" placeholder="seconds" value="'+(restCur==="custom"?dr:"")+'"></div></div>';
   }
+  /* ---------- Sudoku (brain training) ---------- */
+  function sudOk(g,i,v){var r=(i/9)|0,c=i%9,br=r-r%3,bc=c-c%3,k;for(k=0;k<9;k++){if(g[r*9+k]===v)return false;if(g[k*9+c]===v)return false;}for(var rr=0;rr<3;rr++)for(var cc=0;cc<3;cc++)if(g[(br+rr)*9+(bc+cc)]===v)return false;return true;}
+  function sudShuffle(a){for(var i=a.length-1;i>0;i--){var j=(Math.random()*(i+1))|0,t=a[i];a[i]=a[j];a[j]=t;}return a;}
+  function sudFill(g){var i=g.indexOf(0);if(i<0)return true;var nums=sudShuffle([1,2,3,4,5,6,7,8,9]);for(var n=0;n<9;n++){var v=nums[n];if(sudOk(g,i,v)){g[i]=v;if(sudFill(g))return true;g[i]=0;}}return false;}
+  function sudCount2(g){var i=g.indexOf(0);if(i<0)return 1;var total=0;for(var v=1;v<=9;v++){if(sudOk(g,i,v)){g[i]=v;total+=sudCount2(g);g[i]=0;if(total>=2)return 2;}}return total;}
+  function sudGenerate(){var sol=new Array(81).fill(0);sudFill(sol);var puz=sol.slice();var order=sudShuffle(sol.map(function(_,i){return i;}));var clues=81,target=27;for(var k=0;k<order.length&&clues>target;k++){var idx=order[k],bak=puz[idx];if(bak===0)continue;puz[idx]=0;if(sudCount2(puz.slice())!==1)puz[idx]=bak;else clues--;}return {puzzle:puz,solution:sol};}
+  function sudLoad(){var s=store.get("bf_sudoku");if(!s)return null;if(!s.notes){s.notes=[];for(var i=0;i<81;i++)s.notes.push([]);}if(s.mistakes==null)s.mistakes=0;if(s.seconds==null)s.seconds=0;if(!s.history)s.history=[];if(s.pencil==null)s.pencil=false;if(s.sel==null)s.sel=-1;return s;}
+  function sudSave(s){store.set("bf_sudoku",s);}
+  function sudNew(){var g=sudGenerate();var notes=[];for(var i=0;i<81;i++)notes.push([]);var st={puzzle:g.puzzle,solution:g.solution,user:g.puzzle.slice(),notes:notes,sel:-1,mistakes:0,done:false,pencil:false,seconds:0,history:[]};sudSave(st);return st;}
+  function sudPush(st,i){st.history=st.history||[];st.history.push({i:i,val:st.user[i],notes:(st.notes[i]||[]).slice(),mist:st.mistakes||0});if(st.history.length>80)st.history.shift();}
+  function sudFmtTime(s){var m=(s/60)|0,ss=s%60;return m+":"+(ss<10?"0":"")+ss;}
+  function sudConflict(u,i){var v=u[i];if(!v)return false;var r=(i/9)|0,c=i%9,br=r-r%3,bc=c-c%3,k;for(k=0;k<9;k++){if(k!==c&&u[r*9+k]===v)return true;if(k!==r&&u[k*9+c]===v)return true;}for(var rr=0;rr<3;rr++)for(var cc=0;cc<3;cc++){var j=(br+rr)*9+(bc+cc);if(j!==i&&u[j]===v)return true;}return false;}
+  function sudSolved(st){for(var i=0;i<81;i++)if(st.user[i]!==st.solution[i])return false;return true;}
+  function renderSudoku(){
+    var grid=$("#sud-grid");if(!grid)return;
+    var pad=$("#sud-pad"),mistEl=$("#sud-mist"),timeEl=$("#sud-time"),pb=$("#sud-pencilbtn"),msg=$("#sud-msg");
+    var st=sudLoad();
+    if(!st){grid.innerHTML='<div class="sud-empty">Tap \u201cNew puzzle\u201d to start a hard puzzle.</div>';if(pad)pad.innerHTML="";if(mistEl)mistEl.textContent="";if(timeEl)timeEl.textContent="";if(msg)msg.textContent="";return;}
+    var selR=st.sel>=0?(st.sel/9|0):-1,selC=st.sel>=0?(st.sel%9):-1,selB=st.sel>=0?(((selR/3)|0)*3+((selC/3)|0)):-1,selVal=st.sel>=0?st.user[st.sel]:0;
+    var html="";
+    for(var i=0;i<81;i++){
+      var r=(i/9)|0,c=i%9,b=((r/3)|0)*3+((c/3)|0),given=st.puzzle[i]!==0,v=st.user[i],cls="sud-cell";
+      if(st.sel>=0&&i!==st.sel&&(r===selR||c===selC||b===selB))cls+=" peer";
+      if(st.sel>=0&&selVal!==0&&v===selVal&&i!==st.sel)cls+=" same";
+      if(given)cls+=" given";
+      if(i===st.sel)cls+=" sel";
+      if(!given&&v!==0&&v!==st.solution[i])cls+=" bad";
+      if(c%3===2&&c!==8)cls+=" r3";
+      if(r%3===2&&r!==8)cls+=" b3";
+      var inner="";
+      if(v!==0){inner=String(v);}
+      else if(st.notes[i]&&st.notes[i].length){inner='<span class="sud-notes">';for(var n=1;n<=9;n++)inner+='<i>'+(st.notes[i].indexOf(n)>=0?n:"")+'</i>';inner+='</span>';}
+      html+='<button type="button" class="'+cls+'" data-sud="'+i+'">'+inner+'</button>';
+    }
+    grid.innerHTML=html;
+    if(pad){var p="";for(var nn=1;nn<=9;nn++)p+='<button type="button" data-sudn="'+nn+'">'+nn+'</button>';pad.innerHTML=p;}
+    if(mistEl){mistEl.textContent="Mistakes: "+st.mistakes+"/3";mistEl.className="sud-mist"+(st.mistakes>=3?" warn":"");}
+    if(timeEl)timeEl.textContent=sudFmtTime(st.seconds||0);
+    if(pb)pb.classList.toggle("on",!!st.pencil);
+    if(msg)msg.textContent=st.done?"Solved! Nice work \u2014 brain fuelled. \ud83e\udde0":(st.mistakes>=3?"3 mistakes \u2014 New puzzle to try again.":"");
+  }
+  function sudSelect(i){var st=sudLoad();if(!st)return;st.sel=i;sudSave(st);renderSudoku();}
+  function sudInput(n){
+    var st=sudLoad();if(!st||st.sel<0||st.done)return;var i=st.sel;if(st.puzzle[i]!==0)return;
+    if(st.pencil){sudPush(st,i);st.notes[i]=st.notes[i]||[];var pp=st.notes[i].indexOf(n);if(pp>=0)st.notes[i].splice(pp,1);else st.notes[i].push(n);st.user[i]=0;sudSave(st);renderSudoku();return;}
+    sudPush(st,i);st.user[i]=n;st.notes[i]=[];
+    if(n!==st.solution[i])st.mistakes=(st.mistakes||0)+1;
+    st.done=sudSolved(st);sudSave(st);renderSudoku();
+  }
+  function sudErase(){var st=sudLoad();if(!st||st.sel<0)return;var i=st.sel;if(st.puzzle[i]!==0)return;if(st.user[i]===0&&!(st.notes[i]&&st.notes[i].length))return;sudPush(st,i);st.user[i]=0;st.notes[i]=[];st.done=false;sudSave(st);renderSudoku();}
+  function sudUndo(){var st=sudLoad();if(!st||!st.history||!st.history.length)return;var h=st.history.pop();st.user[h.i]=h.val;st.notes[h.i]=h.notes||[];st.mistakes=h.mist;st.sel=h.i;st.done=sudSolved(st);sudSave(st);renderSudoku();}
+  function sudPencil(){var st=sudLoad();if(!st)return;st.pencil=!st.pencil;sudSave(st);renderSudoku();}
+  function sudHint(){var st=sudLoad();if(!st||st.done)return;var i=st.sel;if(i<0||st.puzzle[i]!==0||st.user[i]===st.solution[i]){i=-1;for(var k=0;k<81;k++){if(st.puzzle[k]===0&&st.user[k]!==st.solution[k]){i=k;break;}}}if(i<0)return;sudPush(st,i);st.user[i]=st.solution[i];st.notes[i]=[];st.sel=i;st.done=sudSolved(st);sudSave(st);renderSudoku();}
+  var sudTick=null;
+  function sudStartTimer(){if(sudTick)return;sudTick=setInterval(function(){var card=$("#sudoku-card");if(!card||!card.classList.contains("open"))return;var st=sudLoad();if(!st||st.done||st.mistakes>=3)return;st.seconds=(st.seconds||0)+1;sudSave(st);var t=$("#sud-time");if(t)t.textContent=sudFmtTime(st.seconds);},1000);}
   function refreshFuel(){$("#fuel-tip").innerHTML=fuelTips[state.fTime];renderFuelTarget();renderEnergy();renderHabits();renderNotesHistory();bindNotesHistory();rtRender();rtRenderPref();}
   function renderFuelTarget(){
     var el=$("#fuel-target-card");if(!el)return;
@@ -3802,7 +3899,7 @@
   function renderMenu(){renderMenuProfile();renderTrackPrefs();renderRules();renderDataStatus();if(typeof renderRtSettings==="function")renderRtSettings();}
 
   function allBfKeys(){var ks=[];try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf("bf_")===0)ks.push(k);}}catch(e){}
-    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings"];
+    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku"];
     return ks;}
   function exportData(){try{var data={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)data[k]=v;});var payload={app:"Body Fuel Lab",version:"build 35",exported:new Date().toISOString(),data:data};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="bodyfuel-backup-"+todayISO()+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Could not export data on this device.");}}
   function importData(file){if(!file)return;var r=new FileReader();r.onload=function(){try{var obj=JSON.parse(r.result);var data=(obj&&obj.data)?obj.data:obj;if(!data||typeof data!=="object")throw 0;var n=0;Object.keys(data).forEach(function(k){if(k.indexOf("bf_")===0){store.set(k,data[k]);n++;}});if(!n)throw 0;alert("Restored "+n+" items. The app will now reload.");location.reload();}catch(e){alert("That file could not be read as a Body Fuel Lab backup.");}};r.readAsText(file);}
@@ -3839,6 +3936,7 @@
   renderWater();
   (function(){var d=$("#dt-card");if(d&&store.get("bf_dtopen")===true)d.classList.add("open");})();
   (function(){var cc=$("#cycle-setup-card");if(!cc)return;var c=loadCycle();if(!c.start)cc.classList.add("open");else if(store.get("bf_cycopen")===true)cc.classList.add("open");})();
+  (function(){var sc=$("#sudoku-card");if(!sc)return;if(store.get("bf_sudopen")===true)sc.classList.add("open");renderSudoku();sudStartTimer();sc.addEventListener("click",function(e){var nw=e.target.closest("#sud-new");if(nw){sc.classList.add("open");sudNew();renderSudoku();return;}var tl=e.target.closest("[data-sudtool]");if(tl){var a=tl.getAttribute("data-sudtool");if(a==="undo")sudUndo();else if(a==="erase")sudErase();else if(a==="pencil")sudPencil();else if(a==="hint")sudHint();return;}var cell=e.target.closest("[data-sud]");if(cell){sudSelect(+cell.getAttribute("data-sud"));return;}var pn=e.target.closest("[data-sudn]");if(pn){sudInput(+pn.getAttribute("data-sudn"));return;}});})();
   (function(){var c=$("#sleep-card");if(!c)return;c.addEventListener("click",function(e){var qb=e.target.closest("#sl-quality button");if(qb){$all("#sl-quality button").forEach(function(b){b.classList.remove("on");});qb.classList.add("on");return;}if(e.target.closest("#sl-save")){saveSleep();}});})();
   renderMenu();applyTrackPrefs();
   renderPortionMemory();renderPortionList();syncWpButtons();
