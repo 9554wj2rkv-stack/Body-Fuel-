@@ -843,6 +843,9 @@
   .sud-foot{display:flex;align-items:center;justify-content:space-between;margin-top:14px;gap:10px}
   .sud-foot .muted-p{margin:0;text-align:right;flex:1}
   .sud-empty{padding:22px 10px;text-align:center;color:var(--ink-faint);font-size:.92rem}
+  .cardioblk{padding:14px 0;border-bottom:1px solid var(--line-soft)}
+  .cbhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+  .cbhead b{font-size:1.02rem}
 </style>
 </head>
 <body>
@@ -1427,7 +1430,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 60</b></div>
+            <div class="about-row"><span>Version</span><b>Build 63</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1487,7 +1490,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 60"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 63"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -1916,6 +1919,7 @@
     upper:{t:"Upper Body Strength",ex:["Lat Pulldown","Chest Press","Seated Row","Shoulder Press","Dumbbell Lateral Raise","Biceps Curl","Triceps Pushdown"],sets:"2 sets each",reps:"8–10 reps",finish:"15 min incline walk or StairMaster",why:"upper",log:true},
     fullbody:{t:"Full Body Strength",ex:["Leg Press","Hip Thrust Machine","Lat Pulldown","Chest Press","Dumbbell Lateral Raise","Core"],sets:"2 sets each",reps:"8–10 reps",finish:"20 min incline walk or StairMaster",why:"fullbody",log:true},
     conditioning:{t:"Conditioning + Core",ex:["Kettlebell Swing","Row","Plank","Dead Bug","Pallof Press"],sets:"2–3 rounds",reps:"circuit style",finish:"10–15 min intervals or incline walk",notes:"Keep rest short and the pace steady — conditioning plus core, not a max-effort lift day.",why:"conditioning",log:true},
+    cardio:{t:"Cardio",ex:[],why:"cardio",log:false},
     recovery:{t:"Recovery Day",ex:[],notes:"A recovery-focused session \u2014 easy cardio and mobility to boost circulation and consistency. This intentionally replaces a 4th lifting day.",why:"recovery",log:false},
     rest:{t:"Full rest",ex:[],notes:"Full rest — no training today. Recovery is when your progress is made.",why:"rest",log:false}
   };
@@ -1935,6 +1939,42 @@
   function sessDateObj(){return new Date(sessISO()+"T00:00:00");}
   function sessIdx(){var d=sessDateObj().getDay();return d===0?6:d-1;}
   function sessWeekKey(){return weekKey(sessDateObj());}
+  var CORE_NOTE="This core day rotates weekly so you build strength without getting bored.";
+  var CORE_VARIANTS=[
+    {title:"Core A \u2013 Strength & Stability",finish:"10 min incline treadmill",ex:[["Cable Crunch","3 \u00d7 10\u201312"],["Pallof Press","3 \u00d7 12 each side"],["Hanging Knee Raise","3 \u00d7 10\u201315"],["Back Extension Machine","3 \u00d7 12"],["Farmer's Carry","3 \u00d7 30\u201340 m"],["Plank","2 \u00d7 45\u201360 sec"]]},
+    {title:"Core B \u2013 Athletic Core",finish:"10\u201315 min rowing machine",ex:[["Cable Wood Chop","3 \u00d7 12 each side \u00b7 high-to-low"],["Cable Lift","3 \u00d7 12 each side \u00b7 low-to-high"],["Ab Wheel Rollout or Stability Ball Rollout","3 \u00d7 8\u201312"],["Roman Chair Leg Raise or Reverse Hyper","3 \u00d7 12"],["Dead Bug with Resistance Band","2 \u00d7 15"],["Side Plank Reach Through","2 \u00d7 12 each side"]]},
+    {title:"Core C \u2013 Functional Strength",finish:"10 min StairMaster",ex:[["Cable Crunch","3 \u00d7 12"],["Single-arm Cable Press","3 \u00d7 10 each side \u00b7 standing"],["Cable Rotation","3 \u00d7 12 each side \u00b7 controlled"],["Hanging Leg Raise or Captain's Chair","3 \u00d7 10\u201315"],["Suitcase Carry","3 \u00d7 30 m each side"],["Copenhagen Side Plank","2 \u00d7 20\u201330 sec each side"]]}
+  ];
+  function coreVariantIdx(wk){var sw=weekKey(new Date(bfStart()+"T00:00:00")),a=new Date(sw+"T00:00:00"),b=new Date(wk+"T00:00:00");var weeks=Math.round((b-a)/(7*86400000)),n=weeks+1;if(n<1)n=1;return ((n-1)%3+3)%3;}
+  function coreVariantFor(wk){return CORE_VARIANTS[coreVariantIdx(wk)];}
+  function coreHeaderHTML(wk){var v=coreVariantFor(wk);return '<div class="built" style="margin:2px 0 4px">'+esc(v.title)+'</div><p class="muted-p" style="margin:0 0 12px">'+CORE_NOTE+'</p>';}
+  function coreExCardsHTML(dayKey,wk){return coreVariantFor(wk).ex.map(function(o){return renderExCard(dayKey,o[0],wk,o[1]);}).join("");}
+  function coreFinishHTML(wk){return '<div class="tip" style="margin-top:12px">Finish: <b>'+esc(coreVariantFor(wk).finish)+'</b></div>';}
+  var CARDIO_NOTE="This day keeps movement high without adding recovery stress from strength training.";
+  var CARDIO_BLOCKS=[{key:"rowing",name:"Rowing",def:"5 min"},{key:"stairs",name:"StairMaster",def:"10–15 min"},{key:"incline",name:"Incline Walking",def:"25 min"},{key:"custom",name:"Custom Cardio",def:""}];
+  function loadCardioDay(){return store.get("bf_cardioday")||{};}
+  function cardioDayFor(iso){return loadCardioDay()[iso]||{};}
+  function cardioDefaults(k){return ({rowing:{min:"5"},stairs:{min:"10–15"},incline:{min:"25"},custom:{}})[k]||{};}
+  function saveCardioField(k,field,val){var all=loadCardioDay(),iso=sessISO(),day=all[iso]||{};day[k]=day[k]||{};day[k][field]=val;all[iso]=day;store.set("bf_cardioday",all);}
+  function cardioPrevLine(k){var all=loadCardioDay(),iso=sessISO(),dates=Object.keys(all).filter(function(d){return d<iso;}).sort();for(var i=dates.length-1;i>=0;i--){var b=all[dates[i]][k];if(b&&(b.min||b.done||b.speed||b.incline||b.level||b.name||b.ls)){var parts=[];if(k==="custom"&&b.name)parts.push(b.name);if(b.min)parts.push(b.min+" min");if(b.speed)parts.push(b.speed+" km/h");if(b.incline)parts.push(b.incline+"% incline");if(b.level)parts.push("level "+b.level);if(b.ls)parts.push(b.ls);if(!parts.length&&b.done)parts.push("done");if(!parts.length)continue;return "Last: "+parts.join(" · ")+" · "+dchLabel(dates[i]);}}return "";}
+  function cardioOnlyHTML(){
+    var day=cardioDayFor(sessISO());
+    function inp(k,field,label,imode){var s=day[k]||{},defs=cardioDefaults(k),v=(s[field]!=null?s[field]:(defs[field]!=null?defs[field]:""));return '<div class="pmeal"><label>'+label+'</label><input data-cd="'+k+'" data-cf="'+field+'" type="text" inputmode="'+(imode||"text")+'" placeholder="'+label+'" value="'+esc(String(v))+'"></div>';}
+    var blocks=CARDIO_BLOCKS.map(function(bl){
+      var s=day[bl.key]||{},done=!!s.done,fields="";
+      if(bl.key==="rowing")fields='<div class="pmeal-grid">'+inp("rowing","min","Minutes","numeric")+inp("rowing","level","Intensity / level (optional)")+'</div>'+inp("rowing","notes","Notes");
+      else if(bl.key==="stairs")fields='<div class="pmeal-grid">'+inp("stairs","min","Minutes","numeric")+inp("stairs","level","Level (optional)")+'</div>'+inp("stairs","notes","Notes");
+      else if(bl.key==="incline")fields='<div class="pmeal-grid">'+inp("incline","min","Minutes","numeric")+inp("incline","speed","Speed km/h","decimal")+'</div><div class="pmeal-grid">'+inp("incline","incline","Incline %","decimal")+'<div class="pmeal"></div></div>'+inp("incline","notes","Notes");
+      else fields=inp("custom","name","Activity name")+'<div class="pmeal-grid">'+inp("custom","min","Minutes","numeric")+inp("custom","ls","Level / speed (optional)")+'</div>'+inp("custom","notes","Notes");
+      var prev=cardioPrevLine(bl.key);
+      return '<div class="cardioblk"><div class="cbhead"><b>'+esc(bl.name)+'</b><button class="excomp'+(done?' on':'')+'" data-cddone="'+bl.key+'">'+(done?'Done':'Mark done')+'</button></div>'+(prev?'<div class="exprev" style="margin:0 0 8px">'+prev+'</div>':'')+fields+'</div>';
+    }).join("");
+    return '<p class="muted-p" style="margin:2px 0 2px">Steps, stamina & fat-loss support</p><p class="muted-p" style="margin:0 0 14px">'+CARDIO_NOTE+'</p>'+blocks;
+  }
+  function bindCardioOnly(){var host=$("#today-session");if(!host)return;
+    host.querySelectorAll("[data-cd]").forEach(function(inp){inp.addEventListener("change",function(){var f=inp.getAttribute("data-cf"),v=inp.value;if(f!=="notes"&&f!=="name"&&f!=="ls")v=v.trim().replace(",",".");saveCardioField(inp.getAttribute("data-cd"),f,v);});});
+    host.querySelectorAll("[data-cddone]").forEach(function(btn){btn.addEventListener("click",function(){var k=btn.getAttribute("data-cddone"),all=loadCardioDay(),iso=sessISO(),day=all[iso]||{};day[k]=day[k]||{};day[k].done=!day[k].done;all[iso]=day;store.set("bf_cardioday",all);btn.classList.toggle("on",day[k].done);btn.textContent=day[k].done?'Done':'Mark done';});});
+  }
   function sessLabel(){var iso=sessISO(),d=sessDateObj();var wd=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()],mo=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][d.getMonth()];var rel="";if(iso===todayISO())rel="Today";else{var y=new Date();y.setDate(y.getDate()-1);if(iso===ovIso(y))rel="Yesterday";}return (rel?rel+" · ":"")+wd+" "+d.getDate()+" "+mo;}
   function gotoSessDate(which){if(which==="today"){state.sessDate=null;renderTodaySession();return;}var d=sessDateObj();d.setDate(d.getDate()+(which==="next"?1:-1));var iso=ovIso(d);if(iso>todayISO())return;state.sessDate=(iso===todayISO())?null:iso;renderTodaySession();}
   function whyPills(p){
@@ -1946,15 +1986,22 @@
   }
   function dayDetail(p){
     var h="";
+    if(p.why==="cardio"){
+      h+='<p class="muted-p" style="margin-top:2px">Steps, stamina & fat-loss support. '+CARDIO_NOTE+'</p>';
+      h+='<ul class="dots" style="margin-top:8px">'+CARDIO_BLOCKS.map(function(b){return '<li><span class="b"></span>'+esc(b.name)+(b.def?' · '+b.def:'')+'</li>';}).join("")+'</ul>';
+      return h+whyPills(p);
+    }
+    var isCore=p.why==="conditioning";
     if(p.log&&p.ex&&p.ex.length){
       var dk=slug(p.t),wk=weekKey();
-      h+='<div class="exwk" data-dayk="'+dk+'" data-wk="'+wk+'" style="margin-top:4px">'+p.ex.map(function(e){return renderExCard(dk,e,wk);}).join("")+'</div>';
+      if(isCore){h+=coreHeaderHTML(wk)+'<div class="exwk" data-dayk="'+dk+'" data-wk="'+wk+'" style="margin-top:4px">'+coreExCardsHTML(dk,wk)+'</div>';}
+      else{h+='<div class="exwk" data-dayk="'+dk+'" data-wk="'+wk+'" style="margin-top:4px">'+p.ex.map(function(e){return renderExCard(dk,e,wk);}).join("")+'</div>';}
     } else if(p.ex&&p.ex.length){
       h+='<ul class="dots" style="margin-top:2px">'+p.ex.map(function(e){return '<li><span class="b"></span>'+e+'</li>';}).join("")+'</ul>';
     }
-    var meta=[];if(p.sets)meta.push(p.sets);if(p.reps)meta.push(p.reps);
-    if(meta.length)h+='<div class="tip" style="margin-top:12px"><b>'+meta.join(" · ")+'</b></div>';
-    if(p.finish)h+='<div class="tip" style="margin-top:10px">Finish: <b>'+p.finish+'</b></div>';
+    if(!isCore){var meta=[];if(p.sets)meta.push(p.sets);if(p.reps)meta.push(p.reps);if(meta.length)h+='<div class="tip" style="margin-top:12px"><b>'+meta.join(" · ")+'</b></div>';}
+    var finishTxt=isCore?coreVariantFor(weekKey()).finish:p.finish;
+    if(finishTxt)h+='<div class="tip" style="margin-top:10px">Finish: <b>'+finishTxt+'</b></div>';
     if(p.purpose)h+='<p class="muted-p" style="margin-top:12px">'+p.purpose+'</p>';
     if(p.notes)h+='<p class="muted-p" style="margin-top:12px">'+p.notes+'</p>';
     return h+whyPills(p);
@@ -1973,13 +2020,20 @@
       host.innerHTML=nav+head+sessCompleteHTML()+recoveryCardioHTML()+mobilityHTML()+(pcr?'<div class="divider"></div>'+pcr:'')+(p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'')+whyPills(p);
       bindSessComplete();bindRecovery();bindCheckin();return;
     }
+    if(p.why==="cardio"){
+      var pcc=postCheckinHTML();
+      host.innerHTML=nav+head+sessCompleteHTML()+cardioOnlyHTML()+(pcc?'<div class="divider"></div>'+pcc:'')+(p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'')+whyPills(p);
+      bindSessComplete();bindCardioOnly();bindCheckin();return;
+    }
     if(!p.log){host.innerHTML=nav+head+'<p class="muted-p">'+(p.notes||"Full rest day.")+'</p>'+whyPills(p);return;}
-    var meta='';if(p.sets||p.reps){var mm=[];if(p.sets)mm.push(p.sets);if(p.reps)mm.push(p.reps);meta='<div class="tip" style="margin-bottom:13px"><b>'+mm.join(" · ")+'</b></div>';}
+    var isCore=p.why==="conditioning";
+    var meta='';if((p.sets||p.reps)&&!isCore){var mm=[];if(p.sets)mm.push(p.sets);if(p.reps)mm.push(p.reps);meta='<div class="tip" style="margin-bottom:13px"><b>'+mm.join(" · ")+'</b></div>';}
     if(p.purpose)meta+='<p class="muted-p" style="margin-bottom:13px">'+p.purpose+'</p>';
     var wdone=todayLog().warmup;
     var warm='<div class="warmrow"><div class="warm-t"><b>Warm-up</b> · 5 min row machine, easy pace</div><button class="excomp'+(wdone?' on':'')+'" id="warm-toggle">'+(wdone?'Done':'Mark done')+'</button></div>';
     var dayKey=slug(p.t);
-    var ex='<div id="ex-log" data-dayk="'+dayKey+'" data-wk="'+sessWeekKey()+'">'+p.ex.map(function(e){return e==="Core"?renderCore(dayKey,sessWeekKey()):renderExCard(dayKey,e,sessWeekKey());}).join("")+'</div>';
+    var exBody=isCore?coreExCardsHTML(dayKey,sessWeekKey()):p.ex.map(function(e){return e==="Core"?renderCore(dayKey,sessWeekKey()):renderExCard(dayKey,e,sessWeekKey());}).join("");
+    var ex=(isCore?coreHeaderHTML(sessWeekKey()):'')+'<div id="ex-log" data-dayk="'+dayKey+'" data-wk="'+sessWeekKey()+'">'+exBody+'</div>'+(isCore?coreFinishHTML(sessWeekKey()):'');
     var cardio=(p.finish||p.why==="conditioning")?cardioHTML(p):'';
     var notes=p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'';
     var pcs=postCheckinHTML();
@@ -1992,36 +2046,39 @@
   function exData(dayKey,exKey){var w=loadWorkout();return (w[dayKey]&&w[dayKey][exKey])||{};}
   function saveExEntry(dayKey,exKey,wk,entry){var w=loadWorkout();w[dayKey]=w[dayKey]||{};w[dayKey][exKey]=w[dayKey][exKey]||{};w[dayKey][exKey][wk]=entry;store.set("bf_workout",w);}
   function exWeeksSorted(dayKey,exKey){var d=exData(dayKey,exKey);return Object.keys(d).sort().map(function(k){return [k,d[k]];});}
-  var exKind={"Dead Bug":"reps","Pallof Press":"reps","Plank":"time","Farmer Carry":"load","Core":"reps",
+  var exKind={"Dead Bug":"reps","Pallof Press":"weight","Plank":"time","Farmer Carry":"load","Core":"reps",
+    "Copenhagen Side Plank":"time","Farmer's Carry":"distance","Suitcase Carry":"distance","Cable Crunch":"weight","Back Extension Machine":"weight","Cable Wood Chop":"weight","Cable Lift":"weight","Single-arm Cable Press":"weight","Cable Rotation":"weight","Hanging Knee Raise":"reps","Hanging Leg Raise or Captain's Chair":"reps","Ab Wheel Rollout or Stability Ball Rollout":"reps","Roman Chair Leg Raise or Reverse Hyper":"reps","Dead Bug with Resistance Band":"reps","Side Plank Reach Through":"reps",
     "Leg Press":"two","Single Leg Press":"two","Hip Thrust Machine":"two","Seated Leg Curl":"two","Leg Extension":"two","Hip Abductor":"two","Calf Raise":"two",
     "Lat Pulldown":"two","Chest Press":"two","Seated Row":"two","Shoulder Press":"two","Dumbbell Lateral Raise":"two","Biceps Curl":"two","Triceps Pushdown":"two"};
   function exKindOf(name){if(/treadmill/i.test(name))return "done";return exKind[name]||"weight";}
-  function exHasVal(e,kind){if(kind==="done")return true;if(kind==="time")return e.time!=null;if(kind==="reps")return e.reps!=null;if(kind==="two")return e.w1!=null||e.w2!=null;return e.weight!=null;}
+  function exHasVal(e,kind){if(kind==="done")return true;if(kind==="time")return e.time!=null;if(kind==="reps")return e.reps!=null;if(kind==="two")return e.w1!=null||e.w2!=null;if(kind==="distance")return e.dist!=null;return e.weight!=null;}
   function exPrevious(dayKey,exKey,cur,kind){var arr=exWeeksSorted(dayKey,exKey).filter(function(x){return x[0]!==cur&&x[1]&&x[1].completed&&exHasVal(x[1],kind);});return arr.length?arr[arr.length-1][1]:null;}
-  function exPrevText(p,kind){if(!p)return "No previous entry yet";if(kind==="done")return "Completed";if(kind==="time")return p.time!=null?p.time+" sec":"done";if(kind==="reps")return p.reps!=null?p.reps+" reps":"done";if(kind==="load")return p.weight!=null?p.weight+" kg":"done";if(kind==="two"){var s1=(p.w1!=null?p.w1:"\u2013")+(p.r1!=null?"\u00d7"+p.r1:"");var s2=(p.w2!=null?p.w2:"\u2013")+(p.r2!=null?"\u00d7"+p.r2:"");return s1+" / "+s2+" kg";}return p.weight+" kg × "+(p.reps!=null?p.reps:"?")+" sets";}
+  function exPrevText(p,kind){if(!p)return "No previous entry yet";if(kind==="done")return "Completed";if(kind==="time")return p.time!=null?p.time+" sec":"done";if(kind==="reps")return p.reps!=null?p.reps+" reps":"done";if(kind==="distance")return p.dist!=null?p.dist+" m":"done";if(kind==="load")return p.weight!=null?p.weight+" kg":"done";if(kind==="two"){var s1=(p.w1!=null?p.w1:"\u2013")+(p.r1!=null?"\u00d7"+p.r1:"");var s2=(p.w2!=null?p.w2:"\u2013")+(p.r2!=null?"\u00d7"+p.r2:"");return s1+" / "+s2+" kg";}return p.weight+" kg × "+(p.reps!=null?p.reps:"?")+" sets";}
   function exProgress(dayKey,exKey,kind){
     var arr=exWeeksSorted(dayKey,exKey).filter(function(x){return x[1]&&(kind==="done"?x[1].completed:exHasVal(x[1],kind));}).slice(-4),cells=[];
-    for(var i=0;i<4;i++){var e=arr[i],v=e&&e[1],cell="\u2014";if(v){if(kind==="done")cell=v.completed?"\u2713":"\u2014";else if(kind==="time")cell=v.time!=null?v.time+"s":"\u2014";else if(kind==="reps")cell=v.reps!=null?String(v.reps):"\u2014";else if(kind==="load")cell=v.weight!=null?v.weight+"kg":"\u2014";else if(kind==="two")cell=(v.w1!=null||v.w2!=null)?((v.w1!=null?v.w1:"\u2013")+" / "+(v.w2!=null?v.w2:"\u2013")):"\u2014";else cell=v.weight!=null?v.weight+"\u00d7"+(v.reps!=null?v.reps:"?"):"\u2014";}cells.push('<div class="swk"><b>W'+(i+1)+'</b>'+cell+'</div>');}
+    for(var i=0;i<4;i++){var e=arr[i],v=e&&e[1],cell="\u2014";if(v){if(kind==="done")cell=v.completed?"\u2713":"\u2014";else if(kind==="time")cell=v.time!=null?v.time+"s":"\u2014";else if(kind==="reps")cell=v.reps!=null?String(v.reps):"\u2014";else if(kind==="load")cell=v.weight!=null?v.weight+"kg":"\u2014";else if(kind==="distance")cell=v.dist!=null?v.dist+"m":"\u2014";else if(kind==="two")cell=(v.w1!=null||v.w2!=null)?((v.w1!=null?v.w1:"\u2013")+" / "+(v.w2!=null?v.w2:"\u2013")):"\u2014";else cell=v.weight!=null?v.weight+"\u00d7"+(v.reps!=null?v.reps:"?"):"\u2014";}cells.push('<div class="swk"><b>W'+(i+1)+'</b>'+cell+'</div>');}
     return '<div class="swks">'+cells.join("")+'</div>';
   }
   function loadExHist(){return store.get("bf_exhist")||{};}
-  function exInferKind(e){if(e.w1!=null||e.w2!=null)return "two";if(e.weight!=null&&e.reps!=null)return "weight";if(e.weight!=null)return "load";if(e.reps!=null)return "reps";if(e.time!=null)return "time";return "done";}
-  function exMetric(e,kind){if(kind==="two"){var a=e.w1,b=e.w2;if(a==null&&b==null)return null;return Math.max(a!=null?a:b,b!=null?b:a);}if(kind==="weight"||kind==="load")return e.weight!=null?e.weight:null;if(kind==="reps")return e.reps!=null?e.reps:null;if(kind==="time")return e.time!=null?e.time:null;return null;}
-  function exHistUpdate(exKey,kind,e,dateISO){if(!e||!e.completed)return;if(kind!=="done"&&!exHasVal(e,kind))return;var H=loadExHist(),rec=H[exKey]||{},snap={w1:e.w1,w2:e.w2,r1:e.r1,r2:e.r2,weight:e.weight,reps:e.reps,time:e.time,kind:kind,date:dateISO||null};if(!rec.last||!rec.last.date||(dateISO&&dateISO>=rec.last.date))rec.last=snap;var m=exMetric(e,kind);if(m!=null&&isFinite(m)&&(!rec.best||rec.best.val==null||m>rec.best.val))rec.best=Object.assign({val:m},snap);H[exKey]=rec;store.set("bf_exhist",H);}
+  function exInferKind(e){if(e.w1!=null||e.w2!=null)return "two";if(e.weight!=null&&e.reps!=null)return "weight";if(e.weight!=null)return "load";if(e.reps!=null)return "reps";if(e.time!=null)return "time";if(e.dist!=null)return "distance";return "done";}
+  function exMetric(e,kind){if(kind==="two"){var a=e.w1,b=e.w2;if(a==null&&b==null)return null;return Math.max(a!=null?a:b,b!=null?b:a);}if(kind==="weight"||kind==="load")return e.weight!=null?e.weight:null;if(kind==="reps")return e.reps!=null?e.reps:null;if(kind==="time")return e.time!=null?e.time:null;if(kind==="distance")return e.dist!=null?e.dist:null;return null;}
+  function exHistUpdate(exKey,kind,e,dateISO){if(!e||!e.completed)return;if(kind!=="done"&&!exHasVal(e,kind))return;var H=loadExHist(),rec=H[exKey]||{},snap={w1:e.w1,w2:e.w2,r1:e.r1,r2:e.r2,weight:e.weight,reps:e.reps,time:e.time,dist:e.dist,kind:kind,date:dateISO||null};if(!rec.last||!rec.last.date||(dateISO&&dateISO>=rec.last.date))rec.last=snap;var m=exMetric(e,kind);if(m!=null&&isFinite(m)&&(!rec.best||rec.best.val==null||m>rec.best.val))rec.best=Object.assign({val:m},snap);H[exKey]=rec;store.set("bf_exhist",H);}
   function exHistBackfill(){if(store.get("bf_exhist_v"))return;var w=loadWorkout(),H=loadExHist();Object.keys(w).forEach(function(dk){var exs=w[dk]||{};Object.keys(exs).forEach(function(ek){var weeks=exs[ek]||{};Object.keys(weeks).forEach(function(wk){var e=weeks[wk];if(!e||!e.completed)return;var kind=exInferKind(e);if(kind!=="done"&&!exHasVal(e,kind))return;var dateISO=e.date||wk||null,rec=H[ek]||{},snap={w1:e.w1,w2:e.w2,r1:e.r1,r2:e.r2,weight:e.weight,reps:e.reps,time:e.time,kind:kind,date:dateISO};if(!rec.last||!rec.last.date||(dateISO&&dateISO>=rec.last.date))rec.last=snap;var m=exMetric(e,kind);if(m!=null&&isFinite(m)&&(!rec.best||rec.best.val==null||m>rec.best.val))rec.best=Object.assign({val:m},snap);H[ek]=rec;});});});store.set("bf_exhist",H);(function(){if(store.get("bf_cardiohist"))return;var T=loadTraining(),bd=null,bc=null;Object.keys(T).forEach(function(d){var c=T[d]&&T[d].cardio;if(c&&(c.incline||c.speed||c.level)&&(!bd||d>bd)){bd=d;bc=c;}});if(bc)store.set("bf_cardiohist",{mode:bc.mode||"incline",incline:bc.incline||"",speed:bc.speed||"",level:bc.level||"",duration:bc.duration||"",date:bd});})();store.set("bf_exhist_v",1);}
-  function exBestText(b,kind){if(!b)return null;if(kind==="time")return (b.time!=null?b.time:b.val)+" sec";if(kind==="reps")return (b.reps!=null?b.reps:b.val)+" reps";if(kind==="two"||kind==="weight"||kind==="load")return b.val+" kg";return null;}
+  function exBestText(b,kind){if(!b)return null;if(kind==="time")return (b.time!=null?b.time:b.val)+" sec";if(kind==="reps")return (b.reps!=null?b.reps:b.val)+" reps";if(kind==="distance")return (b.dist!=null?b.dist:b.val)+" m";if(kind==="two"||kind==="weight"||kind==="load")return b.val+" kg";return null;}
   function exLastLine(exKey,kind){var r=loadExHist()[exKey],last=r&&r.last?r.last:null;if(!last)return "No previous entry yet";var parts=["Last: "+exPrevText(last,last.kind||kind)];if(last.date)parts.push(dchLabel(last.date));var best=r&&r.best?r.best:null,bt=best?exBestText(best,best.kind||kind):null;if(bt)parts.push("Best: "+bt);return parts.join(" \u00b7 ");}
   function exInner(dayKey,exKey,kind,wk){var cur=wk||sessWeekKey(),c=exData(dayKey,exKey)[cur]||{};return {c:c,prev:exLastLine(exKey,kind),prog:exProgress(dayKey,exKey,kind)};}
   var exNotes={"Plank":"Hold 2–3 × 30–45 sec · stop when form breaks","Dead Bug":"2–3 × 20 reps each side","Pallof Press":"2–3 × 10–12 each side","Farmer Carry":"2–3 × 20–40 m heavy","Core":"2–3 × 20–30 reps (or a 30–45 sec hold)"};
-  function renderExCard(dayKey,exName,wk){
+  function renderExCard(dayKey,exName,wk,noteOverride){
     var exKey=slug(exName),kind=exKindOf(exName),inner=exInner(dayKey,exKey,kind,wk),c=inner.c;
-    var note=exNotes[exName]?'<div class="exnote">'+exNotes[exName]+'</div>':'';
+    var noteTxt=(noteOverride!=null?noteOverride:exNotes[exName]);
+    var note=noteTxt?'<div class="exnote">'+noteTxt+'</div>':'';
     var inputs="";
     if(kind==="two")inputs='<div class="exset"><label>Set 1</label><input data-exw1 type="text" inputmode="decimal" placeholder="kg" value="'+(c.w1!=null?c.w1:'')+'"><input data-exr1 type="number" inputmode="numeric" placeholder="reps" value="'+(c.r1!=null?c.r1:'')+'"></div><div class="exset"><label>Set 2</label><input data-exw2 type="text" inputmode="decimal" placeholder="kg" value="'+(c.w2!=null?c.w2:'')+'"><input data-exr2 type="number" inputmode="numeric" placeholder="reps" value="'+(c.r2!=null?c.r2:'')+'"></div>';
-    else if(kind==="weight")inputs='<input data-exw type="text" inputmode="decimal" placeholder="kg" value="'+(c.weight!=null?c.weight:'')+'"><span class="exx">×</span><input data-exr type="number" inputmode="numeric" placeholder="sets" value="'+(c.reps!=null?c.reps:'')+'">';
+    else if(kind==="weight")inputs='<input data-exw type="text" inputmode="decimal" placeholder="kg" value="'+(c.weight!=null?c.weight:'')+'"><span class="exx">×</span><input data-exr type="number" inputmode="numeric" placeholder="reps" value="'+(c.reps!=null?c.reps:'')+'">';
     else if(kind==="load")inputs='<input data-exw type="text" inputmode="decimal" placeholder="kg" value="'+(c.weight!=null?c.weight:'')+'">';
     else if(kind==="reps")inputs='<input data-exr type="number" inputmode="numeric" placeholder="reps" value="'+(c.reps!=null?c.reps:'')+'">';
     else if(kind==="time")inputs='<input data-ext type="number" inputmode="numeric" placeholder="sec" value="'+(c.time!=null?c.time:'')+'">';
+    else if(kind==="distance")inputs='<input data-exd type="number" inputmode="decimal" placeholder="meters" value="'+(c.dist!=null?c.dist:'')+'">';
     var comp='<button class="excomp'+(c.completed?' on':'')+'" data-exc>'+(c.completed?'Completed':(kind==="done"?'Mark as done':'Mark done'))+'</button>';
     return '<div class="exlog" data-exk="'+exKey+'" data-kind="'+kind+'"><div class="exn">'+esc(exName)+'</div>'+note
       +'<div class="exprev ex-prev">'+inner.prev+'</div>'
@@ -2031,9 +2088,9 @@
   function exRefresh(card){var box=card.closest("[data-dayk]"),dayKey=box.getAttribute("data-dayk"),wk=box.getAttribute("data-wk")||sessWeekKey(),exKey=card.getAttribute("data-exk"),kind=card.getAttribute("data-kind"),inner=exInner(dayKey,exKey,kind,wk);card.querySelector(".ex-prev").textContent=inner.prev;card.querySelector(".ex-prog").innerHTML='<b>Progress</b>'+inner.prog;}
   function exWrite(card,toggle){
     var box=card.closest("[data-dayk]"),dayKey=box.getAttribute("data-dayk"),exKey=card.getAttribute("data-exk"),cur=box.getAttribute("data-wk")||sessWeekKey();
-    var w=card.querySelector("[data-exw]"),r=card.querySelector("[data-exr]"),t=card.querySelector("[data-ext]"),w1=card.querySelector("[data-exw1]"),w2=card.querySelector("[data-exw2]"),r1=card.querySelector("[data-exr1]"),r2=card.querySelector("[data-exr2]");
+    var w=card.querySelector("[data-exw]"),r=card.querySelector("[data-exr]"),t=card.querySelector("[data-ext]"),d=card.querySelector("[data-exd]"),w1=card.querySelector("[data-exw1]"),w2=card.querySelector("[data-exw2]"),r1=card.querySelector("[data-exr1]"),r2=card.querySelector("[data-exr2]");
     var existing=exData(dayKey,exKey)[cur]||{},completed=toggle?!existing.completed:!!existing.completed;
-    saveExEntry(dayKey,exKey,cur,{weight:w?num(w.value):null,reps:r?num(r.value):null,time:t?num(t.value):null,w1:w1?num(w1.value):null,w2:w2?num(w2.value):null,r1:r1?num(r1.value):null,r2:r2?num(r2.value):null,completed:completed,date:sessISO()});
+    saveExEntry(dayKey,exKey,cur,{weight:w?num(w.value):null,reps:r?num(r.value):null,time:t?num(t.value):null,dist:d?num(d.value):null,w1:w1?num(w1.value):null,w2:w2?num(w2.value):null,r1:r1?num(r1.value):null,r2:r2?num(r2.value):null,completed:completed,date:sessISO()});
     exHistUpdate(exKey,card.getAttribute("data-kind"),exData(dayKey,exKey)[cur],sessISO());
     if(toggle){var b=card.querySelector("[data-exc]");b.classList.toggle("on",completed);b.textContent=completed?'Completed':(card.getAttribute("data-kind")==="done"?'Mark as done':'Mark done');}
     exRefresh(card);renderWeekFocus();renderWeeklyReview();renderStrength();
@@ -2110,7 +2167,7 @@
       return '<div class="lesson'+(i===ti?' open':'')+'" style="padding:14px 0;border-bottom:1px solid var(--line-soft)"><div class="head"><span style="width:42px;flex:none;font-size:calc(13px*var(--ts,1));font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:'+(i===ti?'var(--accent-deep)':'var(--ink-faint)')+'">'+p.d+'</span><div class="txt"><div class="ttl" style="font-size:calc(18px*var(--ts,1))">'+p.t+'</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body">'+dayDetail(p)+'</div></div>';
     }).join("");
   }
-  var WP_TYPES=[["rest","Rest day"],["lower","Lower Body"],["upper","Upper Body"],["fullbody","Full Body"],["conditioning","Conditioning + Core"],["recovery","Recovery Day"]];
+  var WP_TYPES=[["rest","Rest day"],["lower","Lower Body"],["upper","Upper Body"],["fullbody","Full Body"],["cardio","Cardio"],["conditioning","Conditioning + Core"],["recovery","Recovery Day"]];
   function isStrengthType(t){return t==="lower"||t==="upper"||t==="fullbody";}
   function planWeekDate(){var d=new Date();d.setDate(d.getDate()+(state.planWeekOffset||0)*7);return d;}
   function planWeekKey(){return weekKey(planWeekDate());}
@@ -3118,11 +3175,11 @@
   function rtSave(){try{store.set("bf_rttimer",{running:rt.running,active:rt.active,dur:rt.dur,rem:rt.rem,endAt:rt.endAt,startedAt:rt.startedAt});}catch(e){}}
   function rtLoad(){return store.get("bf_rttimer");}
   function rtRemNow(){return (rt.running&&rt.endAt)?Math.max(0,Math.ceil((rt.endAt-Date.now())/1000)):rt.rem;}
-  function rtPrimeAudio(){try{var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;if(!rt._ac)rt._ac=new AC();if(rt._ac.state==="suspended")rt._ac.resume();}catch(e){}}
+  function rtPrimeAudio(){try{if(navigator.audioSession){try{navigator.audioSession.type="playback";}catch(e){}}var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;if(!rt._ac)rt._ac=new AC();if(rt._ac.state==="suspended")rt._ac.resume();}catch(e){}}
   function rtBuzzOnce(){try{if(!rt._ac)return;var ctx=rt._ac,t=ctx.currentTime;[300,372,455].forEach(function(f){var o=ctx.createOscillator(),g=ctx.createGain();o.type="square";o.frequency.value=f;o.connect(g);g.connect(ctx.destination);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.32,t+0.015);g.gain.setValueAtTime(0.32,t+0.62);g.gain.exponentialRampToValueAtTime(0.0001,t+0.78);o.start(t);o.stop(t+0.8);});}catch(e){}}
   function rtVibe(){if(navigator.vibrate){try{navigator.vibrate([450,150,450,150,600]);}catch(e){}}}
   function rtStopAlarm(){if(rt.alarm){clearInterval(rt.alarm);rt.alarm=null;}rt.alarmEnd=0;if(navigator.vibrate){try{navigator.vibrate(0);}catch(e){}}}
-  function rtAlarmStart(){rtStopAlarm();rtPrimeAudio();var s=rtSettings();rt.alarmEnd=Date.now()+24000;function cyc(){if(Date.now()>=rt.alarmEnd){rtStopAlarm();return;}rtPlaySelected();if(rtSettings().vibrate)rtVibe();}cyc();rt.alarm=setInterval(cyc,s.sound==="voice"?2600:1100);}
+  function rtAlarmStart(){rtStopAlarm();rtPrimeAudio();var s=rtSettings();rt.alarmEnd=Date.now()+24000;function cyc(){if(Date.now()>=rt.alarmEnd){rtStopAlarm();return;}rtPlaySelected();if(rtSettings().vibrate)rtVibe();}cyc();rt.alarm=setInterval(cyc,(RT_SOUNDS[s.sound]&&RT_SOUNDS[s.sound].voice)?2600:1100);}
   function rtNotifyAsk(){try{if("Notification"in window&&Notification.permission==="default")Notification.requestPermission();}catch(e){}}
   function rtNotify(){try{if("Notification"in window&&Notification.permission==="granted")new Notification("Rest Complete \u2014 Ready for Next Set");}catch(e){}}
   function rtTick(){var rem=rtRemNow();rt.rem=rem;rtRender();if(rt.running&&rem<=0){rt.running=false;rtClear();rt.active=false;rt.rem=0;rtSave();rtRender();rtDone();}}
@@ -3165,23 +3222,21 @@
       });
     }
   }
-  var RT_DEFAULTS={sound:"buzzer",volume:"high",vibrate:true,notify:true,autostart:false,defaultRest:60};
-  function rtSettings(){var s=store.get("bf_rtsettings")||{},o={};Object.keys(RT_DEFAULTS).forEach(function(k){o[k]=(s[k]!=null)?s[k]:RT_DEFAULTS[k];});return o;}
+  var RT_DEFAULTS={sound:"ding",volume:"high",vibrate:true,notify:true,autostart:false,defaultRest:60};
+  function rtSettings(){var s=store.get("bf_rtsettings")||{},o={};Object.keys(RT_DEFAULTS).forEach(function(k){o[k]=(s[k]!=null)?s[k]:RT_DEFAULTS[k];});if(typeof RT_SOUNDS!=="undefined"&&!RT_SOUNDS[o.sound])o.sound="ding";return o;}
   function rtSetSetting(k,v){var s=rtSettings();s[k]=v;store.set("bf_rtsettings",s);}
   function rtDefaultRest(){var d=+rtSettings().defaultRest;return (d>0&&d<3600)?d:60;}
   function rtAutoStartOn(){return !!rtSettings().autostart;}
   var RT_VOL={low:0.14,medium:0.28,high:0.45,max:0.7};
   function rtVolGain(){return RT_VOL[rtSettings().volume]||0.45;}
   function rtTone(ctx,type,freq,vol,dur,attack){try{var o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.value=freq;o.connect(g);g.connect(ctx.destination);var t=ctx.currentTime;g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(0.002,vol),t+(attack||0.02));g.gain.exponentialRampToValueAtTime(0.0001,t+dur);o.start(t);o.stop(t+dur+0.03);}catch(e){}}
-  function rtSpeak(v){try{if(window.speechSynthesis){var u=new SpeechSynthesisUtterance("Rest complete. Ready for the next set.");u.volume=Math.min(1,v*1.8);u.rate=1;window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}else if(rt._ac){RT_SOUNDS.ding.play(rt._ac,v);}}catch(e){}}
+  function rtSay(text,v,pitch,rate){try{if(window.speechSynthesis){var u=new SpeechSynthesisUtterance(text);u.volume=Math.min(1,v*1.8);u.rate=rate||1;u.pitch=(pitch==null?1:pitch);window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}else if(rt._ac){RT_SOUNDS.ding.play(rt._ac,v);}}catch(e){}}
   var RT_SOUNDS={
     ding:{label:"Soft Ding",play:function(ctx,v){rtTone(ctx,"sine",880,v*0.6,0.55,0.02);rtTone(ctx,"sine",1320,v*0.22,0.5,0.02);}},
-    buzzer:{label:"Gym Buzzer",play:function(ctx,v){[300,372,455].forEach(function(f){rtTone(ctx,"square",f,v,0.78,0.015);});}},
-    airhorn:{label:"Air Horn",play:function(ctx,v){[150,225,300].forEach(function(f){rtTone(ctx,"sawtooth",f,v*0.92,0.95,0.05);});}},
     bell:{label:"Boxing Bell",play:function(ctx,v){function strike(){[1050,1600,2400].forEach(function(f,i){rtTone(ctx,"triangle",f,v*(0.72-i*0.2),0.7,0.004);});}strike();setTimeout(function(){try{strike();}catch(e){}},260);}},
-    voice:{label:"Voice Coach",play:function(ctx,v){rtSpeak(v);}}
+    voice:{label:"Voice Coach",voice:true,play:function(ctx,v){rtSay("Rest complete. Ready when you are.",v*0.55,1.06,0.96);}}
   };
-  function rtPlaySelected(){rtPrimeAudio();var snd=RT_SOUNDS[rtSettings().sound]||RT_SOUNDS.buzzer;try{snd.play(rt._ac,rtVolGain());}catch(e){}}
+  function rtPlaySelected(){rtPrimeAudio();var snd=RT_SOUNDS[rtSettings().sound]||RT_SOUNDS.ding;try{snd.play(rt._ac,rtVolGain());}catch(e){}}
   function rtSegOn(sel,btn){var seg=$(sel);if(!seg)return;$all("button",seg).forEach(function(b){b.classList.remove("on");});if(btn)btn.classList.add("on");}
   function renderRtSettings(){var box=$("#menu-rtset");if(!box)return;var s=rtSettings();
     var sndOpts=Object.keys(RT_SOUNDS).map(function(k){return '<option value="'+k+'"'+(s.sound===k?" selected":"")+'>'+RT_SOUNDS[k].label+'</option>';}).join("");
@@ -3363,6 +3418,7 @@
     upper:["Why upper body?","Working your back, chest, shoulders and arms keeps your upper body strong and balanced, supports good posture, and makes daily lifting and carrying easier."],
     fullbody:["Why full body?","A full-body session trains everything in one go — efficient and balanced, and a good way to round off the week."],
     conditioning:["Why conditioning + core?","Steady conditioning lifts your fitness without hammering your recovery, and core work supports your posture and protects your back."],
+    cardio:["Why a cardio day?","A pure cardio day keeps your steps, stamina and heart health up and supports fat loss, without the recovery cost of a strength session. It doesn't count toward your 3 strength sessions — it's extra movement on top."],
     active:["Why walk or yoga?","Easy movement on lighter days keeps you active and helps recovery without adding training stress."],
     rest:["Why rest days?","Muscle is built during recovery, not during the workout itself. Full rest days let your body adapt and come back stronger."],
     treadmill:["Why a cardio finish?","Incline walking and the StairMaster are both low-impact, steady conditioning — they burn energy and build stamina without the joint pounding of running, so they're kind to your knees while protecting recovery and muscle."],
@@ -3853,6 +3909,7 @@
   (function(){var h=$("#weighin-history");if(!h)return;h.addEventListener("click",function(e){if(e.target.closest("#wh-more")){state.weighInAll=true;renderWeighInHistory();return;}var row=e.target.closest(".wh-row");if(row){var d=h.querySelector('.wh-detail[data-whd="'+row.getAttribute("data-wh")+'"]');if(d)d.style.display=(!d.style.display||d.style.display==="none")?"":"none";}});})();
   renderLearn();
 
+  (function(){var wp=store.get("bf_weekplan");if(wp){var ch=false;Object.keys(wp).forEach(function(wk){var m=wp[wk];if(m)Object.keys(m).forEach(function(i){if(m[i]==="condonly"){m[i]="cardio";ch=true;}});});if(ch)store.set("bf_weekplan",wp);}var tr=store.get("bf_training");if(tr){var c2=false;Object.keys(tr).forEach(function(d){if(tr[d]&&tr[d].type==="condonly"){tr[d].type="cardio";c2=true;}});if(c2)store.set("bf_training",tr);}})();
   if(typeof exHistBackfill==="function")exHistBackfill();
   refreshFuel();renderExerciseLib();renderTodaySession();renderWeekPlan();renderStrength();renderWeekPlanner();bindWeekPlanner();rtInit();
   function applyTheme(v){document.documentElement.setAttribute("data-theme",v);$all('[data-group="theme"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===v);});var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute("content",v==="light"?"#FFF4F8":(v==="barbie"?"#FFE6F2":"#241629"));}
@@ -3899,7 +3956,7 @@
   function renderMenu(){renderMenuProfile();renderTrackPrefs();renderRules();renderDataStatus();if(typeof renderRtSettings==="function")renderRtSettings();}
 
   function allBfKeys(){var ks=[];try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf("bf_")===0)ks.push(k);}}catch(e){}
-    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku"];
+    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday"];
     return ks;}
   function exportData(){try{var data={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)data[k]=v;});var payload={app:"Body Fuel Lab",version:"build 35",exported:new Date().toISOString(),data:data};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="bodyfuel-backup-"+todayISO()+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Could not export data on this device.");}}
   function importData(file){if(!file)return;var r=new FileReader();r.onload=function(){try{var obj=JSON.parse(r.result);var data=(obj&&obj.data)?obj.data:obj;if(!data||typeof data!=="object")throw 0;var n=0;Object.keys(data).forEach(function(k){if(k.indexOf("bf_")===0){store.set(k,data[k]);n++;}});if(!n)throw 0;alert("Restored "+n+" items. The app will now reload.");location.reload();}catch(e){alert("That file could not be read as a Body Fuel Lab backup.");}};r.readAsText(file);}
