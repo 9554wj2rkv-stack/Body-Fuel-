@@ -846,6 +846,10 @@
   .cardioblk{padding:14px 0;border-bottom:1px solid var(--line-soft)}
   .cbhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
   .cbhead b{font-size:1.02rem}
+  .sud-pad button.used{text-decoration:line-through;text-decoration-thickness:2px;opacity:.4}
+  .sud-diffrow{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:14px auto 0;max-width:330px}
+  .sud-diffbtn{padding:9px 0;border:1px solid var(--line);background:var(--surface-2);color:var(--ink-soft);border-radius:10px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:var(--font-b)}
+  .sud-diffbtn.on{background:var(--accent);color:#fff;border-color:var(--accent)}
 </style>
 </head>
 <body>
@@ -1191,6 +1195,11 @@
               <button type="button" class="sud-tool" id="sud-pencilbtn" data-sudtool="pencil"><span class="sti">✎</span><span>Pencil</span></button>
               <button type="button" class="sud-tool" data-sudtool="hint"><span class="sti">💡</span><span>Hint</span></button>
             </div>
+            <div class="sud-diffrow" id="sud-diffrow">
+              <button type="button" class="sud-diffbtn" data-suddiff="mediumhard">Medium hard</button>
+              <button type="button" class="sud-diffbtn" data-suddiff="hard">Hard</button>
+              <button type="button" class="sud-diffbtn" data-suddiff="xtrahard">Xtra hard</button>
+            </div>
             <div class="sud-foot"><button type="button" class="linkbtn" id="sud-new">New puzzle</button><p class="muted-p" id="sud-msg"></p></div>
           </div>
         </div>
@@ -1430,7 +1439,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 63</b></div>
+            <div class="about-row"><span>Version</span><b>Build 64</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1490,7 +1499,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 63"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 64"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -3257,10 +3266,12 @@
   function sudShuffle(a){for(var i=a.length-1;i>0;i--){var j=(Math.random()*(i+1))|0,t=a[i];a[i]=a[j];a[j]=t;}return a;}
   function sudFill(g){var i=g.indexOf(0);if(i<0)return true;var nums=sudShuffle([1,2,3,4,5,6,7,8,9]);for(var n=0;n<9;n++){var v=nums[n];if(sudOk(g,i,v)){g[i]=v;if(sudFill(g))return true;g[i]=0;}}return false;}
   function sudCount2(g){var i=g.indexOf(0);if(i<0)return 1;var total=0;for(var v=1;v<=9;v++){if(sudOk(g,i,v)){g[i]=v;total+=sudCount2(g);g[i]=0;if(total>=2)return 2;}}return total;}
-  function sudGenerate(){var sol=new Array(81).fill(0);sudFill(sol);var puz=sol.slice();var order=sudShuffle(sol.map(function(_,i){return i;}));var clues=81,target=27;for(var k=0;k<order.length&&clues>target;k++){var idx=order[k],bak=puz[idx];if(bak===0)continue;puz[idx]=0;if(sudCount2(puz.slice())!==1)puz[idx]=bak;else clues--;}return {puzzle:puz,solution:sol};}
+  var SUD_DIFF={mediumhard:{label:"Medium hard",clues:34},hard:{label:"Hard",clues:29},xtrahard:{label:"Xtra hard",clues:24}};
+  function sudDiff(){var d=store.get("bf_sudodiff");return SUD_DIFF[d]?d:"hard";}
+  function sudGenerate(target){var tgt=target||29;var sol=new Array(81).fill(0);sudFill(sol);var puz=sol.slice();var order=sudShuffle(sol.map(function(_,i){return i;}));var clues=81;for(var k=0;k<order.length&&clues>tgt;k++){var idx=order[k],bak=puz[idx];if(bak===0)continue;puz[idx]=0;if(sudCount2(puz.slice())!==1)puz[idx]=bak;else clues--;}return {puzzle:puz,solution:sol};}
   function sudLoad(){var s=store.get("bf_sudoku");if(!s)return null;if(!s.notes){s.notes=[];for(var i=0;i<81;i++)s.notes.push([]);}if(s.mistakes==null)s.mistakes=0;if(s.seconds==null)s.seconds=0;if(!s.history)s.history=[];if(s.pencil==null)s.pencil=false;if(s.sel==null)s.sel=-1;return s;}
   function sudSave(s){store.set("bf_sudoku",s);}
-  function sudNew(){var g=sudGenerate();var notes=[];for(var i=0;i<81;i++)notes.push([]);var st={puzzle:g.puzzle,solution:g.solution,user:g.puzzle.slice(),notes:notes,sel:-1,mistakes:0,done:false,pencil:false,seconds:0,history:[]};sudSave(st);return st;}
+  function sudNew(diff){var d=SUD_DIFF[diff]?diff:sudDiff();store.set("bf_sudodiff",d);var g=sudGenerate(SUD_DIFF[d].clues);var notes=[];for(var i=0;i<81;i++)notes.push([]);var st={puzzle:g.puzzle,solution:g.solution,user:g.puzzle.slice(),notes:notes,sel:-1,mistakes:0,done:false,pencil:false,seconds:0,history:[],diff:d};sudSave(st);return st;}
   function sudPush(st,i){st.history=st.history||[];st.history.push({i:i,val:st.user[i],notes:(st.notes[i]||[]).slice(),mist:st.mistakes||0});if(st.history.length>80)st.history.shift();}
   function sudFmtTime(s){var m=(s/60)|0,ss=s%60;return m+":"+(ss<10?"0":"")+ss;}
   function sudConflict(u,i){var v=u[i];if(!v)return false;var r=(i/9)|0,c=i%9,br=r-r%3,bc=c-c%3,k;for(k=0;k<9;k++){if(k!==c&&u[r*9+k]===v)return true;if(k!==r&&u[k*9+c]===v)return true;}for(var rr=0;rr<3;rr++)for(var cc=0;cc<3;cc++){var j=(br+rr)*9+(bc+cc);if(j!==i&&u[j]===v)return true;}return false;}
@@ -3269,7 +3280,7 @@
     var grid=$("#sud-grid");if(!grid)return;
     var pad=$("#sud-pad"),mistEl=$("#sud-mist"),timeEl=$("#sud-time"),pb=$("#sud-pencilbtn"),msg=$("#sud-msg");
     var st=sudLoad();
-    if(!st){grid.innerHTML='<div class="sud-empty">Tap \u201cNew puzzle\u201d to start a hard puzzle.</div>';if(pad)pad.innerHTML="";if(mistEl)mistEl.textContent="";if(timeEl)timeEl.textContent="";if(msg)msg.textContent="";return;}
+    if(!st){grid.innerHTML='<div class="sud-empty">Pick a difficulty below to start a puzzle.</div>';if(pad)pad.innerHTML="";if(mistEl)mistEl.textContent="";if(timeEl)timeEl.textContent="";if(msg)msg.textContent="";return;}
     var selR=st.sel>=0?(st.sel/9|0):-1,selC=st.sel>=0?(st.sel%9):-1,selB=st.sel>=0?(((selR/3)|0)*3+((selC/3)|0)):-1,selVal=st.sel>=0?st.user[st.sel]:0;
     var html="";
     for(var i=0;i<81;i++){
@@ -3287,7 +3298,11 @@
       html+='<button type="button" class="'+cls+'" data-sud="'+i+'">'+inner+'</button>';
     }
     grid.innerHTML=html;
-    if(pad){var p="";for(var nn=1;nn<=9;nn++)p+='<button type="button" data-sudn="'+nn+'">'+nn+'</button>';pad.innerHTML=p;}
+    var counts=[0,0,0,0,0,0,0,0,0,0];
+    for(var ci=0;ci<81;ci++){var cv=st.user[ci];if(cv>0&&cv===st.solution[ci])counts[cv]++;}
+    if(pad){var p="";for(var nn=1;nn<=9;nn++)p+='<button type="button" data-sudn="'+nn+'"'+(counts[nn]>=9?' class="used"':'')+'>'+nn+'</button>';pad.innerHTML=p;}
+    var dkey=st.diff||sudDiff(),stEl=$("#sud-status");if(stEl)stEl.textContent=(SUD_DIFF[dkey]||SUD_DIFF.hard).label;
+    var drow=$("#sud-diffrow");if(drow)$all("[data-suddiff]",drow).forEach(function(b){b.classList.toggle("on",b.getAttribute("data-suddiff")===dkey);});
     if(mistEl){mistEl.textContent="Mistakes: "+st.mistakes+"/3";mistEl.className="sud-mist"+(st.mistakes>=3?" warn":"");}
     if(timeEl)timeEl.textContent=sudFmtTime(st.seconds||0);
     if(pb)pb.classList.toggle("on",!!st.pencil);
@@ -3296,6 +3311,7 @@
   function sudSelect(i){var st=sudLoad();if(!st)return;st.sel=i;sudSave(st);renderSudoku();}
   function sudInput(n){
     var st=sudLoad();if(!st||st.sel<0||st.done)return;var i=st.sel;if(st.puzzle[i]!==0)return;
+    var cnt=0;for(var j=0;j<81;j++)if(st.user[j]===n&&st.user[j]===st.solution[j])cnt++;if(cnt>=9)return;
     if(st.pencil){sudPush(st,i);st.notes[i]=st.notes[i]||[];var pp=st.notes[i].indexOf(n);if(pp>=0)st.notes[i].splice(pp,1);else st.notes[i].push(n);st.user[i]=0;sudSave(st);renderSudoku();return;}
     sudPush(st,i);st.user[i]=n;st.notes[i]=[];
     if(n!==st.solution[i])st.mistakes=(st.mistakes||0)+1;
@@ -3956,7 +3972,7 @@
   function renderMenu(){renderMenuProfile();renderTrackPrefs();renderRules();renderDataStatus();if(typeof renderRtSettings==="function")renderRtSettings();}
 
   function allBfKeys(){var ks=[];try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf("bf_")===0)ks.push(k);}}catch(e){}
-    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday"];
+    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff"];
     return ks;}
   function exportData(){try{var data={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)data[k]=v;});var payload={app:"Body Fuel Lab",version:"build 35",exported:new Date().toISOString(),data:data};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="bodyfuel-backup-"+todayISO()+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Could not export data on this device.");}}
   function importData(file){if(!file)return;var r=new FileReader();r.onload=function(){try{var obj=JSON.parse(r.result);var data=(obj&&obj.data)?obj.data:obj;if(!data||typeof data!=="object")throw 0;var n=0;Object.keys(data).forEach(function(k){if(k.indexOf("bf_")===0){store.set(k,data[k]);n++;}});if(!n)throw 0;alert("Restored "+n+" items. The app will now reload.");location.reload();}catch(e){alert("That file could not be read as a Body Fuel Lab backup.");}};r.readAsText(file);}
@@ -3993,7 +4009,7 @@
   renderWater();
   (function(){var d=$("#dt-card");if(d&&store.get("bf_dtopen")===true)d.classList.add("open");})();
   (function(){var cc=$("#cycle-setup-card");if(!cc)return;var c=loadCycle();if(!c.start)cc.classList.add("open");else if(store.get("bf_cycopen")===true)cc.classList.add("open");})();
-  (function(){var sc=$("#sudoku-card");if(!sc)return;if(store.get("bf_sudopen")===true)sc.classList.add("open");renderSudoku();sudStartTimer();sc.addEventListener("click",function(e){var nw=e.target.closest("#sud-new");if(nw){sc.classList.add("open");sudNew();renderSudoku();return;}var tl=e.target.closest("[data-sudtool]");if(tl){var a=tl.getAttribute("data-sudtool");if(a==="undo")sudUndo();else if(a==="erase")sudErase();else if(a==="pencil")sudPencil();else if(a==="hint")sudHint();return;}var cell=e.target.closest("[data-sud]");if(cell){sudSelect(+cell.getAttribute("data-sud"));return;}var pn=e.target.closest("[data-sudn]");if(pn){sudInput(+pn.getAttribute("data-sudn"));return;}});})();
+  (function(){var sc=$("#sudoku-card");if(!sc)return;if(store.get("bf_sudopen")===true)sc.classList.add("open");renderSudoku();sudStartTimer();sc.addEventListener("click",function(e){var nw=e.target.closest("#sud-new");if(nw){sc.classList.add("open");sudNew();renderSudoku();return;}var db=e.target.closest("[data-suddiff]");if(db){sc.classList.add("open");sudNew(db.getAttribute("data-suddiff"));renderSudoku();return;}var tl=e.target.closest("[data-sudtool]");if(tl){var a=tl.getAttribute("data-sudtool");if(a==="undo")sudUndo();else if(a==="erase")sudErase();else if(a==="pencil")sudPencil();else if(a==="hint")sudHint();return;}var cell=e.target.closest("[data-sud]");if(cell){sudSelect(+cell.getAttribute("data-sud"));return;}var pn=e.target.closest("[data-sudn]");if(pn){sudInput(+pn.getAttribute("data-sudn"));return;}});})();
   (function(){var c=$("#sleep-card");if(!c)return;c.addEventListener("click",function(e){var qb=e.target.closest("#sl-quality button");if(qb){$all("#sl-quality button").forEach(function(b){b.classList.remove("on");});qb.classList.add("on");return;}if(e.target.closest("#sl-save")){saveSleep();}});})();
   renderMenu();applyTrackPrefs();
   renderPortionMemory();renderPortionList();syncWpButtons();
