@@ -850,6 +850,14 @@
   .sud-diffrow{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:14px auto 0;max-width:330px}
   .sud-diffbtn{padding:9px 0;border:1px solid var(--line);background:var(--surface-2);color:var(--ink-soft);border-radius:10px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:var(--font-b)}
   .sud-diffbtn.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .exreord-wrap{display:flex;flex-direction:column;gap:8px}
+  .exreord{display:flex;align-items:center;gap:10px;padding:12px 12px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px}
+  .exdrag{color:var(--ink-faint);font-size:1.1rem;letter-spacing:-2px;flex:none}
+  .exreord-n{flex:1;font-weight:600;font-size:.96rem}
+  .exreord-btns{display:flex;gap:6px;flex:none}
+  .exreord-btns button{width:40px;height:40px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;font-size:1.1rem;font-weight:700;cursor:pointer;font-family:var(--font-b)}
+  .exreord-btns button:disabled{opacity:.32}
+  .exreord-btns button:active:not(:disabled){background:var(--accent-soft)}
 </style>
 </head>
 <body>
@@ -904,9 +912,9 @@
           <button class="cta ghost" data-goto="food" style="margin-top:12px">Open Food Log</button>
         </div>
 
-        <div class="card" id="sleep-card">
-          <div class="eyebrow">Sleep Check-In</div>
-          <div id="sleep-checkin"></div>
+        <div class="card msec" id="sleep-card">
+          <button type="button" class="msec-head"><span style="display:block"><span class="eyebrow" style="display:block">Sleep Check-In</span><span class="drop-sub" id="sleep-summary" style="display:block"></span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body"><div id="sleep-checkin"></div></div>
         </div>
 
         <div class="card msec" id="dt-card" data-persist="bf_dtopen">
@@ -1044,8 +1052,9 @@
           <div id="cyclesmart"></div>
         </div>
 
-        <div class="card">
-          <div class="eyebrow">Weekly check-in only</div>
+        <div class="card msec" id="checkin-card">
+          <button type="button" class="msec-head"><span style="display:block"><span class="eyebrow" style="display:block">Weekly check-in only</span><span class="drop-sub" id="ci-summary" style="display:block"></span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body">
           <p class="muted-p" style="margin-bottom:14px">Complete your weekly review on Saturday or Sunday. Measure under the same conditions each time — weight bounces around daily, so it's the weekly trend that matters, not any single day.</p>
           <div class="daynav" id="ci-nav"></div>
           <button class="linkbtn" id="ci-back" data-binav="current" style="display:none;margin:-2px 0 12px">Back to this week</button>
@@ -1087,6 +1096,7 @@
           <div class="goalseg" id="m-creatine"><button type="button" data-val="yes">Yes</button><button type="button" class="on" data-val="no">No</button></div>
           <button class="cta" id="save-metrics" style="margin-top:14px">Save this week</button>
           <div class="saved-note" id="metrics-saved"></div>
+          </div>
         </div>
 
         <div class="card">
@@ -1439,7 +1449,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 64</b></div>
+            <div class="about-row"><span>Version</span><b>Build 66</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1499,7 +1509,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 64"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 66"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -1735,10 +1745,12 @@
       +'<div class="pmeal" style="margin-top:10px"><label>Sleep score (optional)</label><input id="sl-score" type="number" inputmode="numeric" min="0" max="100" placeholder="\u2014" value="'+(e.score!=null?esc(e.score):"")+'"></div>'
       +'<div class="label" style="margin-top:14px">Sleep quality</div><div class="goalseg" id="sl-quality">'+[["poor","Poor"],["ok","OK"],["good","Good"]].map(function(o){return '<button type="button" data-val="'+o[0]+'"'+(q===o[0]?' class="on"':'')+'>'+o[1]+'</button>';}).join("")+'</div>'
       +'<button type="button" class="cta" id="sl-save" style="margin-top:14px">Save sleep</button><div class="saved-note" id="sl-saved"></div>';
+    renderSleepSummary();
   }
+  function renderSleepSummary(){var el=$("#sleep-summary");if(!el)return;var e=loadSleep(),lab=dchLabel(sleepSel()),qmap={poor:"Poor",ok:"OK",good:"Good"};if(!e||(e.h==null&&e.m==null)){el.textContent=lab+" \u00b7 Sleep not logged";return;}var parts=[lab];parts.push((e.h!=null?e.h:0)+"h "+(e.m!=null?e.m:0)+"m");if(e.score!=null&&e.score!=="")parts.push("score "+e.score);if(e.quality)parts.push(qmap[e.quality]||e.quality);el.textContent=parts.join(" \u00b7 ");}
   function saveSleep(){var h=num($("#sl-h").value),m=num($("#sl-m").value),sc=num($("#sl-score").value),qb=$("#sl-quality .on"),q=qb?qb.getAttribute("data-val"):"";
     var e={};if(h!=null)e.h=Math.max(0,Math.min(24,Math.round(h)));if(m!=null)e.m=Math.max(0,Math.min(59,Math.round(m)));if(sc!=null)e.score=sc;if(q)e.quality=q;
-    saveSleepEntry(Object.keys(e).length?e:null);flash("#sl-saved","Sleep saved");if(typeof renderSleepTrend==="function")renderSleepTrend();}
+    saveSleepEntry(Object.keys(e).length?e:null);flash("#sl-saved","Sleep saved");if(typeof renderSleepTrend==="function")renderSleepTrend();renderSleepSummary();var sc2=$("#sleep-card");if(sc2)sc2.classList.remove("open");}
   function sleepAll(){return store.get("bf_sleep")||{};}
   function sleepDurMin(e){if(!e||(e.h==null&&e.m==null))return null;return (e.h!=null?e.h:0)*60+(e.m!=null?e.m:0);}
   function sleepWindow(backStart,backEnd){var all=sleepAll(),durs=[],scores=[],nights=0;for(var i=backEnd;i<=backStart;i++){var d=new Date();d.setDate(d.getDate()-i);var e=all[ovIso(d)];if(!e)continue;nights++;var dm=sleepDurMin(e);if(dm!=null)durs.push(dm);if(e.score!=null)scores.push(e.score);}return {nights:nights,durs:durs,scores:scores};}
@@ -1924,8 +1936,8 @@
   /* ---------- training plan ---------- */
   var DAYABBR=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
   var SESST={
-    lower:{t:"Lower Body Strength",ex:["Leg Press","Single Leg Press","Hip Thrust Machine","Seated Leg Curl","Leg Extension","Hip Abductor","Calf Raise"],sets:"2 sets each",reps:"8–10 reps",finish:"15 min incline walk or StairMaster",notes:"Knee-friendly form. Controlled tempo. Don't chase exhaustion.",why:"lower",log:true},
-    upper:{t:"Upper Body Strength",ex:["Lat Pulldown","Chest Press","Seated Row","Shoulder Press","Dumbbell Lateral Raise","Biceps Curl","Triceps Pushdown"],sets:"2 sets each",reps:"8–10 reps",finish:"15 min incline walk or StairMaster",why:"upper",log:true},
+    lower:{t:"Lower Body Strength",ex:["Hip Thrust Machine","Leg Press","Single Leg Press","Seated Leg Curl","Leg Extension","Hip Abductor","Calf Raise"],sets:"2 sets each",reps:"8–10 reps",finish:"15 min incline walk or StairMaster",notes:"Knee-friendly form. Controlled tempo. Don't chase exhaustion.",why:"lower",log:true},
+    upper:{t:"Upper Body Strength",ex:["Lat Pulldown","Seated Row","Chest Press","Shoulder Press","Dumbbell Lateral Raise","Triceps Pushdown","Biceps Curl"],sets:"2 sets each",reps:"8–10 reps",finish:"15 min incline walk or StairMaster",why:"upper",log:true},
     fullbody:{t:"Full Body Strength",ex:["Leg Press","Hip Thrust Machine","Lat Pulldown","Chest Press","Dumbbell Lateral Raise","Core"],sets:"2 sets each",reps:"8–10 reps",finish:"20 min incline walk or StairMaster",why:"fullbody",log:true},
     conditioning:{t:"Conditioning + Core",ex:["Kettlebell Swing","Row","Plank","Dead Bug","Pallof Press"],sets:"2–3 rounds",reps:"circuit style",finish:"10–15 min intervals or incline walk",notes:"Keep rest short and the pace steady — conditioning plus core, not a max-effort lift day.",why:"conditioning",log:true},
     cardio:{t:"Cardio",ex:[],why:"cardio",log:false},
@@ -1957,7 +1969,15 @@
   function coreVariantIdx(wk){var sw=weekKey(new Date(bfStart()+"T00:00:00")),a=new Date(sw+"T00:00:00"),b=new Date(wk+"T00:00:00");var weeks=Math.round((b-a)/(7*86400000)),n=weeks+1;if(n<1)n=1;return ((n-1)%3+3)%3;}
   function coreVariantFor(wk){return CORE_VARIANTS[coreVariantIdx(wk)];}
   function coreHeaderHTML(wk){var v=coreVariantFor(wk);return '<div class="built" style="margin:2px 0 4px">'+esc(v.title)+'</div><p class="muted-p" style="margin:0 0 12px">'+CORE_NOTE+'</p>';}
-  function coreExCardsHTML(dayKey,wk){return coreVariantFor(wk).ex.map(function(o){return renderExCard(dayKey,o[0],wk,o[1]);}).join("");}
+  function coreExCardsHTML(dayKey,wk){var v=coreVariantFor(wk),tmap={};v.ex.forEach(function(o){tmap[o[0]]=o[1];});var names=orderedEx(orderKeyFor({why:"conditioning"},wk),v.ex.map(function(o){return o[0];}));return names.map(function(n){return renderExCard(dayKey,n,wk,tmap[n]);}).join("");}
+  function loadExOrder(){return store.get("bf_exorder")||{};}
+  function saveExOrder(key,arr){var o=loadExOrder();o[key]=arr;store.set("bf_exorder",o);}
+  function orderKeyFor(p,wk){return p.why==="conditioning"?("core"+["A","B","C"][coreVariantIdx(wk)]):p.why;}
+  function orderedEx(key,defaults){var saved=loadExOrder()[key];if(!saved||!saved.length)return defaults.slice();var out=saved.filter(function(n){return defaults.indexOf(n)>=0;});defaults.forEach(function(n){if(out.indexOf(n)<0)out.push(n);});return out;}
+  function exMove(key,defaults,name,dir){var arr=orderedEx(key,defaults),i=arr.indexOf(name);if(i<0)return;var j=i+dir;if(j<0||j>=arr.length)return;var t=arr[i];arr[i]=arr[j];arr[j]=t;saveExOrder(key,arr);}
+  function coreTargetMap(wk){var m={};coreVariantFor(wk).ex.forEach(function(o){m[o[0]]=o[1];});return m;}
+  function dayExCardsHTML(names,dayKey,wk,isCore,tmap){return names.map(function(n){if(!isCore&&n==="Core")return renderCore(dayKey,wk);return renderExCard(dayKey,n,wk,isCore?tmap[n]:undefined);}).join("");}
+  function reorderListHTML(names){return '<div class="exreord-wrap">'+names.map(function(n,i){return '<div class="exreord"><span class="exdrag">\u22ee\u22ee</span><span class="exreord-n">'+esc(n)+'</span><span class="exreord-btns"><button type="button" data-exmove="up" data-exn="'+esc(n)+'"'+(i===0?' disabled':'')+'>\u2191</button><button type="button" data-exmove="down" data-exn="'+esc(n)+'"'+(i===names.length-1?' disabled':'')+'>\u2193</button></span></div>';}).join("")+'</div>';}
   function coreFinishHTML(wk){return '<div class="tip" style="margin-top:12px">Finish: <b>'+esc(coreVariantFor(wk).finish)+'</b></div>';}
   var CARDIO_NOTE="This day keeps movement high without adding recovery stress from strength training.";
   var CARDIO_BLOCKS=[{key:"rowing",name:"Rowing",def:"5 min"},{key:"stairs",name:"StairMaster",def:"10–15 min"},{key:"incline",name:"Incline Walking",def:"25 min"},{key:"custom",name:"Custom Cardio",def:""}];
@@ -2004,7 +2024,7 @@
     if(p.log&&p.ex&&p.ex.length){
       var dk=slug(p.t),wk=weekKey();
       if(isCore){h+=coreHeaderHTML(wk)+'<div class="exwk" data-dayk="'+dk+'" data-wk="'+wk+'" style="margin-top:4px">'+coreExCardsHTML(dk,wk)+'</div>';}
-      else{h+='<div class="exwk" data-dayk="'+dk+'" data-wk="'+wk+'" style="margin-top:4px">'+p.ex.map(function(e){return renderExCard(dk,e,wk);}).join("")+'</div>';}
+      else{var nmo=orderedEx(orderKeyFor(p,wk),p.ex.slice());h+='<div class="exwk" data-dayk="'+dk+'" data-wk="'+wk+'" style="margin-top:4px">'+nmo.map(function(e){return renderExCard(dk,e,wk);}).join("")+'</div>';}
     } else if(p.ex&&p.ex.length){
       h+='<ul class="dots" style="margin-top:2px">'+p.ex.map(function(e){return '<li><span class="b"></span>'+e+'</li>';}).join("")+'</ul>';
     }
@@ -2041,13 +2061,17 @@
     var wdone=todayLog().warmup;
     var warm='<div class="warmrow"><div class="warm-t"><b>Warm-up</b> · 5 min row machine, easy pace</div><button class="excomp'+(wdone?' on':'')+'" id="warm-toggle">'+(wdone?'Done':'Mark done')+'</button></div>';
     var dayKey=slug(p.t);
-    var exBody=isCore?coreExCardsHTML(dayKey,sessWeekKey()):p.ex.map(function(e){return e==="Core"?renderCore(dayKey,sessWeekKey()):renderExCard(dayKey,e,sessWeekKey());}).join("");
-    var ex=(isCore?coreHeaderHTML(sessWeekKey()):'')+'<div id="ex-log" data-dayk="'+dayKey+'" data-wk="'+sessWeekKey()+'">'+exBody+'</div>'+(isCore?coreFinishHTML(sessWeekKey()):'');
+    var okey=orderKeyFor(p,sessWeekKey()),tmap=isCore?coreTargetMap(sessWeekKey()):null;
+    var defaults=isCore?coreVariantFor(sessWeekKey()).ex.map(function(o){return o[0];}):p.ex.slice();
+    var names=orderedEx(okey,defaults),editing=state.exEditKey===okey;
+    var editBtn='<div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button type="button" class="linkbtn" id="ex-editorder" data-okey="'+okey+'">'+(editing?'Done':'Edit order')+'</button></div>';
+    var exBody=editing?reorderListHTML(names):dayExCardsHTML(names,dayKey,sessWeekKey(),isCore,tmap);
+    var ex=(isCore?coreHeaderHTML(sessWeekKey()):'')+editBtn+'<div id="ex-log" data-dayk="'+dayKey+'" data-wk="'+sessWeekKey()+'">'+exBody+'</div>'+(isCore?coreFinishHTML(sessWeekKey()):'');
     var cardio=(p.finish||p.why==="conditioning")?cardioHTML(p):'';
     var notes=p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'';
     var pcs=postCheckinHTML();
     host.innerHTML=nav+head+sessCompleteHTML()+warm+meta+ex+cardio+vestHTML()+(pcs?'<div class="divider"></div>'+pcs:'')+notes+'<div class="divider"></div>'+sessionLogHTML()+whyPills(p);
-    bindExLog();bindCardio();bindWarm();bindSessionLog();bindSessComplete();bindCheckin();
+    bindExLog();bindCardio();bindWarm();bindSessionLog();bindSessComplete();bindCheckin();bindExOrder();
   }
   /* per-exercise logbook */
   function slug(s){return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}
@@ -2105,6 +2129,15 @@
     exRefresh(card);renderWeekFocus();renderWeeklyReview();renderStrength();
   }
   var exLogBound=false;
+  var exOrderBound=false;
+  function bindExOrder(){if(exOrderBound)return;exOrderBound=true;
+    document.addEventListener("click",function(e){
+      var eb=e.target.closest&&e.target.closest("#ex-editorder");
+      if(eb){var okey=eb.getAttribute("data-okey");state.exEditKey=(state.exEditKey===okey)?null:okey;renderTodaySession();return;}
+      var mv=e.target.closest&&e.target.closest("[data-exmove]");
+      if(mv){var dir=mv.getAttribute("data-exmove")==="up"?-1:1,name=mv.getAttribute("data-exn"),p=dayEntry(sessWeekKey(),sessIdx()),wk=sessWeekKey(),isCore=p.why==="conditioning",okey2=orderKeyFor(p,wk),defaults=isCore?coreVariantFor(wk).ex.map(function(o){return o[0];}):p.ex.slice();exMove(okey2,defaults,name,dir);renderTodaySession();return;}
+    });
+  }
   function bindExLog(){if(exLogBound)return;exLogBound=true;
     document.addEventListener("change",function(e){if(e.target.closest&&e.target.closest("input[data-exw],input[data-exr],input[data-ext],input[data-exw1],input[data-exw2],input[data-exr1],input[data-exr2]")){var card=e.target.closest("[data-exk]");if(card)exWrite(card,false);}});
     document.addEventListener("click",function(e){
@@ -2985,7 +3018,8 @@
   function biLabel(){if(biIsCurrent())return"This week";var m=biMonday(),cur=mondayOf(new Date());var wk=Math.round((cur-m)/6048e5);var lab=m.toLocaleDateString(undefined,{day:"numeric",month:"short"});return wk+(wk===1?" week ago":" weeks ago")+" \u00b7 "+lab;}
   function entryForWeek(wk){var e=loadEntries();for(var i=e.length-1;i>=0;i--){if(weekKey(new Date(e[i].date+"T00:00:00"))===wk)return e[i];}return null;}
   function renderCheckinNav(){var n=$("#ci-nav");if(!n)return;n.innerHTML='<button class="dn-btn" data-binav="prev" aria-label="Previous week">\u2039</button><div class="dn-label">'+biLabel()+'</div><button class="dn-btn" data-binav="next"'+(biIsCurrent()?" disabled":"")+' aria-label="Next week">\u203a</button>';}
-  function renderCheckin(){renderCheckinNav();fillMetricInputs();var b=$("#ci-back");if(b)b.style.display=biIsCurrent()?"none":"block";if(typeof renderCycleSmart==="function")renderCycleSmart();}
+  function renderCheckinSummary(){var el=$("#ci-summary");if(!el)return;var ent=entryForWeek(biWeekKey()),lab=biLabel();if(!ent||(ent.weight==null&&ent.fat==null)){el.textContent=lab+" \u00b7 No check-in saved for this week";return;}var parts=[lab];if(ent.weight!=null)parts.push(ent.weight+" kg");if(ent.fat!=null)parts.push(ent.fat+"% fat");el.textContent=parts.join(" \u00b7 ");}
+  function renderCheckin(){renderCheckinNav();fillMetricInputs();renderCheckinSummary();var b=$("#ci-back");if(b)b.style.display=biIsCurrent()?"none":"block";if(typeof renderCycleSmart==="function")renderCycleSmart();}
   function gotoBodyWeek(which){var m=biMonday();if(which==="current"){state.bodyWeek=null;renderCheckin();return;}if(which==="prev")m.setDate(m.getDate()-7);if(which==="next")m.setDate(m.getDate()+7);var cur=mondayOf(new Date());if(m>cur)return;state.bodyWeek=(weekKey(m)===weekKey(cur))?null:weekKey(m);renderCheckin();}
   function fillMetricInputs(){var ent=entryForWeek(biWeekKey());[["m-weight","weight"],["m-fat","fat"],["m-muscle","muscle"],["m-waist","waist"],["m-hip","hip"],["m-booty","booty"],["m-chest","chest"],["m-armL","armL"],["m-armR","armR"],["m-thighL","thighL"],["m-thighR","thighR"],["m-calfL","calfL"],["m-calfR","calfR"]].forEach(function(p){$("#"+p[0]).value=(ent&&ent[p[1]]!=null&&ent[p[1]]!=="")?ent[p[1]]:"";});$("#m-notes").value=(ent&&ent.notes)?ent.notes:"";
     (function(){function setSeg(sel,val){var seg=$(sel);if(!seg)return;$all("button",seg).forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===String(val));});}
@@ -3001,7 +3035,7 @@
     for(var i=0;i<e.length;i++){if(weekKey(new Date(e[i].date+"T00:00:00"))===wk){idx=i;break;}}
     if(idx>=0)e[idx]=entry;else e.push(entry);
     e.sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0;});
-    store.set("bf_progress",e);flash("#metrics-saved","Saved for "+(biIsCurrent()?"this week":biLabel()));renderTrend();renderMission();renderWeekFocus();renderWeeklyReview();renderCheckinNav();renderCheckinNudge();if(typeof renderCycleSmart==="function")renderCycleSmart();if(typeof renderWeighInHistory==="function")renderWeighInHistory();
+    store.set("bf_progress",e);flash("#metrics-saved","Saved for "+(biIsCurrent()?"this week":biLabel()));renderTrend();renderMission();renderWeekFocus();renderWeeklyReview();renderCheckinNav();renderCheckinNudge();if(typeof renderCycleSmart==="function")renderCycleSmart();if(typeof renderWeighInHistory==="function")renderWeighInHistory();renderCheckinSummary();var cc=$("#checkin-card");if(cc)cc.classList.remove("open");
   }
   /* ===== Cycle Smart Body Tracking ===== */
   function smartPhase(day){if(day==null||day==="")return "";day=+day;if(isNaN(day))return "";if(day>=1&&day<=5)return "Menstrual";if(day<=12)return "Follicular";if(day<=17)return "Ovulation";return "Luteal";}
@@ -3681,7 +3715,7 @@
     var host=$("#overview-body");if(!host)return;
     var mc=missionControlHTML();
     var entries=loadEntries(),ml=store.get("bf_meallog")||{},tr=store.get("bf_training")||{};
-    if(!entries.length&&!Object.keys(ml).length&&!Object.keys(tr).length){host.innerHTML=mc+ovCard("Getting started",'<p class="ov-empty">Start with one body check-in, one logged meal, and one training session. Your weekly trend will build from there.</p>')+consistencyHTML();return;}
+    if(!entries.length&&!Object.keys(ml).length&&!Object.keys(tr).length){host.innerHTML=mc+ovCard("Getting started",'<p class="ov-empty">Start with one body check-in, one logged meal, and one training session. Your weekly trend will build from there.</p>');return;}
     var R=ovRange(state.ovRange),wk=R.weeks,sessT=3*wk,pmax=7*wk;
     var cur=bodyAvg(R.days),prev=bodyAvg(R.prev),nu=nutAvg(R.days),ts=trainSummary(R.days),sess=ts.strength+ts.cond;
     function brow(k,cu,pv,lb,u,dp){return '<div class="ov-row"><span class="k">'+k+'</span><span class="v">'+ovArrow(cu,pv==null?null:pv,lb,u,dp)+'</span></div>';}
@@ -3700,7 +3734,7 @@
     var sc=ovScore(R);
     function scoreRow(it){return '<div class="ov-srow"><div class="ov-srow-top"><span class="k">'+it.label+'</span><span class="v">'+it.ten+'/10</span></div><div class="pbar"><i style="width:'+Math.round(it.ratio*100)+'%"></i></div></div>';}
     html+=ovCard("Body Fuel Score",'<div class="ov-scorebig">'+sc.overall+'<small style="font-family:var(--font-b);font-size:calc(15px*var(--ts,1));color:var(--ink-faint);font-weight:700"> / 100</small></div><div class="ov-scorecap">Built from your habits this '+(wk>1?wk+" weeks":"week")+' \u2014 consistency, not the scale.</div>'+sc.items.map(scoreRow).join(""));
-    host.innerHTML=html+consistencyHTML();
+    host.innerHTML=html;
   }
 
   /* =================== EVENTS =================== */
@@ -3972,7 +4006,7 @@
   function renderMenu(){renderMenuProfile();renderTrackPrefs();renderRules();renderDataStatus();if(typeof renderRtSettings==="function")renderRtSettings();}
 
   function allBfKeys(){var ks=[];try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf("bf_")===0)ks.push(k);}}catch(e){}
-    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff"];
+    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder"];
     return ks;}
   function exportData(){try{var data={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)data[k]=v;});var payload={app:"Body Fuel Lab",version:"build 35",exported:new Date().toISOString(),data:data};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="bodyfuel-backup-"+todayISO()+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Could not export data on this device.");}}
   function importData(file){if(!file)return;var r=new FileReader();r.onload=function(){try{var obj=JSON.parse(r.result);var data=(obj&&obj.data)?obj.data:obj;if(!data||typeof data!=="object")throw 0;var n=0;Object.keys(data).forEach(function(k){if(k.indexOf("bf_")===0){store.set(k,data[k]);n++;}});if(!n)throw 0;alert("Restored "+n+" items. The app will now reload.");location.reload();}catch(e){alert("That file could not be read as a Body Fuel Lab backup.");}};r.readAsText(file);}
