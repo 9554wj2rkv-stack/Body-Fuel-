@@ -557,6 +557,8 @@
   .msec.open .msec-head .chev{transform:rotate(180deg);color:var(--accent)}
   .msec-body{display:none;margin-top:14px}
   .msec.open .msec-body{display:block}
+  .msec-sum{display:block;margin-top:12px}
+  .msec.open .msec-sum{display:none}
   .drop-sub{font-size:calc(13px*var(--ts,1));color:var(--ink-soft);margin-top:3px;font-weight:400}
   .tpref{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line-soft);font-size:calc(15px*var(--ts,1));color:var(--ink)}
   .tpref:last-child{border-bottom:0}
@@ -719,6 +721,7 @@
   .exlog .exin .exset{display:flex;flex-direction:column;gap:3px}
   .exlog .exin .exset label{font-size:calc(10.5px*var(--ts,1));color:var(--ink-faint);font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding-left:2px}
   .exlog .exin .exset input{width:72px}
+  .exlog .exin .exwarm{padding-right:10px;border-right:1px dashed var(--line)}
   .mobgrid{display:flex;flex-direction:column;margin-top:4px}
   .mobitem{display:flex;align-items:center;gap:11px;padding:8px 0;font-size:calc(15px*var(--ts,1));color:var(--ink);cursor:pointer}
   .mobitem input{width:20px;height:20px;accent-color:var(--accent);flex:none;margin:0}
@@ -1099,9 +1102,10 @@
           </div>
         </div>
 
-        <div class="card">
-          <div class="eyebrow">Current &amp; trends</div>
-          <div id="trend-body"></div>
+        <div class="card msec" id="trend-card">
+          <button type="button" class="msec-head"><span class="eyebrow">Current &amp; trends</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-sum" id="trend-sum"></div>
+          <div class="msec-body"><div id="trend-body"></div></div>
         </div>
 
         <div class="card">
@@ -1144,8 +1148,10 @@
           </div>
         </div>
 
-        <div class="card">
-          <div class="eyebrow">Calorie calculator</div>
+        <div class="card msec" id="calc-card">
+          <button type="button" class="msec-head"><span class="eyebrow">Calorie calculator</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-sum" id="calc-sum"></div>
+          <div class="msec-body">
           <p class="muted-p" style="margin-bottom:14px">Uses your age, height and activity from Your profile above, plus the goal you set here.</p>
           <div class="metrics">
             <div class="metric"><label>Current weight (kg)</label><input id="cw-weight" type="text" inputmode="decimal"></div>
@@ -1158,6 +1164,7 @@
           <div class="seg" data-group="cw-speed"><button data-val="gentle">Gentle</button><button data-val="moderate">Moderate</button><button data-val="aggressive">Aggressive</button></div>
           <div class="calc-out" id="calc-out"></div>
           <p class="muted-p" style="margin-top:14px;font-size:calc(13.5px*var(--ts,1))">Your calorie target is an estimate based on your body data, activity, and goal. Adjust after 2–3 weeks based on weight trend, energy, hunger, sleep, and training recovery.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -1449,7 +1456,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 66</b></div>
+            <div class="about-row"><span>Version</span><b>Build 69</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1509,7 +1516,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 66"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 69"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -1656,7 +1663,17 @@
       +'<div class="cr"><span>Adjustment ('+defSub+')</span><b>'+defLabel+'</b></div>'
       +'<div class="cr total"><span>Daily target</span><b>'+c.target+' kcal</b></div>';
   }
-  function renderCalc(){var el=$("#calc-out");if(el)el.innerHTML=calcBreakdownHTML();}
+  function calcSummaryHTML(){
+    if(!targetInfo().isSet)return '<p class="muted-p" style="margin:0">Calculator not completed</p>';
+    var c=calcCalories(),p=loadProfile(),gmap={loss:"Fat loss",maintain:"Maintain",build:"Build",recomp:"Recomposition"},smap={gentle:"Gentle",moderate:"Moderate",aggressive:"Aggressive"};
+    var goal=gmap[p.goalType]||"Fat loss",isLoss=(p.goalType||"loss")==="loss";
+    var goalLine=goal+(isLoss?(" \u00b7 "+(smap[p.deficitSpeed]||"Moderate")):"");
+    return '<div class="about-row"><span>Daily target</span><b>'+c.target+' kcal</b></div>'
+      +'<div class="metric-change-line" style="margin:3px 0 8px">'+goalLine+'</div>'
+      +'<div class="about-row"><span>Goal weight</span><b>'+(p.goalWeight?p.goalWeight+' kg':'\u2014')+'</b></div>';
+  }
+  function renderCalcSummary(){var el=$("#calc-sum");if(el)el.innerHTML=calcSummaryHTML();}
+  function renderCalc(){var el=$("#calc-out");if(el)el.innerHTML=calcBreakdownHTML();renderCalcSummary();}
   function carbTarget(){var c=calcCalories(),fatG=Math.max(40,Math.round(0.8*c.weight)),carbs=Math.round((c.target-120*4-fatG*9)/4/5)*5;return Math.max(80,carbs)||150;}
   function loadProtein(){var all=store.get("bf_protein")||{};return all[todayISO()]||{b:0,l:0,d:0,s:0};}
   function saveProteinDay(p){var all=store.get("bf_protein")||{};all[todayISO()]=p;store.set("bf_protein",all);}
@@ -2099,6 +2116,7 @@
   function exHistBackfill(){if(store.get("bf_exhist_v"))return;var w=loadWorkout(),H=loadExHist();Object.keys(w).forEach(function(dk){var exs=w[dk]||{};Object.keys(exs).forEach(function(ek){var weeks=exs[ek]||{};Object.keys(weeks).forEach(function(wk){var e=weeks[wk];if(!e||!e.completed)return;var kind=exInferKind(e);if(kind!=="done"&&!exHasVal(e,kind))return;var dateISO=e.date||wk||null,rec=H[ek]||{},snap={w1:e.w1,w2:e.w2,r1:e.r1,r2:e.r2,weight:e.weight,reps:e.reps,time:e.time,kind:kind,date:dateISO};if(!rec.last||!rec.last.date||(dateISO&&dateISO>=rec.last.date))rec.last=snap;var m=exMetric(e,kind);if(m!=null&&isFinite(m)&&(!rec.best||rec.best.val==null||m>rec.best.val))rec.best=Object.assign({val:m},snap);H[ek]=rec;});});});store.set("bf_exhist",H);(function(){if(store.get("bf_cardiohist"))return;var T=loadTraining(),bd=null,bc=null;Object.keys(T).forEach(function(d){var c=T[d]&&T[d].cardio;if(c&&(c.incline||c.speed||c.level)&&(!bd||d>bd)){bd=d;bc=c;}});if(bc)store.set("bf_cardiohist",{mode:bc.mode||"incline",incline:bc.incline||"",speed:bc.speed||"",level:bc.level||"",duration:bc.duration||"",date:bd});})();store.set("bf_exhist_v",1);}
   function exBestText(b,kind){if(!b)return null;if(kind==="time")return (b.time!=null?b.time:b.val)+" sec";if(kind==="reps")return (b.reps!=null?b.reps:b.val)+" reps";if(kind==="distance")return (b.dist!=null?b.dist:b.val)+" m";if(kind==="two"||kind==="weight"||kind==="load")return b.val+" kg";return null;}
   function exLastLine(exKey,kind){var r=loadExHist()[exKey],last=r&&r.last?r.last:null;if(!last)return "No previous entry yet";var parts=["Last: "+exPrevText(last,last.kind||kind)];if(last.date)parts.push(dchLabel(last.date));var best=r&&r.best?r.best:null,bt=best?exBestText(best,best.kind||kind):null;if(bt)parts.push("Best: "+bt);return parts.join(" \u00b7 ");}
+  function exWarmSuggest(exKey){var r=loadExHist()[exKey],l=r&&r.last?r.last:null;if(!l)return null;var top=Math.max((l.w1!=null?+l.w1:0),(l.w2!=null?+l.w2:0),(l.weight!=null?+l.weight:0));if(!(top>0))return null;var w=Math.round(top*0.75/2.5)*2.5;if(!(w>0))return null;return {w:(w%1===0?w:+w.toFixed(1)),r:"5\u20138"};}
   function exInner(dayKey,exKey,kind,wk){var cur=wk||sessWeekKey(),c=exData(dayKey,exKey)[cur]||{};return {c:c,prev:exLastLine(exKey,kind),prog:exProgress(dayKey,exKey,kind)};}
   var exNotes={"Plank":"Hold 2–3 × 30–45 sec · stop when form breaks","Dead Bug":"2–3 × 20 reps each side","Pallof Press":"2–3 × 10–12 each side","Farmer Carry":"2–3 × 20–40 m heavy","Core":"2–3 × 20–30 reps (or a 30–45 sec hold)"};
   function renderExCard(dayKey,exName,wk,noteOverride){
@@ -2106,7 +2124,7 @@
     var noteTxt=(noteOverride!=null?noteOverride:exNotes[exName]);
     var note=noteTxt?'<div class="exnote">'+noteTxt+'</div>':'';
     var inputs="";
-    if(kind==="two")inputs='<div class="exset"><label>Set 1</label><input data-exw1 type="text" inputmode="decimal" placeholder="kg" value="'+(c.w1!=null?c.w1:'')+'"><input data-exr1 type="number" inputmode="numeric" placeholder="reps" value="'+(c.r1!=null?c.r1:'')+'"></div><div class="exset"><label>Set 2</label><input data-exw2 type="text" inputmode="decimal" placeholder="kg" value="'+(c.w2!=null?c.w2:'')+'"><input data-exr2 type="number" inputmode="numeric" placeholder="reps" value="'+(c.r2!=null?c.r2:'')+'"></div>';
+    if(kind==="two"){var sug=exWarmSuggest(exKey),wuW=(c.wu!=null?c.wu:(sug?sug.w:'')),wuRv=(c.wur!=null?c.wur:''),wuRph=sug?sug.r:'reps';inputs='<div class="exset exwarm"><label>\ud83d\udd25 WU</label><input data-exwu type="text" inputmode="decimal" placeholder="kg" value="'+wuW+'"><input data-exwur type="number" inputmode="numeric" placeholder="'+wuRph+'" value="'+wuRv+'"></div><div class="exset"><label>\ud83d\udcaa Set 1</label><input data-exw1 type="text" inputmode="decimal" placeholder="kg" value="'+(c.w1!=null?c.w1:'')+'"><input data-exr1 type="number" inputmode="numeric" placeholder="reps" value="'+(c.r1!=null?c.r1:'')+'"></div><div class="exset"><label>\ud83d\udcaa Set 2</label><input data-exw2 type="text" inputmode="decimal" placeholder="kg" value="'+(c.w2!=null?c.w2:'')+'"><input data-exr2 type="number" inputmode="numeric" placeholder="reps" value="'+(c.r2!=null?c.r2:'')+'"></div>';}
     else if(kind==="weight")inputs='<input data-exw type="text" inputmode="decimal" placeholder="kg" value="'+(c.weight!=null?c.weight:'')+'"><span class="exx">×</span><input data-exr type="number" inputmode="numeric" placeholder="reps" value="'+(c.reps!=null?c.reps:'')+'">';
     else if(kind==="load")inputs='<input data-exw type="text" inputmode="decimal" placeholder="kg" value="'+(c.weight!=null?c.weight:'')+'">';
     else if(kind==="reps")inputs='<input data-exr type="number" inputmode="numeric" placeholder="reps" value="'+(c.reps!=null?c.reps:'')+'">';
@@ -2121,9 +2139,9 @@
   function exRefresh(card){var box=card.closest("[data-dayk]"),dayKey=box.getAttribute("data-dayk"),wk=box.getAttribute("data-wk")||sessWeekKey(),exKey=card.getAttribute("data-exk"),kind=card.getAttribute("data-kind"),inner=exInner(dayKey,exKey,kind,wk);card.querySelector(".ex-prev").textContent=inner.prev;card.querySelector(".ex-prog").innerHTML='<b>Progress</b>'+inner.prog;}
   function exWrite(card,toggle){
     var box=card.closest("[data-dayk]"),dayKey=box.getAttribute("data-dayk"),exKey=card.getAttribute("data-exk"),cur=box.getAttribute("data-wk")||sessWeekKey();
-    var w=card.querySelector("[data-exw]"),r=card.querySelector("[data-exr]"),t=card.querySelector("[data-ext]"),d=card.querySelector("[data-exd]"),w1=card.querySelector("[data-exw1]"),w2=card.querySelector("[data-exw2]"),r1=card.querySelector("[data-exr1]"),r2=card.querySelector("[data-exr2]");
+    var w=card.querySelector("[data-exw]"),r=card.querySelector("[data-exr]"),t=card.querySelector("[data-ext]"),d=card.querySelector("[data-exd]"),w1=card.querySelector("[data-exw1]"),w2=card.querySelector("[data-exw2]"),r1=card.querySelector("[data-exr1]"),r2=card.querySelector("[data-exr2]"),wu=card.querySelector("[data-exwu]"),wur=card.querySelector("[data-exwur]");
     var existing=exData(dayKey,exKey)[cur]||{},completed=toggle?!existing.completed:!!existing.completed;
-    saveExEntry(dayKey,exKey,cur,{weight:w?num(w.value):null,reps:r?num(r.value):null,time:t?num(t.value):null,dist:d?num(d.value):null,w1:w1?num(w1.value):null,w2:w2?num(w2.value):null,r1:r1?num(r1.value):null,r2:r2?num(r2.value):null,completed:completed,date:sessISO()});
+    saveExEntry(dayKey,exKey,cur,{weight:w?num(w.value):null,reps:r?num(r.value):null,time:t?num(t.value):null,dist:d?num(d.value):null,w1:w1?num(w1.value):null,w2:w2?num(w2.value):null,r1:r1?num(r1.value):null,r2:r2?num(r2.value):null,wu:wu?num(wu.value):null,wur:wur?num(wur.value):null,completed:completed,date:sessISO()});
     exHistUpdate(exKey,card.getAttribute("data-kind"),exData(dayKey,exKey)[cur],sessISO());
     if(toggle){var b=card.querySelector("[data-exc]");b.classList.toggle("on",completed);b.textContent=completed?'Completed':(card.getAttribute("data-kind")==="done"?'Mark as done':'Mark done');}
     exRefresh(card);renderWeekFocus();renderWeeklyReview();renderStrength();
@@ -2139,7 +2157,7 @@
     });
   }
   function bindExLog(){if(exLogBound)return;exLogBound=true;
-    document.addEventListener("change",function(e){if(e.target.closest&&e.target.closest("input[data-exw],input[data-exr],input[data-ext],input[data-exw1],input[data-exw2],input[data-exr1],input[data-exr2]")){var card=e.target.closest("[data-exk]");if(card)exWrite(card,false);}});
+    document.addEventListener("change",function(e){if(e.target.closest&&e.target.closest("input[data-exw],input[data-exr],input[data-ext],input[data-exd],input[data-exw1],input[data-exw2],input[data-exr1],input[data-exr2],input[data-exwu],input[data-exwur]")){var card=e.target.closest("[data-exk]");if(card)exWrite(card,false);}});
     document.addEventListener("click",function(e){
       var cc=e.target.closest&&e.target.closest("[data-core]");
       if(cc){var box=cc.closest("[data-wk]"),wk=box?box.getAttribute("data-wk"):sessWeekKey();setCoreChoice(wk,cc.getAttribute("data-core"));renderTodaySession();return;}
@@ -3091,7 +3109,7 @@
   function renderTrend(){
     var all=loadEntries(),box=$("#trend-body");
     var withW=all.filter(function(x){return x.weight!=null;});
-    if(!withW.length){box.innerHTML='<p class="empty">Save a weekly check-in to start your trends. One entry isn\'t a trend — a few weeks of consistency is what reveals real change.</p>';return;}
+    if(!withW.length){box.innerHTML='<p class="empty">Save a weekly check-in to start your trends. One entry isn\'t a trend — a few weeks of consistency is what reveals real change.</p>';renderTrendSummary();return;}
     var last=all[all.length-1];
     function stat(key,label,unit){var es=all.filter(function(x){return x[key]!=null&&x[key]!=="";});if(!es.length)return "";var cur=+es[es.length-1][key],sub="";if(es.length>=2){var dw=cur-(+es[es.length-2][key]);sub+=arrow(dw)+Math.abs(dw).toFixed(1)+" vs last";}if(es.length>=2){var dt=cur-(+es[0][key]);sub+=(sub?" \u00b7 ":"")+arrow(dt)+Math.abs(dt).toFixed(1)+" since start";}return '<div class="metric-row"><div class="metric-label">'+label+'</div><div class="metric-value-block"><div class="metric-value-line">'+cur+(unit?' '+unit:'')+'</div>'+(sub?'<div class="metric-change-line">'+sub+'</div>':'')+'</div></div>';}
     function calc(label,val,unit){return '<div class="metric-row"><div class="metric-label">'+label+'</div><div class="metric-value-block"><div class="metric-value-line">'+val+(unit?' '+unit:'')+'</div></div></div>';}
@@ -3103,7 +3121,15 @@
     html+=sparkOf(all.filter(function(x){return x.fat!=null;}).map(function(x){return x.fat;}),"Body fat trend");
     html+=sparkOf(fatMass,"Fat-loss trend (fat mass kg)");
     box.innerHTML=html;
+    renderTrendSummary();
   }
+  function trendSummaryHTML(){
+    var all=loadEntries();
+    if(!all.filter(function(x){return x.weight!=null||x.fat!=null||x.waist!=null;}).length)return '<p class="muted-p" style="margin:0">No body data recorded yet</p>';
+    function row(key,label,unit){var es=all.filter(function(x){return x[key]!=null&&x[key]!=="";});if(!es.length)return "";var cur=+es[es.length-1][key],sub="";if(es.length>=2){var d=cur-(+es[es.length-2][key]);sub=arrow(d)+Math.abs(d).toFixed(1)+" "+unit+" vs last";}return '<div class="metric-row"><div class="metric-label">'+label+'</div><div class="metric-value-block"><div class="metric-value-line">'+cur+' '+unit+'</div>'+(sub?'<div class="metric-change-line">'+sub+'</div>':'')+'</div></div>';}
+    return row("weight","Weight","kg")+row("fat","Body fat","%")+row("waist","Waist","cm");
+  }
+  function renderTrendSummary(){var el=$("#trend-sum");if(el)el.innerHTML=trendSummaryHTML();}
   function whShortDate(iso){var d=new Date(iso+"T00:00:00");if(isNaN(d))return iso;return d.getDate()+" "+["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][d.getMonth()];}
   function whCycleCell(e){var parts=[];if(e.cycleDay!=null&&e.cycleDay!=="")parts.push("Day "+e.cycleDay);var ph=e.phase||(typeof smartPhase==="function"?smartPhase(e.cycleDay):"");if(ph)parts.push(ph);return parts.length?parts.join(" \u00b7 "):"\u2014";}
   function whCell(v,unit){return (v!=null&&v!=="")?(v+(unit?" "+unit:"")):"\u2014";}
