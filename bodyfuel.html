@@ -1456,7 +1456,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 69</b></div>
+            <div class="about-row"><span>Version</span><b>Build 70</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1516,7 +1516,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 69"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 70"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -2130,7 +2130,7 @@
     else if(kind==="reps")inputs='<input data-exr type="number" inputmode="numeric" placeholder="reps" value="'+(c.reps!=null?c.reps:'')+'">';
     else if(kind==="time")inputs='<input data-ext type="number" inputmode="numeric" placeholder="sec" value="'+(c.time!=null?c.time:'')+'">';
     else if(kind==="distance")inputs='<input data-exd type="number" inputmode="decimal" placeholder="meters" value="'+(c.dist!=null?c.dist:'')+'">';
-    var comp='<button class="excomp'+(c.completed?' on':'')+'" data-exc>'+(c.completed?'Completed':(kind==="done"?'Mark as done':'Mark done'))+'</button>';
+    var comp='<button class="excomp'+(c.completed?' on':'')+'" data-exc>'+(c.completed?'Done':(kind==="done"?'Mark done':'Mark done'))+'</button>';
     return '<div class="exlog" data-exk="'+exKey+'" data-kind="'+kind+'"><div class="exn">'+esc(exName)+'</div>'+note
       +'<div class="exprev ex-prev">'+inner.prev+'</div>'
       +'<div class="exin">'+inputs+comp+'</div>'
@@ -2143,7 +2143,7 @@
     var existing=exData(dayKey,exKey)[cur]||{},completed=toggle?!existing.completed:!!existing.completed;
     saveExEntry(dayKey,exKey,cur,{weight:w?num(w.value):null,reps:r?num(r.value):null,time:t?num(t.value):null,dist:d?num(d.value):null,w1:w1?num(w1.value):null,w2:w2?num(w2.value):null,r1:r1?num(r1.value):null,r2:r2?num(r2.value):null,wu:wu?num(wu.value):null,wur:wur?num(wur.value):null,completed:completed,date:sessISO()});
     exHistUpdate(exKey,card.getAttribute("data-kind"),exData(dayKey,exKey)[cur],sessISO());
-    if(toggle){var b=card.querySelector("[data-exc]");b.classList.toggle("on",completed);b.textContent=completed?'Completed':(card.getAttribute("data-kind")==="done"?'Mark as done':'Mark done');}
+    if(toggle){var b=card.querySelector("[data-exc]");b.classList.toggle("on",completed);b.textContent=completed?'Done':(card.getAttribute("data-kind")==="done"?'Mark done':'Mark done');}
     exRefresh(card);renderWeekFocus();renderWeeklyReview();renderStrength();
   }
   var exLogBound=false;
