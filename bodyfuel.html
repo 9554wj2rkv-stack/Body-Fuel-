@@ -890,6 +890,14 @@
   .hs-dbg-h:first-child{margin-top:0}
   .hs-dbg-r{padding:4px 0;border-bottom:1px solid var(--line-soft);word-break:break-word}
   .hs-dbg-r .att{color:var(--red)}
+  .ensec{padding:14px 0;border-bottom:1px solid var(--line-soft)}
+  .ensec-h{font-weight:700;font-size:.95rem;margin-bottom:8px}
+  .enblock{padding:12px;border:1px solid var(--line);border-radius:14px;margin-top:10px}
+  .enblock-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .enblock-head b{font-size:.95rem}
+  .enrm{border:0;background:none;color:var(--ink-faint);font-size:1rem;cursor:pointer;padding:2px 6px}
+  .entoggle{width:100%;padding:12px 0;border:1px solid var(--line);background:var(--surface-2);color:var(--ink-soft);border-radius:10px;font-weight:600;cursor:pointer;font-family:var(--font-b)}
+  .entoggle.on{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
 </style>
 </head>
 <body>
@@ -1487,7 +1495,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 72</b></div>
+            <div class="about-row"><span>Version</span><b>Build 74</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1547,7 +1555,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 72"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 74"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -1989,6 +1997,7 @@
     fullbody:{t:"Full Body Strength",ex:["Leg Press","Hip Thrust Machine","Lat Pulldown","Chest Press","Dumbbell Lateral Raise","Core"],sets:"2 sets each",reps:"8–10 reps",finish:"20 min incline walk or StairMaster",why:"fullbody",log:true},
     conditioning:{t:"Conditioning + Core",ex:["Kettlebell Swing","Row","Plank","Dead Bug","Pallof Press"],sets:"2–3 rounds",reps:"circuit style",finish:"10–15 min intervals or incline walk",notes:"Keep rest short and the pace steady — conditioning plus core, not a max-effort lift day.",why:"conditioning",log:true},
     cardio:{t:"Cardio",ex:[],why:"cardio",log:false},
+    endurance:{t:"Endurance Day",ex:[],why:"endurance",log:false,notes:"Longer aerobic training — combine cardio machines into one steady session."},
     recovery:{t:"Recovery Day",ex:[],notes:"A recovery-focused session \u2014 easy cardio and mobility to boost circulation and consistency. This intentionally replaces a 4th lifting day.",why:"recovery",log:false},
     rest:{t:"Full rest",ex:[],notes:"Full rest — no training today. Recovery is when your progress is made.",why:"rest",log:false}
   };
@@ -2052,6 +2061,49 @@
     host.querySelectorAll("[data-cd]").forEach(function(inp){inp.addEventListener("change",function(){var f=inp.getAttribute("data-cf"),v=inp.value;if(f!=="notes"&&f!=="name"&&f!=="ls")v=v.trim().replace(",",".");saveCardioField(inp.getAttribute("data-cd"),f,v);});});
     host.querySelectorAll("[data-cddone]").forEach(function(btn){btn.addEventListener("click",function(){var k=btn.getAttribute("data-cddone"),all=loadCardioDay(),iso=sessISO(),day=all[iso]||{};day[k]=day[k]||{};day[k].done=!day[k].done;all[iso]=day;store.set("bf_cardioday",all);btn.classList.toggle("on",day[k].done);btn.textContent=day[k].done?'Done':'Mark done';});});
   }
+  /* ---------- Endurance Day ---------- */
+  var ENDUR_EX=["Treadmill","StairMaster","Rowing Machine","Exercise Bike","Cross Trainer","Other"];
+  function loadEndur(){return store.get("bf_endurance")||{};}
+  function endurFor(iso){return loadEndur()[iso]||null;}
+  function endurState(){return endurFor(sessISO())||{warmup:{type:"Rowing Machine",min:"",dist:"",notes:""},blocks:[{ex:"Treadmill",min:"",speed:"",incline:"",level:"",dist:"",vest:false,notes:""}],rpe:"",notes:""};}
+  function endurCommit(st){var all=loadEndur();all[sessISO()]=st;store.set("bf_endurance",all);}
+  function endurTotals(st){var dur=0,dist=0,hd=false;function add(o){if(!o)return;var m=num(o.min);if(m)dur+=m;var d=num(o.dist);if(d){dist+=d;hd=true;}}add(st.warmup);st.blocks.forEach(add);return {durTxt:dur?(Math.round(dur*10)/10)+" min":"\u2014",distTxt:hd?(Math.round(dist*100)/100+""):"\u2014"};}
+  function endurExOpts(sel){return ENDUR_EX.map(function(x){return '<option'+(x===sel?" selected":"")+'>'+x+'</option>';}).join("");}
+  function renderEnduranceHTML(){
+    var st=endurState(),w=st.warmup||{};
+    function inp(sec,ef,label,ei,imode){var attrs='data-en="'+sec+'"'+(ei!=null?' data-ei="'+ei+'"':'')+' data-ef="'+ef+'"';var val=(sec==="warmup"?w[ef]:sec==="summary"?st[ef]:st.blocks[ei][ef]);return '<div class="pmeal"><label>'+label+'</label><input '+attrs+' type="text" inputmode="'+(imode||"text")+'" value="'+esc(val||"")+'"></div>';}
+    var warm='<div class="ensec"><div class="ensec-h">Warm-up <span class="muted-p" style="font-weight:400">(optional)</span></div>'
+      +'<select class="mealinput" data-en="warmup" data-ef="type">'+endurExOpts(w.type)+'</select>'
+      +'<div class="pmeal-grid" style="margin-top:8px">'+inp("warmup","min","Duration (min)",null,"numeric")+inp("warmup","dist","Distance",null,"decimal")+'</div>'
+      +inp("warmup","notes","Notes")+'</div>';
+    var blocks=st.blocks.map(function(b,i){
+      return '<div class="enblock"><div class="enblock-head"><b>Block '+(i+1)+'</b>'+(st.blocks.length>1?'<button type="button" class="enrm" data-enrm="'+i+'">\u2715</button>':'')+'</div>'
+        +'<select class="mealinput" data-en="block" data-ei="'+i+'" data-ef="ex">'+endurExOpts(b.ex)+'</select>'
+        +'<div class="pmeal-grid" style="margin-top:8px">'+inp("block","min","Duration (min)",i,"numeric")+inp("block","speed","Speed",i,"decimal")+'</div>'
+        +'<div class="pmeal-grid">'+inp("block","incline","Incline",i,"decimal")+inp("block","level","Level / resistance",i,"decimal")+'</div>'
+        +'<div class="pmeal-grid">'+inp("block","dist","Distance",i,"decimal")+'<div class="pmeal" style="display:flex;align-items:flex-end"><button type="button" class="entoggle'+(b.vest?" on":"")+'" data-envest="'+i+'">Vest this block'+(b.vest?" \u2713":"")+'</button></div></div>'
+        +inp("block","notes","Notes",i)+'</div>';
+    }).join("");
+    var tt=endurTotals(st);
+    var summary='<div class="ensec" style="border-bottom:0"><div class="ensec-h">Workout summary</div>'
+      +'<div class="about-row"><span>Total duration</span><b id="en-dur">'+tt.durTxt+'</b></div>'
+      +'<div class="about-row"><span>Total distance</span><b id="en-dist">'+tt.distTxt+'</b></div>'
+      +'<div style="margin-top:10px">'+inp("summary","rpe","RPE (1\u201310)",null,"numeric")+inp("summary","notes","Notes")+'</div></div>';
+    return '<p class="muted-p" style="margin:2px 0 6px">Longer aerobic session \u2014 combine machines into one workout.</p>'
+      +warm+'<div class="ensec-h" style="margin-top:16px">Main workout</div>'+blocks
+      +'<button type="button" class="cta ghost" data-enadd style="margin-top:12px;width:100%">+ Add block</button>'+summary;
+  }
+  function endurRerender(){var el=$("#endur-body");if(el)el.innerHTML=renderEnduranceHTML();}
+  function endurUpdateTotals(){var tt=endurTotals(endurState()),a=$("#en-dur"),b=$("#en-dist");if(a)a.textContent=tt.durTxt;if(b)b.textContent=tt.distTxt;}
+  var endurBound=false;
+  function bindEndurance(){if(endurBound)return;endurBound=true;
+    document.addEventListener("change",function(e){var t=e.target;if(!t.getAttribute||!t.getAttribute("data-en")||!(t.closest&&t.closest("#endur-body")))return;var st=endurState(),sec=t.getAttribute("data-en"),f=t.getAttribute("data-ef"),v=t.value;if(sec==="warmup"){st.warmup=st.warmup||{};st.warmup[f]=v;}else if(sec==="block"){var i=+t.getAttribute("data-ei");if(st.blocks[i])st.blocks[i][f]=v;}else if(sec==="summary"){st[f]=v;}endurCommit(st);endurUpdateTotals();});
+    document.addEventListener("click",function(e){
+      var add=e.target.closest&&e.target.closest("[data-enadd]");if(add&&add.closest("#endur-body")){var s1=endurState();s1.blocks.push({ex:"Treadmill",min:"",speed:"",incline:"",level:"",dist:"",vest:false,notes:""});endurCommit(s1);endurRerender();return;}
+      var rm=e.target.closest&&e.target.closest("[data-enrm]");if(rm&&rm.closest("#endur-body")){var s2=endurState(),i2=+rm.getAttribute("data-enrm");if(s2.blocks.length>1){s2.blocks.splice(i2,1);endurCommit(s2);endurRerender();}return;}
+      var vt=e.target.closest&&e.target.closest("[data-envest]");if(vt&&vt.closest("#endur-body")){var s3=endurState(),i3=+vt.getAttribute("data-envest");if(s3.blocks[i3]){s3.blocks[i3].vest=!s3.blocks[i3].vest;endurCommit(s3);endurRerender();}return;}
+    });
+  }
   function sessLabel(){var iso=sessISO(),d=sessDateObj();var wd=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getDay()],mo=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][d.getMonth()];var rel="";if(iso===todayISO())rel="Today";else{var y=new Date();y.setDate(y.getDate()-1);if(iso===ovIso(y))rel="Yesterday";}return (rel?rel+" · ":"")+wd+" "+d.getDate()+" "+mo;}
   function gotoSessDate(which){if(which==="today"){state.sessDate=null;renderTodaySession();return;}var d=sessDateObj();d.setDate(d.getDate()+(which==="next"?1:-1));var iso=ovIso(d);if(iso>todayISO())return;state.sessDate=(iso===todayISO())?null:iso;renderTodaySession();}
   function whyPills(p){
@@ -2063,6 +2115,10 @@
   }
   function dayDetail(p){
     var h="";
+    if(p.why==="endurance"){
+      h+='<p class="muted-p" style="margin-top:2px">Longer aerobic session — combine machines (treadmill, rower, StairMaster) into one workout.</p>';
+      return h+whyPills(p);
+    }
     if(p.why==="cardio"){
       h+='<p class="muted-p" style="margin-top:2px">Steps, stamina & fat-loss support. '+CARDIO_NOTE+'</p>';
       h+='<ul class="dots" style="margin-top:8px">'+CARDIO_BLOCKS.map(function(b){return '<li><span class="b"></span>'+esc(b.name)+(b.def?' · '+b.def:'')+'</li>';}).join("")+'</ul>';
@@ -2101,6 +2157,11 @@
       var pcc=postCheckinHTML();
       host.innerHTML=nav+head+sessCompleteHTML()+cardioOnlyHTML()+(pcc?'<div class="divider"></div>'+pcc:'')+(p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'')+whyPills(p);
       bindSessComplete();bindCardioOnly();bindCheckin();return;
+    }
+    if(p.why==="endurance"){
+      var pce=postCheckinHTML();
+      host.innerHTML=nav+head+sessCompleteHTML()+'<div id="endur-body">'+renderEnduranceHTML()+'</div>'+vestHTML()+(pce?'<div class="divider"></div>'+pce:'')+(p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'')+whyPills(p);
+      bindSessComplete();bindEndurance();bindCheckin();bindVest();return;
     }
     if(!p.log){host.innerHTML=nav+head+'<p class="muted-p">'+(p.notes||"Full rest day.")+'</p>'+whyPills(p);return;}
     var isCore=p.why==="conditioning";
@@ -2235,6 +2296,7 @@
   function setCardioOn(on){var all=loadTraining(),l=all[sessISO()]||{};l.cardioOn=on;all[sessISO()]=l;store.set("bf_training",all);if(state.tlog)state.tlog.cardioOn=on;renderTodaySession();}
   function bindWarm(){var b=$("#warm-toggle");if(!b)return;b.addEventListener("click",function(){var all=loadTraining(),l=all[sessISO()]||{};l.warmup=!l.warmup;all[sessISO()]=l;store.set("bf_training",all);if(state.tlog)state.tlog.warmup=l.warmup;b.classList.toggle("on",l.warmup);b.textContent=l.warmup?'Done':'Mark done';});}
   function vestHTML(){var l=todayLog();return '<label class="mobitem vest-row"><input type="checkbox" id="vest-cb"'+(l.vest?' checked':'')+'><span>Weight vest used (5 kg)</span></label>';}
+  function bindVest(){var vest=$("#vest-cb");if(vest)vest.addEventListener("change",function(){var all=loadTraining(),l=all[sessISO()]||{};l.vest=vest.checked;all[sessISO()]=l;store.set("bf_training",all);if(state.tlog)state.tlog.vest=l.vest;});}
   function bindCardio(){
     var onSeg=$('[data-group="cd-on"]');
     if(onSeg)onSeg.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;setCardioOn(b.getAttribute("data-val")==="on");});
@@ -2258,7 +2320,7 @@
       return '<div class="lesson'+(i===ti?' open':'')+'" style="padding:14px 0;border-bottom:1px solid var(--line-soft)"><div class="head"><span style="width:42px;flex:none;font-size:calc(13px*var(--ts,1));font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:'+(i===ti?'var(--accent-deep)':'var(--ink-faint)')+'">'+p.d+'</span><div class="txt"><div class="ttl" style="font-size:calc(18px*var(--ts,1))">'+p.t+'</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body">'+dayDetail(p)+'</div></div>';
     }).join("");
   }
-  var WP_TYPES=[["rest","Rest day"],["lower","Lower Body"],["upper","Upper Body"],["fullbody","Full Body"],["cardio","Cardio"],["conditioning","Conditioning + Core"],["recovery","Recovery Day"]];
+  var WP_TYPES=[["rest","Rest day"],["lower","Lower Body"],["upper","Upper Body"],["fullbody","Full Body"],["cardio","Cardio"],["endurance","Endurance Day"],["conditioning","Conditioning + Core"],["recovery","Recovery Day"]];
   function isStrengthType(t){return t==="lower"||t==="upper"||t==="fullbody";}
   function planWeekDate(){var d=new Date();d.setDate(d.getDate()+(state.planWeekOffset||0)*7);return d;}
   function planWeekKey(){return weekKey(planWeekDate());}
@@ -3616,6 +3678,7 @@
     fullbody:["Why full body?","A full-body session trains everything in one go — efficient and balanced, and a good way to round off the week."],
     conditioning:["Why conditioning + core?","Steady conditioning lifts your fitness without hammering your recovery, and core work supports your posture and protects your back."],
     cardio:["Why a cardio day?","A pure cardio day keeps your steps, stamina and heart health up and supports fat loss, without the recovery cost of a strength session. It doesn't count toward your 3 strength sessions — it's extra movement on top."],
+    endurance:["Why an endurance day?","A longer aerobic session builds stamina, heart health and an aerobic base for fat loss. Combine machines — treadmill, rower, StairMaster — into one steady workout. Like cardio, it doesn't count as one of your strength sessions."],
     active:["Why walk or yoga?","Easy movement on lighter days keeps you active and helps recovery without adding training stress."],
     rest:["Why rest days?","Muscle is built during recovery, not during the workout itself. Full rest days let your body adapt and come back stronger."],
     treadmill:["Why a cardio finish?","Incline walking and the StairMaster are both low-impact, steady conditioning — they burn energy and build stamina without the joint pounding of running, so they're kind to your knees while protecting recovery and muscle."],
@@ -4153,7 +4216,7 @@
   function renderMenu(){renderMenuProfile();renderTrackPrefs();renderRules();renderDataStatus();if(typeof renderRtSettings==="function")renderRtSettings();}
 
   function allBfKeys(){var ks=[];try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf("bf_")===0)ks.push(k);}}catch(e){}
-    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder"];
+    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder","bf_endurance"];
     return ks;}
   function exportData(){try{var data={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)data[k]=v;});var payload={app:"Body Fuel Lab",version:"build 35",exported:new Date().toISOString(),data:data};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="bodyfuel-backup-"+todayISO()+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Could not export data on this device.");}}
   function importData(file){if(!file)return;var r=new FileReader();r.onload=function(){try{var obj=JSON.parse(r.result);var data=(obj&&obj.data)?obj.data:obj;if(!data||typeof data!=="object")throw 0;var n=0;Object.keys(data).forEach(function(k){if(k.indexOf("bf_")===0){store.set(k,data[k]);n++;}});if(!n)throw 0;alert("Restored "+n+" items. The app will now reload.");location.reload();}catch(e){alert("That file could not be read as a Body Fuel Lab backup.");}};r.readAsText(file);}
