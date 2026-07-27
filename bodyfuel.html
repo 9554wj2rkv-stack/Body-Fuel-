@@ -898,6 +898,16 @@
   .enrm{border:0;background:none;color:var(--ink-faint);font-size:1rem;cursor:pointer;padding:2px 6px}
   .entoggle{width:100%;padding:12px 0;border:1px solid var(--line);background:var(--surface-2);color:var(--ink-soft);border-radius:10px;font-weight:600;cursor:pointer;font-family:var(--font-b)}
   .entoggle.on{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+  .ws-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .ws-status{font-size:.72rem;color:var(--ink-faint);font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+  .ws-count,.ws-time{font-size:.82rem;color:var(--ink-soft);font-variant-numeric:tabular-nums}
+  .ws-grid{display:grid;gap:3px;max-width:370px;margin:0 auto;touch-action:none;-webkit-user-select:none;user-select:none}
+  .ws-cell{aspect-ratio:1/1;border:0;background:var(--surface-2);color:var(--ink);font-size:1rem;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:6px;padding:0;font-family:var(--font-b);-webkit-tap-highlight-color:transparent}
+  .ws-cell.found{background:#FFDE5C;color:#6B4E00}
+  .ws-cell.path,.ws-cell.sel{background:var(--accent);color:#fff}
+  .ws-words{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px auto 0;max-width:340px}
+  .ws-word{font-size:.82rem;font-weight:600;color:var(--ink-soft);padding:4px 10px;background:var(--surface-2);border-radius:999px}
+  .ws-word.done{color:var(--accent);text-decoration:line-through;opacity:.7}
 </style>
 </head>
 <body>
@@ -1260,6 +1270,16 @@
           </div>
         </div>
 
+        <div class="card msec" id="wordsearch-card" data-persist="bf_wsopen">
+          <button type="button" class="msec-head"><span class="eyebrow">Brain training · Word search</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body">
+            <div class="ws-head"><span class="ws-status">Powerful words</span><span class="ws-count" id="ws-count">0/8</span><span class="ws-time" id="ws-time">0:00</span></div>
+            <div class="ws-grid" id="ws-grid"></div>
+            <div class="ws-words" id="ws-words"></div>
+            <div class="sud-foot"><button type="button" class="linkbtn" id="ws-new">New puzzle</button><p class="muted-p" id="ws-msg"></p></div>
+          </div>
+        </div>
+
         <div class="card">
           <div class="eyebrow">Today's session</div>
           <div id="today-session"></div>
@@ -1495,7 +1515,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 74</b></div>
+            <div class="about-row"><span>Version</span><b>Build 76</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1555,7 +1575,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 74"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 76"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -3566,6 +3586,49 @@
   function sudHint(){var st=sudLoad();if(!st||st.done)return;var i=st.sel;if(i<0||st.puzzle[i]!==0||st.user[i]===st.solution[i]){i=-1;for(var k=0;k<81;k++){if(st.puzzle[k]===0&&st.user[k]!==st.solution[k]){i=k;break;}}}if(i<0)return;sudPush(st,i);st.user[i]=st.solution[i];st.notes[i]=[];st.sel=i;st.done=sudSolved(st);sudSave(st);renderSudoku();}
   var sudTick=null;
   function sudStartTimer(){if(sudTick)return;sudTick=setInterval(function(){var card=$("#sudoku-card");if(!card||!card.classList.contains("open"))return;var st=sudLoad();if(!st||st.done||st.mistakes>=3)return;st.seconds=(st.seconds||0)+1;sudSave(st);var t=$("#sud-time");if(t)t.textContent=sudFmtTime(st.seconds);},1000);}
+  /* ---------- Word Search ---------- */
+  var WS_WORDS=["STRONG","POWER","FOCUS","DRIVE","ENERGY","GRIT","BRAVE","FIERCE","HUSTLE","THRIVE","MIGHTY","ENDURE","SWEAT","GOALS","WARRIOR","BELIEVE","ACHIEVE","STRENGTH","COURAGE","VICTORY","TRIUMPH","BALANCE","HEALTHY","ACTIVE","MUSCLE","SPRINT","EMPOWER","INSPIRE","RADIANT","VIBRANT","CHAMPION","FEARLESS","RESILIENT","CONFIDENT","LIMITLESS","POWERFUL","STRONGER","CAPABLE","UNBROKEN","RISE","BOLD","FUEL","WORTHY","SHINE","GLOW"];
+  var WS_SIZE=10, WS_COUNT=7, WS_DIRS=[[0,1],[1,0],[1,1],[1,-1],[0,-1],[-1,0],[-1,-1],[-1,1]];
+  function wsShuffle(a){for(var i=a.length-1;i>0;i--){var j=(Math.random()*(i+1))|0,t=a[i];a[i]=a[j];a[j]=t;}return a;}
+  function wsTryPlace(grid,N,w){for(var t=0;t<200;t++){var d=WS_DIRS[(Math.random()*WS_DIRS.length)|0],dr=d[0],dc=d[1],r=(Math.random()*N)|0,c=(Math.random()*N)|0,er=r+dr*(w.length-1),ec=c+dc*(w.length-1);if(er<0||er>=N||ec<0||ec>=N)continue;var ok=true;for(var k=0;k<w.length;k++){var g=grid[(r+dr*k)*N+(c+dc*k)];if(g&&g!==w[k]){ok=false;break;}}if(!ok)continue;for(var k2=0;k2<w.length;k2++)grid[(r+dr*k2)*N+(c+dc*k2)]=w[k2];return {w:w,r:r,c:c,dr:dr,dc:dc,found:false};}return null;}
+  function wsGen(){var N=WS_SIZE,grid=new Array(N*N).fill(""),placed=[],pool=wsShuffle(WS_WORDS.filter(function(w){return w.length<=N;}).slice());for(var pi=0;pi<pool.length&&placed.length<WS_COUNT;pi++){var pl=wsTryPlace(grid,N,pool[pi]);if(pl)placed.push(pl);}var A="ABCDEFGHIJKLMNOPQRSTUVWXYZ";for(var i=0;i<grid.length;i++)if(!grid[i])grid[i]=A[(Math.random()*26)|0];return {grid:grid,size:N,words:placed,sel:-1,seconds:0};}
+  function wsLoad(){return store.get("bf_wordsearch")||null;}
+  function wsSave(s){store.set("bf_wordsearch",s);}
+  function wsNew(){var st=wsGen();wsSave(st);return st;}
+  function wsEnd(w){return [w.r+w.dr*(w.w.length-1),w.c+w.dc*(w.w.length-1)];}
+  function wsEq(a,b){return a[0]===b[0]&&a[1]===b[1];}
+  function wsFoundCells(st){var m={};st.words.forEach(function(w){if(w.found)for(var k=0;k<w.w.length;k++)m[(w.r+w.dr*k)*st.size+(w.c+w.dc*k)]=1;});return m;}
+  function renderWordSearch(){
+    var grid=$("#ws-grid");if(!grid)return;var st=wsLoad(),words=$("#ws-words"),cnt=$("#ws-count"),tm=$("#ws-time"),msg=$("#ws-msg");
+    if(!st){grid.innerHTML='<div class="sud-empty">Tap \u201cNew puzzle\u201d to start a word search.</div>';if(words)words.innerHTML="";if(cnt)cnt.textContent="";if(tm)tm.textContent="";if(msg)msg.textContent="";return;}
+    var fc=wsFoundCells(st),html="";
+    for(var i=0;i<st.size*st.size;i++){var cls="ws-cell";if(fc[i])cls+=" found";if(i===st.sel)cls+=" sel";html+='<button type="button" class="'+cls+'" data-ws="'+i+'">'+st.grid[i]+'</button>';}
+    grid.style.gridTemplateColumns="repeat("+st.size+",1fr)";grid.innerHTML=html;
+    if(words)words.innerHTML=st.words.map(function(w){return '<span class="ws-word'+(w.found?" done":"")+'">'+w.w+'</span>';}).join("");
+    var found=st.words.filter(function(w){return w.found;}).length;
+    if(cnt)cnt.textContent=found+"/"+st.words.length;
+    if(tm)tm.textContent=sudFmtTime(st.seconds||0);
+    if(msg)msg.textContent=(found===st.words.length&&st.words.length)?"All found \u2014 brilliant! \ud83d\udcaa":"";
+  }
+  function wsTap(idx){var st=wsLoad();if(!st)return;var N=st.size,rc=[Math.floor(idx/N),idx%N];
+    if(st.sel<0){st.sel=idx;wsSave(st);renderWordSearch();return;}
+    if(st.sel===idx){st.sel=-1;wsSave(st);renderWordSearch();return;}
+    var a=[Math.floor(st.sel/N),st.sel%N],matched=null;
+    for(var i=0;i<st.words.length;i++){var w=st.words[i];if(w.found)continue;var s=[w.r,w.c],e=wsEnd(w);if((wsEq(a,s)&&wsEq(rc,e))||(wsEq(a,e)&&wsEq(rc,s))){w.found=true;matched=w;break;}}
+    st.sel=matched?-1:idx;wsSave(st);renderWordSearch();
+  }
+  var wsTick=null;
+  function wsStartTimer(){if(wsTick)return;wsTick=setInterval(function(){var card=$("#wordsearch-card");if(!card||!card.classList.contains("open"))return;var st=wsLoad();if(!st)return;var done=st.words.filter(function(w){return w.found;}).length===st.words.length;if(done)return;st.seconds=(st.seconds||0)+1;wsSave(st);var t=$("#ws-time");if(t)t.textContent=sudFmtTime(st.seconds);},1000);}
+  var wsDrag={on:false,anchor:-1,path:[]};
+  function wsIdxFromPoint(x,y){var el=document.elementFromPoint(x,y);if(!el||!el.closest)return -1;var c=el.closest("[data-ws]");return c?+c.getAttribute("data-ws"):-1;}
+  function wsLineCells(N,a,b){var ar=Math.floor(a/N),ac=a%N,br=Math.floor(b/N),bc=b%N,dr=br-ar,dc=bc-ac;if(!(dr===0||dc===0||Math.abs(dr)===Math.abs(dc)))return null;var sr=dr>0?1:dr<0?-1:0,sc=dc>0?1:dc<0?-1:0,len=Math.max(Math.abs(dr),Math.abs(dc))+1,cells=[];for(var k=0;k<len;k++)cells.push((ar+sr*k)*N+(ac+sc*k));return cells;}
+  function wsPaintPath(cells){var g=$("#ws-grid");if(!g)return;$all(".ws-cell.path",g).forEach(function(el){el.classList.remove("path");});(cells||[]).forEach(function(i){var el=g.querySelector('[data-ws="'+i+'"]');if(el)el.classList.add("path");});}
+  var wsBound=false;
+  function wsBind(){if(wsBound)return;wsBound=true;var card=$("#wordsearch-card");if(!card)return;
+    card.addEventListener("pointerdown",function(e){var cell=e.target.closest&&e.target.closest("[data-ws]");if(!cell||!wsLoad())return;wsDrag.on=true;wsDrag.anchor=+cell.getAttribute("data-ws");wsDrag.path=[wsDrag.anchor];wsPaintPath(wsDrag.path);e.preventDefault();});
+    document.addEventListener("pointermove",function(e){if(!wsDrag.on)return;var st=wsLoad();if(!st)return;var idx=wsIdxFromPoint(e.clientX,e.clientY);if(idx<0)return;var cells=wsLineCells(st.size,wsDrag.anchor,idx);if(cells){wsDrag.path=cells;wsPaintPath(cells);}e.preventDefault();},{passive:false});
+    document.addEventListener("pointerup",function(){if(!wsDrag.on)return;wsDrag.on=false;var st=wsLoad();if(st&&wsDrag.path&&wsDrag.path.length>=2){var p=wsDrag.path,a=[Math.floor(p[0]/st.size),p[0]%st.size],b=[Math.floor(p[p.length-1]/st.size),p[p.length-1]%st.size];for(var i=0;i<st.words.length;i++){var w=st.words[i];if(w.found)continue;var s=[w.r,w.c],en=wsEnd(w);if((wsEq(a,s)&&wsEq(b,en))||(wsEq(a,en)&&wsEq(b,s))){w.found=true;wsSave(st);break;}}}wsDrag.path=[];wsPaintPath([]);renderWordSearch();});
+  }
   function refreshFuel(){$("#fuel-tip").innerHTML=fuelTips[state.fTime];renderFuelTarget();renderEnergy();renderHabits();renderNotesHistory();bindNotesHistory();rtRender();rtRenderPref();}
   function renderFuelTarget(){
     var el=$("#fuel-target-card");if(!el)return;
@@ -4216,7 +4279,7 @@
   function renderMenu(){renderMenuProfile();renderTrackPrefs();renderRules();renderDataStatus();if(typeof renderRtSettings==="function")renderRtSettings();}
 
   function allBfKeys(){var ks=[];try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf("bf_")===0)ks.push(k);}}catch(e){}
-    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder","bf_endurance"];
+    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder","bf_endurance","bf_wordsearch"];
     return ks;}
   function exportData(){try{var data={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)data[k]=v;});var payload={app:"Body Fuel Lab",version:"build 35",exported:new Date().toISOString(),data:data};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="bodyfuel-backup-"+todayISO()+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Could not export data on this device.");}}
   function importData(file){if(!file)return;var r=new FileReader();r.onload=function(){try{var obj=JSON.parse(r.result);var data=(obj&&obj.data)?obj.data:obj;if(!data||typeof data!=="object")throw 0;var n=0;Object.keys(data).forEach(function(k){if(k.indexOf("bf_")===0){store.set(k,data[k]);n++;}});if(!n)throw 0;alert("Restored "+n+" items. The app will now reload.");location.reload();}catch(e){alert("That file could not be read as a Body Fuel Lab backup.");}};r.readAsText(file);}
@@ -4254,6 +4317,7 @@
   (function(){var d=$("#dt-card");if(d&&store.get("bf_dtopen")===true)d.classList.add("open");})();
   (function(){var cc=$("#cycle-setup-card");if(!cc)return;var c=loadCycle();if(!c.start)cc.classList.add("open");else if(store.get("bf_cycopen")===true)cc.classList.add("open");})();
   (function(){var sc=$("#sudoku-card");if(!sc)return;if(store.get("bf_sudopen")===true)sc.classList.add("open");renderSudoku();sudStartTimer();sc.addEventListener("click",function(e){var nw=e.target.closest("#sud-new");if(nw){sc.classList.add("open");sudNew();renderSudoku();return;}var db=e.target.closest("[data-suddiff]");if(db){sc.classList.add("open");sudNew(db.getAttribute("data-suddiff"));renderSudoku();return;}var tl=e.target.closest("[data-sudtool]");if(tl){var a=tl.getAttribute("data-sudtool");if(a==="undo")sudUndo();else if(a==="erase")sudErase();else if(a==="pencil")sudPencil();else if(a==="hint")sudHint();return;}var cell=e.target.closest("[data-sud]");if(cell){sudSelect(+cell.getAttribute("data-sud"));return;}var pn=e.target.closest("[data-sudn]");if(pn){sudInput(+pn.getAttribute("data-sudn"));return;}});})();
+  (function(){var wc=$("#wordsearch-card");if(!wc)return;if(store.get("bf_wsopen")===true)wc.classList.add("open");renderWordSearch();wsStartTimer();wsBind();wc.addEventListener("click",function(e){var nw=e.target.closest("#ws-new");if(nw){wc.classList.add("open");wsNew();renderWordSearch();return;}});})();
   (function(){var c=$("#sleep-card");if(!c)return;c.addEventListener("click",function(e){var qb=e.target.closest("#sl-quality button");if(qb){$all("#sl-quality button").forEach(function(b){b.classList.remove("on");});qb.classList.add("on");return;}if(e.target.closest("#sl-save")){saveSleep();}});})();
   renderMenu();applyTrackPrefs();
   renderPortionMemory();renderPortionList();syncWpButtons();
