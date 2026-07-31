@@ -717,19 +717,19 @@
   .daynav .dn-btn.off{opacity:.3;pointer-events:none}
   .daynav .dn-label.dn-pick{position:relative;cursor:pointer}
   .daynav .dn-label .dn-date{position:absolute;inset:0;width:100%;height:100%;opacity:0;border:0;padding:0;margin:0;cursor:pointer;-webkit-appearance:none;appearance:none}
-  .exlog .exin{display:flex;align-items:flex-end;gap:8px;margin-top:9px}
-  .exlog .exin .exset{display:flex;flex-direction:column;gap:3px}
+  .exlog .exin{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px;margin-top:9px;max-width:100%}
+  .exlog .exin .exset{display:flex;flex-direction:column;gap:3px;flex:1 1 0;min-width:0;order:1}
   .exlog .exin .exset label{font-size:calc(10.5px*var(--ts,1));color:var(--ink-faint);font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding-left:2px}
-  .exlog .exin .exset input{width:72px}
+  .exlog .exin .exset input{width:100%;min-width:0;box-sizing:border-box}
   .exlog .exin .exwarm{padding-right:10px;border-right:1px dashed var(--line)}
   .mobgrid{display:flex;flex-direction:column;margin-top:4px}
   .mobitem{display:flex;align-items:center;gap:11px;padding:8px 0;font-size:calc(15px*var(--ts,1));color:var(--ink);cursor:pointer}
   .mobitem input{width:20px;height:20px;accent-color:var(--accent);flex:none;margin:0}
   .coretag{font-weight:400;color:var(--ink-faint);font-size:.78em;text-transform:none;letter-spacing:0}
-  .exlog .exin input{width:70px;border:1px solid var(--line);background:var(--surface-2);border-radius:9px;padding:8px 10px;font-family:var(--font-b);font-size:calc(16px*var(--ts,1));color:var(--ink)}
+  .exlog .exin input{width:70px;min-width:0;max-width:100%;box-sizing:border-box;border:1px solid var(--line);background:var(--surface-2);border-radius:9px;padding:8px 10px;font-family:var(--font-b);font-size:calc(16px*var(--ts,1));color:var(--ink)}
   .exlog .exin input:focus{outline:none;border-color:var(--accent);background:var(--surface)}
   .exlog .exin .exx{color:var(--ink-faint);font-size:calc(15px*var(--ts,1))}
-  .exlog .excomp{margin-left:auto;border:1px solid var(--line);background:var(--surface-2);border-radius:9px;padding:8px 13px;font-family:var(--font-b);font-size:calc(14.5px*var(--ts,1));font-weight:600;color:var(--accent-deep);cursor:pointer;transition:.15s}
+  .exlog .excomp{order:2;flex:0 0 100%;width:100%;box-sizing:border-box;margin-top:6px;border:1px solid var(--line);background:var(--surface-2);border-radius:9px;padding:8px 13px;font-family:var(--font-b);font-size:calc(14.5px*var(--ts,1));font-weight:600;color:var(--accent-deep);cursor:pointer;transition:.15s}
   .exlog .excomp:active{transform:scale(.96)}
   .exlog .excomp.on{background:var(--accent);color:#fff;border-color:var(--accent)}
   .exlog .exprog{font-size:calc(13px*var(--ts,1));color:var(--ink-soft);margin-top:9px;letter-spacing:.01em}
@@ -908,6 +908,10 @@
   .ws-words{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px auto 0;max-width:340px}
   .ws-word{font-size:.82rem;font-weight:600;color:var(--ink-soft);padding:4px 10px;background:var(--surface-2);border-radius:999px}
   .ws-word.done{color:var(--accent);text-decoration:line-through;opacity:.7}
+  .warma{padding:12px;border:1px solid var(--line);border-radius:14px;margin-bottom:14px}
+  .warma-top{display:flex;align-items:center;justify-content:space-between}
+  .wuck{display:flex;align-items:center;gap:4px;font-size:.62rem;color:var(--ink-faint);margin-top:2px;cursor:pointer}
+  .wuck input{width:14px;height:14px;margin:0}
 </style>
 </head>
 <body>
@@ -1515,7 +1519,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 76</b></div>
+            <div class="about-row"><span>Version</span><b>Build 81</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1575,7 +1579,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 76"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 81"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -2187,12 +2191,11 @@
     var isCore=p.why==="conditioning";
     var meta='';if((p.sets||p.reps)&&!isCore){var mm=[];if(p.sets)mm.push(p.sets);if(p.reps)mm.push(p.reps);meta='<div class="tip" style="margin-bottom:13px"><b>'+mm.join(" · ")+'</b></div>';}
     if(p.purpose)meta+='<p class="muted-p" style="margin-bottom:13px">'+p.purpose+'</p>';
-    var wdone=todayLog().warmup;
-    var warm='<div class="warmrow"><div class="warm-t"><b>Warm-up</b> · 5 min row machine, easy pace</div><button class="excomp'+(wdone?' on':'')+'" id="warm-toggle">'+(wdone?'Done':'Mark done')+'</button></div>';
+    var warm=warmAHTML();
     var dayKey=slug(p.t);
     var okey=orderKeyFor(p,sessWeekKey()),tmap=isCore?coreTargetMap(sessWeekKey()):null;
     var defaults=isCore?coreVariantFor(sessWeekKey()).ex.map(function(o){return o[0];}):p.ex.slice();
-    var names=orderedEx(okey,defaults),editing=state.exEditKey===okey;
+    var names=orderedEx(okey,defaults).filter(function(n){return exHidden(okey).indexOf(n)<0;}),editing=state.exEditKey===okey;
     var editBtn='<div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button type="button" class="linkbtn" id="ex-editorder" data-okey="'+okey+'">'+(editing?'Done':'Edit order')+'</button></div>';
     var exBody=editing?reorderListHTML(names):dayExCardsHTML(names,dayKey,sessWeekKey(),isCore,tmap);
     var ex=(isCore?coreHeaderHTML(sessWeekKey()):'')+editBtn+'<div id="ex-log" data-dayk="'+dayKey+'" data-wk="'+sessWeekKey()+'">'+exBody+'</div>'+(isCore?coreFinishHTML(sessWeekKey()):'');
@@ -2200,7 +2203,7 @@
     var notes=p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'';
     var pcs=postCheckinHTML();
     host.innerHTML=nav+head+sessCompleteHTML()+warm+meta+ex+cardio+vestHTML()+(pcs?'<div class="divider"></div>'+pcs:'')+notes+'<div class="divider"></div>'+sessionLogHTML()+whyPills(p);
-    bindExLog();bindCardio();bindWarm();bindSessionLog();bindSessComplete();bindCheckin();bindExOrder();
+    bindExLog();bindCardio();bindWarm();bindWarmA();bindSessionLog();bindSessComplete();bindCheckin();bindExOrder();
   }
   /* per-exercise logbook */
   function slug(s){return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}
@@ -2251,9 +2254,9 @@
   function exRefresh(card){var box=card.closest("[data-dayk]"),dayKey=box.getAttribute("data-dayk"),wk=box.getAttribute("data-wk")||sessWeekKey(),exKey=card.getAttribute("data-exk"),kind=card.getAttribute("data-kind"),inner=exInner(dayKey,exKey,kind,wk);card.querySelector(".ex-prev").textContent=inner.prev;card.querySelector(".ex-prog").innerHTML='<b>Progress</b>'+inner.prog;}
   function exWrite(card,toggle){
     var box=card.closest("[data-dayk]"),dayKey=box.getAttribute("data-dayk"),exKey=card.getAttribute("data-exk"),cur=box.getAttribute("data-wk")||sessWeekKey();
-    var w=card.querySelector("[data-exw]"),r=card.querySelector("[data-exr]"),t=card.querySelector("[data-ext]"),d=card.querySelector("[data-exd]"),w1=card.querySelector("[data-exw1]"),w2=card.querySelector("[data-exw2]"),r1=card.querySelector("[data-exr1]"),r2=card.querySelector("[data-exr2]"),wu=card.querySelector("[data-exwu]"),wur=card.querySelector("[data-exwur]");
+    var w=card.querySelector("[data-exw]"),r=card.querySelector("[data-exr]"),t=card.querySelector("[data-ext]"),d=card.querySelector("[data-exd]"),w1=card.querySelector("[data-exw1]"),w2=card.querySelector("[data-exw2]"),r1=card.querySelector("[data-exr1]"),r2=card.querySelector("[data-exr2]"),wu=card.querySelector("[data-exwu]"),wur=card.querySelector("[data-exwur]"),wud=card.querySelector("[data-exwudone]");
     var existing=exData(dayKey,exKey)[cur]||{},completed=toggle?!existing.completed:!!existing.completed;
-    saveExEntry(dayKey,exKey,cur,{weight:w?num(w.value):null,reps:r?num(r.value):null,time:t?num(t.value):null,dist:d?num(d.value):null,w1:w1?num(w1.value):null,w2:w2?num(w2.value):null,r1:r1?num(r1.value):null,r2:r2?num(r2.value):null,wu:wu?num(wu.value):null,wur:wur?num(wur.value):null,completed:completed,date:sessISO()});
+    saveExEntry(dayKey,exKey,cur,{weight:w?num(w.value):null,reps:r?num(r.value):null,time:t?num(t.value):null,dist:d?num(d.value):null,w1:w1?num(w1.value):null,w2:w2?num(w2.value):null,r1:r1?num(r1.value):null,r2:r2?num(r2.value):null,wu:wu?num(wu.value):null,wur:wur?num(wur.value):null,wuDone:wud?wud.checked:(existing.wuDone||false),completed:completed,date:sessISO()});
     exHistUpdate(exKey,card.getAttribute("data-kind"),exData(dayKey,exKey)[cur],sessISO());
     if(toggle){var b=card.querySelector("[data-exc]");b.classList.toggle("on",completed);b.textContent=completed?'Done':(card.getAttribute("data-kind")==="done"?'Mark done':'Mark done');}
     exRefresh(card);renderWeekFocus();renderWeeklyReview();renderStrength();
@@ -2269,7 +2272,7 @@
     });
   }
   function bindExLog(){if(exLogBound)return;exLogBound=true;
-    document.addEventListener("change",function(e){if(e.target.closest&&e.target.closest("input[data-exw],input[data-exr],input[data-ext],input[data-exd],input[data-exw1],input[data-exw2],input[data-exr1],input[data-exr2],input[data-exwu],input[data-exwur]")){var card=e.target.closest("[data-exk]");if(card)exWrite(card,false);}});
+    document.addEventListener("change",function(e){if(e.target.closest&&e.target.closest("input[data-exw],input[data-exr],input[data-ext],input[data-exd],input[data-exw1],input[data-exw2],input[data-exr1],input[data-exr2],input[data-exwu],input[data-exwur],input[data-exwudone]")){var card=e.target.closest("[data-exk]");if(card)exWrite(card,false);}});
     document.addEventListener("click",function(e){
       var cc=e.target.closest&&e.target.closest("[data-core]");
       if(cc){var box=cc.closest("[data-wk]"),wk=box?box.getAttribute("data-wk"):sessWeekKey();setCoreChoice(wk,cc.getAttribute("data-core"));renderTodaySession();return;}
@@ -2314,6 +2317,22 @@
   function cardioLastLine(){var h=store.get("bf_cardiohist");if(!h)return "";var parts=[];if((h.mode==="stairs"||h.mode==="both")&&h.level)parts.push("level "+h.level);if(h.mode!=="stairs"){if(h.incline)parts.push(h.incline+"% incline");if(h.speed)parts.push(h.speed+" km/h");}if(h.duration)parts.push(h.duration+" min");if(!parts.length)return "";var s="Last: "+parts.join(" \u00b7 ");if(h.date)s+=" \u00b7 "+dchLabel(h.date);return s;}
   function setCardioMode(mode){var all=loadTraining(),l=all[sessISO()]||{};l.cardio=l.cardio||{duration:20,incline:"",speed:"",effort:"",mode:"incline",level:"",pace:""};l.cardio.mode=mode;all[sessISO()]=l;store.set("bf_training",all);if(state.tlog)state.tlog.cardio=l.cardio;renderTodaySession();}
   function setCardioOn(on){var all=loadTraining(),l=all[sessISO()]||{};l.cardioOn=on;all[sessISO()]=l;store.set("bf_training",all);if(state.tlog)state.tlog.cardioOn=on;renderTodaySession();}
+  var WARMA_TYPES=["None","Treadmill","Bike","Stair machine","Walking","Mobility","Custom"];
+  function loadWarmA(){return store.get("bf_warmup")||{};}
+  function warmAState(){var a=loadWarmA()[sessISO()];return a||{type:"Treadmill",min:"5",intensity:"",notes:"",done:false};}
+  function warmACommit(st){var all=loadWarmA();all[sessISO()]=st;store.set("bf_warmup",all);}
+  function warmAHTML(){var s=warmAState();var opts=WARMA_TYPES.map(function(t){return '<option'+(t===s.type?" selected":"")+'>'+t+'</option>';}).join("");
+    return '<div class="warma"><div class="warma-top"><span class="eyebrow" style="margin:0">Warm-up</span><button type="button" class="excomp'+(s.done?" on":"")+'" id="warma-done">'+(s.done?"Done":"Mark done")+'</button></div>'
+      +'<select class="mealinput" id="warma-type" style="margin-top:8px">'+opts+'</select>'
+      +'<div class="pmeal-grid" style="margin-top:8px"><div class="pmeal"><label>Duration (min)</label><input id="warma-min" data-wa="min" type="text" inputmode="numeric" value="'+esc(s.min||"")+'"></div><div class="pmeal"><label>Intensity</label><input id="warma-int" data-wa="intensity" type="text" value="'+esc(s.intensity||"")+'"></div></div>'
+      +'<div class="pmeal" style="margin-top:8px"><label>Notes</label><input id="warma-notes" data-wa="notes" type="text" value="'+esc(s.notes||"")+'"></div></div>';}
+  function bindWarmA(){var host=$("#today-session");if(!host)return;
+    var ty=host.querySelector("#warma-type");if(ty)ty.addEventListener("change",function(){var s=warmAState();s.type=ty.value;warmACommit(s);});
+    host.querySelectorAll("[data-wa]").forEach(function(inp){inp.addEventListener("change",function(){var s=warmAState();s[inp.getAttribute("data-wa")]=inp.value;warmACommit(s);});});
+    var db=host.querySelector("#warma-done");if(db)db.addEventListener("click",function(){var s=warmAState();s.done=!s.done;warmACommit(s);db.classList.toggle("on",s.done);db.textContent=s.done?"Done":"Mark done";});
+  }
+  function loadExHidden(){return store.get("bf_exhidden")||{};}
+  function exHidden(key){return loadExHidden()[key]||[];}
   function bindWarm(){var b=$("#warm-toggle");if(!b)return;b.addEventListener("click",function(){var all=loadTraining(),l=all[sessISO()]||{};l.warmup=!l.warmup;all[sessISO()]=l;store.set("bf_training",all);if(state.tlog)state.tlog.warmup=l.warmup;b.classList.toggle("on",l.warmup);b.textContent=l.warmup?'Done':'Mark done';});}
   function vestHTML(){var l=todayLog();return '<label class="mobitem vest-row"><input type="checkbox" id="vest-cb"'+(l.vest?' checked':'')+'><span>Weight vest used (5 kg)</span></label>';}
   function bindVest(){var vest=$("#vest-cb");if(vest)vest.addEventListener("change",function(){var all=loadTraining(),l=all[sessISO()]||{};l.vest=vest.checked;all[sessISO()]=l;store.set("bf_training",all);if(state.tlog)state.tlog.vest=l.vest;});}
@@ -4233,6 +4252,8 @@
   renderLearn();
 
   (function(){var wp=store.get("bf_weekplan");if(wp){var ch=false;Object.keys(wp).forEach(function(wk){var m=wp[wk];if(m)Object.keys(m).forEach(function(i){if(m[i]==="condonly"){m[i]="cardio";ch=true;}});});if(ch)store.set("bf_weekplan",wp);}var tr=store.get("bf_training");if(tr){var c2=false;Object.keys(tr).forEach(function(d){if(tr[d]&&tr[d].type==="condonly"){tr[d].type="cardio";c2=true;}});if(c2)store.set("bf_training",tr);}})();
+  (function(){try{if(store.get("bf_fuelbackup"))return;var keys=["bf_workout","bf_exhist","bf_training","bf_exorder","bf_weekplan","bf_core","bf_cardioday","bf_cardiohist","bf_endurance"],snap={_at:new Date().toISOString(),_note:"Auto snapshot of Fuel training data before Edit-Workout feature."},any=false;keys.forEach(function(k){var v=store.get(k);if(v!=null){snap[k]=v;any=true;}});if(any)store.set("bf_fuelbackup",snap);}catch(e){}})();
+  (function(){var h=store.get("bf_exhidden");if(h&&h._ubseed)return;h=h||{};h.upper=h.upper||[];["Lat Pulldown","Seated Row"].forEach(function(n){if(h.upper.indexOf(n)<0)h.upper.push(n);});h._ubseed=true;store.set("bf_exhidden",h);})();
   if(typeof exHistBackfill==="function")exHistBackfill();
   refreshFuel();renderExerciseLib();renderTodaySession();renderWeekPlan();renderStrength();renderWeekPlanner();bindWeekPlanner();rtInit();
   function applyTheme(v){document.documentElement.setAttribute("data-theme",v);$all('[data-group="theme"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===v);});var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute("content",v==="light"?"#FFF4F8":(v==="barbie"?"#FFE6F2":"#241629"));}
@@ -4279,7 +4300,7 @@
   function renderMenu(){renderMenuProfile();renderTrackPrefs();renderRules();renderDataStatus();if(typeof renderRtSettings==="function")renderRtSettings();}
 
   function allBfKeys(){var ks=[];try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf("bf_")===0)ks.push(k);}}catch(e){}
-    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder","bf_endurance","bf_wordsearch"];
+    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder","bf_endurance","bf_wordsearch","bf_warmup","bf_exhidden","bf_template","bf_fuelbackup"];
     return ks;}
   function exportData(){try{var data={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)data[k]=v;});var payload={app:"Body Fuel Lab",version:"build 35",exported:new Date().toISOString(),data:data};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="bodyfuel-backup-"+todayISO()+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Could not export data on this device.");}}
   function importData(file){if(!file)return;var r=new FileReader();r.onload=function(){try{var obj=JSON.parse(r.result);var data=(obj&&obj.data)?obj.data:obj;if(!data||typeof data!=="object")throw 0;var n=0;Object.keys(data).forEach(function(k){if(k.indexOf("bf_")===0){store.set(k,data[k]);n++;}});if(!n)throw 0;alert("Restored "+n+" items. The app will now reload.");location.reload();}catch(e){alert("That file could not be read as a Body Fuel Lab backup.");}};r.readAsText(file);}
