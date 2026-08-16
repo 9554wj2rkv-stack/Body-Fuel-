@@ -1531,7 +1531,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 83</b></div>
+            <div class="about-row"><span>Version</span><b>Build 84</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1591,7 +1591,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 83"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 84"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -2035,6 +2035,9 @@
     cardio:{t:"Cardio",ex:[],why:"cardio",log:false},
     endurance:{t:"Endurance Day",ex:[],why:"endurance",log:false,notes:"Longer aerobic training — combine cardio machines into one steady session."},
     recovery:{t:"Recovery Day",ex:[],notes:"A recovery-focused session \u2014 easy cardio and mobility to boost circulation and consistency. This intentionally replaces a 4th lifting day.",why:"recovery",log:false},
+    "lowimpact-yoga":{t:"Low Impact \u2014 Yoga",ex:[],why:"lowimpact",log:false,notes:"A deliberate low-impact movement session \u2014 yoga at your own pace."},
+    "lowimpact-stretch":{t:"Low Impact \u2014 Stretching / Mobility",ex:[],why:"lowimpact",log:false,notes:"A deliberate low-impact session \u2014 stretching and mobility work."},
+    "lowimpact-both":{t:"Low Impact \u2014 Yoga + Stretching",ex:[],why:"lowimpact",log:false,notes:"A deliberate low-impact session \u2014 yoga plus stretching and mobility."},
     rest:{t:"Full rest",ex:[],notes:"Full rest — no training today. Recovery is when your progress is made.",why:"rest",log:false}
   };
   var DEFAULT_WMAP={1:"lower",3:"upper",5:"fullbody",6:"recovery"};
@@ -2151,6 +2154,7 @@
   }
   function dayDetail(p){
     var h="";
+    if(p.why==="lowimpact"){h+='<p class="muted-p" style="margin-top:2px">'+(p.notes||"Low-impact movement session.")+'</p>';return h+whyPills(p);}
     if(p.why==="endurance"){
       h+='<p class="muted-p" style="margin-top:2px">Longer aerobic session — combine machines (treadmill, rower, StairMaster) into one workout.</p>';
       return h+whyPills(p);
@@ -2309,6 +2313,11 @@
     var atToday=sessISO()===todayISO();
     var nav=dayNavHTML("sess");
     var head='<div class="built" style="margin-bottom:10px">'+dayName[p.d]+' — '+p.t+'</div>';
+    if(p.why==="lowimpact"){
+      var pcl=postCheckinHTML();
+      host.innerHTML=nav+head+sessCompleteHTML()+(p.notes?'<p class="muted-p" style="margin-top:2px">'+p.notes+'</p>':'')+(pcl?'<div class="divider"></div>'+pcl:'')+addedTrainingHTML()+whyPills(p);
+      bindSessComplete();bindCheckin();return;
+    }
     if(p.why==="recovery"){
       var pcr=postCheckinHTML();
       host.innerHTML=nav+head+sessCompleteHTML()+recoveryCardioHTML()+mobilityHTML()+(pcr?'<div class="divider"></div>'+pcr:'')+(p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'')+addedTrainingHTML()+whyPills(p);
@@ -2507,7 +2516,7 @@
       return '<div class="lesson'+(i===ti?' open':'')+'" style="padding:14px 0;border-bottom:1px solid var(--line-soft)"><div class="head"><span style="width:42px;flex:none;font-size:calc(13px*var(--ts,1));font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:'+(i===ti?'var(--accent-deep)':'var(--ink-faint)')+'">'+p.d+'</span><div class="txt"><div class="ttl" style="font-size:calc(18px*var(--ts,1))">'+p.t+'</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body">'+dayDetail(p)+'</div></div>';
     }).join("");
   }
-  var WP_TYPES=[["rest","Rest day"],["lower","Lower Body"],["upper","Upper Body"],["fullbody","Full Body"],["cardio","Cardio"],["endurance","Endurance Day"],["conditioning","Conditioning + Core"],["recovery","Recovery Day"]];
+  var WP_TYPES=[["rest","Rest day"],["lower","Lower Body"],["upper","Upper Body"],["fullbody","Full Body"],["cardio","Cardio"],["endurance","Endurance Day"],["conditioning","Conditioning + Core"],["recovery","Recovery Day"],["lowimpact","Low Impact / Mobility"]];
   function isStrengthType(t){return t==="lower"||t==="upper"||t==="fullbody";}
   function planWeekDate(){var d=new Date();d.setDate(d.getDate()+(state.planWeekOffset||0)*7);return d;}
   function planWeekKey(){return weekKey(planWeekDate());}
@@ -2520,9 +2529,11 @@
     var wk=planWeekKey(),map=weekPlanMap(wk);
     var nav='<div class="daynav"><button class="dn-btn" data-wknav="prev" aria-label="Previous week">‹</button><div class="dn-label">'+wkSelLabel()+'</div><button class="dn-btn'+((state.planWeekOffset||0)>=0?' off':'')+'" data-wknav="next" aria-label="Next week">›</button></div>';
     var rows=DAYABBR.map(function(d,i){
-      var type=map[i]||"rest",train=type!=="rest";
-      var sel='<select class="wp-sel'+(train?' on':'')+'" data-wpsel="'+i+'">'+WP_TYPES.map(function(o){return '<option value="'+o[0]+'"'+(type===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join("")+'</select>';
-      return '<div class="wp-row"><span class="wp-day">'+dayName[d]+'</span>'+sel+'</div>';
+      var type=map[i]||"rest",train=type!=="rest",base=/^lowimpact/.test(type)?"lowimpact":type;
+      var sel='<select class="wp-sel'+(train?' on':'')+'" data-wpsel="'+i+'">'+WP_TYPES.map(function(o){return '<option value="'+o[0]+'"'+(base===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join("")+'</select>';
+      var sub='';
+      if(base==="lowimpact"){var sv=type.replace("lowimpact-","")||"yoga",LI=[["yoga","Yoga"],["stretch","Stretching / Mobility"],["both","Yoga + Stretching"]];sub='<select class="wp-sel on wp-sub" data-wpsub="'+i+'">'+LI.map(function(o){return '<option value="'+o[0]+'"'+(sv===o[0]?' selected':'')+'>'+o[1]+'</option>';}).join("")+'</select>';}
+      return '<div class="wp-row"><span class="wp-day">'+dayName[d]+'</span>'+sel+sub+'</div>';
     }).join("");
     host.innerHTML=nav+rows;
     renderWPSummary();
@@ -2531,7 +2542,7 @@
   var wpBound=false;
   function bindWeekPlanner(){
     var host=$("#weekplanner");if(!host||wpBound)return;wpBound=true;
-    host.addEventListener("change",function(e){var s=e.target.closest("[data-wpsel]");if(!s)return;var i=+s.getAttribute("data-wpsel");setDayType(planWeekKey(),i,s.value);refreshPlanViews();});
+    host.addEventListener("change",function(e){var sub=e.target.closest("[data-wpsub]");if(sub){var si=+sub.getAttribute("data-wpsub");setDayType(planWeekKey(),si,"lowimpact-"+sub.value);refreshPlanViews();return;}var s=e.target.closest("[data-wpsel]");if(!s)return;var i=+s.getAttribute("data-wpsel"),v=s.value;if(v==="lowimpact")v="lowimpact-yoga";setDayType(planWeekKey(),i,v);refreshPlanViews();});
     host.addEventListener("click",function(e){var n=e.target.closest("[data-wknav]");if(!n)return;var off=state.planWeekOffset||0;off+=(n.getAttribute("data-wknav")==="next"?1:-1);if(off>0)off=0;state.planWeekOffset=off;renderWeekPlanner();});
   }
 
@@ -3914,7 +3925,8 @@
     treadmill:["Why a cardio finish?","Incline walking and the StairMaster are both low-impact, steady conditioning — they burn energy and build stamina without the joint pounding of running, so they're kind to your knees while protecting recovery and muscle."],
     core:["Why core?","A strong core supports your posture, protects your back, and gives you a stable base to lift from safely."],
     sets:["Why 2–3 sets?","Two to three sets is enough to keep progressing without overloading recovery — which matters more during perimenopause, when recovery deserves a little extra respect."],
-    recovery:["Why recovery matters","Sleep, hydration, food and rest days are where your training becomes results. More training is not always better — better recovery means better fat loss and muscle preservation."]
+    recovery:["Why recovery matters","Sleep, hydration, food and rest days are where your training becomes results. More training is not always better — better recovery means better fat loss and muscle preservation."],
+    lowimpact:["Why a low-impact day?","Yoga, stretching and mobility keep you moving, aid recovery and protect your joints — without the load of a strength or cardio session. It doesn't count toward your strength sessions."]
   };
   function openWhy(t){
     if(t==="treadmill"){
