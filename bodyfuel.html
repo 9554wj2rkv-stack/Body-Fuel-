@@ -1540,7 +1540,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 86</b></div>
+            <div class="about-row"><span>Version</span><b>Build 87</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1600,7 +1600,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 86"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 87"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -2319,6 +2319,17 @@
       var f=e.target.closest("[data-addf]");if(f){var field=f.getAttribute("data-addf"),patch={};patch[field]=(field==="durationMinutes"?(f.value===""?null:num(f.value)):f.value);addUpdate(f.getAttribute("data-addid"),patch);return;}
     });
   }
+  var UPPER_MAIN=["Single-Arm Cable Row","Chest Press","Cable External Rotation","Dumbbell Triceps Kickback"];
+  var UPPER_CORE=["Kettlebell March","Russian Twist","Sit-Ups","Flutter Kicks"];
+  var UPPER_TARGET={"Single-Arm Cable Row":"2 \u00d7 10\u201312 each side \u00b7 light, controlled, no twisting","Chest Press":"2 \u00d7 10\u201312 \u00b7 lighter & controlled","Cable External Rotation":"2 \u00d7 12\u201315 each side \u00b7 very light, elbow tucked","Dumbbell Triceps Kickback":"2 \u00d7 10\u201315 each arm \u00b7 light, slow","Kettlebell March":"2 \u00d7 20\u201330 sec each side \u00b7 KB weight + duration","Russian Twist":"2 \u00d7 10\u201312 each side \u00b7 bodyweight or weighted","Sit-Ups":"2 \u00d7 10\u201315 \u00b7 bodyweight (optional weight)","Flutter Kicks":"2 \u00d7 20\u201330 sec \u00b7 bodyweight"};
+  function upperReorderHTML(names,sec){return '<div class="exreord-wrap">'+names.map(function(n,i){return '<div class="exreord"><span class="exdrag">\u22ee\u22ee</span><span class="exreord-n">'+esc(n)+'</span><span class="exreord-btns"><button type="button" data-uomove="up" data-uon="'+esc(n)+'" data-uosec="'+sec+'"'+(i===0?' disabled':'')+'>\u2191</button><button type="button" data-uomove="down" data-uon="'+esc(n)+'" data-uosec="'+sec+'"'+(i===names.length-1?' disabled':'')+'>\u2193</button></span></div>';}).join("")+'</div>';}
+  var upperOrderBound=false;
+  function bindUpperOrder(){if(upperOrderBound)return;upperOrderBound=true;
+    document.addEventListener("click",function(e){if(!e.target.closest)return;
+      if(e.target.closest("#upper-editorder")){state.exEditKey=(state.exEditKey==="upper")?null:"upper";renderTodaySession();return;}
+      var mv=e.target.closest("[data-uomove]");if(mv){var dir=mv.getAttribute("data-uomove")==="up"?-1:1,name=mv.getAttribute("data-uon"),sec=mv.getAttribute("data-uosec"),key=sec==="core"?"upper-core":"upper-main",defs=sec==="core"?UPPER_CORE:UPPER_MAIN;exMove(key,defs,name,dir);renderTodaySession();return;}
+    });
+  }
   function renderTodaySession(){
     var p=dayEntry(sessWeekKey(),sessIdx()),host=$("#today-session");
     var atToday=sessISO()===todayISO();
@@ -2326,15 +2337,16 @@
     var head='<div class="built" style="margin-bottom:10px">'+dayName[p.d]+' — '+p.t+'</div>';
     if(p.why==="upper"){
       var udk="upper-body-strength",uwk=sessWeekKey();
+      var uMain=orderedEx("upper-main",UPPER_MAIN),uCore=orderedEx("upper-core",UPPER_CORE),uedit=state.exEditKey==="upper";
       var uhead='<div class="built" style="margin-bottom:2px">'+dayName[p.d]+' \u2014 '+(p.disp||p.t)+'</div>'+(p.sub?'<div class="ai-sub">'+p.sub+'</div>':'');
       var ufocus='<details class="ai-focus"><summary>Training focus</summary><ul><li>Use lighter weights.</li><li>Prioritise control and clean movement.</li><li>Leave ~3\u20134 reps in reserve \u2014 don\u2019t train to failure.</li><li>Both sides normally use equal volume.</li><li>Stop or modify if an exercise causes increasing pain, burning, tingling, numbness or symptoms travelling down the arm.</li></ul></details>';
-      var uUP=[["Single-Arm Cable Row","2 \u00d7 10\u201312 each side \u00b7 light, controlled, no twisting"],["Chest Press","2 \u00d7 10\u201312 \u00b7 lighter & controlled"],["Cable External Rotation","2 \u00d7 12\u201315 each side \u00b7 very light, elbow tucked"],["Dumbbell Triceps Kickback","2 \u00d7 10\u201315 each arm \u00b7 light, slow"]];
-      var uCO=[["Kettlebell March","2 \u00d7 20\u201330 sec each side \u00b7 KB weight + duration"],["Russian Twist","2 \u00d7 10\u201312 each side \u00b7 bodyweight or weighted"],["Sit-Ups","2 \u00d7 10\u201315 \u00b7 bodyweight (optional weight)"],["Flutter Kicks","2 \u00d7 20\u201330 sec \u00b7 bodyweight"]];
+      var uEditBtn='<div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button type="button" class="linkbtn" id="upper-editorder">'+(uedit?"Done":"Edit order")+'</button></div>';
+      var ubody;
+      if(uedit){ubody=uEditBtn+'<div class="ai-sec">Upper Body</div>'+upperReorderHTML(uMain,"main")+'<div class="ai-sec">Core</div>'+upperReorderHTML(uCore,"core");}
+      else{var ucard=function(arr){return arr.map(function(n){return renderExCard(udk,n,uwk,UPPER_TARGET[n]);}).join("");};ubody=uEditBtn+'<div id="ex-log" data-dayk="'+udk+'" data-wk="'+uwk+'"><div class="ai-sec">Upper Body</div>'+ucard(uMain)+'<div class="ai-sec">Core</div>'+ucard(uCore)+'</div>';}
       var upc=postCheckinHTML();
-      host.innerHTML=nav+uhead+sessCompleteHTML()+warmAHTML()+ufocus
-        +'<div id="ex-log" data-dayk="'+udk+'" data-wk="'+uwk+'"><div class="ai-sec">Upper Body</div>'+uUP.map(function(o){return renderExCard(udk,o[0],uwk,o[1]);}).join("")+'<div class="ai-sec">Core</div>'+uCO.map(function(o){return renderExCard(udk,o[0],uwk,o[1]);}).join("")+'</div>'
-        +(upc?'<div class="divider"></div>'+upc:'')+addedTrainingHTML()+whyPills(p);
-      bindExLog();bindWarmA();bindSessComplete();bindCheckin();return;
+      host.innerHTML=nav+uhead+sessCompleteHTML()+warmAHTML()+ufocus+ubody+(upc?'<div class="divider"></div>'+upc:'')+addedTrainingHTML()+whyPills(p);
+      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindUpperOrder();return;
     }
     if(p.why==="upperai"){
       var dk=slug(p.t),wk2=sessWeekKey();
