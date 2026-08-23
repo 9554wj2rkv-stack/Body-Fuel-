@@ -1540,7 +1540,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 87</b></div>
+            <div class="about-row"><span>Version</span><b>Build 88</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1600,7 +1600,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 87"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 88"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -2343,7 +2343,7 @@
       var uEditBtn='<div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button type="button" class="linkbtn" id="upper-editorder">'+(uedit?"Done":"Edit order")+'</button></div>';
       var ubody;
       if(uedit){ubody=uEditBtn+'<div class="ai-sec">Upper Body</div>'+upperReorderHTML(uMain,"main")+'<div class="ai-sec">Core</div>'+upperReorderHTML(uCore,"core");}
-      else{var ucard=function(arr){return arr.map(function(n){return renderExCard(udk,n,uwk,UPPER_TARGET[n]);}).join("");};ubody=uEditBtn+'<div id="ex-log" data-dayk="'+udk+'" data-wk="'+uwk+'"><div class="ai-sec">Upper Body</div>'+ucard(uMain)+'<div class="ai-sec">Core</div>'+ucard(uCore)+'</div>';}
+      else{var ucard=function(arr){return arr.map(function(n){return renderExCard(udk,n,uwk,UPPER_TARGET[n],"two");}).join("");};ubody=uEditBtn+'<div id="ex-log" data-dayk="'+udk+'" data-wk="'+uwk+'"><div class="ai-sec">Upper Body</div>'+ucard(uMain)+'<div class="ai-sec">Core</div>'+ucard(uCore)+'</div>';}
       var upc=postCheckinHTML();
       host.innerHTML=nav+uhead+sessCompleteHTML()+warmAHTML()+ufocus+ubody+(upc?'<div class="divider"></div>'+upc:'')+addedTrainingHTML()+whyPills(p);
       bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindUpperOrder();return;
@@ -2427,8 +2427,8 @@
   function exWarmSuggest(exKey){var r=loadExHist()[exKey],l=r&&r.last?r.last:null;if(!l)return null;var top=Math.max((l.w1!=null?+l.w1:0),(l.w2!=null?+l.w2:0),(l.weight!=null?+l.weight:0));if(!(top>0))return null;var w=Math.round(top*0.75/2.5)*2.5;if(!(w>0))return null;return {w:(w%1===0?w:+w.toFixed(1)),r:"5\u20138"};}
   function exInner(dayKey,exKey,kind,wk){var cur=wk||sessWeekKey(),c=exData(dayKey,exKey)[cur]||{};return {c:c,prev:exLastLine(exKey,kind),prog:exProgress(dayKey,exKey,kind)};}
   var exNotes={"Plank":"Hold 2–3 × 30–45 sec · stop when form breaks","Dead Bug":"2–3 × 20 reps each side","Pallof Press":"2–3 × 10–12 each side","Farmer Carry":"2–3 × 20–40 m heavy","Core":"2–3 × 20–30 reps (or a 30–45 sec hold)"};
-  function renderExCard(dayKey,exName,wk,noteOverride){
-    var exKey=slug(exName),kind=exKindOf(exName),inner=exInner(dayKey,exKey,kind,wk),c=inner.c;
+  function renderExCard(dayKey,exName,wk,noteOverride,forceKind){
+    var exKey=slug(exName),kind=forceKind||exKindOf(exName),inner=exInner(dayKey,exKey,kind,wk),c=inner.c;
     var noteTxt=(noteOverride!=null?noteOverride:exNotes[exName]);
     var note=noteTxt?'<div class="exnote">'+noteTxt+'</div>':'';
     var inputs="";
