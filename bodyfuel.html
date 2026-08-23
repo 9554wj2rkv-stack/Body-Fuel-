@@ -1540,7 +1540,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 85</b></div>
+            <div class="about-row"><span>Version</span><b>Build 86</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1600,7 +1600,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 85"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 86"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -2038,7 +2038,7 @@
   var DAYABBR=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
   var SESST={
     lower:{t:"Lower Body Strength",ex:["Hip Thrust Machine","Leg Press","Single Leg Press","Seated Leg Curl","Leg Extension","Hip Abductor","Calf Raise"],sets:"2 sets each",reps:"8–10 reps",finish:"15 min incline walk or StairMaster",notes:"Knee-friendly form. Controlled tempo. Don't chase exhaustion.",why:"lower",log:true},
-    upper:{t:"Upper Body Strength",ex:["Lat Pulldown","Seated Row","Chest Press","Shoulder Press","Dumbbell Lateral Raise","Triceps Pushdown","Biceps Curl"],sets:"2 sets each",reps:"8–10 reps",finish:"15 min incline walk or StairMaster",why:"upper",log:true},
+    upper:{t:"Upper Body Strength",disp:"Upper Body",sub:"Strength \u2022 Stability \u2022 Core",ex:["Lat Pulldown","Seated Row","Chest Press","Shoulder Press","Dumbbell Lateral Raise","Triceps Pushdown","Biceps Curl"],sets:"2 sets each",reps:"8–10 reps",finish:"15 min incline walk or StairMaster",why:"upper",log:true},
     fullbody:{t:"Full Body Strength",ex:["Leg Press","Hip Thrust Machine","Lat Pulldown","Chest Press","Dumbbell Lateral Raise","Core"],sets:"2 sets each",reps:"8–10 reps",finish:"20 min incline walk or StairMaster",why:"fullbody",log:true},
     conditioning:{t:"Conditioning + Core",ex:["Kettlebell Swing","Row","Plank","Dead Bug","Pallof Press"],sets:"2–3 rounds",reps:"circuit style",finish:"10–15 min intervals or incline walk",notes:"Keep rest short and the pace steady — conditioning plus core, not a max-effort lift day.",why:"conditioning",log:true},
     cardio:{t:"Cardio",ex:[],why:"cardio",log:false},
@@ -2324,6 +2324,18 @@
     var atToday=sessISO()===todayISO();
     var nav=dayNavHTML("sess");
     var head='<div class="built" style="margin-bottom:10px">'+dayName[p.d]+' — '+p.t+'</div>';
+    if(p.why==="upper"){
+      var udk="upper-body-strength",uwk=sessWeekKey();
+      var uhead='<div class="built" style="margin-bottom:2px">'+dayName[p.d]+' \u2014 '+(p.disp||p.t)+'</div>'+(p.sub?'<div class="ai-sub">'+p.sub+'</div>':'');
+      var ufocus='<details class="ai-focus"><summary>Training focus</summary><ul><li>Use lighter weights.</li><li>Prioritise control and clean movement.</li><li>Leave ~3\u20134 reps in reserve \u2014 don\u2019t train to failure.</li><li>Both sides normally use equal volume.</li><li>Stop or modify if an exercise causes increasing pain, burning, tingling, numbness or symptoms travelling down the arm.</li></ul></details>';
+      var uUP=[["Single-Arm Cable Row","2 \u00d7 10\u201312 each side \u00b7 light, controlled, no twisting"],["Chest Press","2 \u00d7 10\u201312 \u00b7 lighter & controlled"],["Cable External Rotation","2 \u00d7 12\u201315 each side \u00b7 very light, elbow tucked"],["Dumbbell Triceps Kickback","2 \u00d7 10\u201315 each arm \u00b7 light, slow"]];
+      var uCO=[["Kettlebell March","2 \u00d7 20\u201330 sec each side \u00b7 KB weight + duration"],["Russian Twist","2 \u00d7 10\u201312 each side \u00b7 bodyweight or weighted"],["Sit-Ups","2 \u00d7 10\u201315 \u00b7 bodyweight (optional weight)"],["Flutter Kicks","2 \u00d7 20\u201330 sec \u00b7 bodyweight"]];
+      var upc=postCheckinHTML();
+      host.innerHTML=nav+uhead+sessCompleteHTML()+warmAHTML()+ufocus
+        +'<div id="ex-log" data-dayk="'+udk+'" data-wk="'+uwk+'"><div class="ai-sec">Upper Body</div>'+uUP.map(function(o){return renderExCard(udk,o[0],uwk,o[1]);}).join("")+'<div class="ai-sec">Core</div>'+uCO.map(function(o){return renderExCard(udk,o[0],uwk,o[1]);}).join("")+'</div>'
+        +(upc?'<div class="divider"></div>'+upc:'')+addedTrainingHTML()+whyPills(p);
+      bindExLog();bindWarmA();bindSessComplete();bindCheckin();return;
+    }
     if(p.why==="upperai"){
       var dk=slug(p.t),wk2=sessWeekKey();
       var head2='<div class="built" style="margin-bottom:2px">'+dayName[p.d]+' \u2014 '+p.t+'</div><div class="ai-sub">'+(p.sub||"")+'</div>';
@@ -2380,14 +2392,14 @@
   function exData(dayKey,exKey){var w=loadWorkout();return (w[dayKey]&&w[dayKey][exKey])||{};}
   function saveExEntry(dayKey,exKey,wk,entry){var w=loadWorkout();w[dayKey]=w[dayKey]||{};w[dayKey][exKey]=w[dayKey][exKey]||{};w[dayKey][exKey][wk]=entry;store.set("bf_workout",w);}
   function exWeeksSorted(dayKey,exKey){var d=exData(dayKey,exKey);return Object.keys(d).sort().map(function(k){return [k,d[k]];});}
-  var exKind={"Single-Arm Cable Row":"lr","Cable External Rotation":"lr","Dumbbell Triceps Kickback":"lr","Kettlebell March":"lrtime","Bird Dog":"reps","Russian Twist":"weight","Reverse Crunch":"reps","Dead Bug":"reps","Pallof Press":"weight","Plank":"time","Farmer Carry":"load","Core":"reps",
+  var exKind={"Sit-Ups":"weight","Flutter Kicks":"time","Single-Arm Cable Row":"lr","Cable External Rotation":"lr","Dumbbell Triceps Kickback":"lr","Kettlebell March":"lrtime","Bird Dog":"reps","Russian Twist":"weight","Reverse Crunch":"reps","Dead Bug":"reps","Pallof Press":"weight","Plank":"time","Farmer Carry":"load","Core":"reps",
     "Copenhagen Side Plank":"time","Farmer's Carry":"distance","Suitcase Carry":"distance","Cable Crunch":"weight","Back Extension Machine":"weight","Cable Wood Chop":"weight","Cable Lift":"weight","Single-arm Cable Press":"weight","Cable Rotation":"weight","Hanging Knee Raise":"reps","Hanging Leg Raise or Captain's Chair":"reps","Ab Wheel Rollout or Stability Ball Rollout":"reps","Roman Chair Leg Raise or Reverse Hyper":"reps","Dead Bug with Resistance Band":"reps","Side Plank Reach Through":"reps",
     "Leg Press":"two","Single Leg Press":"two","Hip Thrust Machine":"two","Seated Leg Curl":"two","Leg Extension":"two","Hip Abductor":"two","Calf Raise":"two",
     "Lat Pulldown":"two","Chest Press":"two","Seated Row":"two","Shoulder Press":"two","Dumbbell Lateral Raise":"two","Biceps Curl":"two","Triceps Pushdown":"two"};
   function exKindOf(name){if(/treadmill/i.test(name))return "done";return exKind[name]||"weight";}
-  function exHasVal(e,kind){if(kind==="lr"||kind==="lrtime")kind="two";if(kind==="done")return true;if(kind==="time")return e.time!=null;if(kind==="reps")return e.reps!=null;if(kind==="two")return e.w1!=null||e.w2!=null;if(kind==="distance")return e.dist!=null;return e.weight!=null;}
+  function exHasVal(e,kind){if(kind==="lr"||kind==="lrtime")kind="two";if(kind==="done")return true;if(kind==="time")return e.time!=null;if(kind==="reps")return e.reps!=null;if(kind==="two")return e.w1!=null||e.w2!=null;if(kind==="distance")return e.dist!=null;return e.weight!=null||e.reps!=null;}
   function exPrevious(dayKey,exKey,cur,kind){var arr=exWeeksSorted(dayKey,exKey).filter(function(x){return x[0]!==cur&&x[1]&&x[1].completed&&exHasVal(x[1],kind);});return arr.length?arr[arr.length-1][1]:null;}
-  function exPrevText(p,kind){if(kind==="lr"||kind==="lrtime")kind="two";if(!p)return "No previous entry yet";if(kind==="done")return "Completed";if(kind==="time")return p.time!=null?p.time+" sec":"done";if(kind==="reps")return p.reps!=null?p.reps+" reps":"done";if(kind==="distance")return p.dist!=null?p.dist+" m":"done";if(kind==="load")return p.weight!=null?p.weight+" kg":"done";if(kind==="two"){var s1=(p.w1!=null?p.w1:"\u2013")+(p.r1!=null?"\u00d7"+p.r1:"");var s2=(p.w2!=null?p.w2:"\u2013")+(p.r2!=null?"\u00d7"+p.r2:"");return s1+" / "+s2+" kg";}return p.weight+" kg × "+(p.reps!=null?p.reps:"?")+" sets";}
+  function exPrevText(p,kind){if(kind==="lr"||kind==="lrtime")kind="two";if(!p)return "No previous entry yet";if(kind==="done")return "Completed";if(kind==="time")return p.time!=null?p.time+" sec":"done";if(kind==="reps")return p.reps!=null?p.reps+" reps":"done";if(kind==="distance")return p.dist!=null?p.dist+" m":"done";if(kind==="load")return p.weight!=null?p.weight+" kg":"done";if(kind==="two"){var s1=(p.w1!=null?p.w1:"\u2013")+(p.r1!=null?"\u00d7"+p.r1:"");var s2=(p.w2!=null?p.w2:"\u2013")+(p.r2!=null?"\u00d7"+p.r2:"");return s1+" / "+s2+" kg";}if(kind==="weight")return p.weight!=null?(p.weight+" kg × "+(p.reps!=null?p.reps:"?")):(p.reps!=null?p.reps+" reps":"done");return p.weight+" kg × "+(p.reps!=null?p.reps:"?")+" sets";}
   function exProgress(dayKey,exKey,kind){
     var arr=exWeeksSorted(dayKey,exKey).filter(function(x){return x[1]&&(kind==="done"?x[1].completed:exHasVal(x[1],kind));}).slice(-4),cells=[];
     for(var i=0;i<4;i++){var e=arr[i],v=e&&e[1],cell="\u2014";if(v){if(kind==="done")cell=v.completed?"\u2713":"\u2014";else if(kind==="time")cell=v.time!=null?v.time+"s":"\u2014";else if(kind==="reps")cell=v.reps!=null?String(v.reps):"\u2014";else if(kind==="load")cell=v.weight!=null?v.weight+"kg":"\u2014";else if(kind==="distance")cell=v.dist!=null?v.dist+"m":"\u2014";else if(kind==="two")cell=(v.w1!=null||v.w2!=null)?((v.w1!=null?v.w1:"\u2013")+" / "+(v.w2!=null?v.w2:"\u2013")):"\u2014";else cell=v.weight!=null?v.weight+"\u00d7"+(v.reps!=null?v.reps:"?"):"\u2014";}cells.push('<div class="swk"><b>W'+(i+1)+'</b>'+cell+'</div>');}
@@ -2541,7 +2553,7 @@
       return '<div class="lesson'+(i===ti?' open':'')+'" style="padding:14px 0;border-bottom:1px solid var(--line-soft)"><div class="head"><span style="width:42px;flex:none;font-size:calc(13px*var(--ts,1));font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:'+(i===ti?'var(--accent-deep)':'var(--ink-faint)')+'">'+p.d+'</span><div class="txt"><div class="ttl" style="font-size:calc(18px*var(--ts,1))">'+p.t+'</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body">'+dayDetail(p)+'</div></div>';
     }).join("");
   }
-  var WP_TYPES=[["rest","Rest day"],["lower","Lower Body"],["upper","Upper Body"],["fullbody","Full Body"],["cardio","Cardio"],["endurance","Endurance Day"],["conditioning","Conditioning + Core"],["recovery","Recovery Day"],["lowimpact","Low Impact / Mobility"],["upperai","Upper Body \u2014 Anti-Inflammatory"]];
+  var WP_TYPES=[["lower","Lower Body"],["upper","Upper Body"],["fullbody","Full Body"],["endurance","Endurance Day"],["recovery","Recovery Day"],["rest","Rest day"],["lowimpact","Low Impact / Mobility"]];
   function isStrengthType(t){return t==="lower"||t==="upper"||t==="fullbody";}
   function planWeekDate(){var d=new Date();d.setDate(d.getDate()+(state.planWeekOffset||0)*7);return d;}
   function planWeekKey(){return weekKey(planWeekDate());}
@@ -2605,7 +2617,7 @@
     flash("#training-saved","Session saved");renderWeekFocus();renderWeeklyReview();if($("#wp-summary"))renderWPSummary();renderNotesHistory();
   }
   /* ---- session notes history ---- */
-  function sessTypeLabel(type){var m=SESST[type];if(m&&m.t)return m.t;if(!type||type==="rest")return "Session";return type.charAt(0).toUpperCase()+type.slice(1);}
+  function sessTypeLabel(type){var m=SESST[type];if(m&&(m.disp||m.t))return m.disp||m.t;if(!type||type==="rest")return "Session";return type.charAt(0).toUpperCase()+type.slice(1);}
   function fmtNoteDate(iso){var d=new Date(iso+"T00:00:00");if(isNaN(d))return iso;return d.toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"});}
   function loadNotesList(){var t=loadTraining(),arr=[];Object.keys(t).forEach(function(k){var n=((t[k]&&t[k].notes)||"").trim();if(n)arr.push({date:k,type:t[k].type,done:t[k].done,note:n});});arr.sort(function(a,b){return a.date<b.date?1:-1;});return arr;}
   function noteRowHTML(e){
