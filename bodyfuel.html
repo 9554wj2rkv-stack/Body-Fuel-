@@ -940,6 +940,8 @@
   .ai-focus[open]>summary{border-bottom:1px solid var(--line-soft)}
   .ai-focus ul{margin:8px 0 12px;padding-left:18px}
   .ai-focus li{font-size:calc(13.5px*var(--ts,1));color:var(--ink-soft);margin:5px 0;line-height:1.4}
+  .fin-toggle{border:1px solid var(--line);background:var(--surface-2);color:var(--ink-soft);border-radius:999px;padding:5px 16px;font-weight:700;font-size:calc(13px*var(--ts,1));cursor:pointer;font-family:var(--font-b)}
+  .fin-toggle.on{background:var(--accent);color:#fff;border-color:var(--accent)}
 </style>
 </head>
 <body>
@@ -1312,16 +1314,15 @@
           </div>
         </div>
 
+        <div class="card" id="energy-card" style="padding:14px 16px">
+          <div class="eyebrow" style="margin-bottom:2px">Energy for training</div>
+          <div class="seg" data-group="energy" id="energy-seg" style="margin-top:8px"><button data-val="high">High</button><button data-val="medium">Medium</button><button data-val="low">Low</button></div>
+          <div class="hab-stat" id="energy-trend" style="margin-top:8px"></div>
+        </div>
+
         <div class="card">
           <div class="eyebrow">Today's session</div>
           <div id="today-session"></div>
-        </div>
-
-        <div class="card" id="energy-card">
-          <div class="eyebrow">Energy for training</div>
-          <p class="muted-p" style="margin-top:-4px">How strong and fresh do you feel to train today?</p>
-          <div class="seg" data-group="energy" id="energy-seg" style="margin-top:6px"><button data-val="high">High</button><button data-val="medium">Medium</button><button data-val="low">Low</button></div>
-          <div class="hab-stat" id="energy-trend" style="margin-top:10px"></div>
         </div>
 
         <div class="card" id="habits-card">
@@ -1540,7 +1541,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 88</b></div>
+            <div class="about-row"><span>Version</span><b>Build 91</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1600,7 +1601,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 88"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 91"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -2038,7 +2039,7 @@
   var DAYABBR=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
   var SESST={
     lower:{t:"Lower Body Strength",ex:["Hip Thrust Machine","Leg Press","Single Leg Press","Seated Leg Curl","Leg Extension","Hip Abductor","Calf Raise"],sets:"2 sets each",reps:"8–10 reps",finish:"15 min incline walk or StairMaster",notes:"Knee-friendly form. Controlled tempo. Don't chase exhaustion.",why:"lower",log:true},
-    upper:{t:"Upper Body Strength",disp:"Upper Body",sub:"Strength \u2022 Stability \u2022 Core",ex:["Lat Pulldown","Seated Row","Chest Press","Shoulder Press","Dumbbell Lateral Raise","Triceps Pushdown","Biceps Curl"],sets:"2 sets each",reps:"8–10 reps",finish:"15 min incline walk or StairMaster",why:"upper",log:true},
+    upper:{t:"Upper Body Strength",disp:"Upper Body \u2014 Strength + Core",sub:"Strength \u2022 Stability \u2022 Core",ex:["Lat Pulldown","Seated Row","Chest Press","Shoulder Press","Dumbbell Lateral Raise","Triceps Pushdown","Biceps Curl"],sets:"2 sets each",reps:"8–10 reps",finish:"15 min incline walk or StairMaster",why:"upper",log:true},
     fullbody:{t:"Full Body Strength",ex:["Leg Press","Hip Thrust Machine","Lat Pulldown","Chest Press","Dumbbell Lateral Raise","Core"],sets:"2 sets each",reps:"8–10 reps",finish:"20 min incline walk or StairMaster",why:"fullbody",log:true},
     conditioning:{t:"Conditioning + Core",ex:["Kettlebell Swing","Row","Plank","Dead Bug","Pallof Press"],sets:"2–3 rounds",reps:"circuit style",finish:"10–15 min intervals or incline walk",notes:"Keep rest short and the pace steady — conditioning plus core, not a max-effort lift day.",why:"conditioning",log:true},
     cardio:{t:"Cardio",ex:[],why:"cardio",log:false},
@@ -2048,6 +2049,7 @@
     "lowimpact-stretch":{t:"Low Impact \u2014 Stretching / Mobility",ex:[],why:"lowimpact",log:false,notes:"A deliberate low-impact session \u2014 stretching and mobility work."},
     "lowimpact-both":{t:"Low Impact \u2014 Yoga + Stretching",ex:[],why:"lowimpact",log:false,notes:"A deliberate low-impact session \u2014 yoga plus stretching and mobility."},
     upperai:{t:"Upper Body \u2014 Anti-Inflammatory",sub:"Light Strength \u2022 Stability \u2022 Core",ex:["Single-Arm Cable Row","Chest Press","Cable External Rotation","Dumbbell Triceps Kickback","Dead Bug","Bird Dog","Kettlebell March","Russian Twist","Reverse Crunch"],why:"upperai",log:true,notes:""},
+    upperarms:{t:"Upper Body \u2014 Shoulders + Biceps",disp:"Upper Body \u2014 Shoulders + Biceps",sub:"Shoulders \u2022 Biceps \u2022 Core",ex:["Dumbbell Lateral Raise","Rear Delt Fly","Biceps Curl","Hammer Curl","Kettlebell March","Russian Twist","Sit-Ups"],why:"upperarms",log:true,notes:""},
     rest:{t:"Full rest",ex:[],notes:"Full rest — no training today. Recovery is when your progress is made.",why:"rest",log:false}
   };
   var DEFAULT_WMAP={1:"lower",3:"upper",5:"fullbody",6:"recovery"};
@@ -2164,6 +2166,7 @@
   }
   function dayDetail(p){
     var h="";
+    if(p.why==="upperarms"){h+='<p class="muted-p" style="margin-top:2px">'+(p.sub||"")+' \u00b7 arms, shoulders + core + incline-walk finisher.</p>';return h+whyPills(p);}
     if(p.why==="upperai"){h+='<p class="muted-p" style="margin-top:2px">'+(p.sub||"")+' \u00b7 9 exercises (4 upper + 5 core), light & controlled.</p>';return h+whyPills(p);}
     if(p.why==="lowimpact"){h+='<p class="muted-p" style="margin-top:2px">'+(p.notes||"Low-impact movement session.")+'</p>';return h+whyPills(p);}
     if(p.why==="endurance"){
@@ -2320,7 +2323,7 @@
     });
   }
   var UPPER_MAIN=["Single-Arm Cable Row","Chest Press","Cable External Rotation","Dumbbell Triceps Kickback"];
-  var UPPER_CORE=["Kettlebell March","Russian Twist","Sit-Ups","Flutter Kicks"];
+  var UPPER_CORE=["Kettlebell March","Russian Twist","Sit-Ups"];
   var UPPER_TARGET={"Single-Arm Cable Row":"2 \u00d7 10\u201312 each side \u00b7 light, controlled, no twisting","Chest Press":"2 \u00d7 10\u201312 \u00b7 lighter & controlled","Cable External Rotation":"2 \u00d7 12\u201315 each side \u00b7 very light, elbow tucked","Dumbbell Triceps Kickback":"2 \u00d7 10\u201315 each arm \u00b7 light, slow","Kettlebell March":"2 \u00d7 20\u201330 sec each side \u00b7 KB weight + duration","Russian Twist":"2 \u00d7 10\u201312 each side \u00b7 bodyweight or weighted","Sit-Ups":"2 \u00d7 10\u201315 \u00b7 bodyweight (optional weight)","Flutter Kicks":"2 \u00d7 20\u201330 sec \u00b7 bodyweight"};
   function upperReorderHTML(names,sec){return '<div class="exreord-wrap">'+names.map(function(n,i){return '<div class="exreord"><span class="exdrag">\u22ee\u22ee</span><span class="exreord-n">'+esc(n)+'</span><span class="exreord-btns"><button type="button" data-uomove="up" data-uon="'+esc(n)+'" data-uosec="'+sec+'"'+(i===0?' disabled':'')+'>\u2191</button><button type="button" data-uomove="down" data-uon="'+esc(n)+'" data-uosec="'+sec+'"'+(i===names.length-1?' disabled':'')+'>\u2193</button></span></div>';}).join("")+'</div>';}
   var upperOrderBound=false;
@@ -2330,11 +2333,43 @@
       var mv=e.target.closest("[data-uomove]");if(mv){var dir=mv.getAttribute("data-uomove")==="up"?-1:1,name=mv.getAttribute("data-uon"),sec=mv.getAttribute("data-uosec"),key=sec==="core"?"upper-core":"upper-main",defs=sec==="core"?UPPER_CORE:UPPER_MAIN;exMove(key,defs,name,dir);renderTodaySession();return;}
     });
   }
+  function loadFinisher(){return store.get("bf_finisher")||{};}
+  function finState(dk){return loadFinisher()[dk+"|"+sessISO()]||{};}
+  function finSave(dk,patch){var all=loadFinisher(),k=dk+"|"+sessISO(),f=all[k]||{};for(var x in patch)f[x]=patch[x];all[k]=f;store.set("bf_finisher",all);}
+  function inclineFinHTML(dk){var f=finState(dk),on=!!f.on;
+    var head='<div class="ai-sec">Finisher \u2014 Incline Walk</div><div class="warma fin-wrap" data-fink="'+dk+'"><div class="warma-top"><span class="eyebrow" style="margin:0">Incline Walk \u00b7 optional</span><button type="button" class="fin-toggle'+(on?" on":"")+'" data-fintoggle>'+(on?"On":"Off")+'</button></div>';
+    if(!on)return head+'<p class="muted-p" style="margin:6px 0 0">Optional easy incline walk (default 15 min, moderate). Tap On to add & log it.</p></div>';
+    return head+'<div class="pmeal-grid" style="margin-top:8px"><div class="pmeal"><label>Duration (min)</label><input data-fin="min" type="text" inputmode="numeric" value="'+esc(f.min!=null?f.min:"15")+'"></div><div class="pmeal"><label>Incline</label><input data-fin="incline" type="text" inputmode="decimal" value="'+esc(f.incline||"")+'"></div></div>'
+      +'<div class="pmeal-grid" style="margin-top:8px"><div class="pmeal"><label>Speed</label><input data-fin="speed" type="text" inputmode="decimal" value="'+esc(f.speed||"")+'"></div><div class="pmeal"><label>Distance (optional)</label><input data-fin="dist" type="text" inputmode="decimal" value="'+esc(f.dist||"")+'"></div></div>'
+      +'<button type="button" class="excomp'+(f.done?" on":"")+'" id="fin-done" style="width:100%;margin-top:10px">'+(f.done?"Done":"Mark done")+'</button></div>';
+  }
+  var finBound=false;
+  function bindFinisher(){if(finBound)return;finBound=true;
+    function dkOf(el){var w=el.closest&&el.closest(".fin-wrap");return w?w.getAttribute("data-fink"):null;}
+    document.addEventListener("click",function(e){
+      var tg=e.target.closest&&e.target.closest("[data-fintoggle]");if(tg){var dk=dkOf(tg);if(dk){finSave(dk,{on:!finState(dk).on});renderTodaySession();}return;}
+      var db=e.target.closest&&e.target.closest("#fin-done");if(db){var dk2=dkOf(db);if(dk2){var nd=!finState(dk2).done;finSave(dk2,{done:nd});db.classList.toggle("on",nd);db.textContent=nd?"Done":"Mark done";}return;}
+    });
+    document.addEventListener("change",function(e){var t=e.target;if(t&&t.getAttribute&&t.getAttribute("data-fin")){var dk=dkOf(t);if(dk){var o={};o[t.getAttribute("data-fin")]=t.value;finSave(dk,o);}}});
+  }
   function renderTodaySession(){
     var p=dayEntry(sessWeekKey(),sessIdx()),host=$("#today-session");
     var atToday=sessISO()===todayISO();
     var nav=dayNavHTML("sess");
     var head='<div class="built" style="margin-bottom:10px">'+dayName[p.d]+' — '+p.t+'</div>';
+    if(p.why==="upperarms"){
+      var adk="upper-arms-shoulders",awk=sessWeekKey();
+      var ahead='<div class="built" style="margin-bottom:2px">'+dayName[p.d]+' \u2014 '+(p.disp||p.t)+'</div>'+(p.sub?'<div class="ai-sub">'+p.sub+'</div>':'');
+      var AS=[["Dumbbell Lateral Raise","2 sets \u00d7 10\u201315"],["Rear Delt Fly","2 sets \u00d7 10\u201315"],["Biceps Curl","2 sets \u00d7 10\u201312"],["Hammer Curl","2 sets \u00d7 10\u201312"]];
+      var ACO=[["Kettlebell March","2 \u00d7 20\u201330 sec each side \u00b7 KB weight + duration","lrtime"],["Russian Twist","2 \u00d7 10\u201312 each side \u00b7 bodyweight or weighted","weight"],["Sit-Ups","2 \u00d7 10\u201315 \u00b7 bodyweight (optional weight)","weight"]];
+      var apc=postCheckinHTML();
+      host.innerHTML=nav+ahead+sessCompleteHTML()+warmAHTML()
+        +'<div id="ex-log" data-dayk="'+adk+'" data-wk="'+awk+'"><div class="ai-sec">Shoulders + Biceps</div>'+AS.map(function(o){return renderExCard(adk,o[0],awk,o[1],"two");}).join("")
+        +'<div class="ai-sec">Core</div>'+ACO.map(function(o){return renderExCard(adk,o[0],awk,o[1],o[2]);}).join("")+'</div>'
+        +inclineFinHTML(adk)
+        +(apc?'<div class="divider"></div>'+apc:'')+addedTrainingHTML()+whyPills(p);
+      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindFinisher();return;
+    }
     if(p.why==="upper"){
       var udk="upper-body-strength",uwk=sessWeekKey();
       var uMain=orderedEx("upper-main",UPPER_MAIN),uCore=orderedEx("upper-core",UPPER_CORE),uedit=state.exEditKey==="upper";
@@ -2345,8 +2380,8 @@
       if(uedit){ubody=uEditBtn+'<div class="ai-sec">Upper Body</div>'+upperReorderHTML(uMain,"main")+'<div class="ai-sec">Core</div>'+upperReorderHTML(uCore,"core");}
       else{var ucard=function(arr){return arr.map(function(n){return renderExCard(udk,n,uwk,UPPER_TARGET[n],"two");}).join("");};ubody=uEditBtn+'<div id="ex-log" data-dayk="'+udk+'" data-wk="'+uwk+'"><div class="ai-sec">Upper Body</div>'+ucard(uMain)+'<div class="ai-sec">Core</div>'+ucard(uCore)+'</div>';}
       var upc=postCheckinHTML();
-      host.innerHTML=nav+uhead+sessCompleteHTML()+warmAHTML()+ufocus+ubody+(upc?'<div class="divider"></div>'+upc:'')+addedTrainingHTML()+whyPills(p);
-      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindUpperOrder();return;
+      host.innerHTML=nav+uhead+sessCompleteHTML()+warmAHTML()+ufocus+ubody+inclineFinHTML(udk)+(upc?'<div class="divider"></div>'+upc:'')+addedTrainingHTML()+whyPills(p);
+      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindUpperOrder();bindFinisher();return;
     }
     if(p.why==="upperai"){
       var dk=slug(p.t),wk2=sessWeekKey();
@@ -2395,8 +2430,8 @@
     var cardio=(p.finish||p.why==="conditioning")?cardioHTML(p):'';
     var notes=p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'';
     var pcs=postCheckinHTML();
-    host.innerHTML=nav+head+sessCompleteHTML()+warm+meta+ex+cardio+vestHTML()+(pcs?'<div class="divider"></div>'+pcs:'')+notes+'<div class="divider"></div>'+sessionLogHTML()+addedTrainingHTML()+whyPills(p);
-    bindExLog();bindCardio();bindWarm();bindWarmA();bindSessionLog();bindSessComplete();bindCheckin();bindExOrder();
+    host.innerHTML=nav+head+sessCompleteHTML()+warm+meta+ex+cardio+(isStrengthType(p.why)?inclineFinHTML(dayKey):'')+vestHTML()+(pcs?'<div class="divider"></div>'+pcs:'')+notes+'<div class="divider"></div>'+sessionLogHTML()+addedTrainingHTML()+whyPills(p);
+    bindExLog();bindCardio();bindWarm();bindWarmA();bindSessionLog();bindSessComplete();bindCheckin();bindExOrder();bindFinisher();
   }
   /* per-exercise logbook */
   function slug(s){return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}
@@ -2565,8 +2600,8 @@
       return '<div class="lesson'+(i===ti?' open':'')+'" style="padding:14px 0;border-bottom:1px solid var(--line-soft)"><div class="head"><span style="width:42px;flex:none;font-size:calc(13px*var(--ts,1));font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:'+(i===ti?'var(--accent-deep)':'var(--ink-faint)')+'">'+p.d+'</span><div class="txt"><div class="ttl" style="font-size:calc(18px*var(--ts,1))">'+p.t+'</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body">'+dayDetail(p)+'</div></div>';
     }).join("");
   }
-  var WP_TYPES=[["lower","Lower Body"],["upper","Upper Body"],["fullbody","Full Body"],["endurance","Endurance Day"],["recovery","Recovery Day"],["rest","Rest day"],["lowimpact","Low Impact / Mobility"]];
-  function isStrengthType(t){return t==="lower"||t==="upper"||t==="fullbody";}
+  var WP_TYPES=[["lower","Lower Body"],["upper","Upper Body \u2014 Strength + Core"],["upperarms","Upper Body \u2014 Shoulders + Biceps"],["fullbody","Full Body"],["endurance","Endurance Day"],["recovery","Recovery Day"],["rest","Rest day"],["lowimpact","Low Impact / Mobility"]];
+  function isStrengthType(t){return t==="lower"||t==="upper"||t==="fullbody"||t==="upperarms";}
   function planWeekDate(){var d=new Date();d.setDate(d.getDate()+(state.planWeekOffset||0)*7);return d;}
   function planWeekKey(){return weekKey(planWeekDate());}
   function wkSelLabel(){var off=state.planWeekOffset||0;if(off===0)return "This week";var m=mondayOf(planWeekDate()),mo=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][m.getMonth()];return "Week of "+m.getDate()+" "+mo;}
@@ -3976,6 +4011,7 @@
     sets:["Why 2–3 sets?","Two to three sets is enough to keep progressing without overloading recovery — which matters more during perimenopause, when recovery deserves a little extra respect."],
     recovery:["Why recovery matters","Sleep, hydration, food and rest days are where your training becomes results. More training is not always better — better recovery means better fat loss and muscle preservation."],
     lowimpact:["Why a low-impact day?","Yoga, stretching and mobility keep you moving, aid recovery and protect your joints — without the load of a strength or cardio session. It doesn't count toward your strength sessions."],
+    upperarms:["Why a shoulders + biceps day?","A lighter secondary upper-body option focused on shoulders and biceps, plus core and an optional incline-walk finisher. Use it as an alternative or extra upper day \u2014 it counts as a strength session."],
     upperai:["Why an anti-inflammatory upper day?","A lighter upper-body + stability + core session that keeps you training around joint sensitivity \u2014 controlled tempo, both sides worked evenly, well short of failure. It sits apart from your normal heavier Upper Body and doesn't count toward your strength sessions."]
   };
   function openWhy(t){
@@ -4510,7 +4546,7 @@
   function renderMenu(){renderMenuProfile();renderTrackPrefs();renderRules();renderDataStatus();if(typeof renderRtSettings==="function")renderRtSettings();}
 
   function allBfKeys(){var ks=[];try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf("bf_")===0)ks.push(k);}}catch(e){}
-    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder","bf_endurance","bf_wordsearch","bf_warmup","bf_exhidden","bf_template","bf_fuelbackup"];
+    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder","bf_endurance","bf_wordsearch","bf_warmup","bf_exhidden","bf_template","bf_fuelbackup","bf_finisher"];
     return ks;}
   function exportData(){try{var data={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)data[k]=v;});var payload={app:"Body Fuel Lab",version:"build 35",exported:new Date().toISOString(),data:data};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="bodyfuel-backup-"+todayISO()+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Could not export data on this device.");}}
   function importData(file){if(!file)return;var r=new FileReader();r.onload=function(){try{var obj=JSON.parse(r.result);var data=(obj&&obj.data)?obj.data:obj;if(!data||typeof data!=="object")throw 0;var n=0;Object.keys(data).forEach(function(k){if(k.indexOf("bf_")===0){store.set(k,data[k]);n++;}});if(!n)throw 0;alert("Restored "+n+" items. The app will now reload.");location.reload();}catch(e){alert("That file could not be read as a Body Fuel Lab backup.");}};r.readAsText(file);}
