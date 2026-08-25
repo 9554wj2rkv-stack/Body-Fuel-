@@ -63,6 +63,8 @@
   .app{max-width:var(--maxw);margin:0 auto;min-height:100vh;background:var(--bg);position:relative;box-shadow:0 0 60px rgba(31,36,33,.05)}
 
   header{position:sticky;top:0;z-index:30;background:var(--header-bg);backdrop-filter:saturate(140%) blur(14px);-webkit-backdrop-filter:saturate(140%) blur(14px);padding:calc(env(safe-area-inset-top) + 16px) 22px 14px;border-bottom:1px solid var(--line-soft)}
+  .hdr-settings{position:absolute;top:calc(env(safe-area-inset-top) + 14px);right:18px;width:38px;height:38px;border:1px solid var(--line);background:var(--surface);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-soft);z-index:3;padding:0}
+  .hdr-settings svg{width:19px;height:19px}
   .brand{display:flex;align-items:center;gap:9px}
   .brand .mark{width:26px;height:26px;border-radius:8px;background:linear-gradient(155deg,#F23BA0,#C8137A);position:relative;flex:none;box-shadow:0 2px 6px rgba(200,19,122,.4)}
   .brand .mark::before{content:"B";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:600;font-size:17px;line-height:1;color:#fff}
@@ -942,11 +944,26 @@
   .ai-focus li{font-size:calc(13.5px*var(--ts,1));color:var(--ink-soft);margin:5px 0;line-height:1.4}
   .fin-toggle{border:1px solid var(--line);background:var(--surface-2);color:var(--ink-soft);border-radius:999px;padding:5px 16px;font-weight:700;font-size:calc(13px*var(--ts,1));cursor:pointer;font-family:var(--font-b)}
   .fin-toggle.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .stagerow{display:flex;align-items:center;gap:8px;margin-top:8px}
+  .stagelbl{flex:0 0 54px;font-weight:600;font-size:calc(14px*var(--ts,1));color:var(--ink-soft)}
+  .stagerow input{flex:1 1 0;min-width:0;width:auto;border:1px solid var(--line);background:var(--surface-2);border-radius:9px;padding:8px 10px;font-family:var(--font-b);font-size:calc(15px*var(--ts,1));color:var(--ink);box-sizing:border-box}
+  .stagepct{flex:0 0 46px;text-align:right;font-weight:700;color:var(--accent);font-size:calc(13.5px*var(--ts,1));font-variant-numeric:tabular-nums}
+  .sl-summary-card{margin-top:14px;padding:12px 14px;background:var(--surface-2);border-radius:12px}
+  .ss-h{font-weight:700;font-size:calc(11px*var(--ts,1));text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);margin-bottom:6px}
+  .sleep-compact .pmeal input{padding:8px 10px}
+  .sleep-compact .stagerow{margin-top:6px}
+  .sleep-compact .stagerow input{padding:7px 10px}
+  .sleep-compact .goalseg button{padding:9px 0}
+  .sleep-compact #sl-save{padding:11px}
+  .sleep-compact .muted-p{line-height:1.35}
+  .sleep-compact .sl-summary-card{margin-top:12px;padding:11px 13px}
+  .sleep-compact .ai-focus{margin-top:12px}
 </style>
 </head>
 <body>
 <div class="app">
   <header>
+    <button type="button" class="hdr-settings" data-goto="menu" aria-label="Menu & settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
     <div class="brand"><div class="mark"></div><h1>Body <span>Fuel</span> Lab</h1></div>
     <div class="hdr-week" id="hdr-week" style="display:none"></div>
     <div class="screen-title" id="title">Today</div>
@@ -962,10 +979,6 @@
         <div class="card" id="sleep-trend-card">
           <div class="eyebrow">Sleep Trend</div>
           <div id="sleep-trend"></div>
-        </div>
-        <div class="card ov-ts">
-          <div class="eyebrow">Text size</div>
-          <div class="seg" data-group="ts"><button class="on" data-val="1">Default</button><button data-val="1.1">Large</button><button data-val="1.2">Largest</button></div>
         </div>
       </div>
     </section>
@@ -1415,6 +1428,8 @@
           <div class="seg" data-group="theme"><button data-val="dark">Midnight</button><button data-val="light">Royal</button><button data-val="barbie">Barbie</button></div>
           <div class="label" style="margin-top:16px">Typography</div>
           <div class="seg" data-group="typography"><button data-val="signature">Signature</button><button data-val="modern">Modern</button><button data-val="simple">Simple</button></div>
+          <div class="label" style="margin-top:16px">Text size</div>
+          <div class="seg" data-group="ts"><button data-val="1">Default</button><button data-val="1.1">Large</button><button data-val="1.2">Largest</button></div>
         </div>
 
         <div class="card msec open" data-msec="profile">
@@ -1541,7 +1556,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 91</b></div>
+            <div class="about-row"><span>Version</span><b>Build 95</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1557,15 +1572,36 @@
     </div>
   </main>
 
+    <!-- ============ RECOVERY ============ -->
+    <section class="screen" id="recovery">
+      <div class="stack">
+        <div class="card">
+          <div class="eyebrow">Recovery</div>
+          <p class="muted-p" style="margin-top:2px">Sleep, rest and cycle awareness are where your training turns into results. More training isn't always better — better recovery means better fat loss and muscle preservation.</p>
+          <button type="button" class="cta ghost" data-goto="today" style="margin-top:14px;width:100%">Sleep check-in →</button>
+          <button type="button" class="cta ghost" data-goto="progress" style="margin-top:10px;width:100%">Cycle tracking →</button>
+          <p class="muted-p" style="margin-top:12px;font-size:calc(12.5px*var(--ts,1))">Sleep lives on your Today screen; cycle tracking lives on your Body screen — these buttons take you straight there.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROGRESS (placeholder) ============ -->
+    <section class="screen" id="prog">
+      <div class="stack">
+        <div class="card">
+          <div class="eyebrow">Progress</div>
+          <p class="muted-p" style="margin-top:2px">Your progress dashboard is coming here soon.</p>
+        </div>
+      </div>
+    </section>
+
   <nav>
-    <button data-tab="overview"><svg viewBox="0 0 24 24"><path d="M4 5v14M4 19h16"/><path d="m7 14 3-4 3 2 4-6"/></svg>Overview</button>
     <button class="on" data-tab="today"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/></svg>Today</button>
+    <button data-tab="fuel"><svg viewBox="0 0 24 24"><path d="M3 13h4l2-6 4 12 2-6h6"/></svg>Training</button>
     <button data-tab="food"><svg viewBox="0 0 24 24"><path d="M3 11h18"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 4v3"/></svg>Food</button>
-    <button data-tab="fuel"><svg viewBox="0 0 24 24"><path d="M3 13h4l2-6 4 12 2-6h6"/></svg>Fuel</button>
     <button data-tab="progress"><svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="m4 15 4-5 4 3 7-8"/><circle cx="19" cy="5" r="0.6"/></svg>Body</button>
-    <button data-tab="detect"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4-4"/></svg>Scan</button>
-    <button data-tab="fuckit"><svg viewBox="0 0 24 24"><path d="M8 9a4 4 0 0 1 8 0"/><path d="M8 9h8l-4 12z"/></svg>F*ck-it</button>
-    <button data-tab="menu"><svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg>Menu</button>
+    <button data-tab="recovery"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>Recovery</button>
+    <button data-tab="prog"><svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="m4 14 4-4 3 3 6-7"/></svg>Progress</button>
   </nav>
 </div>
 
@@ -1601,7 +1637,7 @@
   var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 91"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 95"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"],recovery:["Recovery","Sleep, rest & cycle"],prog:["Progress","Your progress dashboard"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -1837,22 +1873,56 @@
   function sleepSel(){return state.sleepDate||todayISO();}
   function loadSleep(){var all=store.get("bf_sleep")||{};return all[sleepSel()]||null;}
   function saveSleepEntry(e){var all=store.get("bf_sleep")||{};if(e==null)delete all[sleepSel()];else all[sleepSel()]=e;store.set("bf_sleep",all);}
+  function sleepStageMins(st){st=st||{};var rem=(+st.remH||0)*60+(+st.remM||0),light=(+st.lightH||0)*60+(+st.lightM||0),deep=(+st.deepH||0)*60+(+st.deepM||0);return {rem:rem,light:light,deep:deep,awake:(+st.awake||0),tot:rem+light+deep};}
+  function sleepStagePcts(st){var s=sleepStageMins(st);if(s.tot<=0)return null;return {rem:Math.round(s.rem/s.tot*100),light:Math.round(s.light/s.tot*100),deep:Math.round(s.deep/s.tot*100)};}
+  function sleepHM(min){return Math.floor(min/60)+"h "+(min%60)+"m";}
+  function sleepStageRow(key,label,st){return '<div class="stagerow"><span class="stagelbl">'+label+'</span><input id="sl-'+key+'-h" data-stg type="number" inputmode="numeric" min="0" placeholder="h" value="'+(st[key+"H"]!=null?esc(st[key+"H"]):"")+'"><input id="sl-'+key+'-m" data-stg type="number" inputmode="numeric" min="0" max="59" placeholder="m" value="'+(st[key+"M"]!=null?esc(st[key+"M"]):"")+'"><span class="stagepct" id="sl-'+key+'-pct">\u2014</span></div>';}
+  function sleepUpdatePcts(){var g=function(id){var v=$(id);return v?v.value:"";};var st={remH:g("#sl-rem-h"),remM:g("#sl-rem-m"),lightH:g("#sl-light-h"),lightM:g("#sl-light-m"),deepH:g("#sl-deep-h"),deepM:g("#sl-deep-m")};var p=sleepStagePcts(st);["rem","light","deep"].forEach(function(k){var el=$("#sl-"+k+"-pct");if(el)el.textContent=p?(p[k]+"%"):"\u2014";});}
+  function moreAboutSleepHTML(){return '<details class="ai-focus" style="margin-top:14px"><summary>More about sleep</summary><div style="padding:4px 0 8px">'
+    +'<p class="muted-p" style="margin:6px 0"><b>Awake</b> \u2014 short wake-ups during the night. A little is completely normal.</p>'
+    +'<p class="muted-p" style="margin:6px 0"><b>Light sleep</b> \u2014 usually the largest part of the night. Helps memory and general recovery, and you wake from it easily.</p>'
+    +'<p class="muted-p" style="margin:6px 0"><b>REM sleep</b> \u2014 dreaming sleep. Supports learning, memory and emotional balance (mood).</p>'
+    +'<p class="muted-p" style="margin:6px 0"><b>Deep sleep</b> \u2014 the most physically restorative stage. Supports muscle repair, immune function and feeling refreshed.</p>'
+    +'<p class="muted-p" style="margin:10px 0 0">Good sleep improves physical recovery, learning and mood, makes training feel easier (lower perceived effort) and supports better performance. Poor sleep does the opposite.</p>'
+    +'<p class="muted-p" style="margin:8px 0 0">Fitbit and other consumer wearables <b>estimate</b> sleep stages \u2014 they aren\u2019t clinical measurements. Use the numbers to spot your own <b>trends</b> over time rather than as exact medical data.</p>'
+    +'</div></details>';}
+  function renderSleepDetail(){var el=$("#sl-detail");if(!el)return;var e=loadSleep();if(!e||(e.h==null&&e.m==null)){el.innerHTML="";return;}var qmap={poor:"Poor",ok:"OK",good:"Good"};
+    var r='<div class="ss-h">Sleep summary</div><div class="about-row"><span>Total sleep</span><b>'+(e.h||0)+'h '+(e.m||0)+'m</b></div>';
+    r+='<div class="about-row"><span>Quality</span><b>'+(e.quality?(qmap[e.quality]||e.quality):"\u2014")+'</b></div>';
+    if(e.score!=null&&e.score!=="")r+='<div class="about-row"><span>Score</span><b>'+e.score+'</b></div>';
+    var st=e.stages,mn=st?sleepStageMins(st):null,p=st?sleepStagePcts(st):null;
+    if(st&&(mn.tot>0||mn.awake>0)){
+      r+='<div class="about-row"><span>Awake</span><b>'+mn.awake+' min</b></div>';
+      r+='<div class="about-row"><span>REM</span><b>'+sleepHM(mn.rem)+(p?' \u00b7 '+p.rem+'%':'')+'</b></div>';
+      r+='<div class="about-row"><span>Light</span><b>'+sleepHM(mn.light)+(p?' \u00b7 '+p.light+'%':'')+'</b></div>';
+      r+='<div class="about-row"><span>Deep</span><b>'+sleepHM(mn.deep)+(p?' \u00b7 '+p.deep+'%':'')+'</b></div>';
+    }else{r+='<div class="about-row"><span>Sleep stages</span><b style="color:var(--ink-faint)">Not recorded</b></div>';}
+    el.innerHTML='<div class="sl-summary-card">'+r+'</div>';}
   function renderSleep(){var card=$("#sleep-card");if(!card)return;
     if(!trackOn("sleep")){card.style.display="none";return;}
     card.style.display="";
-    var box=$("#sleep-checkin");if(!box)return;var e=loadSleep()||{},q=e.quality||"";
-    box.innerHTML='<div class="label">Sleep date</div>'+dayNavHTML("sleep")
-      +'<p class="muted-p" style="margin:2px 0 12px">Log how you slept for '+dchLabel(sleepSel()).toLowerCase()+'. Manual entry only.</p>'
+    var box=$("#sleep-checkin");if(!box)return;var e=loadSleep()||{},q=e.quality||"",st=e.stages||{};
+    box.innerHTML='<div class="sleep-compact"><div class="label">Sleep date</div>'+dayNavHTML("sleep")
+      +'<div class="label" style="margin-top:12px">Total sleep</div>'
       +'<div class="pmeal-grid"><div class="pmeal"><label>Hours</label><input id="sl-h" type="number" inputmode="numeric" min="0" max="24" placeholder="\u2014" value="'+(e.h!=null?esc(e.h):"")+'"></div><div class="pmeal"><label>Minutes</label><input id="sl-m" type="number" inputmode="numeric" min="0" max="59" placeholder="\u2014" value="'+(e.m!=null?esc(e.m):"")+'"></div></div>'
-      +'<div class="pmeal" style="margin-top:10px"><label>Sleep score (optional)</label><input id="sl-score" type="number" inputmode="numeric" min="0" max="100" placeholder="\u2014" value="'+(e.score!=null?esc(e.score):"")+'"></div>'
-      +'<div class="label" style="margin-top:14px">Sleep quality</div><div class="goalseg" id="sl-quality">'+[["poor","Poor"],["ok","OK"],["good","Good"]].map(function(o){return '<button type="button" data-val="'+o[0]+'"'+(q===o[0]?' class="on"':'')+'>'+o[1]+'</button>';}).join("")+'</div>'
-      +'<button type="button" class="cta" id="sl-save" style="margin-top:14px">Save sleep</button><div class="saved-note" id="sl-saved"></div>';
-    renderSleepSummary();
+      +'<div class="label" style="margin-top:12px">Sleep stages <span style="font-weight:400;color:var(--ink-faint)">(optional)</span></div>'
+      +'<p class="muted-p" style="margin:1px 0 8px">Copy from Fitbit if you like \u2014 REM / Light / Deep % calculate automatically.</p>'
+      +'<div class="pmeal" style="max-width:50%"><label>Awake (min)</label><input id="sl-awake" type="number" inputmode="numeric" min="0" placeholder="\u2014" value="'+(st.awake!=null?esc(st.awake):"")+'"></div>'
+      +sleepStageRow("rem","REM",st)+sleepStageRow("light","Light",st)+sleepStageRow("deep","Deep",st)
+      +'<div class="pmeal" style="margin-top:12px"><label>Sleep score (optional)</label><input id="sl-score" type="number" inputmode="numeric" min="0" max="100" placeholder="\u2014" value="'+(e.score!=null?esc(e.score):"")+'"></div>'
+      +'<div class="label" style="margin-top:12px">Sleep quality</div><div class="goalseg" id="sl-quality">'+[["poor","Poor"],["ok","OK"],["good","Good"]].map(function(o){return '<button type="button" data-val="'+o[0]+'"'+(q===o[0]?' class="on"':'')+'>'+o[1]+'</button>';}).join("")+'</div>'
+      +'<button type="button" class="cta" id="sl-save" style="margin-top:12px">Save sleep</button><div class="saved-note" id="sl-saved"></div>'
+      +'<div id="sl-detail"></div>'+moreAboutSleepHTML()+'</div>';
+    renderSleepSummary();renderSleepDetail();sleepUpdatePcts();
   }
   function renderSleepSummary(){var el=$("#sleep-summary");if(!el)return;var e=loadSleep(),lab=dchLabel(sleepSel()),qmap={poor:"Poor",ok:"OK",good:"Good"};if(!e||(e.h==null&&e.m==null)){el.textContent=lab+" \u00b7 Sleep not logged";return;}var parts=[lab];parts.push((e.h!=null?e.h:0)+"h "+(e.m!=null?e.m:0)+"m");if(e.score!=null&&e.score!=="")parts.push("score "+e.score);if(e.quality)parts.push(qmap[e.quality]||e.quality);el.textContent=parts.join(" \u00b7 ");}
   function saveSleep(){var h=num($("#sl-h").value),m=num($("#sl-m").value),sc=num($("#sl-score").value),qb=$("#sl-quality .on"),q=qb?qb.getAttribute("data-val"):"";
     var e={};if(h!=null)e.h=Math.max(0,Math.min(24,Math.round(h)));if(m!=null)e.m=Math.max(0,Math.min(59,Math.round(m)));if(sc!=null)e.score=sc;if(q)e.quality=q;
-    saveSleepEntry(Object.keys(e).length?e:null);flash("#sl-saved","Sleep saved");if(typeof renderSleepTrend==="function")renderSleepTrend();renderSleepSummary();var sc2=$("#sleep-card");if(sc2)sc2.classList.remove("open");}
+    var iv=function(id){var v=$(id);return (v&&v.value!=="")?Math.max(0,Math.round(num(v.value)||0)):null;};
+    var raw={awake:iv("#sl-awake"),remH:iv("#sl-rem-h"),remM:iv("#sl-rem-m"),lightH:iv("#sl-light-h"),lightM:iv("#sl-light-m"),deepH:iv("#sl-deep-h"),deepM:iv("#sl-deep-m")},stc={},any=false;
+    Object.keys(raw).forEach(function(k){if(raw[k]!=null){stc[k]=raw[k];any=true;}});
+    if(any)e.stages=stc;
+    saveSleepEntry(Object.keys(e).length?e:null);flash("#sl-saved","Sleep saved");if(typeof renderSleepTrend==="function")renderSleepTrend();renderSleepSummary();renderSleepDetail();}
   function sleepAll(){return store.get("bf_sleep")||{};}
   function sleepDurMin(e){if(!e||(e.h==null&&e.m==null))return null;return (e.h!=null?e.h:0)*60+(e.m!=null?e.m:0);}
   function sleepWindow(backStart,backEnd){var all=sleepAll(),durs=[],scores=[],nights=0;for(var i=backEnd;i<=backStart;i++){var d=new Date();d.setDate(d.getDate()-i);var e=all[ovIso(d)];if(!e)continue;nights++;var dm=sleepDurMin(e);if(dm!=null)durs.push(dm);if(e.score!=null)scores.push(e.score);}return {nights:nights,durs:durs,scores:scores};}
@@ -2009,10 +2079,7 @@
       +'<li><b>Volume from veg & fibre.</b> They keep you full for very few calories.</li>'
       +'<li><b>Measure your fats.</b> Oils and butter are easy to over-pour \u2014 weigh them.</li>'
       +'<li><b>Eat back around training.</b> Put more of your carbs near your workout for energy and recovery.</li>'
-      +'</ul>'
-      +'<div class="gtarget"><div class="gh"><span class="gname">Movement <button class="whybtn" data-why="movement">Why?</button></span><span class="gval">'+(t.movement?'Done':'Not yet')+'</span></div>'
-      +'<div class="pbar"><i style="width:'+(t.movement?100:0)+'%"></i></div>'
-      +'<div class="incs"><button class="'+(t.movement?'done':'')+'" data-mv="1">'+(t.movement?'Completed':'Mark done')+'</button></div></div>';
+      +'</ul>';
     $("#daily-body").innerHTML=html;
   }
   function renderWater(){var box=$("#water-track");if(!box)return;var t=loadTargets();box.innerHTML=tRow("water","Water",t.water,2500,"ml",[["+250 ml",250],["+500 ml",500]],true,true);}
@@ -2054,7 +2121,7 @@
   };
   var DEFAULT_WMAP={1:"lower",3:"upper",5:"fullbody",6:"recovery"};
   function loadWeekPlans(){return store.get("bf_weekplan")||{};}
-  function weekPlanMap(wk){var all=loadWeekPlans();return all[wk]||DEFAULT_WMAP;}
+  function weekPlanMap(wk){var all=loadWeekPlans();return all[wk]?all[wk]:Object.assign({},DEFAULT_WMAP);}
   function setDayType(wk,idx,type){var all=loadWeekPlans();var m=all[wk]?Object.assign({},all[wk]):Object.assign({},DEFAULT_WMAP);if(type==="rest")delete m[idx];else m[idx]=type;all[wk]=m;store.set("bf_weekplan",all);
     var mon=new Date(wk+"T00:00:00");if(!isNaN(mon)){var dd=new Date(mon);dd.setDate(dd.getDate()+idx);var iso=ovIso(dd),tr=loadTraining();if(tr[iso]&&tr[iso].done==="done"){tr[iso].type=type;store.set("bf_training",tr);}}
     rebuildPlan();}
@@ -2595,8 +2662,8 @@
   }
   function renderWeekPlan(){
     bindExLog();
-    var ti=todayIdx();
-    $("#week-plan").innerHTML=plan.map(function(p,i){
+    var off=state.planWeekOffset||0,ti=off===0?todayIdx():-1,wkPlan=planFor(planWeekDate());
+    $("#week-plan").innerHTML=wkPlan.map(function(p,i){
       return '<div class="lesson'+(i===ti?' open':'')+'" style="padding:14px 0;border-bottom:1px solid var(--line-soft)"><div class="head"><span style="width:42px;flex:none;font-size:calc(13px*var(--ts,1));font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:'+(i===ti?'var(--accent-deep)':'var(--ink-faint)')+'">'+p.d+'</span><div class="txt"><div class="ttl" style="font-size:calc(18px*var(--ts,1))">'+p.t+'</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body">'+dayDetail(p)+'</div></div>';
     }).join("");
   }
@@ -4585,7 +4652,7 @@
   (function(){var cc=$("#cycle-setup-card");if(!cc)return;var c=loadCycle();if(!c.start)cc.classList.add("open");else if(store.get("bf_cycopen")===true)cc.classList.add("open");})();
   (function(){var sc=$("#sudoku-card");if(!sc)return;if(store.get("bf_sudopen")===true)sc.classList.add("open");renderSudoku();sudStartTimer();sc.addEventListener("click",function(e){var nw=e.target.closest("#sud-new");if(nw){sc.classList.add("open");sudNew();renderSudoku();return;}var db=e.target.closest("[data-suddiff]");if(db){sc.classList.add("open");sudNew(db.getAttribute("data-suddiff"));renderSudoku();return;}var tl=e.target.closest("[data-sudtool]");if(tl){var a=tl.getAttribute("data-sudtool");if(a==="undo")sudUndo();else if(a==="erase")sudErase();else if(a==="pencil")sudPencil();else if(a==="hint")sudHint();return;}var cell=e.target.closest("[data-sud]");if(cell){sudSelect(+cell.getAttribute("data-sud"));return;}var pn=e.target.closest("[data-sudn]");if(pn){sudInput(+pn.getAttribute("data-sudn"));return;}});})();
   (function(){var wc=$("#wordsearch-card");if(!wc)return;if(store.get("bf_wsopen")===true)wc.classList.add("open");renderWordSearch();wsStartTimer();wsBind();wc.addEventListener("click",function(e){var nw=e.target.closest("#ws-new");if(nw){wc.classList.add("open");wsNew();renderWordSearch();return;}});})();
-  (function(){var c=$("#sleep-card");if(!c)return;c.addEventListener("click",function(e){var qb=e.target.closest("#sl-quality button");if(qb){$all("#sl-quality button").forEach(function(b){b.classList.remove("on");});qb.classList.add("on");return;}if(e.target.closest("#sl-save")){saveSleep();}});})();
+  (function(){var c=$("#sleep-card");if(!c)return;c.addEventListener("click",function(e){var qb=e.target.closest("#sl-quality button");if(qb){$all("#sl-quality button").forEach(function(b){b.classList.remove("on");});qb.classList.add("on");return;}if(e.target.closest("#sl-save")){saveSleep();}});c.addEventListener("input",function(e){if(e.target&&e.target.hasAttribute&&e.target.hasAttribute("data-stg"))sleepUpdatePcts();});})();
   renderMenu();applyTrackPrefs();
   renderPortionMemory();renderPortionList();syncWpButtons();
   renderWeekFocus();
