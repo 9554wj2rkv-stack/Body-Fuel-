@@ -1653,7 +1653,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 105</b></div>
+            <div class="about-row"><span>Version</span><b>Build 106</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -2187,13 +2187,20 @@
     }).join('');
   }
   /* ---------- barcode lookup via Open Food Facts (read-only, single request per scan) ---------- */
-  var OFF_USER_AGENT="BodyFuelLab/1.0 (personal nutrition tracking app)";
+  /* NOTE: We do NOT send a custom User-Agent header. Browsers treat "User-Agent" as a
+     non-safelisted header, which forces a CORS preflight (OPTIONS) request. Open Food Facts'
+     API does not include "User-Agent" in Access-Control-Allow-Headers for that preflight, so
+     the browser blocks the real GET before it's ever sent -- this is what caused every real
+     lookup on GitHub Pages/Safari to fail with a generic network error, even though the exact
+     same request worked in mocked testing (mocks don't enforce CORS). Keeping this request to
+     only CORS-safelisted headers (no custom headers at all) avoids the preflight entirely. */
+  var OFF_APP_ID="BodyFuelLab/1.0";
   var OFF_MIN_INTERVAL_MS=1200;
   function offBuildUrl(barcode){
     return "https://world.openfoodfacts.org/api/v3/product/"+encodeURIComponent(barcode)+".json?fields=code,product_name,product_name_en,brands,serving_size,nutriments";
   }
   function offFetchProduct(barcode){
-    return fetch(offBuildUrl(barcode),{method:"GET",headers:{"User-Agent":OFF_USER_AGENT}}).then(function(r){
+    return fetch(offBuildUrl(barcode),{method:"GET"}).then(function(r){
       if(!r.ok)throw new Error("network");
       return r.json();
     });
