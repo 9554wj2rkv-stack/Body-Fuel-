@@ -1660,7 +1660,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 107</b></div>
+            <div class="about-row"><span>Version</span><b>Build 108</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -2892,12 +2892,20 @@
   var UPPER_MAIN=["Single-Arm Cable Row","Chest Press","Cable External Rotation","Dumbbell Triceps Kickback"];
   var UPPER_CORE=["Kettlebell March","Russian Twist","Sit-Ups"];
   var UPPER_TARGET={"Single-Arm Cable Row":"2 \u00d7 10\u201312 each side \u00b7 light, controlled, no twisting","Chest Press":"2 \u00d7 10\u201312 \u00b7 lighter & controlled","Cable External Rotation":"2 \u00d7 12\u201315 each side \u00b7 very light, elbow tucked","Dumbbell Triceps Kickback":"2 \u00d7 10\u201315 each arm \u00b7 light, slow","Kettlebell March":"2 \u00d7 20\u201330 sec each side \u00b7 KB weight + duration","Russian Twist":"2 \u00d7 10\u201312 each side \u00b7 bodyweight or weighted","Sit-Ups":"2 \u00d7 10\u201315 \u00b7 bodyweight (optional weight)","Flutter Kicks":"2 \u00d7 20\u201330 sec \u00b7 bodyweight"};
-  function upperReorderHTML(names,sec){return '<div class="exreord-wrap">'+names.map(function(n,i){return '<div class="exreord"><span class="exdrag">\u22ee\u22ee</span><span class="exreord-n">'+esc(n)+'</span><span class="exreord-btns"><button type="button" data-uomove="up" data-uon="'+esc(n)+'" data-uosec="'+sec+'"'+(i===0?' disabled':'')+'>\u2191</button><button type="button" data-uomove="down" data-uon="'+esc(n)+'" data-uosec="'+sec+'"'+(i===names.length-1?' disabled':'')+'>\u2193</button></span></div>';}).join("")+'</div>';}
+  var UPPERARMS_MAIN=["Dumbbell Lateral Raise","Rear Delt Fly","Biceps Curl","Hammer Curl"];
+  var UPPERARMS_CORE=["Kettlebell March","Russian Twist","Sit-Ups"];
+  var UPPERARMS_KIND={"Kettlebell March":"lrtime","Russian Twist":"weight","Sit-Ups":"weight"};
+  var UPPERARMS_TARGET={"Dumbbell Lateral Raise":"2 sets \u00d7 10\u201315","Rear Delt Fly":"2 sets \u00d7 10\u201315","Biceps Curl":"2 sets \u00d7 10\u201312","Hammer Curl":"2 sets \u00d7 10\u201312","Kettlebell March":"2 \u00d7 20\u201330 sec each side \u00b7 KB weight + duration","Russian Twist":"2 \u00d7 10\u201312 each side \u00b7 bodyweight or weighted","Sit-Ups":"2 \u00d7 10\u201315 \u00b7 bodyweight (optional weight)"};
+  var UPPERAI_MAIN=["Single-Arm Cable Row","Chest Press","Cable External Rotation","Dumbbell Triceps Kickback"];
+  var UPPERAI_CORE=["Dead Bug","Bird Dog","Kettlebell March","Russian Twist","Reverse Crunch"];
+  var UPPERAI_TARGET={"Single-Arm Cable Row":"2 \u00d7 10\u201312 each side \u00b7 light, controlled, no twisting","Chest Press":"2 \u00d7 10\u201312 \u00b7 lighter & controlled","Cable External Rotation":"2 \u00d7 12\u201315 each side \u00b7 very light, elbow tucked","Dumbbell Triceps Kickback":"2 \u00d7 10\u201315 each arm \u00b7 light, slow","Dead Bug":"2 \u00d7 8\u201310 each side \u00b7 bodyweight","Bird Dog":"2 \u00d7 8\u201310 each side \u00b7 bodyweight","Kettlebell March":"2 \u00d7 20\u201330 sec each side \u00b7 KB weight + duration","Russian Twist":"2 \u00d7 8\u201312 each side \u00b7 bodyweight or weighted","Reverse Crunch":"2 \u00d7 10\u201315 \u00b7 bodyweight"};
+  var UPPER_STYLE={upper:{main:UPPER_MAIN,core:UPPER_CORE},upperarms:{main:UPPERARMS_MAIN,core:UPPERARMS_CORE},upperai:{main:UPPERAI_MAIN,core:UPPERAI_CORE}};
+  function upperReorderHTML(names,sec,prefix){return '<div class="exreord-wrap">'+names.map(function(n,i){return '<div class="exreord"><span class="exdrag">\u22ee\u22ee</span><span class="exreord-n">'+esc(n)+'</span><span class="exreord-btns"><button type="button" data-uomove="up" data-uon="'+esc(n)+'" data-uosec="'+sec+'" data-uoprefix="'+prefix+'"'+(i===0?' disabled':'')+'>\u2191</button><button type="button" data-uomove="down" data-uon="'+esc(n)+'" data-uosec="'+sec+'" data-uoprefix="'+prefix+'"'+(i===names.length-1?' disabled':'')+'>\u2193</button></span></div>';}).join("")+'</div>';}
   var upperOrderBound=false;
   function bindUpperOrder(){if(upperOrderBound)return;upperOrderBound=true;
     document.addEventListener("click",function(e){if(!e.target.closest)return;
-      if(e.target.closest("#upper-editorder")){state.exEditKey=(state.exEditKey==="upper")?null:"upper";renderTodaySession();return;}
-      var mv=e.target.closest("[data-uomove]");if(mv){var dir=mv.getAttribute("data-uomove")==="up"?-1:1,name=mv.getAttribute("data-uon"),sec=mv.getAttribute("data-uosec"),key=sec==="core"?"upper-core":"upper-main",defs=sec==="core"?UPPER_CORE:UPPER_MAIN;exMove(key,defs,name,dir);renderTodaySession();return;}
+      var eb=e.target.closest("[data-uoeditbtn]");if(eb){var pfx=eb.getAttribute("data-uoeditbtn");state.exEditKey=(state.exEditKey===pfx)?null:pfx;renderTodaySession();return;}
+      var mv=e.target.closest("[data-uomove]");if(mv){var dir=mv.getAttribute("data-uomove")==="up"?-1:1,name=mv.getAttribute("data-uon"),sec=mv.getAttribute("data-uosec"),prefix=mv.getAttribute("data-uoprefix")||"upper",st=UPPER_STYLE[prefix]||UPPER_STYLE.upper,key=prefix+"-"+(sec==="core"?"core":"main"),defs=sec==="core"?st.core:st.main;exMove(key,defs,name,dir);renderTodaySession();return;}
     });
   }
   function loadFinisher(){return store.get("bf_finisher")||{};}
@@ -2927,24 +2935,25 @@
     if(p.why==="upperarms"){
       var adk="upper-arms-shoulders",awk=sessWeekKey();
       var ahead='<div class="built" style="margin-bottom:2px">'+dayName[p.d]+' \u2014 '+(p.disp||p.t)+'</div>'+(p.sub?'<div class="ai-sub">'+p.sub+'</div>':'');
-      var AS=[["Dumbbell Lateral Raise","2 sets \u00d7 10\u201315"],["Rear Delt Fly","2 sets \u00d7 10\u201315"],["Biceps Curl","2 sets \u00d7 10\u201312"],["Hammer Curl","2 sets \u00d7 10\u201312"]];
-      var ACO=[["Kettlebell March","2 \u00d7 20\u201330 sec each side \u00b7 KB weight + duration","lrtime"],["Russian Twist","2 \u00d7 10\u201312 each side \u00b7 bodyweight or weighted","weight"],["Sit-Ups","2 \u00d7 10\u201315 \u00b7 bodyweight (optional weight)","weight"]];
+      var aMain=orderedEx("upperarms-main",UPPERARMS_MAIN),aCore=orderedEx("upperarms-core",UPPERARMS_CORE),aedit=state.exEditKey==="upperarms";
+      var aEditBtn='<div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button type="button" class="linkbtn" data-uoeditbtn="upperarms">'+(aedit?"Done":"Edit order")+'</button></div>';
+      var abody;
+      if(aedit){abody=aEditBtn+'<div class="ai-sec">Shoulders + Biceps</div>'+upperReorderHTML(aMain,"main","upperarms")+'<div class="ai-sec">Core</div>'+upperReorderHTML(aCore,"core","upperarms");}
+      else{abody=aEditBtn+'<div id="ex-log" data-dayk="'+adk+'" data-wk="'+awk+'"><div class="ai-sec">Shoulders + Biceps</div>'+aMain.map(function(n){return renderExCard(adk,n,awk,UPPERARMS_TARGET[n],"two");}).join("")+'<div class="ai-sec">Core</div>'+aCore.map(function(n){return renderExCard(adk,n,awk,UPPERARMS_TARGET[n],UPPERARMS_KIND[n]);}).join("")+'</div>';}
       var apc=postCheckinHTML();
-      host.innerHTML=nav+ahead+sessCompleteHTML()+warmAHTML()
-        +'<div id="ex-log" data-dayk="'+adk+'" data-wk="'+awk+'"><div class="ai-sec">Shoulders + Biceps</div>'+AS.map(function(o){return renderExCard(adk,o[0],awk,o[1],"two");}).join("")
-        +'<div class="ai-sec">Core</div>'+ACO.map(function(o){return renderExCard(adk,o[0],awk,o[1],o[2]);}).join("")+'</div>'
+      host.innerHTML=nav+ahead+sessCompleteHTML()+warmAHTML()+abody
         +inclineFinHTML(adk)
         +(apc?'<div class="divider"></div>'+apc:'')+addedTrainingHTML()+whyPills(p);
-      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindFinisher();return;
+      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindFinisher();bindUpperOrder();return;
     }
     if(p.why==="upper"){
       var udk="upper-body-strength",uwk=sessWeekKey();
       var uMain=orderedEx("upper-main",UPPER_MAIN),uCore=orderedEx("upper-core",UPPER_CORE),uedit=state.exEditKey==="upper";
       var uhead='<div class="built" style="margin-bottom:2px">'+dayName[p.d]+' \u2014 '+(p.disp||p.t)+'</div>'+(p.sub?'<div class="ai-sub">'+p.sub+'</div>':'');
       var ufocus='<details class="ai-focus"><summary>Training focus</summary><ul><li>Use lighter weights.</li><li>Prioritise control and clean movement.</li><li>Leave ~3\u20134 reps in reserve \u2014 don\u2019t train to failure.</li><li>Both sides normally use equal volume.</li><li>Stop or modify if an exercise causes increasing pain, burning, tingling, numbness or symptoms travelling down the arm.</li></ul></details>';
-      var uEditBtn='<div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button type="button" class="linkbtn" id="upper-editorder">'+(uedit?"Done":"Edit order")+'</button></div>';
+      var uEditBtn='<div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button type="button" class="linkbtn" data-uoeditbtn="upper">'+(uedit?"Done":"Edit order")+'</button></div>';
       var ubody;
-      if(uedit){ubody=uEditBtn+'<div class="ai-sec">Upper Body</div>'+upperReorderHTML(uMain,"main")+'<div class="ai-sec">Core</div>'+upperReorderHTML(uCore,"core");}
+      if(uedit){ubody=uEditBtn+'<div class="ai-sec">Upper Body</div>'+upperReorderHTML(uMain,"main","upper")+'<div class="ai-sec">Core</div>'+upperReorderHTML(uCore,"core","upper");}
       else{var ucard=function(arr){return arr.map(function(n){return renderExCard(udk,n,uwk,UPPER_TARGET[n],"two");}).join("");};ubody=uEditBtn+'<div id="ex-log" data-dayk="'+udk+'" data-wk="'+uwk+'"><div class="ai-sec">Upper Body</div>'+ucard(uMain)+'<div class="ai-sec">Core</div>'+ucard(uCore)+'</div>';}
       var upc=postCheckinHTML();
       host.innerHTML=nav+uhead+sessCompleteHTML()+warmAHTML()+ufocus+ubody+inclineFinHTML(udk)+(upc?'<div class="divider"></div>'+upc:'')+addedTrainingHTML()+whyPills(p);
@@ -2954,13 +2963,15 @@
       var dk=slug(p.t),wk2=sessWeekKey();
       var head2='<div class="built" style="margin-bottom:2px">'+dayName[p.d]+' \u2014 '+p.t+'</div><div class="ai-sub">'+(p.sub||"")+'</div>';
       var focus='<details class="ai-focus"><summary>Training focus</summary><ul><li>Use lighter weights.</li><li>Prioritise controlled movement.</li><li>Leave ~3\u20134 reps in reserve \u2014 don\u2019t train to failure.</li><li>Train both sides with equal volume unless you adjust.</li><li>Stop or modify if an exercise causes increasing pain, burning, tingling, numbness or symptoms travelling down the arm.</li></ul></details>';
-      var UP=[["Single-Arm Cable Row","2 \u00d7 10\u201312 each side \u00b7 light, controlled, no twisting"],["Chest Press","2 \u00d7 10\u201312 \u00b7 lighter & controlled"],["Cable External Rotation","2 \u00d7 12\u201315 each side \u00b7 very light, elbow tucked"],["Dumbbell Triceps Kickback","2 \u00d7 10\u201315 each arm \u00b7 light, slow"]];
-      var CO=[["Dead Bug","2 \u00d7 8\u201310 each side \u00b7 bodyweight"],["Bird Dog","2 \u00d7 8\u201310 each side \u00b7 bodyweight"],["Kettlebell March","2 \u00d7 20\u201330 sec each side \u00b7 KB weight + duration"],["Russian Twist","2 \u00d7 8\u201312 each side \u00b7 bodyweight or weighted"],["Reverse Crunch","2 \u00d7 10\u201315 \u00b7 bodyweight"]];
+      var aiMain=orderedEx("upperai-main",UPPERAI_MAIN),aiCore=orderedEx("upperai-core",UPPERAI_CORE),aiedit=state.exEditKey==="upperai";
+      var aiEditBtn='<div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button type="button" class="linkbtn" data-uoeditbtn="upperai">'+(aiedit?"Done":"Edit order")+'</button></div>';
+      var aibody;
+      if(aiedit){aibody=aiEditBtn+'<div class="ai-sec">Upper Body</div>'+upperReorderHTML(aiMain,"main","upperai")+'<div class="ai-sec">Core</div>'+upperReorderHTML(aiCore,"core","upperai");}
+      else{aibody=aiEditBtn+'<div id="ex-log" data-dayk="'+dk+'" data-wk="'+wk2+'"><div class="ai-sec">Upper Body</div>'+aiMain.map(function(n){return renderExCard(dk,n,wk2,UPPERAI_TARGET[n]);}).join("")+'<div class="ai-sec">Core</div>'+aiCore.map(function(n){return renderExCard(dk,n,wk2,UPPERAI_TARGET[n]);}).join("")+'</div>';}
       var pcu=postCheckinHTML();
-      host.innerHTML=nav+head2+sessCompleteHTML()+warmAHTML()+focus
-        +'<div id="ex-log" data-dayk="'+dk+'" data-wk="'+wk2+'"><div class="ai-sec">Upper Body</div>'+UP.map(function(o){return renderExCard(dk,o[0],wk2,o[1]);}).join("")+'<div class="ai-sec">Core</div>'+CO.map(function(o){return renderExCard(dk,o[0],wk2,o[1]);}).join("")+'</div>'
+      host.innerHTML=nav+head2+sessCompleteHTML()+warmAHTML()+focus+aibody
         +(pcu?'<div class="divider"></div>'+pcu:'')+addedTrainingHTML()+whyPills(p);
-      bindExLog();bindWarmA();bindSessComplete();bindCheckin();return;
+      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindUpperOrder();return;
     }
     if(p.why==="lowimpact"){
       var pcl=postCheckinHTML();
