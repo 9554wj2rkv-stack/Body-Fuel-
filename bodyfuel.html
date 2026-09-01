@@ -299,7 +299,17 @@
   .swk b{display:block;font-size:calc(10px*var(--ts,1));color:var(--ink-faint);font-weight:700;margin-bottom:2px}
   .exlog .exprog .swk b{text-transform:none;letter-spacing:0;font-size:calc(10px*var(--ts,1));margin-bottom:2px}
   .sprog-ex{padding:13px 0;border-top:1px solid var(--line-soft)}
-  .sprog-ex:first-child{border-top:0;padding-top:2px}
+  .sprog-ex:first-of-type{border-top:0;padding-top:2px}
+  .sprog-ex>summary{list-style:none;cursor:pointer}
+  .sprog-ex>summary::-webkit-details-marker{display:none}
+  .sh2{display:flex;flex-direction:column;gap:2px}
+  .sh2 .sn{font-weight:700;font-size:calc(15px*var(--ts,1));color:var(--ink)}
+  .sh2-line{font-size:calc(12.5px*var(--ts,1));color:var(--ink-soft)}
+  .spgroup{border:1px solid var(--line);border-radius:12px;padding:0 14px;margin-bottom:10px}
+  .spgroup>summary{list-style:none;cursor:pointer;padding:12px 0;font-weight:700;font-size:calc(12.5px*var(--ts,1));letter-spacing:.06em;color:var(--ink-soft)}
+  .spgroup>summary::-webkit-details-marker{display:none}
+  .spgroup[open]>summary{border-bottom:1px solid var(--line-soft);margin-bottom:2px}
+  .spgroup>.sprog-ex:last-child{padding-bottom:2px}
   .sprog-ex .sh{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
   .sprog-ex .sn{font-weight:700;font-size:calc(16px*var(--ts,1));color:var(--ink)}
   .sprog-ex .sv{font-weight:700;color:var(--accent-deep);font-size:calc(13.5px*var(--ts,1));white-space:nowrap}
@@ -1660,7 +1670,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 110</b></div>
+            <div class="about-row"><span>Version</span><b>Build 111</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -4491,38 +4501,58 @@
   function wkDate(key){var p=String(key).split("-");if(p.length<3)return key;var mo=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];return (+p[2])+" "+mo[(+p[1])-1]+" "+p[0];}
   /* Exercises retired from the active program. Their historical bf_workout/bf_exhist
      records are never touched -- this only removes them from the Strength Progress
-     list. If any of these is ever added back into an active SESST exercise list,
-     it reappears automatically with its full prior history intact. */
-  var STRENGTH_RETIRED=["Bird Dog","Dead Bug","Reverse Crunch","Pallof Press","Hanging Knee Raise","Hanging Leg Raise","Captain's Chair","Single Arm Cable Press","Cable Crunch"];
-  function activeExKeySet(){
-    var set={};
-    Object.keys(SESST).forEach(function(id){(SESST[id].ex||[]).forEach(function(n){set[slug(n)]=true;});});
-    STRENGTH_RETIRED.forEach(function(n){delete set[slug(n)];});
-    return set;
+     list. If any of these is ever added back into an active exercise list, it
+     reappears automatically with its full prior history intact. */
+  var STRENGTH_RETIRED=["Core","Plank","Row","Seated Row","Shoulder Press","Triceps Pushdown","Kettlebell Swing","Lat Pulldown","Bird Dog","Dead Bug","Reverse Crunch","Pallof Press","Hanging Knee Raise","Hanging Leg Raise","Captain's Chair","Single Arm Cable Press","Cable Crunch"];
+  /* Strength Progress is built ONLY from the exercises in these three current sessions
+     (Lower Body, Upper Body -- Strength + Core via the upperai definition, and
+     Shoulders + Biceps) -- never from legacy Conditioning/old-Upper/Full Body lists. */
+  function strengthGroups(){
+    var retired={};STRENGTH_RETIRED.forEach(function(n){retired[slug(n)]=true;});
+    var claimed={};
+    function clean(arr){return (arr||[]).filter(function(n){var k=slug(n);if(retired[k]||claimed[k])return false;claimed[k]=true;return true;});}
+    return [
+      {key:"lower",label:"Lower Body",names:clean(SESST.lower.ex)},
+      {key:"upperstr",label:"Upper Body \u2014 Strength",names:clean(UPPERAI_MAIN)},
+      {key:"shoulders",label:"Shoulders + Biceps",names:clean(UPPERARMS_MAIN)},
+      {key:"core",label:"Core",names:clean(UPPERAI_CORE.concat(UPPERARMS_CORE))}
+    ];
   }
+  /* Reads whatever kind bf_workout entries were actually saved as (including newer
+     unilateral/left-right/weight+duration formats) and normalizes it to the same
+     "two" shape exHasVal already expects, so these exercises render their real
+     saved numbers instead of falling through to a 0kg default. No stored data is
+     changed -- this only affects how it's interpreted for display. */
+  function strengthRenderKind(name){var k=exKindOf(name);if(k==="lr"||k==="lrtime")return "two";return k;}
   function renderStrength(){
     var host=$("#strength-body");if(!host)return;
     var wo=store.get("bf_workout")||{},cc=$("#sprog-count");
     var nameMap={};
     Object.keys(SESST).forEach(function(id){(SESST[id].ex||[]).forEach(function(n){nameMap[slug(n)]=n;});});
     if(typeof exercises!=="undefined"&&exercises.forEach)exercises.forEach(function(e){nameMap[slug(e[0])]=e[0];});
-    var activeSet=activeExKeySet();
-    var perEx={};
-    Object.keys(activeSet).forEach(function(ek){
-      var name=nameMap[ek];if(!name)return;
-      var kind=exKindOf(name);if(kind==="done")return;
-      perEx[ek]={name:name,kind:kind,entries:{}};
-    });
-    Object.keys(wo).forEach(function(dk){var exs=wo[dk]||{};Object.keys(exs).forEach(function(ek){
-      if(!activeSet[ek]||!perEx[ek])return;
-      var weeks=exs[ek]||{},kind=perEx[ek].kind;
-      Object.keys(weeks).forEach(function(wk){var e=weeks[wk];if(e&&exHasVal(e,kind))perEx[ek].entries[wk]=e;});
-    });});
-    var keys=Object.keys(perEx);
-    keys.sort(function(a,b){return perEx[a].name.localeCompare(perEx[b].name);});
-    if(!keys.length){host.innerHTML='<p class="muted-p">Log a weight, reps or time on any exercise in This week\u2019s plan and your progress builds here. The last 12 weeks are shown; all of your history is kept.</p>';if(cc)cc.textContent="";return;}
+    var groups=strengthGroups();
+    var totalCount=0;
+    function buildPerEx(names){
+      var perEx={};
+      names.forEach(function(n){
+        var ek=slug(n),name=nameMap[ek]||n;
+        var kind=strengthRenderKind(name);if(kind==="done")return;
+        perEx[ek]={name:name,kind:kind,entries:{}};
+      });
+      Object.keys(wo).forEach(function(dk){var exs=wo[dk]||{};Object.keys(exs).forEach(function(ek){
+        if(!perEx[ek])return;
+        var weeks=exs[ek]||{},kind=perEx[ek].kind;
+        Object.keys(weeks).forEach(function(wk){var e=weeks[wk];if(e&&exHasVal(e,kind))perEx[ek].entries[wk]=e;});
+      });});
+      return perEx;
+    }
     function cellVal(e,kind){if(kind==="time")return (e.time||0)+"s";if(kind==="reps")return String(e.reps||0);if(kind==="load")return (e.weight||0)+"kg";if(kind==="two")return (e.w1!=null?e.w1:"\u2013")+"/"+(e.w2!=null?e.w2:"\u2013");return (e.weight||0)+(e.reps!=null?"\u00d7"+e.reps:"");}
     function lastVal(e,kind){if(!e)return "No data yet";if(kind==="time")return (e.time||0)+" sec";if(kind==="reps")return (e.reps||0)+" reps";if(kind==="load")return (e.weight||0)+" kg";if(kind==="two")return (e.w1!=null?e.w1:"\u2013")+" / "+(e.w2!=null?e.w2:"\u2013")+" kg";return (e.weight||0)+" kg"+(e.reps!=null?" \u00d7"+e.reps:"");}
+    function bestSummary(ex){var wks=Object.keys(ex.entries);if(!wks.length)return "No data yet";
+      if(ex.kind==="time"){var bt=-1;wks.forEach(function(wk){var t=ex.entries[wk].time||0;if(t>bt)bt=t;});return bt>0?bt+" sec":"No data yet";}
+      if(ex.kind==="reps"){var br=-1;wks.forEach(function(wk){var r=ex.entries[wk].reps||0;if(r>br)br=r;});return br>0?br+" reps":"No data yet";}
+      if(ex.kind==="two"){var t1=-1,t2=-1;wks.forEach(function(wk){var e=ex.entries[wk];if((e.w1||0)>t1)t1=e.w1||0;if((e.w2||0)>t2)t2=e.w2||0;});if(t1<=0&&t2<=0)return "No data yet";return (t1>0?t1:"\u2013")+" / "+(t2>0?t2:"\u2013")+" kg";}
+      var bw=-1;wks.forEach(function(wk){var w=ex.entries[wk].weight||0;if(w>bw)bw=w;});return bw>0?bw+" kg":"No data yet";}
     function bRow(l,v){return '<div class="sp-best"><span class="sp-best-l">'+l+'</span><span class="sp-best-v">'+v+'</span></div>';}
     function bestLine(ex){var wks=Object.keys(ex.entries);if(!wks.length)return "";
       if(ex.kind==="time"){var bt=-1,btw=null;wks.forEach(function(wk){var t=ex.entries[wk].time||0;if(t>bt){bt=t;btw=wk;}});return bt>0?bRow("Lifetime best",bt+" sec \u00b7 "+wkDate(btw)):"";}
@@ -4532,12 +4562,23 @@
       if(bw>0)out+=bRow("Best weight",bw+" kg \u00b7 "+wkDate(bww));
       if(bp>0)out+=bRow("Best reps",bp+" reps \u00b7 "+wkDate(bpw));
       return out;}
-    host.innerHTML=keys.map(function(k){
-      var ex=perEx[k],wks=Object.keys(ex.entries).sort(),recent=wks.slice(-12),last=wks.length?ex.entries[wks[wks.length-1]]:null;
+    function exRowHTML(k,ex){
+      var wks=Object.keys(ex.entries).sort(),recent=wks.slice(-12),last=wks.length?ex.entries[wks[wks.length-1]]:null;
       var chips=recent.map(function(wk,i){var e=ex.entries[wk];return '<div class="sp-chip'+(i===recent.length-1?' now':'')+'"><b>'+wkShort(wk)+'</b>'+cellVal(e,ex.kind)+'</div>';}).join("");
-      return '<div class="sprog-ex"><div class="sh"><span class="sn">'+esc(ex.name)+'</span><span class="sv">'+lastVal(last,ex.kind)+'</span></div><div class="sp-strip">'+chips+'</div>'+bestLine(ex)+'</div>';
+      return '<details class="sprog-ex"><summary class="sh2"><span class="sn">'+esc(ex.name)+'</span><span class="sh2-line">Last: '+lastVal(last,ex.kind)+'</span><span class="sh2-line">Best: '+bestSummary(ex)+'</span></summary><div class="sp-strip">'+chips+'</div>'+bestLine(ex)+'</details>';
+    }
+    var groupsHTML=groups.map(function(g,gi){
+      var perEx=buildPerEx(g.names);
+      var keys=Object.keys(perEx);
+      keys.sort(function(a,b){return perEx[a].name.localeCompare(perEx[b].name);});
+      totalCount+=keys.length;
+      if(!keys.length)return "";
+      var rows=keys.map(function(k){return exRowHTML(k,perEx[k]);}).join("");
+      return '<details class="spgroup"'+(gi===0?' open':'')+'><summary>'+g.label.toUpperCase()+'</summary>'+rows+'</details>';
     }).join("");
-    if(cc)cc.textContent="("+keys.length+")";
+    if(!groupsHTML){host.innerHTML='<p class="muted-p">Log a weight, reps or time on any exercise in This week\u2019s plan and your progress builds here. The last 12 weeks are shown; all of your history is kept.</p>';if(cc)cc.textContent="";return;}
+    host.innerHTML=groupsHTML;
+    if(cc)cc.textContent="("+totalCount+")";
   }
   function saveLift(k){
     var el=$("#st-"+k),w=num(el.value);if(w==null)return;
