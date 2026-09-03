@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Body Fuel Lab">
-<meta name="theme-color" content="#241629">
+<meta name="theme-color" content="#A9E2BF">
 <title>Body Fuel Lab</title>
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="apple-touch-icon.png">
@@ -15,15 +15,15 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Schibsted+Grotesk:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#241629; --surface:#2E1B35; --surface-2:#3A2444;
-    --ink:#F3E9F2; --ink-soft:#C5AFCD; --ink-faint:#937F9D;
-    --line:#43304F; --line-soft:#33243D;
-    --accent:#B96AD9; --accent-deep:#9A4FBC; --accent-soft:#3A2348;
-    --header-bg:rgba(36,22,41,.82); --nav-bg:rgba(36,22,41,.88);
-    --green:#6FBF82; --amber:#E0B24D; --red:#E27A66;
-    --p:#D98A63; --c:#E0B24D; --v:#6FBF82; --f:#8AA6D6;
-    --shadow:0 1px 2px rgba(0,0,0,.30), 0 10px 28px rgba(0,0,0,.45);
-    --shadow-sm:0 1px 2px rgba(0,0,0,.30), 0 6px 18px rgba(0,0,0,.38);
+    --bg:#A9E2BF; --surface:#FFFFFF; --surface-2:#C9EFD9;
+    --ink:#1B3329; --ink-soft:#4E6E5E; --ink-faint:#7C9C8C;
+    --line:#C9E9DA; --line-soft:#E3F5EC;
+    --accent:#1FA97F; --accent-deep:#147A5A; --accent-soft:#D2F0E3;
+    --header-bg:rgba(169,226,191,.85); --nav-bg:rgba(255,255,255,.92);
+    --green:#3F9E5C; --amber:#C28A2E; --red:#D2627A;
+    --p:#D98A9E; --c:#C9A23E; --v:#3F9E5C; --f:#7C9CB0;
+    --shadow:0 1px 2px rgba(30,90,60,.08), 0 10px 28px rgba(30,90,60,.13);
+    --shadow-sm:0 1px 2px rgba(30,90,60,.08), 0 6px 18px rgba(30,90,60,.11);
     --r:15px; --r-sm:11px;
     --font-d:'DM Serif Display',Georgia,serif; --font-b:'DM Sans',-apple-system,sans-serif; --font-a:'Schibsted Grotesk',sans-serif;
     --maxw:448px; --ts:1;
@@ -378,6 +378,13 @@
   .mission-pct{font-size:calc(14px*var(--ts,1));font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
   .mission-msg{font-family:var(--font-a);font-weight:700;font-size:calc(18px*var(--ts,1));line-height:1.3;margin-top:16px;color:var(--ink);letter-spacing:-.01em}
   .mission-msg i{font-weight:400;font-style:italic}
+  .athletic-mile{background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:11px 14px}
+  .athletic-mile .am-lbl{font-size:calc(10.5px*var(--ts,1));font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+  .athletic-mile .am-name{font-family:var(--font-d);font-weight:600;font-size:calc(15px*var(--ts,1));color:var(--ink);letter-spacing:-.01em;margin-top:3px}
+  .athletic-mile .am-dist{font-size:calc(12.5px*var(--ts,1));color:var(--ink-soft);margin-top:2px}
+  .bf-goal-details{border-top:1px solid var(--line-soft);padding-top:12px}
+  .bf-goal-details>summary{list-style:none;cursor:pointer;font-size:calc(12.5px*var(--ts,1));font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-faint)}
+  .bf-goal-details>summary::-webkit-details-marker{display:none}
   .mission-note{font-size:calc(14px*var(--ts,1));color:var(--ink-faint);margin-top:8px;line-height:1.5}
 
   /* daily targets */
@@ -541,6 +548,11 @@
   .cons-spark{flex:none;font-size:1.05em}
   .cons-gentle{margin-top:15px;font-size:calc(14px*var(--ts,1));color:var(--ink-soft);line-height:1.45}
   .cyc-head{margin-bottom:14px}
+  .cyc-details>summary{list-style:none;cursor:pointer;font-family:var(--font-d);font-weight:600;font-size:calc(16px*var(--ts,1));color:var(--ink);letter-spacing:-.01em;padding:2px 0}
+  .cyc-details>summary::-webkit-details-marker{display:none}
+  .cyc-details>summary::after{content:"\02c7";margin-left:8px;color:var(--ink-faint);font-size:calc(13px*var(--ts,1))}
+  .cyc-details[open]>summary{margin-bottom:12px}
+  .cyc-details[open]>summary::after{content:"\02c6"}
   .cyc-phase{font-family:var(--font-d);font-size:calc(26px*var(--ts,1));letter-spacing:-.01em;margin-top:3px;line-height:1.05}
   .cyc-energy{font-size:calc(13px*var(--ts,1));color:var(--ink-soft);margin-top:4px}
   .cyc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -1038,6 +1050,14 @@
   .prog-tile .k{color:var(--ink-faint);font-size:calc(12px*var(--ts,1));font-weight:600}
   .prog-tile .v{font-family:var(--font-b);font-weight:800;font-size:calc(22px*var(--ts,1));margin-top:2px}
   .prog-wkrow{display:flex;align-items:flex-end;gap:5px;height:38px;margin-top:8px}
+  .rj-miles{display:flex;flex-direction:column;gap:8px}
+  .rj-mile{display:flex;align-items:center;gap:10px;font-size:calc(13.5px*var(--ts,1));color:var(--ink-soft)}
+  .rj-check{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;border:1px solid var(--line);font-size:calc(11px*var(--ts,1));color:var(--ink-faint);flex:none}
+  .rj-check.on{background:var(--green);border-color:var(--green);color:#fff}
+  .rj-road-yr{padding:10px 0;border-top:1px solid var(--line-soft)}
+  .rj-road-yr:first-child{border-top:0}
+  .rj-road-yr b{display:block;font-size:calc(13px*var(--ts,1));color:var(--ink);margin-bottom:4px}
+  .rj-road-yr p{font-size:calc(12.5px*var(--ts,1));color:var(--ink-soft);line-height:1.5;margin:0}
   .prog-wkbar{flex:1;height:100%;display:flex;align-items:flex-end}
   .prog-wkbar i{width:100%;background:var(--accent);border-radius:3px}
 </style>
@@ -1539,7 +1559,7 @@
           <div class="eyebrow">Appearance</div>
           <p class="muted-p" style="margin-bottom:14px">Theme controls colours. Typography controls fonts. Both save on this device.</p>
           <div class="label">Theme</div>
-          <div class="seg" data-group="theme"><button data-val="dark">Midnight</button><button data-val="light">Royal</button><button data-val="barbie">Barbie</button></div>
+          <div class="seg" data-group="theme"><button data-val="dark">Mint</button><button data-val="light">Royal</button><button data-val="barbie">Barbie</button></div>
           <div class="label" style="margin-top:16px">Typography</div>
           <div class="seg" data-group="typography"><button data-val="signature">Signature</button><button data-val="modern">Modern</button><button data-val="simple">Simple</button></div>
           <div class="label" style="margin-top:16px">Text size</div>
@@ -1670,7 +1690,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 111</b></div>
+            <div class="about-row"><span>Version</span><b>Build 115</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1846,16 +1866,21 @@
       +'<div class="statline"><span class="k">'+(prof.goalWeight?'Target weight':'Est. target weight')+'</span><span class="v">'+(prof.goalWeight?Number(prof.goalWeight).toFixed(1):targetWeight.toFixed(1))+' <small>kg</small></span></div>';
     var open=store.get("bf_missionopen")===true;
     $("#mission-card").innerHTML=
-      '<div class="mission-msg" style="margin-top:0;margin-bottom:18px">The goal is <i>not</i> perfection. The goal <i>is</i> to become <i>leaner, fitter, stronger,</i> and more <i>consistent</i>.</div>'
-      +'<div class="eyebrow">Mission '+goal.toFixed(0)+'%'+whyBF+' <button class="whybtn" data-mact="edit">Edit</button></div>'+head
-      +(state.missionEdit?missionEditor(goal,prof.goalWeight):'')
-      +'<button type="button" class="linkbtn" data-mact="details" style="margin-top:12px">'+(open?'Hide Details \u25b2':'See Details \u25bc')+'</button>'
-      +'<div class="mission-details"'+(open?'':' style="display:none"')+'>'
-        +'<div class="pbar"><i style="width:'+prog+'%"></i></div>'
-        +rows
-        +'<p class="mission-note">'+(seeded?'Showing your starting numbers — add a weekly check-in in My Body to track real progress. ':'')+prog+'% of the way from '+start.toFixed(1)+'% to '+goal.toFixed(1)+'%. Progress moves at its own pace — focus on consistent habits, not a deadline.</p>'
-      +'</div>'
-      +(seeded?'<button class="cta ghost" data-goto="progress" style="margin-top:14px">Weekly Check-in</button>':'');
+      '<div class="mission-msg" style="margin-top:0;margin-bottom:14px">Build the strength, endurance and resilience to complete <b>21.1 km</b> \u2014 and eventually do it across <b>7 continents</b>.</div>'
+      +'<div class="athletic-mile"><div class="am-lbl">Next Milestone</div><div class="am-name">Copenhagen Half Marathon \u2014 2027</div><div class="am-dist">21.1 km</div></div>'
+      +'<div class="athletic-mile" style="margin-top:8px"><div class="am-lbl">Long-Term Goal</div><div class="am-name">The Great World Race \u2014 2030</div><div class="am-dist">7 continents \u00d7 21.1 km \u2014 147.7 km total</div></div>'
+      +'<details class="bf-goal-details" style="margin-top:16px">'
+        +'<summary>Body composition goal \u2014 '+goal.toFixed(0)+'%'+whyBF+' <button class="whybtn" data-mact="edit">Edit</button></summary>'
+        +head
+        +(state.missionEdit?missionEditor(goal,prof.goalWeight):'')
+        +'<button type="button" class="linkbtn" data-mact="details" style="margin-top:12px">'+(open?'Hide Details \u25b2':'See Details \u25bc')+'</button>'
+        +'<div class="mission-details"'+(open?'':' style="display:none"')+'>'
+          +'<div class="pbar"><i style="width:'+prog+'%"></i></div>'
+          +rows
+          +'<p class="mission-note">'+(seeded?'Showing your starting numbers — add a weekly check-in in My Body to track real progress. ':'')+prog+'% of the way from '+start.toFixed(1)+'% to '+goal.toFixed(1)+'%. Progress moves at its own pace — focus on consistent habits, not a deadline.</p>'
+        +'</div>'
+        +(seeded?'<button class="cta ghost" data-goto="progress" style="margin-top:14px">Weekly Check-in</button>':'')
+      +'</details>';
   }
 
   /* daily targets */
@@ -2627,6 +2652,9 @@
     "lowimpact-both":{t:"Low Impact \u2014 Yoga + Stretching",ex:[],why:"lowimpact",log:false,notes:"A deliberate low-impact session \u2014 yoga plus stretching and mobility."},
     upperai:{t:"Upper Body \u2014 Anti-Inflammatory",sub:"Light Strength \u2022 Stability \u2022 Core",ex:["Single-Arm Cable Row","Chest Press","Cable External Rotation","Dumbbell Triceps Kickback","Dead Bug","Bird Dog","Kettlebell March","Russian Twist","Reverse Crunch"],why:"upperai",log:true,notes:""},
     upperarms:{t:"Upper Body \u2014 Shoulders + Biceps",disp:"Upper Body \u2014 Shoulders + Biceps",sub:"Shoulders \u2022 Biceps \u2022 Core",ex:["Dumbbell Lateral Raise","Rear Delt Fly","Biceps Curl","Hammer Curl","Kettlebell March","Russian Twist","Sit-Ups"],why:"upperarms",log:true,notes:""},
+    distwalk:{t:"Distance \u2014 Walk",ex:[],why:"distwalk",log:false,notes:"A dedicated walking distance session \u2014 log distance, time and how it felt."},
+    distwalkrun:{t:"Distance \u2014 Walk/Run",ex:[],why:"distwalkrun",log:false,notes:"A combined walk/run distance session \u2014 log distance, time and how it felt."},
+    distrun:{t:"Distance \u2014 Run",ex:[],why:"distrun",log:false,notes:"A dedicated running distance session \u2014 log distance, time and how it felt."},
     rest:{t:"Full rest",ex:[],notes:"Full rest — no training today. Recovery is when your progress is made.",why:"rest",log:false}
   };
   var DEFAULT_WMAP={1:"lower",3:"upper",5:"fullbody",6:"recovery"};
@@ -2942,6 +2970,28 @@
     var atToday=sessISO()===todayISO();
     var nav=dayNavHTML("sess");
     var head='<div class="built" style="margin-bottom:10px">'+dayName[p.d]+' — '+p.t+'</div>';
+    if(p.why==="distwalk"||p.why==="distwalkrun"||p.why==="distrun"){
+      var dateISO=sessISO(),saved=loadDistanceEntry(dateISO)||{};
+      var totalMin=(+saved.hh||0)*60+(+saved.mm||0);
+      var dbody='<div class="card"><div class="eyebrow">Distance \u2014 '+distTypeLabel(p.why)+'</div>'
+        +'<div class="pmeal-grid"><div class="pmeal"><label>Distance (km)</label><input id="dist-km" type="text" inputmode="decimal" value="'+(saved.km||"")+'" placeholder="km"></div><div class="pmeal"></div></div>'
+        +'<div class="pmeal-grid" style="margin-top:10px"><div class="pmeal"><label>Hours</label><input id="dist-hh" type="text" inputmode="numeric" value="'+(saved.hh||"")+'" placeholder="0"></div><div class="pmeal"><label>Minutes</label><input id="dist-mm" type="text" inputmode="numeric" value="'+(saved.mm||"")+'" placeholder="0"></div></div>'
+        +'<div class="statline"><span class="k">Average pace</span><span class="v" id="dist-pace">'+distPaceStr(+saved.km,totalMin)+'</span></div>'
+        +'<details class="ai-focus" style="margin-top:12px"><summary>Optional details</summary>'
+          +'<div class="seg" data-group="dist-loc" style="margin-top:4px"><button type="button" class="'+(saved.loc!=="outdoor"?"on":"")+'" data-val="treadmill">Treadmill</button><button type="button" class="'+(saved.loc==="outdoor"?"on":"")+'" data-val="outdoor">Outdoor</button></div>'
+          +'<div class="pmeal-grid" style="margin-top:10px"><div class="pmeal"><label>Treadmill speed</label><input id="dist-speed" type="text" inputmode="decimal" value="'+(saved.speed||"")+'" placeholder="km/h"></div><div class="pmeal"><label>Incline</label><input id="dist-incline" type="text" inputmode="decimal" value="'+(saved.incline||"")+'" placeholder="%"></div></div>'
+          +'<div class="pmeal-grid" style="margin-top:10px"><div class="pmeal"><label>Steps</label><input id="dist-steps" type="text" inputmode="numeric" value="'+(saved.steps||"")+'"></div><div class="pmeal"><label>Avg heart rate</label><input id="dist-hr" type="text" inputmode="numeric" value="'+(saved.hr||"")+'" placeholder="bpm"></div></div>'
+          +'<div class="pmeal-grid" style="margin-top:10px"><div class="pmeal"><label>Knee before (0\u201310)</label><input id="dist-knee-b" type="text" inputmode="numeric" value="'+(saved.kneeBefore!=null?saved.kneeBefore:"")+'"></div><div class="pmeal"><label>Knee during (0\u201310)</label><input id="dist-knee-d" type="text" inputmode="numeric" value="'+(saved.kneeDuring!=null?saved.kneeDuring:"")+'"></div></div>'
+          +'<input class="mealinput" id="dist-notes" type="text" placeholder="Notes" value="'+esc(saved.notes||"")+'" style="margin-top:10px">'
+        +'</details>'
+        +'<button type="button" class="cta" id="dist-save" style="margin-top:14px">Save distance session</button>'
+        +'<div class="saved-note" id="dist-saved"></div>'
+        +'</div>';
+      var dpc=postCheckinHTML();
+      host.innerHTML=nav+head+sessCompleteHTML()+dbody
+        +(dpc?'<div class="divider"></div>'+dpc:'')+addedTrainingHTML()+whyPills(p);
+      bindSessComplete();bindCheckin();bindDistanceForm(dateISO);return;
+    }
     if(p.why==="upperarms"){
       var adk="upper-arms-shoulders",awk=sessWeekKey();
       var ahead='<div class="built" style="margin-bottom:2px">'+dayName[p.d]+' \u2014 '+(p.disp||p.t)+'</div>'+(p.sub?'<div class="ai-sub">'+p.sub+'</div>':'');
@@ -3026,6 +3076,14 @@
   function loadWorkout(){return store.get("bf_workout")||{};}
   function exData(dayKey,exKey){var w=loadWorkout();return (w[dayKey]&&w[dayKey][exKey])||{};}
   function saveExEntry(dayKey,exKey,wk,entry){var w=loadWorkout();w[dayKey]=w[dayKey]||{};w[dayKey][exKey]=w[dayKey][exKey]||{};w[dayKey][exKey][wk]=entry;store.set("bf_workout",w);}
+  /* ---------- distance sessions (new, isolated storage -- never touches bf_workout/bf_training) ---------- */
+  function loadDistanceAll(){return store.get("bf_distance")||{};}
+  function saveDistanceEntry(dateISO,entry){var all=loadDistanceAll();all[dateISO]=entry;store.set("bf_distance",all);}
+  function loadDistanceEntry(dateISO){return loadDistanceAll()[dateISO]||null;}
+  function allDistanceEntries(){var all=loadDistanceAll();return Object.keys(all).map(function(d){return Object.assign({date:d},all[d]);}).sort(function(a,b){return a.date<b.date?-1:1;});}
+  function distTypeLabel(why){return why==="distwalk"?"Walk":why==="distwalkrun"?"Walk/Run":"Run";}
+  function distPaceStr(km,totalMin){if(!km||!totalMin)return "\u2013";var pace=totalMin/km;var m=Math.floor(pace),s=Math.round((pace-m)*60);if(s===60){m++;s=0;}return m+":"+(s<10?"0":"")+s+" /km";}
+  function longestDistanceKm(){var all=allDistanceEntries();var best=0;all.forEach(function(e){var k=+e.km||0;if(k>best)best=k;});return best;}
   function exWeeksSorted(dayKey,exKey){var d=exData(dayKey,exKey);return Object.keys(d).sort().map(function(k){return [k,d[k]];});}
   var exKind={"Sit-Ups":"weight","Flutter Kicks":"time","Single-Arm Cable Row":"lr","Cable External Rotation":"lr","Dumbbell Triceps Kickback":"lr","Kettlebell March":"lrtime","Bird Dog":"reps","Russian Twist":"weight","Reverse Crunch":"reps","Dead Bug":"reps","Pallof Press":"weight","Plank":"time","Farmer Carry":"load","Core":"reps",
     "Copenhagen Side Plank":"time","Farmer's Carry":"distance","Suitcase Carry":"distance","Cable Crunch":"weight","Back Extension Machine":"weight","Cable Wood Chop":"weight","Cable Lift":"weight","Single-arm Cable Press":"weight","Cable Rotation":"weight","Hanging Knee Raise":"reps","Hanging Leg Raise or Captain's Chair":"reps","Ab Wheel Rollout or Stability Ball Rollout":"reps","Roman Chair Leg Raise or Reverse Hyper":"reps","Dead Bug with Resistance Band":"reps","Side Plank Reach Through":"reps",
@@ -3188,7 +3246,7 @@
       return '<div class="lesson'+(i===ti?' open':'')+'" style="padding:14px 0;border-bottom:1px solid var(--line-soft)"><div class="head"><span style="width:42px;flex:none;font-size:calc(13px*var(--ts,1));font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:'+(i===ti?'var(--accent-deep)':'var(--ink-faint)')+'">'+p.d+'</span><div class="txt"><div class="ttl" style="font-size:calc(18px*var(--ts,1))">'+p.t+'</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body">'+dayDetail(p)+'</div></div>';
     }).join("");
   }
-  var WP_TYPES=[["lower","Lower Body"],["upper","Upper Body \u2014 Strength + Core"],["upperarms","Upper Body \u2014 Shoulders + Biceps"],["fullbody","Full Body"],["endurance","Endurance Day"],["recovery","Recovery Day"],["rest","Rest day"],["lowimpact","Low Impact / Mobility"]];
+  var WP_TYPES=[["lower","Lower Body"],["upper","Upper Body \u2014 Strength + Core"],["upperarms","Upper Body \u2014 Shoulders + Biceps"],["fullbody","Full Body"],["endurance","Endurance Day"],["recovery","Recovery Day"],["rest","Rest day"],["lowimpact","Low Impact / Mobility"],["distwalk","Distance \u2014 Walk"],["distwalkrun","Distance \u2014 Walk/Run"],["distrun","Distance \u2014 Run"]];
   function isStrengthType(t){return t==="lower"||t==="upper"||t==="fullbody"||t==="upperarms";}
   function planWeekDate(){var d=new Date();d.setDate(d.getDate()+(state.planWeekOffset||0)*7);return d;}
   function planWeekKey(){return weekKey(planWeekDate());}
@@ -3223,6 +3281,34 @@
   function todayLog(){var d={done:null,diff:"",knee:"",energy:"",recovery:"",notes:"",warmup:false,cardio:{duration:20,incline:"",speed:"",effort:"",mode:"incline",level:"",pace:""}};var t=loadTraining()[sessISO()];return t?Object.assign(d,t):d;}
   function sessCompleteHTML(){var done=todayLog().done==="done";return '<div class="warmrow" style="margin-bottom:12px"><div class="warm-t"><b>Workout completed</b></div><button class="excomp'+(done?' on':'')+'" id="sess-complete">'+(done?'\u2714 Completed':'Mark complete')+'</button></div>';}
   function bindSessComplete(){var b=$("#sess-complete");if(!b)return;b.addEventListener("click",function(){var all=loadTraining(),k=sessISO(),t=all[k]||{};if(t.done==="done"){t.done=null;}else{t.done="done";t.type=weekPlanMap(sessWeekKey())[sessIdx()]||"rest";}all[k]=t;store.set("bf_training",all);renderTodaySession();if($("#wp-summary"))renderWPSummary();});}
+  function bindDistanceForm(dateISO){
+    var host=$("#today-session");if(!host)return;
+    function recalcPace(){var km=+($("#dist-km")&&$("#dist-km").value)||0,hh=+($("#dist-hh")&&$("#dist-hh").value)||0,mm=+($("#dist-mm")&&$("#dist-mm").value)||0;var pe=$("#dist-pace");if(pe)pe.textContent=distPaceStr(km,hh*60+mm);}
+    ["dist-km","dist-hh","dist-mm"].forEach(function(id){var el=$("#"+id);if(el)el.addEventListener("input",recalcPace);});
+    var locSeg=host.querySelector('[data-group="dist-loc"]');
+    if(locSeg)locSeg.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;$all("button",locSeg).forEach(function(x){x.classList.toggle("on",x===b);});});
+    var saveBtn=$("#dist-save");
+    if(saveBtn)saveBtn.addEventListener("click",function(){
+      var loc=locSeg?(locSeg.querySelector("button.on")||{}).textContent:"Treadmill";
+      var entry={
+        km:num($("#dist-km").value),
+        hh:num($("#dist-hh").value)||0,
+        mm:num($("#dist-mm").value)||0,
+        loc:(loc||"Treadmill").toLowerCase().indexOf("outdoor")>=0?"outdoor":"treadmill",
+        speed:num($("#dist-speed").value),
+        incline:num($("#dist-incline").value),
+        steps:num($("#dist-steps").value),
+        hr:num($("#dist-hr").value),
+        kneeBefore:num($("#dist-knee-b").value),
+        kneeDuring:num($("#dist-knee-d").value),
+        notes:$("#dist-notes").value.trim(),
+        type:(dayEntry(sessWeekKey(),sessIdx()).why||"distrun").replace("dist","")
+      };
+      saveDistanceEntry(dateISO,entry);
+      flash("#dist-saved","Saved");
+      if(typeof renderProg==="function"&&$("#prog-body"))renderProg();
+    });
+  }
   function sessionLogHTML(){
     var l=todayLog();
     function seg(k,label,opts,val){return '<div class="ratergrp"><div class="rl">'+label+'</div><div class="opts" data-rgrp="'+k+'">'+opts.map(function(o){return '<button class="'+(val===o[0]?'on':'')+'" data-val="'+o[0]+'">'+o[1]+'</button>';}).join("")+'</div></div>';}
@@ -5158,8 +5244,10 @@
     if(ci){
       var info=CYCLE_INFO[p.phase]||{};
       function tile(lbl,txt){return '<div class="cyc-tile"><div class="cyc-lbl">'+lbl+'</div><div class="cyc-txt">'+esc(txt||"")+'</div></div>';}
-      ci.innerHTML='<div class="cyc-head"><div class="eyebrow">Cycle · Day '+day+'</div><div class="cyc-phase">'+p.phase+' Phase</div><div class="cyc-energy">'+p.energy+'</div></div>'
-        +'<div class="cyc-grid">'+tile("Exercise",info.exercise)+tile("Food",info.food)+tile("Supplements",info.supps)+tile("Sleep",info.sleep)+'</div>';
+      ci.innerHTML='<details class="cyc-details"><summary class="cyc-summary">Cycle Day '+day+'</summary>'
+        +'<div class="cyc-head"><div class="eyebrow">Cycle \u00b7 Day '+day+'</div><div class="cyc-phase">'+p.phase+' Phase</div><div class="cyc-energy">'+p.energy+'</div></div>'
+        +'<div class="cyc-grid">'+tile("Exercise",info.exercise)+tile("Food",info.food)+tile("Supplements",info.supps)+tile("Sleep",info.sleep)+'</div>'
+        +'</details>';
       ci.style.display="";
     }
   }
@@ -5192,6 +5280,29 @@
   function progMini(vals){var vs=vals.filter(function(v){return v!=null;});if(vs.length<2)return "";var w=90,h=38,mn=Math.min.apply(null,vs),mx=Math.max.apply(null,vs),rng=(mx-mn)||1,n=vals.length,pts=[];vals.forEach(function(v,i){if(v!=null){var x=(i/Math.max(n-1,1))*w,y=h-((v-mn)/rng)*(h-6)-3;pts.push(x.toFixed(1)+","+y.toFixed(1));}});return '<svg viewBox="0 0 '+w+' '+h+'" style="width:84px;height:'+h+'px;flex:none"><polyline points="'+pts.join(" ")+'" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>';}
   var progRangeBound=false;
   function progBindRange(){if(progRangeBound)return;progRangeBound=true;document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest("[data-prange]");if(b&&b.closest("#prog-body")){state.progRange=b.getAttribute("data-prange");renderProg();}});}
+  function runningJourneyHTML(){
+    var longest=longestDistanceKm();
+    var milestones=[5,10,15,18,21.1];
+    var msHTML=milestones.map(function(m){var done=longest>=m-0.001;return '<div class="rj-mile"><span class="rj-check'+(done?' on':'')+'">'+(done?'\u2713':'\u25cb')+'</span><span>'+(m===21.1?'21.1 km':m+' km')+'</span></div>';}).join('');
+    var pct=Math.max(0,Math.min(100,Math.round(longest/21.1*100)));
+    var roadmap=[
+      ["2026 \u2014 Foundation","5 km \u2192 10 km<br>Walking and distance tolerance<br>Aerobic base<br>Maintain strength<br>Gradually prepare the body for running"],
+      ["2027 \u2014 Half Marathon","Walk/run development<br>Build distance toward 21.1 km<br>Copenhagen Half Marathon"],
+      ["2028 \u2014 Build","Improve running capacity<br>Improve running economy<br>Maintain strength<br>Gain more race experience"],
+      ["2029 \u2014 Resilience","Develop greater endurance<br>Recovery between demanding sessions<br>More half-marathon experience<br>Begin preparing for repeated distance"],
+      ["2030 \u2014 The Great World Race","Race-specific preparation<br>21.1 km \u00d7 7 continents<br>Recovery between races<br>Travel and environmental adaptation"]
+    ];
+    var roadHTML=roadmap.map(function(r){return '<div class="rj-road-yr"><b>'+r[0]+'</b><p>'+r[1]+'</p></div>';}).join('');
+    return '<div class="card"><div class="eyebrow">Running Journey</div>'
+      +'<div class="statline"><span class="k">Current distance target</span><span class="v">5 <small>km</small></span></div>'
+      +'<div class="statline"><span class="k">Longest completed distance</span><span class="v">'+(longest>0?longest:"\u2013")+' <small>km</small></span></div>'
+      +'<div class="statline"><span class="k">Next milestone</span><span class="v">21.1 <small>km</small></span></div>'
+      +'<div class="pbar" style="margin-top:8px"><i style="width:'+pct+'%"></i></div>'
+      +'<p class="mission-note" style="margin-top:6px">'+(longest||0)+' / 21.1 km \u00b7 Copenhagen Half Marathon</p>'
+      +'<div class="rj-miles" style="margin-top:14px">'+msHTML+'</div>'
+      +'<details class="ai-focus" style="margin-top:14px"><summary>My Road to 2030</summary>'+roadHTML+'</details>'
+      +'</div>';
+  }
   function renderProg(){
     var el=$("#prog-body");if(!el)return;
     var range=state.progRange||"all",cutoff=progCutoff(range);
@@ -5199,7 +5310,7 @@
     var prog=cutoff?allprog.filter(function(e){return e.date>=cutoff;}):allprog;
     var prof=store.get("bf_profile")||{},tr=(typeof loadTraining==="function"?loadTraining():store.get("bf_training"))||{},sleep=store.get("bf_sleep")||{},wo=store.get("bf_workout")||{};
     var toggle='<div class="prog-range">'+[["1m","1M"],["3m","3M"],["1y","1Y"],["all","All"]].map(function(o){return '<button type="button" data-prange="'+o[0]+'"'+(range===o[0]?' class="on"':'')+'>'+o[1]+'</button>';}).join("")+'</div>';
-    if(!prog.length){el.innerHTML=toggle+'<div class="card"><div class="eyebrow">Progress</div><p class="muted-p" style="margin-top:2px">No weigh-ins in this range yet. Log one on the Body tab, or switch to All.</p></div>';progBindRange();return;}
+    if(!prog.length){el.innerHTML=toggle+'<div class="card"><div class="eyebrow">Progress</div><p class="muted-p" style="margin-top:2px">No weigh-ins in this range yet. Log one on the Body tab, or switch to All.</p></div>'+runningJourneyHTML();progBindRange();return;}
     var cards='',first=prog[0],last=prog[prog.length-1];
     function fl(key){var vs=prog.map(function(e){return e[key];}).filter(function(v){return v!=null;});return vs.length?[vs[0],vs[vs.length-1]]:[null,null];}
     var W=fl("weight"),F=fl("fat"),M=fl("muscle"),WA=fl("waist");
@@ -5231,6 +5342,7 @@
     if(done.length){var wkmap={};done.forEach(function(dt){var d=progParseISO(dt),day=(d.getDay()===0?6:d.getDay()-1);d.setDate(d.getDate()-day);var mk=ovIso(d);wkmap[mk]=(wkmap[mk]||0)+1;});var wks=Object.keys(wkmap).sort().slice(-8),mxw=Math.max.apply(null,wks.map(function(w){return wkmap[w];}));var bars=wks.map(function(w){return '<div class="prog-wkbar"><i style="height:'+Math.max(Math.round(wkmap[w]/mxw*100),8)+'%"></i></div>';}).join("");tiles+='<div class="prog-tile"><div class="k">Training \u00b7 /week</div><div class="prog-wkrow">'+bars+'</div><div class="v" style="font-size:calc(15px*var(--ts,1));margin-top:6px">'+done.length+' total</div></div>';}
     if(sdates.length){var last7=sdates.slice(0,7).map(function(dt){return sleep[dt];}),avgMin=Math.round(last7.reduce(function(a,e){return a+((e.h||0)*60+(e.m||0));},0)/last7.length);tiles+='<div class="prog-tile"><div class="k">Sleep \u00b7 7-night avg</div><div class="v">'+Math.floor(avgMin/60)+'h '+(avgMin%60)+'m</div></div>';}
     if(tiles)cards+='<div class="prog-two">'+tiles+'</div>';
+    cards+=runningJourneyHTML();
     el.innerHTML=toggle+cards;progBindRange();
   }
   function switchTab(tab){
@@ -5255,7 +5367,7 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   (function(){var h=store.get("bf_exhidden");if(h&&h._ubseed)return;h=h||{};h.upper=h.upper||[];["Lat Pulldown","Seated Row"].forEach(function(n){if(h.upper.indexOf(n)<0)h.upper.push(n);});h._ubseed=true;store.set("bf_exhidden",h);})();
   if(typeof exHistBackfill==="function")exHistBackfill();
   refreshFuel();renderExerciseLib();renderTodaySession();renderWeekPlan();renderStrength();renderWeekPlanner();bindWeekPlanner();rtInit();bindAddedTraining();
-  function applyTheme(v){document.documentElement.setAttribute("data-theme",v);$all('[data-group="theme"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===v);});var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute("content",v==="light"?"#FFF4F8":(v==="barbie"?"#FFE6F2":"#241629"));}
+  function applyTheme(v){document.documentElement.setAttribute("data-theme",v);$all('[data-group="theme"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===v);});var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute("content",v==="light"?"#FFF4F8":(v==="barbie"?"#FFE6F2":"#A9E2BF"));}
   var TYP_FACTOR={signature:1,modern:1,simple:1.05};
   function applyScale(){var ts=parseFloat(store.get("bf_textscale")||"1")||1;var typ=store.get("bf_typography")||"signature";document.documentElement.style.setProperty("--ts",(ts*(TYP_FACTOR[typ]||1)).toFixed(3));}
   function applyTextScale(v){store.set("bf_textscale",v);$all('[data-group="ts"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===v);});applyScale();}
@@ -5299,7 +5411,7 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   function renderMenu(){renderMenuProfile();renderTrackPrefs();renderRules();renderDataStatus();if(typeof renderRtSettings==="function")renderRtSettings();}
 
   function allBfKeys(){var ks=[];try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf("bf_")===0)ks.push(k);}}catch(e){}
-    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder","bf_endurance","bf_wordsearch","bf_warmup","bf_exhidden","bf_template","bf_fuelbackup","bf_finisher","bf_foodfav","bf_servingunits","bf_offfav"];
+    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder","bf_endurance","bf_wordsearch","bf_warmup","bf_exhidden","bf_template","bf_fuelbackup","bf_finisher","bf_foodfav","bf_servingunits","bf_offfav","bf_distance"];
     return ks;}
   function exportData(){try{var data={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)data[k]=v;});var payload={app:"Body Fuel Lab",version:"build 35",exported:new Date().toISOString(),data:data};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="bodyfuel-backup-"+todayISO()+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Could not export data on this device.");}}
   function importData(file){if(!file)return;var r=new FileReader();r.onload=function(){try{var obj=JSON.parse(r.result);var data=(obj&&obj.data)?obj.data:obj;if(!data||typeof data!=="object")throw 0;var n=0;Object.keys(data).forEach(function(k){if(k.indexOf("bf_")===0){store.set(k,data[k]);n++;}});if(!n)throw 0;alert("Restored "+n+" items. The app will now reload.");location.reload();}catch(e){alert("That file could not be read as a Body Fuel Lab backup.");}};r.readAsText(file);}
