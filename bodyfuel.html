@@ -282,6 +282,32 @@
   .card.lib-open .lib-body{display:block}
   .lib-chev{width:20px;height:20px;color:var(--accent);transition:transform .2s}
   .card.lib-open .lib-chev{transform:rotate(180deg)}
+  #hp-summary{margin-top:12px;padding:12px 14px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px}
+  .hp-now-l{font-size:calc(11px*var(--ts,1));font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+  .hp-now-wk{font-family:var(--font-d);font-weight:600;font-size:calc(15px*var(--ts,1));color:var(--ink);margin-top:3px}
+  .hp-now-row{font-size:calc(13px*var(--ts,1));color:var(--ink-soft);margin-top:3px}
+  .hp-badge{display:inline-block;font-size:calc(10.5px*var(--ts,1));font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-left:6px}
+  .hp-badge.current{background:var(--accent-soft);color:var(--accent-deep)}
+  .hp-badge.completed{background:var(--surface-2);color:var(--ink-faint)}
+  .hp-badge.upcoming{background:var(--surface-2);color:var(--ink-faint)}
+  .hp-badge.recovery{background:var(--amber);color:#fff}
+  .hp-week{padding:11px 0;border-top:1px solid var(--line-soft)}
+  .hp-week:first-of-type{border-top:0}
+  .hp-week>summary{list-style:none;cursor:pointer}
+  .hp-week>summary::-webkit-details-marker{display:none}
+  .hp-week-top{display:flex;justify-content:space-between;align-items:baseline}
+  .hp-week-name{font-weight:700;font-size:calc(13.5px*var(--ts,1));color:var(--ink)}
+  .hp-week-sub{font-size:calc(12px*var(--ts,1));color:var(--ink-soft);margin-top:2px}
+  .hp-week-detail{margin-top:8px;font-size:calc(12.5px*var(--ts,1));color:var(--ink-soft);line-height:1.6}
+  .hp-week-detail .hp-row{display:flex;justify-content:space-between;padding:3px 0}
+  .hp-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+  .hp-actions button{border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);font-family:var(--font-b);font-weight:600;font-size:calc(12.5px*var(--ts,1));padding:9px;border-radius:10px;cursor:pointer}
+  .hp-edit-form{margin-top:10px;padding-top:10px;border-top:1px solid var(--line-soft)}
+  .hp-knee{margin-top:10px;padding:10px 12px;background:var(--surface-2);border-radius:10px;font-size:calc(12.5px*var(--ts,1));color:var(--ink-soft);line-height:1.6}
+  .hp-year{padding:10px 0;border-top:1px solid var(--line-soft)}
+  .hp-year:first-of-type{border-top:0}
+  .hp-year b{display:block;font-size:calc(13px*var(--ts,1));color:var(--ink);margin-bottom:4px}
+  .hp-year p{font-size:calc(12.5px*var(--ts,1));color:var(--ink-soft);line-height:1.5;margin:0}
   #fuel-target-card .ftday{font-size:calc(12px*var(--ts,1));color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
   #fuel-target-card .ftrow{display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid var(--line-soft);font-size:calc(15px*var(--ts,1));color:var(--ink-soft)}
   #fuel-target-card .ftrow:first-of-type{border-top:0}
@@ -1492,6 +1518,12 @@
           <div id="week-plan"></div>
         </div>
 
+        <div class="card lib-card" id="halfplan-card">
+          <button type="button" class="lib-head" id="halfplan-toggle"><span class="eyebrow" style="margin:0">My Road to 21.1 km \u2192 2030</span><svg class="lib-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div id="hp-summary"></div>
+          <div class="lib-body" id="hp-body"></div>
+        </div>
+
         <div class="card lib-card" id="exlib-card">
           <button type="button" class="lib-head" id="exlib-toggle"><span class="eyebrow" style="margin:0">Exercise library <span id="exlib-count"></span></span><svg class="lib-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div id="exercise-lib" class="lib-body"></div>
@@ -1690,7 +1722,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 115</b></div>
+            <div class="about-row"><span>Version</span><b>Build 116</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1765,7 +1797,7 @@
   var roleText={protein:"protein for muscle repair and recovery",carb:"carbohydrate for energy and some fibre",vf:"fibre, water and micronutrients for relatively little energy",fat:"fat for satiety and hormone support"};
   var buildOpts={protein:[["None",0],["Chicken",0],["Turkey",0],["Beef",0],["Fresh fish",0],["Pork",0],["Bacon",1],["Ham",1]],carb:[["None",0],["Potatoes",0],["Sweet potatoes",0],["Jasmine rice",0],["Basmati rice",0],["Brown rice",0],["Gluten-free oats",0],["Gluten-free pasta",0],["Gluten-free bread",0],["Rice cakes",0]],vf:[["None",0],["Green beans",0],["Peas",0],["Cucumber",0],["Romaine lettuce",0],["Iceberg lettuce",0],["Blueberries",0],["Frozen raspberries",0],["Apples",0],["Pears",0],["Organic banana",0],["Carrots",1],["Cabbage",1],["Kale",1],["Courgette",1],["Asparagus",1],["Beetroot",1],["Orange",1],["Grapes",1],["Watermelon",1],["Pineapple",1],["Bok choy",1]],fat:[["None",0],["Olive oil",0],["Butter",0],["Mayonnaise",0],["Ghee",1]]};
 
-  var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,mlOpenMeal:null,mlSearchQuery:"",mlSearchCache:[],mlBarcodeQuery:"",mlScanInfo:null,mlScanLoading:false,mlLastOffCall:0,mlScanStream:null,mlScanRAF:null,mlServMode:"grams",mlServSelIdx:null,mlServQty:1,ovRange:"this",sessDate:null};
+  var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,mlOpenMeal:null,mlSearchQuery:"",mlSearchCache:[],mlBarcodeQuery:"",mlScanInfo:null,mlScanLoading:false,mlLastOffCall:0,mlScanStream:null,mlScanRAF:null,mlServMode:"grams",mlServSelIdx:null,mlServQty:1,hpEditing:false,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
   var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 98"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"],recovery:["Recovery","Sleep, rest & cycle"],prog:["Progress","Your progress dashboard"]};
@@ -3084,6 +3116,125 @@
   function distTypeLabel(why){return why==="distwalk"?"Walk":why==="distwalkrun"?"Walk/Run":"Run";}
   function distPaceStr(km,totalMin){if(!km||!totalMin)return "\u2013";var pace=totalMin/km;var m=Math.floor(pace),s=Math.round((pace-m)*60);if(s===60){m++;s=0;}return m+":"+(s<10?"0":"")+s+" /km";}
   function longestDistanceKm(){var all=allDistanceEntries();var best=0;all.forEach(function(e){var k=+e.km||0;if(k>best)best=k;});return best;}
+  /* ---------- half-marathon training plan (new, isolated storage: bf_halfplan) ----------
+     The week template below is fixed guidance data, not user data. The user's actual
+     position in the plan (currentWeek) and any per-week edits (overrides) are the only
+     things stored, so nothing here ever touches bf_workout/bf_training/bf_distance. */
+  var HALFPLAN_TEMPLATE=[
+    {w:1,phase:"Foundation",km:5,type:"walk",speed:"4.5\u20135.0",incline:1},
+    {w:2,phase:"Foundation",km:5.5,type:"walk",speed:"4.5\u20135.0",incline:1},
+    {w:3,phase:"Foundation",km:6,type:"walk",speed:"4.8\u20135.2",incline:1},
+    {w:4,phase:"Recovery",km:5,type:"walk",speed:"4.5\u20135.0",incline:1,recovery:true},
+    {w:5,phase:"Build",km:7,type:"walkrun",speed:"5.0\u20135.5",incline:1,interval:"Walk 4 min / Run 1 min"},
+    {w:6,phase:"Build",km:8,type:"walkrun",speed:"5.0\u20135.5",incline:1,interval:"Walk 3 min / Run 2 min"},
+    {w:7,phase:"Build",km:9,type:"walkrun",speed:"5.2\u20135.6",incline:1,interval:"Walk 2 min / Run 3 min"},
+    {w:8,phase:"Recovery",km:6.5,type:"walkrun",speed:"5.0\u20135.5",incline:1,interval:"Walk 4 min / Run 1 min",recovery:true},
+    {w:9,phase:"Build",km:10,type:"walkrun",speed:"5.5\u20136.0",incline:.5,interval:"Walk 2 min / Run 4 min"},
+    {w:10,phase:"Build",km:12,type:"run",speed:"6.0\u20136.5",incline:.5},
+    {w:11,phase:"Recovery",km:9,type:"walkrun",speed:"5.5\u20136.0",incline:.5,interval:"Walk 2 min / Run 4 min",recovery:true},
+    {w:12,phase:"Build",km:14,type:"run",speed:"6.0\u20136.5",incline:.5},
+    {w:13,phase:"Build",km:16,type:"run",speed:"6.2\u20136.7",incline:.5},
+    {w:14,phase:"Recovery",km:11,type:"walkrun",speed:"5.5\u20136.0",incline:.5,interval:"Walk 2 min / Run 4 min",recovery:true},
+    {w:15,phase:"Build",km:18,type:"run",speed:"6.2\u20136.7",incline:.5},
+    {w:16,phase:"Taper",km:12,type:"run",speed:"6.0\u20136.5",incline:.5,note:"Taper begins"},
+    {w:17,phase:"Taper",km:8,type:"run",speed:"6.0\u20136.5",incline:.5,note:"Easy taper week"},
+    {w:18,phase:"Race Week",km:21.1,type:"run",speed:"5.5\u20136.5",incline:0,note:"Copenhagen Half Marathon"}
+  ];
+  function hpTypeLabel(t){return t==="walk"?"Walk":t==="walkrun"?"Walk/Run":"Run";}
+  function loadHalfPlan(){var p=store.get("bf_halfplan");if(!p||typeof p!=="object")p={};if(p.currentWeek==null)p.currentWeek=1;if(!p.overrides)p.overrides={};return p;}
+  function saveHalfPlan(p){store.set("bf_halfplan",p);}
+  function hpBase(w){for(var i=0;i<HALFPLAN_TEMPLATE.length;i++){if(HALFPLAN_TEMPLATE[i].w===w)return HALFPLAN_TEMPLATE[i];}return null;}
+  function hpWeekData(w){var base=hpBase(w);if(!base)return null;var ov=loadHalfPlan().overrides[w];return ov?Object.assign({},base,ov):base;}
+  function hpStatus(w){var cur=loadHalfPlan().currentWeek;if(w<cur)return "completed";if(w===cur)return "current";return "upcoming";}
+  function hpStatusLabel(s){return s==="completed"?"Completed":s==="current"?"Current":"Upcoming";}
+  function hpKneeInfo(){
+    var all=allDistanceEntries();
+    var withKnee=[];for(var i=0;i<all.length;i++){if(all[i].kneeDuring!=null)withKnee.push(i);}
+    if(!withKnee.length)return null;
+    var lastIdx=withKnee[withKnee.length-1],last=all[lastIdx],next=all[lastIdx+1];
+    return {km:last.km,kneeDuring:last.kneeDuring,kneeBefore:last.kneeBefore,nextBefore:(next&&next.kneeBefore!=null)?next.kneeBefore:null,nextDate:next?next.date:null};
+  }
+  function hpEditFormHTML(wd){
+    return '<div class="hp-edit-form">'
+      +'<div class="pmeal-grid"><div class="pmeal"><label>Target (km)</label><input id="hp-edit-km" type="text" inputmode="decimal" value="'+wd.km+'"></div><div class="pmeal"><label>Session type</label>'
+      +'<div class="seg" data-group="hp-edit-type" style="margin-top:0"><button type="button" class="'+(wd.type==="walk"?"on":"")+'" data-val="walk">Walk</button><button type="button" class="'+(wd.type==="walkrun"?"on":"")+'" data-val="walkrun">Walk/Run</button><button type="button" class="'+(wd.type==="run"?"on":"")+'" data-val="run">Run</button></div>'
+      +'</div></div>'
+      +'<button type="button" class="cta" id="hp-edit-save" style="margin-top:10px">Save target</button>'
+      +'</div>';
+  }
+  function hpWeekRowHTML(w){
+    var wd=hpWeekData(w),status=hpStatus(w),isCurrent=status==="current";
+    var detail='<div class="hp-week-detail">'
+      +'<div class="hp-row"><span>Suggested speed</span><span>'+wd.speed+' km/h</span></div>'
+      +(wd.incline!=null?'<div class="hp-row"><span>Treadmill incline</span><span>'+wd.incline+'%</span></div>':'')
+      +(wd.interval?'<div class="hp-row"><span>Interval</span><span>'+wd.interval+'</span></div>':'')
+      +(wd.note?'<div class="hp-row"><span>Note</span><span>'+esc(wd.note)+'</span></div>':'');
+    if(isCurrent){
+      var log=allDistanceEntries(),last=log.length?log[log.length-1]:null;
+      if(last)detail+='<div class="hp-row"><span>Last logged session</span><span>'+last.km+' km \u00b7 '+distPaceStr(+last.km,(+last.hh||0)*60+(+last.mm||0))+'</span></div>';
+      var knee=hpKneeInfo();
+      if(knee)detail+='<div class="hp-knee">Previous session: '+knee.km+' km \u2713<br>Knee during: '+knee.kneeDuring+'/10'+(knee.nextBefore!=null?'<br>Next day: '+knee.nextBefore+'/10':'')+'</div>';
+      detail+='<div class="hp-actions">'
+        +'<button type="button" data-hpact="repeat">Repeat this week</button>'
+        +'<button type="button" data-hpact="next">Move to next week</button>'
+        +'<button type="button" data-hpact="recovery">Take recovery week</button>'
+        +'<button type="button" data-hpact="edit">Edit target</button>'
+        +'</div>'
+        +(state.hpEditing?hpEditFormHTML(wd):'');
+    }
+    detail+='</div>';
+    return '<details class="hp-week"'+(isCurrent?' open':'')+'><summary>'
+      +'<div class="hp-week-top"><span class="hp-week-name">Week '+w+' \u00b7 '+wd.phase+(wd.recovery?' <span class="hp-badge recovery">Recovery</span>':'')+'</span><span class="hp-badge '+status+'">'+hpStatusLabel(status)+'</span></div>'
+      +'<div class="hp-week-sub">'+wd.km+' km \u00b7 '+hpTypeLabel(wd.type)+'</div>'
+      +'</summary>'+detail+'</details>';
+  }
+  function hpDoAction(action){
+    var plan=loadHalfPlan();
+    if(action==="next"){plan.currentWeek=Math.min(plan.currentWeek+1,HALFPLAN_TEMPLATE.length);saveHalfPlan(plan);state.hpEditing=false;}
+    else if(action==="recovery"){var base=hpBase(plan.currentWeek);if(base){var km=Math.round(base.km*0.6*10)/10;plan.overrides[plan.currentWeek]=Object.assign({},plan.overrides[plan.currentWeek]||{},{km:km,recovery:true,note:"Recovery (adjusted)"});saveHalfPlan(plan);}}
+    else if(action==="edit"){state.hpEditing=!state.hpEditing;}
+    renderHalfPlan();
+  }
+  function renderHalfPlan(){
+    var sumBox=$("#hp-summary"),bodyBox=$("#hp-body");
+    if(!sumBox||!bodyBox)return;
+    var plan=loadHalfPlan(),wd=hpWeekData(plan.currentWeek);
+    sumBox.innerHTML=wd?('<div class="hp-now-l">Current Week</div><div class="hp-now-wk">Week '+wd.w+' \u00b7 '+wd.phase+'</div>'
+      +'<div class="hp-now-row">'+wd.km+' km \u00b7 '+hpTypeLabel(wd.type)+'</div>'
+      +'<div class="hp-now-row">'+wd.speed+' km/h</div>')
+      :'<div class="hp-now-l">Plan complete</div><div class="hp-now-wk">Copenhagen done \u2014 see the roadmap below</div>';
+    var weeksHTML=HALFPLAN_TEMPLATE.map(function(t){return hpWeekRowHTML(t.w);}).join('');
+    var years=[
+      ["2028 \u2014 Athlete Development","Build running capacity<br>Maintain strength<br>Improve aerobic fitness<br>Improve running economy<br>Gain additional race experience"],
+      ["2029 \u2014 Endurance & Resilience","Half-marathon experience<br>Recovery development<br>Repeated-distance preparation<br>Long-term durability"],
+      ["2030 \u2014 The Great World Race","Specific preparation for 7 \u00d7 21.1 km<br>Repeated half-marathon capability<br>Recovery between races<br>Travel recovery<br>Different environments/climates<br>Race-specific preparation"]
+    ];
+    var yearsHTML=years.map(function(y){return '<div class="hp-year"><b>'+y[0]+'</b><p>'+y[1]+'</p></div>';}).join('');
+    bodyBox.innerHTML='<p class="muted-p" style="margin-top:0">Guidance toward the Copenhagen Half Marathon (21.1 km) in 2027, then three broader phases toward 2030. Progress at your own pace \u2014 repeat, adjust or take a recovery week any time.</p>'
+      +weeksHTML
+      +'<details class="ai-focus" style="margin-top:14px"><summary>After Copenhagen \u2014 2028\u20132030</summary>'+yearsHTML+'</details>';
+  }
+  (function(){var t=$("#halfplan-toggle");if(t)t.addEventListener("click",function(){var c=$("#halfplan-card");if(c)c.classList.toggle("lib-open");});})();
+  (function(){var host=$("#halfplan-card");if(!host)return;
+    host.addEventListener("click",function(e){
+      var segBtn=e.target.closest('[data-group="hp-edit-type"] button');
+      if(segBtn){var seg=segBtn.closest('[data-group="hp-edit-type"]');$all("button",seg).forEach(function(b){b.classList.toggle("on",b===segBtn);});return;}
+      var act=e.target.closest("[data-hpact]");
+      if(act){hpDoAction(act.getAttribute("data-hpact"));return;}
+      var save=e.target.closest("#hp-edit-save");
+      if(save){
+        var plan=loadHalfPlan(),cur=plan.currentWeek;
+        var kmEl=$("#hp-edit-km"),typeSeg=host.querySelector('[data-group="hp-edit-type"]');
+        var km=num(kmEl?kmEl.value:null);
+        var onBtn=typeSeg?typeSeg.querySelector("button.on"):null;
+        var type=onBtn?onBtn.getAttribute("data-val"):((hpBase(cur)||{}).type);
+        if(km!=null&&km>0){plan.overrides[cur]=Object.assign({},plan.overrides[cur]||{},{km:km,type:type});saveHalfPlan(plan);}
+        state.hpEditing=false;
+        renderHalfPlan();
+        return;
+      }
+    });
+  })();
   function exWeeksSorted(dayKey,exKey){var d=exData(dayKey,exKey);return Object.keys(d).sort().map(function(k){return [k,d[k]];});}
   var exKind={"Sit-Ups":"weight","Flutter Kicks":"time","Single-Arm Cable Row":"lr","Cable External Rotation":"lr","Dumbbell Triceps Kickback":"lr","Kettlebell March":"lrtime","Bird Dog":"reps","Russian Twist":"weight","Reverse Crunch":"reps","Dead Bug":"reps","Pallof Press":"weight","Plank":"time","Farmer Carry":"load","Core":"reps",
     "Copenhagen Side Plank":"time","Farmer's Carry":"distance","Suitcase Carry":"distance","Cable Crunch":"weight","Back Extension Machine":"weight","Cable Wood Chop":"weight","Cable Lift":"weight","Single-arm Cable Press":"weight","Cable Rotation":"weight","Hanging Knee Raise":"reps","Hanging Leg Raise or Captain's Chair":"reps","Ab Wheel Rollout or Stability Ball Rollout":"reps","Roman Chair Leg Raise or Reverse Hyper":"reps","Dead Bug with Resistance Band":"reps","Side Plank Reach Through":"reps",
@@ -5366,7 +5517,7 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   (function(){try{if(store.get("bf_fuelbackup"))return;var keys=["bf_workout","bf_exhist","bf_training","bf_exorder","bf_weekplan","bf_core","bf_cardioday","bf_cardiohist","bf_endurance"],snap={_at:new Date().toISOString(),_note:"Auto snapshot of Fuel training data before Edit-Workout feature."},any=false;keys.forEach(function(k){var v=store.get(k);if(v!=null){snap[k]=v;any=true;}});if(any)store.set("bf_fuelbackup",snap);}catch(e){}})();
   (function(){var h=store.get("bf_exhidden");if(h&&h._ubseed)return;h=h||{};h.upper=h.upper||[];["Lat Pulldown","Seated Row"].forEach(function(n){if(h.upper.indexOf(n)<0)h.upper.push(n);});h._ubseed=true;store.set("bf_exhidden",h);})();
   if(typeof exHistBackfill==="function")exHistBackfill();
-  refreshFuel();renderExerciseLib();renderTodaySession();renderWeekPlan();renderStrength();renderWeekPlanner();bindWeekPlanner();rtInit();bindAddedTraining();
+  refreshFuel();renderExerciseLib();renderTodaySession();renderWeekPlan();renderStrength();renderHalfPlan();renderWeekPlanner();bindWeekPlanner();rtInit();bindAddedTraining();
   function applyTheme(v){document.documentElement.setAttribute("data-theme",v);$all('[data-group="theme"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===v);});var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute("content",v==="light"?"#FFF4F8":(v==="barbie"?"#FFE6F2":"#A9E2BF"));}
   var TYP_FACTOR={signature:1,modern:1,simple:1.05};
   function applyScale(){var ts=parseFloat(store.get("bf_textscale")||"1")||1;var typ=store.get("bf_typography")||"signature";document.documentElement.style.setProperty("--ts",(ts*(TYP_FACTOR[typ]||1)).toFixed(3));}
@@ -5411,7 +5562,7 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   function renderMenu(){renderMenuProfile();renderTrackPrefs();renderRules();renderDataStatus();if(typeof renderRtSettings==="function")renderRtSettings();}
 
   function allBfKeys(){var ks=[];try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf("bf_")===0)ks.push(k);}}catch(e){}
-    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder","bf_endurance","bf_wordsearch","bf_warmup","bf_exhidden","bf_template","bf_fuelbackup","bf_finisher","bf_foodfav","bf_servingunits","bf_offfav","bf_distance"];
+    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder","bf_endurance","bf_wordsearch","bf_warmup","bf_exhidden","bf_template","bf_fuelbackup","bf_finisher","bf_foodfav","bf_servingunits","bf_offfav","bf_distance","bf_halfplan"];
     return ks;}
   function exportData(){try{var data={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)data[k]=v;});var payload={app:"Body Fuel Lab",version:"build 35",exported:new Date().toISOString(),data:data};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="bodyfuel-backup-"+todayISO()+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Could not export data on this device.");}}
   function importData(file){if(!file)return;var r=new FileReader();r.onload=function(){try{var obj=JSON.parse(r.result);var data=(obj&&obj.data)?obj.data:obj;if(!data||typeof data!=="object")throw 0;var n=0;Object.keys(data).forEach(function(k){if(k.indexOf("bf_")===0){store.set(k,data[k]);n++;}});if(!n)throw 0;alert("Restored "+n+" items. The app will now reload.");location.reload();}catch(e){alert("That file could not be read as a Body Fuel Lab backup.");}};r.readAsText(file);}
