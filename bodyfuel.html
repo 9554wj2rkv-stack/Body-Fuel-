@@ -320,6 +320,7 @@
   .ck-quickchip{border:1px solid var(--line);background:var(--surface-2);color:var(--ink-soft);font-family:var(--font-b);font-weight:600;font-size:calc(12.5px*var(--ts,1));padding:9px 12px;border-radius:11px;cursor:pointer}
   .ck-quickchip.done{background:var(--green);color:#fff;border-color:var(--green)}
   .ck-scale-row{display:flex;flex-wrap:wrap;gap:5px}
+  .ck-scale-cap{display:flex;justify-content:space-between;font-size:calc(10.5px*var(--ts,1));color:var(--ink-faint);margin-top:4px}
   .ck-scale-btn{width:30px;height:30px;flex:none;border:1px solid var(--line);background:var(--surface-2);color:var(--ink-soft);font-family:var(--font-b);font-weight:700;font-size:calc(12px*var(--ts,1));border-radius:8px;cursor:pointer;padding:0}
   .ck-scale-btn.on{background:var(--accent);color:#fff;border-color:var(--accent)}
   .ck-form{margin-top:12px;padding-top:12px;border-top:1px solid var(--line-soft)}
@@ -1760,7 +1761,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 123</b></div>
+            <div class="about-row"><span>Version</span><b>Build 124</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -3198,18 +3199,18 @@
      inventing a separate one. Purely additive -- never touches bf_workout/bf_training/bf_distance. */
   function loadCheckpoints(dateISO){var all=store.get("bf_checkpoints")||{};return all[dateISO]||[];}
   function saveCheckpoint(dateISO,entry){var all=store.get("bf_checkpoints")||{};var arr=all[dateISO]||[];arr.push(entry);all[dateISO]=arr;store.set("bf_checkpoints",all);}
-  function ckScaleHTML(name,min,max){var btns="";for(var i=min;i<=max;i++){btns+='<button type="button" class="ck-scale-btn" data-ckscale="'+name+'" data-val="'+i+'">'+i+'</button>';}return '<div class="ck-scale-row" data-ckscalegroup="'+name+'">'+btns+'</div>';}
+  function ckScaleHTML(name,min,max,lowCap,highCap){var btns="";for(var i=min;i<=max;i++){btns+='<button type="button" class="ck-scale-btn" data-ckscale="'+name+'" data-val="'+i+'">'+i+'</button>';}var cap=(lowCap||highCap)?('<div class="ck-scale-cap"><span>'+(lowCap||'')+'</span><span>'+(highCap||'')+'</span></div>'):'';return '<div class="ck-scale-row" data-ckscalegroup="'+name+'">'+btns+'</div>'+cap;}
   function ckChipsHTML(name,options){return '<div class="ck-chip-row" data-ckchipgroup="'+name+'">'+options.map(function(o){return '<button type="button" class="ck-chip" data-ckchip="'+name+'" data-val="'+esc(o)+'">'+esc(o)+'</button>';}).join('')+'</div>';}
   function checkpointFormHTML(trigger){
     var prefillMin=trigger.type==="time"?trigger.value:"",prefillKm=trigger.type==="distance"?trigger.value:"";
     return '<div class="ck-form">'
       +'<div class="pmeal-grid"><div class="pmeal"><label>Elapsed (min)</label><input id="ck-min" type="text" inputmode="numeric" value="'+prefillMin+'" placeholder="min"></div><div class="pmeal"><label>Distance (km)</label><input id="ck-km" type="text" inputmode="decimal" value="'+prefillKm+'" placeholder="km"></div></div>'
       +'<div class="ck-label">Comfort</div>'+ckChipsHTML("comfort",["Great","Good","OK","Hard","Very hard"])
-      +'<div class="ck-label">Effort</div>'+ckScaleHTML("effort",1,10)
-      +'<div class="ck-label">Energy</div>'+ckScaleHTML("energy",1,10)
-      +'<div class="ck-label">Hunger</div>'+ckScaleHTML("hunger",0,10)
-      +'<div class="ck-label">Thirst</div>'+ckScaleHTML("thirst",0,10)
-      +'<div class="ck-label">Left knee</div>'+ckScaleHTML("knee",0,10)
+      +'<div class="ck-label">Effort</div>'+ckScaleHTML("effort",1,10,"Very easy","Max effort")
+      +'<div class="ck-label">Energy</div>'+ckScaleHTML("energy",1,10,"Very low","Very high")
+      +'<div class="ck-label">Hunger</div>'+ckScaleHTML("hunger",0,10,"Not hungry","Extremely hungry")
+      +'<div class="ck-label">Thirst</div>'+ckScaleHTML("thirst",0,10,"Not thirsty","Extremely thirsty")
+      +'<div class="ck-label">Left knee</div>'+ckScaleHTML("knee",0,10,"No pain","Severe pain")
       +'<div class="ck-label">Breathing</div>'+ckChipsHTML("breathing",["Easy","Working","Heavy"])
       +'<div class="ck-label">Legs</div>'+ckChipsHTML("legs",["Fresh","Working","Heavy"])
       +'<input class="mealinput" id="ck-note" type="text" placeholder="Note (optional)" style="margin-top:10px">'
@@ -3430,10 +3431,10 @@
   }
   function recoveryFormHTML(dateISO){
     return '<div class="ck-form" style="margin-top:0;padding-top:0;border-top:0">'
-      +'<div class="ck-label" style="margin-top:0">Energy</div>'+ckScaleHTML("rc-energy",1,5)
-      +'<div class="ck-label">General fatigue</div>'+ckScaleHTML("rc-fatigue",1,5)
-      +'<div class="ck-label">Leg soreness</div>'+ckScaleHTML("rc-legs",0,10)
-      +'<div class="ck-label">Knee</div>'+ckScaleHTML("rc-knee",0,10)
+      +'<div class="ck-label" style="margin-top:0">Energy</div>'+ckScaleHTML("rc-energy",1,5,"Very low","Very high")
+      +'<div class="ck-label">General fatigue</div>'+ckScaleHTML("rc-fatigue",1,5,"None","Very high")
+      +'<div class="ck-label">Leg soreness</div>'+ckScaleHTML("rc-legs",0,10,"None","Severe")
+      +'<div class="ck-label">Knee</div>'+ckScaleHTML("rc-knee",0,10,"No pain","Severe pain")
       +'<div class="ck-label">Overall feeling</div>'+ckChipsHTML("rc-feeling",["Better","Same","Worse"])
       +'<input class="mealinput" id="rc-notes" type="text" placeholder="Notes (optional)" style="margin-top:10px">'
       +'<button type="button" class="cta" id="rc-save" data-rcdate="'+dateISO+'" style="margin-top:12px">Save check-in</button>'
