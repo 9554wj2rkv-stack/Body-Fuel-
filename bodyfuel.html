@@ -1761,7 +1761,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 125</b></div>
+            <div class="about-row"><span>Version</span><b>Build 126</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -3056,9 +3056,9 @@
         +'<button type="button" class="cta" id="dist-save" style="margin-top:14px">Save distance session</button>'
         +'<div class="saved-note" id="dist-saved"></div>'
         +'</div>';
-      var dpc=postCheckinHTML();
+      var dpc=postCheckinHTML(),dsn=sessionNotesOnlyHTML();
       host.innerHTML=nav+head+sessCompleteHTML()+dbody+enduranceCheckpointsCardHTML(dateISO)
-        +(dpc?'<div class="divider"></div>'+dpc:'')+addedTrainingHTML()+whyPills(p);
+        +(dpc?'<div class="divider"></div>'+dpc:'')+dsn+addedTrainingHTML()+whyPills(p);
       bindSessComplete();bindCheckin();bindDistanceForm(dateISO);bindEnduranceCheckpoints();return;
     }
     if(p.why==="upperarms"){
@@ -3069,11 +3069,11 @@
       var abody;
       if(aedit){abody=aEditBtn+'<div class="ai-sec">Shoulders + Biceps</div>'+upperReorderHTML(aMain,"main","upperarms")+'<div class="ai-sec">Core</div>'+upperReorderHTML(aCore,"core","upperarms");}
       else{abody=aEditBtn+'<div id="ex-log" data-dayk="'+adk+'" data-wk="'+awk+'"><div class="ai-sec">Shoulders + Biceps</div>'+aMain.map(function(n){return renderExCard(adk,n,awk,UPPERARMS_TARGET[n],"two");}).join("")+'<div class="ai-sec">Core</div>'+aCore.map(function(n){return renderExCard(adk,n,awk,UPPERARMS_TARGET[n],UPPERARMS_KIND[n]);}).join("")+'</div>';}
-      var apc=postCheckinHTML();
+      var asl=sessionLogHTML(upperInflammationSeg());
       host.innerHTML=nav+ahead+sessCompleteHTML()+warmAHTML()+abody
         +inclineFinHTML(adk)
-        +(apc?'<div class="divider"></div>'+apc:'')+addedTrainingHTML()+whyPills(p);
-      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindFinisher();bindUpperOrder();return;
+        +'<div class="divider"></div>'+asl+addedTrainingHTML()+whyPills(p);
+      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindSessionLog();bindFinisher();bindUpperOrder();return;
     }
     if(p.why==="upper"){
       var udk="upper-body-strength",uwk=sessWeekKey();
@@ -3084,9 +3084,9 @@
       var ubody;
       if(uedit){ubody=uEditBtn+'<div class="ai-sec">Upper Body</div>'+upperReorderHTML(uMain,"main","upper")+'<div class="ai-sec">Core</div>'+upperReorderHTML(uCore,"core","upper");}
       else{var ucard=function(arr){return arr.map(function(n){return renderExCard(udk,n,uwk,UPPER_TARGET[n],"two");}).join("");};ubody=uEditBtn+'<div id="ex-log" data-dayk="'+udk+'" data-wk="'+uwk+'"><div class="ai-sec">Upper Body</div>'+ucard(uMain)+'<div class="ai-sec">Core</div>'+ucard(uCore)+'</div>';}
-      var upc=postCheckinHTML();
-      host.innerHTML=nav+uhead+sessCompleteHTML()+warmAHTML()+ufocus+ubody+inclineFinHTML(udk)+(upc?'<div class="divider"></div>'+upc:'')+addedTrainingHTML()+whyPills(p);
-      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindUpperOrder();bindFinisher();return;
+      var usl=sessionLogHTML(upperInflammationSeg());
+      host.innerHTML=nav+uhead+sessCompleteHTML()+warmAHTML()+ufocus+ubody+inclineFinHTML(udk)+'<div class="divider"></div>'+usl+addedTrainingHTML()+whyPills(p);
+      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindSessionLog();bindUpperOrder();bindFinisher();return;
     }
     if(p.why==="upperai"){
       var dk=slug(p.t),wk2=sessWeekKey();
@@ -3097,29 +3097,29 @@
       var aibody;
       if(aiedit){aibody=aiEditBtn+'<div class="ai-sec">Upper Body</div>'+upperReorderHTML(aiMain,"main","upperai")+'<div class="ai-sec">Core</div>'+upperReorderHTML(aiCore,"core","upperai");}
       else{aibody=aiEditBtn+'<div id="ex-log" data-dayk="'+dk+'" data-wk="'+wk2+'"><div class="ai-sec">Upper Body</div>'+aiMain.map(function(n){return renderExCard(dk,n,wk2,UPPERAI_TARGET[n]);}).join("")+'<div class="ai-sec">Core</div>'+aiCore.map(function(n){return renderExCard(dk,n,wk2,UPPERAI_TARGET[n]);}).join("")+'</div>';}
-      var pcu=postCheckinHTML();
+      var pcu=postCheckinHTML(),aisn=sessionNotesOnlyHTML();
       host.innerHTML=nav+head2+sessCompleteHTML()+warmAHTML()+focus+aibody
-        +(pcu?'<div class="divider"></div>'+pcu:'')+addedTrainingHTML()+whyPills(p);
+        +(pcu?'<div class="divider"></div>'+pcu:'')+aisn+addedTrainingHTML()+whyPills(p);
       bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindUpperOrder();return;
     }
     if(p.why==="lowimpact"){
-      var pcl=postCheckinHTML();
-      host.innerHTML=nav+head+sessCompleteHTML()+(p.notes?'<p class="muted-p" style="margin-top:2px">'+p.notes+'</p>':'')+(pcl?'<div class="divider"></div>'+pcl:'')+addedTrainingHTML()+whyPills(p);
+      var pcl=postCheckinHTML(),lisn=sessionNotesOnlyHTML();
+      host.innerHTML=nav+head+sessCompleteHTML()+(p.notes?'<p class="muted-p" style="margin-top:2px">'+p.notes+'</p>':'')+(pcl?'<div class="divider"></div>'+pcl:'')+lisn+addedTrainingHTML()+whyPills(p);
       bindSessComplete();bindCheckin();return;
     }
     if(p.why==="recovery"){
-      var pcr=postCheckinHTML();
-      host.innerHTML=nav+head+sessCompleteHTML()+recoveryCardioHTML()+mobilityHTML()+(pcr?'<div class="divider"></div>'+pcr:'')+(p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'')+addedTrainingHTML()+whyPills(p);
+      var pcr=postCheckinHTML(),rsn=sessionNotesOnlyHTML();
+      host.innerHTML=nav+head+sessCompleteHTML()+recoveryCardioHTML()+mobilityHTML()+(pcr?'<div class="divider"></div>'+pcr:'')+rsn+(p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'')+addedTrainingHTML()+whyPills(p);
       bindSessComplete();bindRecovery();bindCheckin();return;
     }
     if(p.why==="cardio"){
-      var pcc=postCheckinHTML();
-      host.innerHTML=nav+head+sessCompleteHTML()+cardioOnlyHTML()+(pcc?'<div class="divider"></div>'+pcc:'')+(p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'')+addedTrainingHTML()+whyPills(p);
+      var pcc=postCheckinHTML(),csn=sessionNotesOnlyHTML();
+      host.innerHTML=nav+head+sessCompleteHTML()+cardioOnlyHTML()+(pcc?'<div class="divider"></div>'+pcc:'')+csn+(p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'')+addedTrainingHTML()+whyPills(p);
       bindSessComplete();bindCardioOnly();bindCheckin();return;
     }
     if(p.why==="endurance"){
-      var pce=postCheckinHTML();
-      host.innerHTML=nav+head+sessCompleteHTML()+'<div id="endur-body">'+renderEnduranceHTML()+'</div>'+vestHTML()+enduranceCheckpointsCardHTML(sessISO())+(pce?'<div class="divider"></div>'+pce:'')+(p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'')+addedTrainingHTML()+whyPills(p);
+      var pce=postCheckinHTML(),esn=sessionNotesOnlyHTML();
+      host.innerHTML=nav+head+sessCompleteHTML()+'<div id="endur-body">'+renderEnduranceHTML()+'</div>'+vestHTML()+enduranceCheckpointsCardHTML(sessISO())+(pce?'<div class="divider"></div>'+pce:'')+esn+(p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'')+addedTrainingHTML()+whyPills(p);
       bindSessComplete();bindEndurance();bindCheckin();bindVest();bindEnduranceCheckpoints();return;
     }
     if(!p.log){host.innerHTML=nav+head+'<p class="muted-p">'+(p.notes||"Full rest day.")+'</p>'+addedTrainingHTML()+whyPills(p);return;}
@@ -3136,8 +3136,7 @@
     var ex=(isCore?coreHeaderHTML(sessWeekKey()):'')+editBtn+'<div id="ex-log" data-dayk="'+dayKey+'" data-wk="'+sessWeekKey()+'">'+exBody+'</div>'+(isCore?coreFinishHTML(sessWeekKey()):'');
     var cardio=(p.finish||p.why==="conditioning")?cardioHTML(p):'';
     var notes=p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'';
-    var pcs=postCheckinHTML();
-    host.innerHTML=nav+head+sessCompleteHTML()+warm+meta+ex+cardio+(isStrengthType(p.why)?inclineFinHTML(dayKey):'')+vestHTML()+(pcs?'<div class="divider"></div>'+pcs:'')+notes+'<div class="divider"></div>'+sessionLogHTML()+addedTrainingHTML()+whyPills(p);
+    host.innerHTML=nav+head+sessCompleteHTML()+warm+meta+ex+cardio+(isStrengthType(p.why)?inclineFinHTML(dayKey):'')+vestHTML()+notes+'<div class="divider"></div>'+sessionLogHTML()+addedTrainingHTML()+whyPills(p);
     bindExLog();bindCardio();bindWarm();bindWarmA();bindSessionLog();bindSessComplete();bindCheckin();bindExOrder();bindFinisher();
   }
   /* per-exercise logbook */
@@ -3831,7 +3830,7 @@
 
   /* ---------- training session log ---------- */
   function loadTraining(){return store.get("bf_training")||{};}
-  function todayLog(){var d={done:null,diff:"",knee:"",energy:"",recovery:"",notes:"",warmup:false,cardio:{duration:20,incline:"",speed:"",effort:"",mode:"incline",level:"",pace:""}};var t=loadTraining()[sessISO()];return t?Object.assign(d,t):d;}
+  function todayLog(){var d={done:null,diff:"",knee:"",energy:"",recovery:"",inflammation:"",notes:"",warmup:false,cardio:{duration:20,incline:"",speed:"",effort:"",mode:"incline",level:"",pace:""}};var t=loadTraining()[sessISO()];return t?Object.assign(d,t):d;}
   function sessCompleteHTML(){var done=todayLog().done==="done";return '<div class="warmrow" style="margin-bottom:12px"><div class="warm-t"><b>Workout completed</b></div><button class="excomp accent2'+(done?' on':'')+'" id="sess-complete">'+(done?'\u2714 Completed':'Mark complete')+'</button></div>';}
   function bindSessComplete(){var b=$("#sess-complete");if(!b)return;b.addEventListener("click",function(){var sn=$("#sess-notes-input");if(sn)saveSessionNote(sn.value);var all=loadTraining(),k=sessISO(),t=all[k]||{};if(t.done==="done"){t.done=null;}else{t.done="done";t.type=weekPlanMap(sessWeekKey())[sessIdx()]||"rest";}all[k]=t;store.set("bf_training",all);renderTodaySession();if($("#wp-summary"))renderWPSummary();});}
   function bindDistanceForm(dateISO){
@@ -3862,17 +3861,22 @@
       if(typeof renderProg==="function"&&$("#prog-body"))renderProg();
     });
   }
-  function sessionLogHTML(){
+  function sessionLogHTML(extraAdv){
     var l=todayLog();
     function seg(k,label,opts,val){return '<div class="ratergrp"><div class="rl">'+label+'</div><div class="opts" data-rgrp="'+k+'">'+opts.map(function(o){return '<button class="'+(val===o[0]?'on':'')+'" data-val="'+o[0]+'">'+o[1]+'</button>';}).join("")+'</div></div>';}
+    var en=loadEnergyMap()[todayISO()]||"";
+    function eb(v,lab){return '<button class="'+(en===v?'on':'')+'" data-val="'+v+'">'+lab+'</button>';}
+    var energyToday=(sessISO()===todayISO())?('<div class="ratergrp"><div class="rl">Energy today</div><div class="opts" data-rgrp="ci-energy">'+eb("low","Low")+eb("medium","Medium")+eb("high","High")+'</div></div>'):'';
     var done=seg("tl-done","This session",[["done","Done"],["skipped","Skipped"]],l.done);
-    var notes='<input class="mealinput" id="tl-notes" type="text" placeholder="Notes (optional)" value="'+esc(l.notes)+'">';
+    var notes='<div class="label" style="margin-top:10px">Session Notes</div><textarea id="tl-notes" class="mealinput" rows="3" placeholder="How did the session feel? Pain, energy, performance, anything unusual\u2026" style="width:100%;box-sizing:border-box;resize:vertical;min-height:76px">'+esc(l.notes||"")+'</textarea>';
     var adv=seg("tl-diff","Difficulty",[["easy","Easy"],["good","Good"],["hard","Hard"],["toohard","Too hard"]],l.diff)
       +seg("tl-knee","Knees",[["good","Good"],["sensitive","Sensitive"],["painful","Painful"]],l.knee)
       +seg("tl-energy","Energy",[["low","Low"],["okay","Okay"],["strong","Strong"]],l.energy)
-      +seg("tl-recovery","Recovery tomorrow? <button class=\"whybtn\" data-why=\"recovery\">Why?</button>",[["fresh","Fresh"],["normal","Normal"],["tired","Tired"],["exhausted","Exhausted"]],l.recovery);
-    return done+notes+'<button class="more-link" id="tl-more">More details ▾</button><div class="adv" id="tl-adv">'+adv+'</div><button class="cta" id="save-training">Save session</button><div class="saved-note" id="training-saved"></div>';
+      +seg("tl-recovery","Recovery tomorrow? <button class=\"whybtn\" data-why=\"recovery\">Why?</button>",[["fresh","Fresh"],["normal","Normal"],["tired","Tired"],["exhausted","Exhausted"]],l.recovery)
+      +(extraAdv||"");
+    return '<div class="label">Post-workout check-in</div>'+energyToday+done+notes+'<button class="more-link" id="tl-more">More details ▾</button><div class="adv" id="tl-adv">'+adv+'</div><button class="cta" id="save-training">Save session</button><div class="saved-note" id="training-saved"></div>';
   }
+  function upperInflammationSeg(){var l=todayLog();return '<div class="ratergrp"><div class="rl">Back / Upper-Back Inflammation</div><div class="opts" data-rgrp="tl-inflammation">'+[["none","None"],["mild","Mild"],["moderate","Moderate"],["high","High"]].map(function(o){return '<button class="'+(l.inflammation===o[0]?'on':'')+'" data-val="'+o[0]+'">'+o[1]+'</button>';}).join("")+'</div></div>';}
   function bindSessionLog(){
     state.tlog=todayLog();
     $all('[data-rgrp^="tl-"]',$("#today-session")).forEach(function(box){
@@ -3884,6 +3888,7 @@
   function saveTraining(){
     var all=loadTraining(),l=all[sessISO()]||{};
     l.done=state.tlog.done;l.diff=state.tlog.diff;l.knee=state.tlog.knee;l.energy=state.tlog.energy;l.recovery=state.tlog.recovery;
+    if(state.tlog.inflammation)l.inflammation=state.tlog.inflammation;
     l.notes=$("#tl-notes").value.trim();
     if(l.done==="done")l.type=weekPlanMap(sessWeekKey())[sessIdx()]||"rest";
     else if(l.notes&&!l.type)l.type=weekPlanMap(sessWeekKey())[sessIdx()]||"rest";
@@ -3961,11 +3966,14 @@
     if(sessISO()!==todayISO())return "";
     var e=loadEnergyMap()[todayISO()]||"",s=creatineSlots(todayISO());
     function eb(v,lab){return '<button class="'+(e===v?'on':'')+'" data-val="'+v+'">'+lab+'</button>';}
-    var existingNote=(loadTraining()[todayISO()]||{}).notes||"";
-    return '<div class="label">Session notes</div>'
-      +'<textarea id="sess-notes-input" class="mealinput" rows="3" placeholder="How did the session feel? Pain, energy, performance, anything unusual\u2026" style="width:100%;box-sizing:border-box;resize:vertical;min-height:76px">'+esc(existingNote)+'</textarea>'
-      +'<div class="label" style="margin-top:14px">Post-workout check-in</div>'
+    return '<div class="label">Post-workout check-in</div>'
       +'<div class="ratergrp"><div class="rl">Energy today</div><div class="opts" data-rgrp="ci-energy">'+eb("low","Low")+eb("medium","Medium")+eb("high","High")+'</div></div>';
+  }
+  function sessionNotesOnlyHTML(){
+    if(sessISO()!==todayISO())return "";
+    var existingNote=(loadTraining()[todayISO()]||{}).notes||"";
+    return '<div class="label" style="margin-top:14px">Session Notes</div>'
+      +'<textarea id="sess-notes-input" class="mealinput" rows="3" placeholder="How did the session feel? Pain, energy, performance, anything unusual\u2026" style="width:100%;box-sizing:border-box;resize:vertical;min-height:76px">'+esc(existingNote)+'</textarea>';
   }
   function bindRecovery(){
     var rm=$('[data-group="rec-mode"]');if(rm)rm.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;setSeg("rec-mode",b.getAttribute("data-val"));saveCardio("mode",b.getAttribute("data-val"));});
