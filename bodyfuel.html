@@ -1761,7 +1761,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 126</b></div>
+            <div class="about-row"><span>Version</span><b>Build 127</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -3239,20 +3239,38 @@
   function ckTrendsHTML(list){
     var pts=list.filter(function(c){return c.elapsedMinutes!=null;}).slice().sort(function(a,b){return a.elapsedMinutes-b.elapsedMinutes;});
     if(pts.length<2)return '<p class="muted-p" style="margin-top:0">Add a couple more checkpoints to see trends.</p>';
-    var maxMin=pts[pts.length-1].elapsedMinutes||1,W=280,H=90,pad=6;
-    function xFor(m){return pad+(m/maxMin)*(W-2*pad);}
-    function yFor(v){return H-pad-((v||0)/10)*(H-2*pad);}
+    var maxMin=pts[pts.length-1].elapsedMinutes||1,W=300,H=140,padL=22,padR=8,padT=10,padB=14;
+    function xFor(m){return padL+(m/maxMin)*(W-padL-padR);}
+    function yFor(v){return H-padB-((v||0)/10)*(H-padT-padB);}
     var comfortMap={"Great":10,"Good":8,"OK":6,"Hard":3,"Very hard":1};
-    function seriesPath(mapper){var d="",any=false;pts.forEach(function(c){var v=mapper(c);if(v==null)return;var x=xFor(c.elapsedMinutes),y=yFor(v);d+=(any?"L":"M")+x+","+y+" ";any=true;});return any?d:null;}
+    function seriesPoints(mapper){var out=[];pts.forEach(function(c){var v=mapper(c);if(v==null)return;out.push({x:xFor(c.elapsedMinutes),y:yFor(v)});});return out;}
     var series=[
-      {label:"Energy",color:"var(--accent)",mapper:function(c){return c.energy;}},
-      {label:"Hunger",color:"var(--amber)",mapper:function(c){return c.hunger;}},
-      {label:"Comfort",color:"var(--green)",mapper:function(c){return comfortMap[c.comfort];}},
-      {label:"Knee",color:"var(--red)",mapper:function(c){return c.knee;}}
+      {label:"Energy",color:"#BB2528",mapper:function(c){return c.energy;},fill:true},
+      {label:"Hunger",color:"#5B9A3B",mapper:function(c){return c.hunger;}},
+      {label:"Comfort",color:"#EC5FA8",mapper:function(c){return comfortMap[c.comfort];}},
+      {label:"Knee",color:"#3B82F6",mapper:function(c){return c.knee;}}
     ];
-    var paths=series.map(function(s){var d=seriesPath(s.mapper);return d?'<path d="'+d+'" fill="none" stroke="'+s.color+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>':'';}).join('');
+    var baseline=yFor(0);
+    var shapes=series.map(function(s){
+      var p=seriesPoints(s.mapper);
+      if(!p.length)return '';
+      var linePts=p.map(function(pt){return pt.x+","+pt.y;}).join(" ");
+      var fillHTML='';
+      if(s.fill&&p.length>1){
+        var poly=linePts+" "+p[p.length-1].x+","+baseline+" "+p[0].x+","+baseline;
+        fillHTML='<polygon points="'+poly+'" fill="'+s.color+'" opacity="0.09"/>';
+      }
+      var dots=p.map(function(pt){return '<circle cx="'+pt.x+'" cy="'+pt.y+'" r="3" fill="'+s.color+'"/>';}).join('');
+      return fillHTML+'<polyline points="'+linePts+'" fill="none" stroke="'+s.color+'" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>'+dots;
+    }).join('');
+    var grid='<line x1="'+padL+'" y1="'+yFor(10).toFixed(1)+'" x2="'+(W-padR)+'" y2="'+yFor(10).toFixed(1)+'" stroke="#EFEDEF" stroke-width="1"/>'
+      +'<line x1="'+padL+'" y1="'+yFor(5).toFixed(1)+'" x2="'+(W-padR)+'" y2="'+yFor(5).toFixed(1)+'" stroke="#EFEDEF" stroke-width="1"/>'
+      +'<line x1="'+padL+'" y1="'+yFor(0).toFixed(1)+'" x2="'+(W-padR)+'" y2="'+yFor(0).toFixed(1)+'" stroke="#DAD8DB" stroke-width="1"/>';
+    var axisLabels='<text x="0" y="'+(yFor(10)+3).toFixed(1)+'" font-size="9" fill="#B0AEB2">10</text>'
+      +'<text x="2" y="'+(yFor(5)+3).toFixed(1)+'" font-size="9" fill="#B0AEB2">5</text>'
+      +'<text x="2" y="'+(yFor(0)+3).toFixed(1)+'" font-size="9" fill="#B0AEB2">0</text>';
     var legend=series.map(function(s){return '<span class="ck-legend-item"><i style="background:'+s.color+'"></i>'+s.label+'</span>';}).join('');
-    return '<svg viewBox="0 0 '+W+' '+H+'" class="ck-chart" preserveAspectRatio="none">'+paths+'</svg><div class="ck-legend">'+legend+'</div>';
+    return '<svg viewBox="0 0 '+W+' '+H+'" class="ck-chart">'+grid+axisLabels+shapes+'</svg><div class="ck-legend">'+legend+'</div>';
   }
   function enduranceCheckpointsCardHTML(dateISO){
     var list=loadCheckpoints(dateISO);
