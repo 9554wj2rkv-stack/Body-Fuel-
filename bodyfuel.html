@@ -1761,7 +1761,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 127</b></div>
+            <div class="about-row"><span>Version</span><b>Build 128</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -2998,6 +2998,7 @@
   }
   var UPPER_MAIN=["Single-Arm Cable Row","Chest Press","Cable External Rotation","Dumbbell Triceps Kickback"];
   var UPPER_CORE=["Kettlebell March","Russian Twist","Sit-Ups"];
+  var UPPER_KIND={"Kettlebell March":"lrtime","Russian Twist":"weight","Sit-Ups":"weight"};
   var UPPER_TARGET={"Single-Arm Cable Row":"2 \u00d7 10\u201312 each side \u00b7 light, controlled, no twisting","Chest Press":"2 \u00d7 10\u201312 \u00b7 lighter & controlled","Cable External Rotation":"2 \u00d7 12\u201315 each side \u00b7 very light, elbow tucked","Dumbbell Triceps Kickback":"2 \u00d7 10\u201315 each arm \u00b7 light, slow","Kettlebell March":"2 \u00d7 20\u201330 sec each side \u00b7 KB weight + duration","Russian Twist":"2 \u00d7 10\u201312 each side \u00b7 bodyweight or weighted","Sit-Ups":"2 \u00d7 10\u201315 \u00b7 bodyweight (optional weight)","Flutter Kicks":"2 \u00d7 20\u201330 sec \u00b7 bodyweight"};
   var UPPERARMS_MAIN=["Dumbbell Lateral Raise","Rear Delt Fly","Biceps Curl","Hammer Curl"];
   var UPPERARMS_CORE=["Kettlebell March","Russian Twist","Sit-Ups"];
@@ -3083,7 +3084,7 @@
       var uEditBtn='<div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button type="button" class="linkbtn" data-uoeditbtn="upper">'+(uedit?"Done":"Edit order")+'</button></div>';
       var ubody;
       if(uedit){ubody=uEditBtn+'<div class="ai-sec">Upper Body</div>'+upperReorderHTML(uMain,"main","upper")+'<div class="ai-sec">Core</div>'+upperReorderHTML(uCore,"core","upper");}
-      else{var ucard=function(arr){return arr.map(function(n){return renderExCard(udk,n,uwk,UPPER_TARGET[n],"two");}).join("");};ubody=uEditBtn+'<div id="ex-log" data-dayk="'+udk+'" data-wk="'+uwk+'"><div class="ai-sec">Upper Body</div>'+ucard(uMain)+'<div class="ai-sec">Core</div>'+ucard(uCore)+'</div>';}
+      else{ubody=uEditBtn+'<div id="ex-log" data-dayk="'+udk+'" data-wk="'+uwk+'"><div class="ai-sec">Upper Body</div>'+uMain.map(function(n){return renderExCard(udk,n,uwk,UPPER_TARGET[n],"two");}).join("")+'<div class="ai-sec">Core</div>'+uCore.map(function(n){return renderExCard(udk,n,uwk,UPPER_TARGET[n],UPPER_KIND[n]);}).join("")+'</div>';}
       var usl=sessionLogHTML(upperInflammationSeg());
       host.innerHTML=nav+uhead+sessCompleteHTML()+warmAHTML()+ufocus+ubody+inclineFinHTML(udk)+'<div class="divider"></div>'+usl+addedTrainingHTML()+whyPills(p);
       bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindSessionLog();bindUpperOrder();bindFinisher();return;
