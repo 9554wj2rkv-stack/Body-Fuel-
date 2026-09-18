@@ -428,6 +428,7 @@
   .steps-vs{font-size:calc(12.5px*var(--ts,1));color:var(--ink-faint);margin-top:4px}
   .steps-breakdown{margin-top:10px;padding-top:10px;border-top:1px solid var(--line-soft)}
   .steps-bd-row{display:flex;justify-content:space-between;font-size:calc(12.5px*var(--ts,1));color:var(--ink-soft);padding:2px 0}
+  .steps-bd-total{font-weight:700;color:var(--ink);border-top:1px solid var(--line-soft);margin-top:4px;padding-top:6px}
   .steps-week-row{display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid var(--line-soft);font-size:calc(13px*var(--ts,1))}
   .steps-week-row:first-child{border-top:0}
   .steps-week-day{font-weight:700;color:var(--ink-faint);letter-spacing:.03em}
@@ -1790,7 +1791,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 130</b></div>
+            <div class="about-row"><span>Version</span><b>Build 131</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -3557,8 +3558,10 @@
   function stepsDateLong(iso){var d=new Date(iso+"T00:00:00");return d.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"});}
   function stepsDateShort(iso){var d=new Date(iso+"T00:00:00");return d.toLocaleDateString("en-GB",{day:"numeric",month:"short"});}
   function stepsEntryFormHTML(e,editISO){
-    return '<div class="pmeal-grid" style="margin-top:10px"><div class="pmeal"><label>Steps</label><input id="steps-total-input" type="text" inputmode="numeric" placeholder="e.g. 8420" value="'+(e&&e.totalSteps!=null?e.totalSteps:"")+'"></div><div class="pmeal"><label>Training steps (optional)</label><input id="steps-training-input" type="text" inputmode="numeric" placeholder="from endurance session" value="'+(e&&e.trainingSteps!=null?e.trainingSteps:"")+'"></div></div>'
-      +(e&&e.trainingSteps==null?'<p class="muted-p" style="margin:4px 0 0;font-size:calc(11.5px*var(--ts,1))">Training steps not recorded \u2014 add it above if this day included a tracked endurance workout.</p>':'')
+    var dailyVal=(e&&e.dailySteps!=null)?e.dailySteps:((e&&e.trainingSteps==null&&e.totalSteps!=null)?e.totalSteps:"");
+    var trainVal=(e&&e.trainingSteps!=null)?e.trainingSteps:"";
+    return '<div class="pmeal-grid" style="margin-top:10px"><div class="pmeal"><label>Steps</label><input id="steps-total-input" type="text" inputmode="numeric" placeholder="e.g. 8420" value="'+dailyVal+'"></div><div class="pmeal"><label>Training steps (optional)</label><input id="steps-training-input" type="text" inputmode="numeric" placeholder="from endurance session" value="'+trainVal+'"></div></div>'
+      +'<p class="muted-p" style="margin:6px 0 0;font-size:calc(11.5px*var(--ts,1))">Steps + training steps are added together for your total for the day.</p>'
       +'<button type="button" class="cta" data-stepsact="save" data-stepsdate="'+editISO+'" style="margin-top:10px">Save'+(editISO===todayISO()?"":" Steps")+'</button>';
   }
   function renderStepsToday(){
@@ -3578,9 +3581,8 @@
       diffHTML='<div class="steps-vs">'+(diff>=0?"+":"\u2212")+Math.abs(diff).toLocaleString()+' vs 7-day average</div>';
     }
     var breakdownHTML='';
-    if(e&&e.trainingSteps!=null&&total!=null){
-      var other=Math.max(0,total-e.trainingSteps);
-      breakdownHTML='<div class="steps-breakdown"><div class="steps-bd-row"><span>Total steps</span><span>'+total.toLocaleString()+'</span></div><div class="steps-bd-row"><span>Training steps</span><span>'+e.trainingSteps.toLocaleString()+'</span></div><div class="steps-bd-row"><span>Other movement</span><span>'+other.toLocaleString()+'</span></div></div>';
+    if(e&&e.dailySteps!=null&&e.trainingSteps!=null&&total!=null){
+      breakdownHTML='<div class="steps-breakdown"><div class="steps-bd-row"><span>Steps</span><span>'+e.dailySteps.toLocaleString()+'</span></div><div class="steps-bd-row"><span>Training steps</span><span>'+e.trainingSteps.toLocaleString()+'</span></div><div class="steps-bd-row steps-bd-total"><span>Total</span><span>'+total.toLocaleString()+'</span></div></div>';
     }
     var dateBar='<div class="steps-datebar"><span class="steps-date-label">'+(isToday?("Today \u2014 "+stepsDateShort(today)):stepsDateLong(editISO))+'</span><input type="date" id="steps-date-picker" max="'+today+'" value="'+editISO+'" class="steps-date-input" aria-label="Choose a date to view or edit"></div>';
     var editingTag=isToday?'':'<div class="steps-editing-tag">EDITING</div>';
@@ -3694,10 +3696,11 @@
         var dateToSave=b.getAttribute("data-stepsdate")||todayISO();
         if(dateToSave>todayISO())dateToSave=todayISO();
         var totalEl=document.getElementById("steps-total-input"),trainEl=document.getElementById("steps-training-input");
-        var total=parseSteps(totalEl?totalEl.value:null);
-        if(total!=null){
-          var fields={totalSteps:total};
-          var trainVal=trainEl?parseSteps(trainEl.value):null;
+        var dailyVal=parseSteps(totalEl?totalEl.value:null);
+        var trainVal=trainEl?parseSteps(trainEl.value):null;
+        if(dailyVal!=null||trainVal!=null){
+          var fields={totalSteps:(dailyVal||0)+(trainVal||0)};
+          if(dailyVal!=null)fields.dailySteps=dailyVal;
           if(trainVal!=null)fields.trainingSteps=trainVal;
           var existing=loadStepsDay(dateToSave);
           if(!existing||existing.dailyGoal==null||dateToSave===todayISO())fields.dailyGoal=loadStepGoal();
