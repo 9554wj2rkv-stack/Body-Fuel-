@@ -432,6 +432,15 @@
   .steps-week-row:first-child{border-top:0}
   .steps-week-day{font-weight:700;color:var(--ink-faint);letter-spacing:.03em}
   .steps-week-val{color:var(--ink)}
+  .steps-week-row-btn{width:100%;background:none;border:0;border-top:1px solid var(--line-soft);cursor:pointer;font-family:inherit;text-align:left}
+  .steps-week-row-btn:first-child{border-top:0}
+  .steps-week-row-btn:disabled{opacity:.4;cursor:default}
+  .steps-datebar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+  .steps-date-label{font-weight:700;font-size:calc(13px*var(--ts,1));color:var(--ink)}
+  .steps-date-input{border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:9px;padding:5px 8px;font-family:var(--font-b);font-size:calc(12.5px*var(--ts,1))}
+  .steps-editing-tag{display:inline-block;font-size:calc(10.5px*var(--ts,1));font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent2-deep);background:var(--accent2-soft);padding:3px 9px;border-radius:999px;margin-bottom:8px}
+  .steps-monthnav{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
+  .steps-monthnav-label{font-weight:700;font-family:var(--font-d);color:var(--ink);font-size:calc(13.5px*var(--ts,1))}
   .pbar i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .6s cubic-bezier(.2,.7,.2,1)}
   .bf-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2px}
   .bf-row .from{font-family:var(--font-d);font-size:calc(24px*var(--ts,1));font-weight:500;color:var(--ink-soft);letter-spacing:-.01em}
@@ -1190,11 +1199,6 @@
           <div class="msec-body"><div id="weekly-steps-body"></div></div>
         </div>
 
-        <div class="card msec" id="step-progress-card" data-persist="bf_stepprogopen">
-          <button type="button" class="msec-head"><span class="eyebrow">Step Progress</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-          <div class="msec-body"><div id="step-progress-body"></div></div>
-        </div>
-
         <div class="card" id="food-summary-card">
           <div class="eyebrow">Food</div>
           <div id="food-summary"></div>
@@ -1786,7 +1790,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 129</b></div>
+            <div class="about-row"><span>Version</span><b>Build 130</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1855,7 +1859,7 @@
   var roleText={protein:"protein for muscle repair and recovery",carb:"carbohydrate for energy and some fibre",vf:"fibre, water and micronutrients for relatively little energy",fat:"fat for satiety and hormone support"};
   var buildOpts={protein:[["None",0],["Chicken",0],["Turkey",0],["Beef",0],["Fresh fish",0],["Pork",0],["Bacon",1],["Ham",1]],carb:[["None",0],["Potatoes",0],["Sweet potatoes",0],["Jasmine rice",0],["Basmati rice",0],["Brown rice",0],["Gluten-free oats",0],["Gluten-free pasta",0],["Gluten-free bread",0],["Rice cakes",0]],vf:[["None",0],["Green beans",0],["Peas",0],["Cucumber",0],["Romaine lettuce",0],["Iceberg lettuce",0],["Blueberries",0],["Frozen raspberries",0],["Apples",0],["Pears",0],["Organic banana",0],["Carrots",1],["Cabbage",1],["Kale",1],["Courgette",1],["Asparagus",1],["Beetroot",1],["Orange",1],["Grapes",1],["Watermelon",1],["Pineapple",1],["Bok choy",1]],fat:[["None",0],["Olive oil",0],["Butter",0],["Mayonnaise",0],["Ghee",1]]};
 
-  var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,mlOpenMeal:null,mlSearchQuery:"",mlSearchCache:[],mlBarcodeQuery:"",mlScanInfo:null,mlScanLoading:false,mlLastOffCall:0,mlScanStream:null,mlScanRAF:null,mlServMode:"grams",mlServSelIdx:null,mlServQty:1,hpEditing:false,ckTrigger:null,ckCardOpen:false,rcOpenDate:null,rmAddYear:null,stepsEntryOpen:false,stepsGoalOpen:false,stepsPeriod:"1M",ovRange:"this",sessDate:null};
+  var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,mlOpenMeal:null,mlSearchQuery:"",mlSearchCache:[],mlBarcodeQuery:"",mlScanInfo:null,mlScanLoading:false,mlLastOffCall:0,mlScanStream:null,mlScanRAF:null,mlServMode:"grams",mlServSelIdx:null,mlServQty:1,hpEditing:false,ckTrigger:null,ckCardOpen:false,rcOpenDate:null,rmAddYear:null,stepsEntryOpen:false,stepsGoalOpen:false,stepsPeriod:"1M",stepsEditDate:null,stepsProgMonth:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
   var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 98"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"],recovery:["Recovery","Your training recovery centre"],prog:["Progress","Your progress dashboard"]};
@@ -1865,7 +1869,7 @@
   function num(v){if(typeof v==="string")v=v.replace(",",".");v=parseFloat(v);return isNaN(v)?null:v;}
 
   /* =================== TODAY =================== */
-  function refreshToday(){renderFocus();renderEatToday();renderTodayMeals();renderReminders();renderCheckinNudge();renderMission();renderDailyTargets();renderTodayWorkout();renderWeekFocus();renderScoreboard();renderEnergy();renderHabits();if(typeof renderWater==="function")renderWater();if(typeof renderSleep==="function")renderSleep();if(typeof renderStepsToday==="function")renderStepsToday();if(typeof renderWeeklySteps==="function")renderWeeklySteps();if(typeof renderStepProgress==="function")renderStepProgress();}
+  function refreshToday(){renderFocus();renderEatToday();renderTodayMeals();renderReminders();renderCheckinNudge();renderMission();renderDailyTargets();renderTodayWorkout();renderWeekFocus();renderScoreboard();renderEnergy();renderHabits();if(typeof renderWater==="function")renderWater();if(typeof renderSleep==="function")renderSleep();if(typeof renderStepsToday==="function")renderStepsToday();if(typeof renderWeeklySteps==="function")renderWeeklySteps();}
   function renderScoreboard(){
     var el=$("#scoreboard");if(!el)return;
     var tot=mealTotals(todayISO()),calT=calcCalories().target;
@@ -3455,16 +3459,31 @@
   function isoPlusDays(iso,n){var d=new Date(iso+"T00:00:00");d.setDate(d.getDate()+n);return isoOfDate(d);}
   /* ---------- Step tracking (new, isolated storage: bf_steps + bf_stepgoal) -----------
      bf_steps is keyed by calendar date, same convention as bf_distance/bf_training/bf_recovery.
-     Each date's entry snapshots the daily goal that was active when it was saved, so a later
-     change to the default goal never rewrites historical "goal reached" results. Manual entry
-     only ever targets today's date (matching the app's other date-keyed logging), so a date's
-     dailyGoal is set once, on the day it's actually logged, and never touched again after that
-     day has passed. Never touches bf_workout/bf_training/bf_distance/bf_sleep/bf_cycle/bf_recovery. */
+     Editing always writes to the specific ISO date being edited (today or a past date chosen
+     via the calendar or by tapping a day in Weekly Steps) -- never blended into another date's
+     entry, and a saved value always REPLACES the existing one rather than adding to it. A date's
+     dailyGoal is stamped once, the first time that date is ever saved (or refreshed only while
+     it's still today), so changing the default goal later never rewrites historical "goal
+     reached" results for days already logged. Never touches
+     bf_workout/bf_training/bf_distance/bf_sleep/bf_cycle/bf_recovery. */
   function loadStepGoal(){var g=store.get("bf_stepgoal");return (g==null)?10000:g;}
   function saveStepGoal(g){store.set("bf_stepgoal",g);}
   function loadStepsAll(){return store.get("bf_steps")||{};}
   function loadStepsDay(iso){return loadStepsAll()[iso]||null;}
   function saveStepsDay(iso,fields){var all=loadStepsAll(),e=all[iso]||{};Object.assign(e,fields);if(!e.source)e.source="manual";all[iso]=e;store.set("bf_steps",all);}
+  /* Whole numbers only, allow 0, reject negatives/letters/NaN, generous but bounded upper limit.
+     Strips thousands separators (either "," or ".", matching Danish or US typing conventions)
+     before parsing, so a step count is never mistaken for a decimal. */
+  function parseSteps(raw){
+    if(raw==null)return null;
+    var s=String(raw).trim();
+    if(s==="")return null;
+    s=s.replace(/[.,\s]/g,"");
+    if(!/^-?\d+$/.test(s))return null;
+    var n=parseInt(s,10);
+    if(isNaN(n)||n<0||n>200000)return null;
+    return n;
+  }
   function stepsGoalReached(e){return !!(e&&e.totalSteps!=null&&e.dailyGoal&&e.totalSteps>=e.dailyGoal);}
   function stepsTrailingAvg(beforeISO,days){
     var all=loadStepsAll(),vals=[];
@@ -3535,19 +3554,26 @@
     }).join('');
     return '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;display:block">'+bars+'</svg>';
   }
-  function stepsEntryFormHTML(e){
-    return '<div class="pmeal-grid" style="margin-top:10px"><div class="pmeal"><label>Steps today</label><input id="steps-total-input" type="text" inputmode="numeric" placeholder="e.g. 8420" value="'+(e&&e.totalSteps!=null?e.totalSteps:"")+'"></div><div class="pmeal"><label>Training steps (optional)</label><input id="steps-training-input" type="text" inputmode="numeric" placeholder="from endurance session" value="'+(e&&e.trainingSteps!=null?e.trainingSteps:"")+'"></div></div>'
-      +(e&&e.trainingSteps==null?'<p class="muted-p" style="margin:4px 0 0;font-size:calc(11.5px*var(--ts,1))">Training steps not recorded \u2014 add it above if this session included a tracked endurance workout.</p>':'')
-      +'<button type="button" class="cta" data-stepsact="save" style="margin-top:10px">Save</button>';
+  function stepsDateLong(iso){var d=new Date(iso+"T00:00:00");return d.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"});}
+  function stepsDateShort(iso){var d=new Date(iso+"T00:00:00");return d.toLocaleDateString("en-GB",{day:"numeric",month:"short"});}
+  function stepsEntryFormHTML(e,editISO){
+    return '<div class="pmeal-grid" style="margin-top:10px"><div class="pmeal"><label>Steps</label><input id="steps-total-input" type="text" inputmode="numeric" placeholder="e.g. 8420" value="'+(e&&e.totalSteps!=null?e.totalSteps:"")+'"></div><div class="pmeal"><label>Training steps (optional)</label><input id="steps-training-input" type="text" inputmode="numeric" placeholder="from endurance session" value="'+(e&&e.trainingSteps!=null?e.trainingSteps:"")+'"></div></div>'
+      +(e&&e.trainingSteps==null?'<p class="muted-p" style="margin:4px 0 0;font-size:calc(11.5px*var(--ts,1))">Training steps not recorded \u2014 add it above if this day included a tracked endurance workout.</p>':'')
+      +'<button type="button" class="cta" data-stepsact="save" data-stepsdate="'+editISO+'" style="margin-top:10px">Save'+(editISO===todayISO()?"":" Steps")+'</button>';
   }
   function renderStepsToday(){
     var host=$("#steps-today-body");if(!host)return;
-    var today=todayISO(),e=loadStepsDay(today),goal=loadStepGoal();
+    var today=todayISO();
+    var editISO=state.stepsEditDate||today;
+    if(editISO>today)editISO=today;
+    var isToday=(editISO===today);
+    var e=loadStepsDay(editISO),goal=loadStepGoal();
     var total=e?e.totalSteps:null;
     var pct=(total!=null&&goal)?Math.max(0,Math.min(100,Math.round(total/goal*100))):0;
-    var avg7=stepsTrailingAvg(today,7);
+    var remaining=(total!=null&&goal)?Math.max(0,goal-total):null;
+    var avg7=isToday?stepsTrailingAvg(today,7):null;
     var diffHTML='';
-    if(total!=null&&avg7!=null){
+    if(isToday&&total!=null&&avg7!=null){
       var diff=Math.round(total-avg7);
       diffHTML='<div class="steps-vs">'+(diff>=0?"+":"\u2212")+Math.abs(diff).toLocaleString()+' vs 7-day average</div>';
     }
@@ -3556,16 +3582,20 @@
       var other=Math.max(0,total-e.trainingSteps);
       breakdownHTML='<div class="steps-breakdown"><div class="steps-bd-row"><span>Total steps</span><span>'+total.toLocaleString()+'</span></div><div class="steps-bd-row"><span>Training steps</span><span>'+e.trainingSteps.toLocaleString()+'</span></div><div class="steps-bd-row"><span>Other movement</span><span>'+other.toLocaleString()+'</span></div></div>';
     }
+    var dateBar='<div class="steps-datebar"><span class="steps-date-label">'+(isToday?("Today \u2014 "+stepsDateShort(today)):stepsDateLong(editISO))+'</span><input type="date" id="steps-date-picker" max="'+today+'" value="'+editISO+'" class="steps-date-input" aria-label="Choose a date to view or edit"></div>';
+    var editingTag=isToday?'':'<div class="steps-editing-tag">EDITING</div>';
     var mainHTML=total!=null
       ?('<div class="steps-num">'+total.toLocaleString()+' <span class="steps-goal-txt">/ '+goal.toLocaleString()+' steps</span></div>'
         +'<div class="pbar"><i style="width:'+pct+'%"></i></div>'
-        +'<div class="steps-pct">'+pct+'% of daily goal</div>'
+        +'<div class="steps-pct">'+pct+'% of daily goal'+(remaining!=null?(remaining>0?' \u00b7 '+remaining.toLocaleString()+' steps remaining':' \u00b7 Goal reached'):'')+'</div>'
         +diffHTML+breakdownHTML)
-      :'<p class="muted-p" style="margin:0">No steps logged yet today.</p>';
+      :'<p class="muted-p" style="margin:0">No steps logged for this day yet.</p>';
     var entryOpen=!!state.stepsEntryOpen,goalOpen=!!state.stepsGoalOpen;
-    host.innerHTML=mainHTML
+    var returnBtn=isToday?'':'<button type="button" class="linkbtn" data-stepsact="return-today" style="margin-top:10px;display:block">\u2190 Return to Today</button>';
+    host.innerHTML=editingTag+dateBar+mainHTML
       +'<button type="button" class="cta ghost accent2" data-stepsact="toggle-entry" style="margin-top:10px">'+(total!=null?"Edit":"+ Add steps")+'</button>'
-      +(entryOpen?stepsEntryFormHTML(e):'')
+      +(entryOpen?stepsEntryFormHTML(e,editISO):'')
+      +returnBtn
       +'<button type="button" class="linkbtn" data-stepsact="toggle-goal" style="margin-top:10px;display:block">Daily goal: '+goal.toLocaleString()+' \u00b7 '+(goalOpen?"Cancel":"Edit")+'</button>'
       +(goalOpen?('<div class="pmeal-grid" style="margin-top:8px"><div class="pmeal"><label>Daily step goal</label><input id="steps-goal-input" type="text" inputmode="numeric" value="'+goal+'"></div></div><button type="button" class="cta" data-stepsact="save-goal" style="margin-top:8px">Save goal</button>'):'');
   }
@@ -3577,7 +3607,8 @@
     var rows=stats.days.map(function(d,i){
       var val=d.entry&&d.entry.totalSteps!=null?d.entry.totalSteps.toLocaleString():"\u2014";
       var check=d.entry&&stepsGoalReached(d.entry)?" \u2713":"";
-      return '<div class="steps-week-row"><span class="steps-week-day">'+dayLabels[i]+'</span><span class="steps-week-val">'+val+check+'</span></div>';
+      var disabled=d.date>todayISO()?" disabled":"";
+      return '<button type="button" class="steps-week-row steps-week-row-btn" data-stepsact="edit-date" data-stepsdate="'+d.date+'"'+disabled+'><span class="steps-week-day">'+dayLabels[i]+'</span><span class="steps-week-val">'+val+check+'</span></button>';
     }).join('');
     var prevMon=isoPlusDays(mon,-7),prevStats=weeklyStepsStats(prevMon);
     var cmp="Not enough data yet";
@@ -3587,7 +3618,8 @@
     }
     var highestLabel="\u2013";
     if(stats.highest){var idx=stats.days.indexOf(stats.highest);highestLabel=dayFull[idx]+" \u2014 "+stats.highest.entry.totalSteps.toLocaleString();}
-    host.innerHTML=rows
+    host.innerHTML='<p class="muted-p" style="margin:0 0 4px;font-size:calc(11.5px*var(--ts,1))">Tap a day to add or correct its steps.</p>'
+      +rows
       +'<div class="divider" style="margin:10px 0"></div>'
       +'<div class="statline"><span class="k">Weekly total</span><span class="v">'+(stats.total?stats.total.toLocaleString():"\u2013")+'</span></div>'
       +'<div class="statline"><span class="k">Daily average</span><span class="v">'+(stats.avg!=null?stats.avg.toLocaleString():"\u2013")+'</span></div>'
@@ -3595,28 +3627,36 @@
       +'<div class="statline"><span class="k">Highest day</span><span class="v">'+highestLabel+'</span></div>'
       +'<div class="statline"><span class="k">Compared with last week</span><span class="v">'+cmp+'</span></div>';
   }
-  function monthlyStatsHTML(){
-    var now=new Date(),y=now.getFullYear(),m=now.getMonth();
-    var stats=monthlyStepsStats(y,m);
-    var prev=new Date(y,m-1,1),prevStats=monthlyStepsStats(prev.getFullYear(),prev.getMonth());
+  function stepProgressCardHTML(){
+    var open=store.get("bf_stepprogopen")===true;
+    return '<div class="card msec'+(open?' open':'')+'" id="step-progress-card" data-persist="bf_stepprogopen"><button type="button" class="msec-head"><span class="eyebrow">Step Progress</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button><div class="msec-body"><div id="step-progress-body"></div></div></div>';
+  }
+  function monthlyStatsHTML(year,month){
+    var stats=monthlyStepsStats(year,month);
+    var prev=new Date(year,month-1,1),prevStats=monthlyStepsStats(prev.getFullYear(),prev.getMonth());
     var cmp="Not enough data yet";
     if(stats.recorded>=5&&prevStats.recorded>=5&&prevStats.avg){
       var pctDiff=Math.round((stats.avg-prevStats.avg)/prevStats.avg*100);
       cmp=(pctDiff>=0?"+":"")+pctDiff+"%";
     }
-    return '<div class="statline"><span class="k">Monthly total</span><span class="v">'+(stats.total?stats.total.toLocaleString():"\u2013")+'</span></div>'
-      +'<div class="statline"><span class="k">Daily average</span><span class="v">'+(stats.avg!=null?stats.avg.toLocaleString():"\u2013")+'</span></div>'
+    var consistency=stats.recorded?Math.round(stats.goalDays/stats.recorded*100)+"%":"\u2013";
+    return '<div class="statline"><span class="k">Total steps</span><span class="v">'+(stats.total?stats.total.toLocaleString():"\u2013")+'</span></div>'
+      +'<div class="statline"><span class="k">Average steps / day</span><span class="v">'+(stats.avg!=null?stats.avg.toLocaleString():"\u2013")+'</span></div>'
       +'<div class="statline"><span class="k">Highest step day</span><span class="v">'+(stats.highest?stats.highest.entry.totalSteps.toLocaleString():"\u2013")+'</span></div>'
-      +'<div class="statline"><span class="k">Lowest recorded day</span><span class="v">'+(stats.lowest?stats.lowest.entry.totalSteps.toLocaleString():"\u2013")+'</span></div>'
-      +'<div class="statline"><span class="k">Days reaching goal</span><span class="v">'+stats.goalDays+' / '+stats.recorded+'</span></div>'
+      +'<div class="statline"><span class="k">Lowest recorded step day</span><span class="v">'+(stats.lowest?stats.lowest.entry.totalSteps.toLocaleString():"\u2013")+'</span></div>'
+      +'<div class="statline"><span class="k">Days goal reached</span><span class="v">'+stats.goalDays+' / '+stats.recorded+'</span></div>'
+      +'<div class="statline"><span class="k">Goal consistency</span><span class="v">'+consistency+'</span></div>'
       +'<div class="statline"><span class="k">Vs previous month</span><span class="v">'+cmp+'</span></div>';
   }
   function renderStepProgress(){
     var host=$("#step-progress-body");if(!host)return;
+    var now=new Date();
+    var pm=state.stepsProgMonth||{year:now.getFullYear(),month:now.getMonth()};
+    var isCurrentMonth=(pm.year===now.getFullYear()&&pm.month===now.getMonth());
     var period=state.stepsPeriod||"1M";
     var periods=["1M","3M","6M","12M"];
     var chipsHTML=periods.map(function(p){return '<button type="button" class="ck-quickchip'+(period===p?" done":"")+'" data-stepsact="period-'+p+'">'+p+'</button>';}).join('');
-    var now=new Date(),points;
+    var points;
     if(period==="1M"){
       points=weeklyAveragesForMonth(now.getFullYear(),now.getMonth()).map(function(w){return {label:w.label.replace("Week ","W"),avg:w.avg};});
     } else {
@@ -3624,44 +3664,79 @@
       points=monthlyAvgSeries(n);
     }
     var graph=stepsGraphHTML(points);
-    var weeks=weeklyAveragesForMonth(now.getFullYear(),now.getMonth());
-    var monthName=now.toLocaleString("en",{month:"long"});
+    var weeks=weeklyAveragesForMonth(pm.year,pm.month);
+    var monthName=new Date(pm.year,pm.month,1).toLocaleString("en",{month:"long"});
     var weeksHTML=weeks.map(function(w){
       var txt=!w.started?"\u2014":(w.avg!=null?w.avg.toLocaleString()+"/day":"\u2014");
       return '<div class="steps-week-row"><span class="steps-week-day">'+w.label+'</span><span class="steps-week-val">'+txt+'</span></div>';
     }).join('');
+    var monthNav='<div class="steps-monthnav"><button type="button" class="linkbtn" data-stepsact="prev-month">\u2190 Previous Month</button><span class="steps-monthnav-label">'+esc(monthName)+' '+pm.year+'</span><button type="button" class="linkbtn" data-stepsact="next-month"'+(isCurrentMonth?" disabled":"")+'>Next Month \u2192</button></div>';
     host.innerHTML='<div class="ck-chip-row" style="margin-bottom:10px">'+chipsHTML+'</div>'
       +graph
-      +'<div style="margin-top:14px;font-weight:700;font-family:var(--font-d)">'+esc(monthName)+'</div>'
+      +monthNav
       +weeksHTML
       +'<div class="divider" style="margin:12px 0"></div>'
-      +monthlyStatsHTML();
+      +monthlyStatsHTML(pm.year,pm.month);
   }
   (function(){
     document.addEventListener("click",function(e){
       var b=e.target.closest("[data-stepsact]");if(!b)return;
+      if(b.disabled)return;
       var act=b.getAttribute("data-stepsact");
       if(act==="toggle-entry"){state.stepsEntryOpen=!state.stepsEntryOpen;}
       else if(act==="toggle-goal"){state.stepsGoalOpen=!state.stepsGoalOpen;}
+      else if(act==="return-today"){state.stepsEditDate=null;state.stepsEntryOpen=false;}
+      else if(act==="edit-date"){
+        var pickDate=b.getAttribute("data-stepsdate");
+        if(pickDate&&pickDate<=todayISO()){state.stepsEditDate=(pickDate===todayISO())?null:pickDate;state.stepsEntryOpen=true;}
+      }
       else if(act==="save"){
+        var dateToSave=b.getAttribute("data-stepsdate")||todayISO();
+        if(dateToSave>todayISO())dateToSave=todayISO();
         var totalEl=document.getElementById("steps-total-input"),trainEl=document.getElementById("steps-training-input");
-        var total=num(totalEl?totalEl.value:null);
-        if(total!=null&&total>=0){
-          var fields={totalSteps:Math.round(total),dailyGoal:loadStepGoal()};
-          var trainVal=trainEl?num(trainEl.value):null;
-          if(trainVal!=null&&trainVal>=0)fields.trainingSteps=Math.round(trainVal);
-          saveStepsDay(todayISO(),fields);
+        var total=parseSteps(totalEl?totalEl.value:null);
+        if(total!=null){
+          var fields={totalSteps:total};
+          var trainVal=trainEl?parseSteps(trainEl.value):null;
+          if(trainVal!=null)fields.trainingSteps=trainVal;
+          var existing=loadStepsDay(dateToSave);
+          if(!existing||existing.dailyGoal==null||dateToSave===todayISO())fields.dailyGoal=loadStepGoal();
+          saveStepsDay(dateToSave,fields);
         }
         state.stepsEntryOpen=false;
       }
       else if(act==="save-goal"){
         var goalEl=document.getElementById("steps-goal-input");
-        var g=num(goalEl?goalEl.value:null);
-        if(g!=null&&g>0)saveStepGoal(Math.round(g));
+        var g=parseSteps(goalEl?goalEl.value:null);
+        if(g!=null&&g>0)saveStepGoal(g);
         state.stepsGoalOpen=false;
       }
       else if(act.indexOf("period-")===0){state.stepsPeriod=act.slice(7);}
-      renderStepsToday();renderWeeklySteps();renderStepProgress();
+      else if(act==="prev-month"){
+        var curP=state.stepsProgMonth||{year:new Date().getFullYear(),month:new Date().getMonth()};
+        var dp=new Date(curP.year,curP.month-1,1);
+        state.stepsProgMonth={year:dp.getFullYear(),month:dp.getMonth()};
+      }
+      else if(act==="next-month"){
+        var curN=state.stepsProgMonth||{year:new Date().getFullYear(),month:new Date().getMonth()};
+        var dn=new Date(curN.year,curN.month+1,1),nowD=new Date();
+        if(dn.getFullYear()<nowD.getFullYear()||(dn.getFullYear()===nowD.getFullYear()&&dn.getMonth()<=nowD.getMonth())){
+          state.stepsProgMonth={year:dn.getFullYear(),month:dn.getMonth()};
+        }
+      }
+      if(typeof renderStepsToday==="function")renderStepsToday();
+      if(typeof renderWeeklySteps==="function")renderWeeklySteps();
+      if(typeof renderStepProgress==="function")renderStepProgress();
+    });
+    document.addEventListener("change",function(e){
+      if(e.target&&e.target.id==="steps-date-picker"){
+        var val=e.target.value;
+        if(val){
+          if(val>todayISO())val=todayISO();
+          state.stepsEditDate=(val===todayISO())?null:val;
+          renderStepsToday();
+        }
+      }
     });
   })();
   function loadRecoveryAll(){return store.get("bf_recovery")||{};}
@@ -6137,7 +6212,7 @@
     var prog=cutoff?allprog.filter(function(e){return e.date>=cutoff;}):allprog;
     var prof=store.get("bf_profile")||{},tr=(typeof loadTraining==="function"?loadTraining():store.get("bf_training"))||{},sleep=store.get("bf_sleep")||{},wo=store.get("bf_workout")||{};
     var toggle='<div class="prog-range">'+[["1m","1M"],["3m","3M"],["1y","1Y"],["all","All"]].map(function(o){return '<button type="button" data-prange="'+o[0]+'"'+(range===o[0]?' class="on"':'')+'>'+o[1]+'</button>';}).join("")+'</div>';
-    if(!prog.length){el.innerHTML=toggle+'<div class="card"><div class="eyebrow">Progress</div><p class="muted-p" style="margin-top:2px">No weigh-ins in this range yet. Log one on the Body tab, or switch to All.</p></div>'+runningJourneyHTML();progBindRange();return;}
+    if(!prog.length){el.innerHTML=toggle+'<div class="card"><div class="eyebrow">Progress</div><p class="muted-p" style="margin-top:2px">No weigh-ins in this range yet. Log one on the Body tab, or switch to All.</p></div>'+runningJourneyHTML()+stepProgressCardHTML();progBindRange();if(typeof renderStepProgress==="function")renderStepProgress();return;}
     var cards='',first=prog[0],last=prog[prog.length-1];
     function fl(key){var vs=prog.map(function(e){return e[key];}).filter(function(v){return v!=null;});return vs.length?[vs[0],vs[vs.length-1]]:[null,null];}
     var W=fl("weight"),F=fl("fat"),M=fl("muscle"),WA=fl("waist");
@@ -6170,10 +6245,12 @@
     if(sdates.length){var last7=sdates.slice(0,7).map(function(dt){return sleep[dt];}),avgMin=Math.round(last7.reduce(function(a,e){return a+((e.h||0)*60+(e.m||0));},0)/last7.length);tiles+='<div class="prog-tile"><div class="k">Sleep \u00b7 7-night avg</div><div class="v">'+Math.floor(avgMin/60)+'h '+(avgMin%60)+'m</div></div>';}
     if(tiles)cards+='<div class="prog-two">'+tiles+'</div>';
     cards+=runningJourneyHTML();
+    cards+=stepProgressCardHTML();
     el.innerHTML=toggle+cards;progBindRange();
+    if(typeof renderStepProgress==="function")renderStepProgress();
   }
   function switchTab(tab){
-$all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-tab")===tab);});$all('.screen').forEach(function(s){s.classList.remove("active");});var screen=document.getElementById(tab);void screen.offsetWidth;screen.classList.add("active");if(tab==="progress"&&typeof renderHealthScore==="function")renderHealthScore();if(tab==="prog"&&typeof renderProg==="function")renderProg();if(tab==="recovery"&&typeof renderRecoveryTab==="function")renderRecoveryTab();$("#title").textContent=titles[tab][0];$("#subtitle").textContent=titles[tab][1];var wb=$("#hdr-week");if(wb){wb.style.display=tab==="today"?"block":"none";if(tab==="today")renderWeekBadge();}window.scrollTo({top:0,behavior:"auto"});}
+$all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-tab")===tab);});$all('.screen').forEach(function(s){s.classList.remove("active");});var screen=document.getElementById(tab);void screen.offsetWidth;screen.classList.add("active");if(tab==="progress"&&typeof renderHealthScore==="function")renderHealthScore();if(tab==="prog"&&typeof renderProg==="function")renderProg();if(tab==="recovery"&&typeof renderRecoveryTab==="function")renderRecoveryTab();if(tab==="today"){state.stepsEditDate=null;state.stepsEntryOpen=false;if(typeof renderStepsToday==="function")renderStepsToday();if(typeof renderWeeklySteps==="function")renderWeeklySteps();}$("#title").textContent=titles[tab][0];$("#subtitle").textContent=titles[tab][1];var wb=$("#hdr-week");if(wb){wb.style.display=tab==="today"?"block":"none";if(tab==="today")renderWeekBadge();}window.scrollTo({top:0,behavior:"auto"});}
   $all('nav button').forEach(function(btn){btn.addEventListener("click",function(){switchTab(btn.getAttribute("data-tab"));});});
   document.addEventListener("click",function(e){var g=e.target.closest("[data-goto]");if(g)switchTab(g.getAttribute("data-goto"));});
 
@@ -6275,7 +6352,6 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   renderWater();
   (function(){var d=$("#dt-card");if(d&&store.get("bf_dtopen")===true)d.classList.add("open");})();
   (function(){var d=$("#weekly-steps-card");if(d&&store.get("bf_wstepsopen")===true)d.classList.add("open");})();
-  (function(){var d=$("#step-progress-card");if(d&&store.get("bf_stepprogopen")===true)d.classList.add("open");})();
   (function(){var cc=$("#cycle-setup-card");if(!cc)return;var c=loadCycle();if(!c.start)cc.classList.add("open");else if(store.get("bf_cycopen")===true)cc.classList.add("open");})();
   (function(){var sc=$("#sudoku-card");if(!sc)return;if(store.get("bf_sudopen")===true)sc.classList.add("open");renderSudoku();sudStartTimer();sc.addEventListener("click",function(e){var nw=e.target.closest("#sud-new");if(nw){sc.classList.add("open");sudNew();renderSudoku();return;}var db=e.target.closest("[data-suddiff]");if(db){sc.classList.add("open");sudNew(db.getAttribute("data-suddiff"));renderSudoku();return;}var tl=e.target.closest("[data-sudtool]");if(tl){var a=tl.getAttribute("data-sudtool");if(a==="undo")sudUndo();else if(a==="erase")sudErase();else if(a==="pencil")sudPencil();else if(a==="hint")sudHint();return;}var cell=e.target.closest("[data-sud]");if(cell){sudSelect(+cell.getAttribute("data-sud"));return;}var pn=e.target.closest("[data-sudn]");if(pn){sudInput(+pn.getAttribute("data-sudn"));return;}});})();
   (function(){var wc=$("#wordsearch-card");if(!wc)return;if(store.get("bf_wsopen")===true)wc.classList.add("open");renderWordSearch();wsStartTimer();wsBind();wc.addEventListener("click",function(e){var nw=e.target.closest("#ws-new");if(nw){wc.classList.add("open");wsNew();renderWordSearch();return;}});})();
