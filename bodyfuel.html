@@ -1145,6 +1145,38 @@
   .rm-event-rm{border:0;background:none;color:var(--ink-faint);font-size:calc(15px*var(--ts,1));line-height:1;cursor:pointer;padding:0 2px}
   .prog-wkbar{flex:1;height:100%;display:flex;align-items:flex-end}
   .prog-wkbar i{width:100%;background:var(--accent);border-radius:3px}
+  /* ---------- Reports & Data / printable report ---------- */
+  .rpt-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:12px}
+  .rpt-h{font-family:var(--font-d);font-weight:700;font-size:calc(15px*var(--ts,1));color:var(--ink);margin-bottom:8px}
+  .rpt-sub{font-size:calc(11px*var(--ts,1));font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);margin:12px 0 6px}
+  .rpt-sub:first-child{margin-top:0}
+  .rpt-empty{font-size:calc(12.5px*var(--ts,1));color:var(--ink-faint);font-style:italic}
+  .rpt-row{display:flex;justify-content:space-between;padding:4px 0;font-size:calc(12.5px*var(--ts,1));color:var(--ink-soft)}
+  .rpt-row b{color:var(--ink);font-weight:700}
+  .rpt-metric{background:var(--surface-2);border-radius:10px;padding:9px 12px;margin:6px 0}
+  .rpt-metric-name{font-weight:700;font-size:calc(12.5px*var(--ts,1));color:var(--ink);margin-bottom:3px}
+  .rpt-metric-vals{display:flex;gap:14px;font-size:calc(11.5px*var(--ts,1));color:var(--ink-soft)}
+  .rpt-note-row{border-top:1px solid var(--line-soft);padding:8px 0}
+  .rpt-note-row:first-child{border-top:0}
+  .rpt-note-date{font-weight:700;font-size:calc(11.5px*var(--ts,1));color:var(--ink-faint)}
+  .rpt-note-type{font-size:calc(11.5px*var(--ts,1));color:var(--accent-deep);margin-left:6px}
+  .rpt-note-text{font-size:calc(12.5px*var(--ts,1));color:var(--ink);font-style:italic;margin-top:2px}
+  .rpt-head{text-align:center;margin-bottom:18px}
+  .rpt-head .brand-line{font-family:var(--font-d);font-weight:700;font-size:calc(13px*var(--ts,1));letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+  .rpt-head .rpt-title{font-family:var(--font-d);font-weight:700;font-size:calc(22px*var(--ts,1));color:var(--ink);margin-top:2px}
+  .rpt-head .rpt-period{font-size:calc(13px*var(--ts,1));color:var(--ink-soft);margin-top:6px}
+  .rpt-head .rpt-gen{font-size:calc(11px*var(--ts,1));color:var(--ink-faint);margin-top:2px}
+  .rpt-chart-wrap{margin-top:8px}
+  @media print{
+    body *{visibility:hidden}
+    #report, #report *{visibility:visible}
+    #report{position:absolute;left:0;top:0;width:100%}
+    .no-print, nav, #report-controls{display:none!important}
+    .rpt-card{border:1px solid #ccc;box-shadow:none;break-inside:avoid;page-break-inside:avoid;background:#fff!important}
+    .rpt-h, .rpt-sub{break-after:avoid;page-break-after:avoid}
+    body, .app{background:#fff!important}
+    @page{margin:14mm}
+  }
 </style>
 </head>
 <body>
@@ -1783,6 +1815,7 @@
             <div class="about-row" style="margin-bottom:12px"><span>Last backup</span><b id="data-backup-status" class="ink-faint">Never backed up</b></div>
             <button type="button" class="menu-btn" id="data-export">Export data</button>
             <label class="menu-btn" for="data-import-file" style="display:block;text-align:center">Import / restore data<input type="file" id="data-import-file" accept="application/json,.json" style="display:none"></label>
+            <div id="data-import-status"></div>
             <button type="button" class="menu-btn danger" id="data-clear">Clear all data</button>
           </div>
         </div>
@@ -1791,7 +1824,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 131</b></div>
+            <div class="about-row"><span>Version</span><b>Build 133</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -1811,6 +1844,16 @@
     <section class="screen" id="prog">
       <div class="stack">
         <div id="prog-body"></div>
+      </div>
+    </section>
+
+    <section class="screen" id="report">
+      <div class="stack" id="report-root">
+        <div id="report-controls" class="no-print">
+          <button type="button" class="see-more" data-goto="prog">\u2190 Back to Progress</button>
+          <button type="button" class="cta ghost accent2" id="report-print-btn" style="margin-top:10px">Print / Save PDF</button>
+        </div>
+        <div id="report-body"></div>
       </div>
     </section>
 
@@ -1860,10 +1903,10 @@
   var roleText={protein:"protein for muscle repair and recovery",carb:"carbohydrate for energy and some fibre",vf:"fibre, water and micronutrients for relatively little energy",fat:"fat for satiety and hormone support"};
   var buildOpts={protein:[["None",0],["Chicken",0],["Turkey",0],["Beef",0],["Fresh fish",0],["Pork",0],["Bacon",1],["Ham",1]],carb:[["None",0],["Potatoes",0],["Sweet potatoes",0],["Jasmine rice",0],["Basmati rice",0],["Brown rice",0],["Gluten-free oats",0],["Gluten-free pasta",0],["Gluten-free bread",0],["Rice cakes",0]],vf:[["None",0],["Green beans",0],["Peas",0],["Cucumber",0],["Romaine lettuce",0],["Iceberg lettuce",0],["Blueberries",0],["Frozen raspberries",0],["Apples",0],["Pears",0],["Organic banana",0],["Carrots",1],["Cabbage",1],["Kale",1],["Courgette",1],["Asparagus",1],["Beetroot",1],["Orange",1],["Grapes",1],["Watermelon",1],["Pineapple",1],["Bok choy",1]],fat:[["None",0],["Olive oil",0],["Butter",0],["Mayonnaise",0],["Ghee",1]]};
 
-  var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,mlOpenMeal:null,mlSearchQuery:"",mlSearchCache:[],mlBarcodeQuery:"",mlScanInfo:null,mlScanLoading:false,mlLastOffCall:0,mlScanStream:null,mlScanRAF:null,mlServMode:"grams",mlServSelIdx:null,mlServQty:1,hpEditing:false,ckTrigger:null,ckCardOpen:false,rcOpenDate:null,rmAddYear:null,stepsEntryOpen:false,stepsGoalOpen:false,stepsPeriod:"1M",stepsEditDate:null,stepsProgMonth:null,ovRange:"this",sessDate:null};
+  var state={tGoal:"maintenance",tDay:"training",build:{protein:["Chicken"],carb:["Gluten-free oats"],vf:["Green beans"],fat:["Olive oil"]},pick:{protein:"Chicken",carb:"Jasmine rice",veg:"Green beans",fat:"Olive oil"},prepDays:3,fTime:"morning",fa:{photo:null,ratings:{},verdict:null,verdictManual:false},libFilter:"all",tvPick:null,tvFilter:"all",rating:{energy:0,digestion:0,fullness:0,headache:0,joint:0,cravings:0},wp:{photo:null,state:"cooked",meal:"lunch",verdict:null},tlog:{},mlMeal:"breakfast",mlFood:null,mlState:null,mlOpenMeal:null,mlSearchQuery:"",mlSearchCache:[],mlBarcodeQuery:"",mlScanInfo:null,mlScanLoading:false,mlLastOffCall:0,mlScanStream:null,mlScanRAF:null,mlServMode:"grams",mlServSelIdx:null,mlServQty:1,hpEditing:false,ckTrigger:null,ckCardOpen:false,rcOpenDate:null,rmAddYear:null,stepsEntryOpen:false,stepsGoalOpen:false,stepsPeriod:"1M",stepsEditDate:null,stepsProgMonth:null,backupPending:null,rptPeriod:"30",rptFrom:null,rptTo:null,ovRange:"this",sessDate:null};
   var goalName={fatloss:"Fat loss",musclegain:"Muscle gain",maintenance:"Maintenance"};
   var dayLabel={training:"training day",rest:"rest day",recovery:"recovery day"};
-  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 98"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"],recovery:["Recovery","Your training recovery centre"],prog:["Progress","Your progress dashboard"]};
+  var titles={overview:["Overview","Your weekly progress"],today:["Today","Your plan for today"],food:["Food","Log your meals & water"],detect:["Food Analysis","Check and save foods — offline · build 98"],progress:["My Body","Weekly tracking & profile"],learn:["Learn","Understand food & labels"],prep:["Meal Prep","Batch-cook for the week"],fuel:["Training & Fuel","Plan, train, and fuel it"],fuckit:["Honest Corner","The honest, human corner"],menu:["Menu","Appearance & settings"],recovery:["Recovery","Your training recovery centre"],prog:["Progress","Your progress dashboard"],report:["Progress Report","Body Fuel Lab report"]};
   var planMeals={fatloss:{b:"Gluten-free oats + raspberries",l:"Chicken + green beans + small potatoes",d:"Fresh fish + romaine salad + olive oil"},musclegain:{b:"Gluten-free oats + banana + honey",l:"Beef + basmati rice + peas",d:"Chicken + sweet potatoes + green beans"},maintenance:{b:"Gluten-free oats + blueberries + honey",l:"Chicken + jasmine rice + green beans",d:"Fresh fish + potatoes + cucumber salad"}};
 
   function flash(sel,msg){var el=$(sel);if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(function(){el.textContent="";},2600);}
@@ -3030,10 +3073,10 @@
   var UPPER_CORE=["Kettlebell March","Russian Twist","Sit-Ups"];
   var UPPER_KIND={"Kettlebell March":"lrtime","Russian Twist":"weight","Sit-Ups":"weight"};
   var UPPER_TARGET={"Single-Arm Cable Row":"2 \u00d7 10\u201312 each side \u00b7 light, controlled, no twisting","Chest Press":"2 \u00d7 10\u201312 \u00b7 lighter & controlled","Cable External Rotation":"2 \u00d7 12\u201315 each side \u00b7 very light, elbow tucked","Dumbbell Triceps Kickback":"2 \u00d7 10\u201315 each arm \u00b7 light, slow","Kettlebell March":"2 \u00d7 20\u201330 sec each side \u00b7 KB weight + duration","Russian Twist":"2 \u00d7 10\u201312 each side \u00b7 bodyweight or weighted","Sit-Ups":"2 \u00d7 10\u201315 \u00b7 bodyweight (optional weight)","Flutter Kicks":"2 \u00d7 20\u201330 sec \u00b7 bodyweight"};
-  var UPPERARMS_MAIN=["Dumbbell Lateral Raise","Rear Delt Fly","Biceps Curl","Hammer Curl"];
+  var UPPERARMS_MAIN=["Dumbbell Lateral Raise","Rear Delt Fly","Biceps Curl","Hammer Curl","Chest Fly Machine"];
   var UPPERARMS_CORE=["Kettlebell March","Russian Twist","Sit-Ups"];
   var UPPERARMS_KIND={"Kettlebell March":"lrtime","Russian Twist":"weight","Sit-Ups":"weight"};
-  var UPPERARMS_TARGET={"Dumbbell Lateral Raise":"2 sets \u00d7 10\u201315","Rear Delt Fly":"2 sets \u00d7 10\u201315","Biceps Curl":"2 sets \u00d7 10\u201312","Hammer Curl":"2 sets \u00d7 10\u201312","Kettlebell March":"2 \u00d7 20\u201330 sec each side \u00b7 KB weight + duration","Russian Twist":"2 \u00d7 10\u201312 each side \u00b7 bodyweight or weighted","Sit-Ups":"2 \u00d7 10\u201315 \u00b7 bodyweight (optional weight)"};
+  var UPPERARMS_TARGET={"Dumbbell Lateral Raise":"2 sets \u00d7 10\u201315","Rear Delt Fly":"2 sets \u00d7 10\u201315","Biceps Curl":"2 sets \u00d7 10\u201312","Hammer Curl":"2 sets \u00d7 10\u201312","Chest Fly Machine":"2 sets \u00d7 10\u201315","Kettlebell March":"2 \u00d7 20\u201330 sec each side \u00b7 KB weight + duration","Russian Twist":"2 \u00d7 10\u201312 each side \u00b7 bodyweight or weighted","Sit-Ups":"2 \u00d7 10\u201315 \u00b7 bodyweight (optional weight)"};
   var UPPERAI_MAIN=["Single-Arm Cable Row","Chest Press","Cable External Rotation","Dumbbell Triceps Kickback"];
   var UPPERAI_CORE=["Dead Bug","Bird Dog","Kettlebell March","Russian Twist","Reverse Crunch"];
   var UPPERAI_TARGET={"Single-Arm Cable Row":"2 \u00d7 10\u201312 each side \u00b7 light, controlled, no twisting","Chest Press":"2 \u00d7 10\u201312 \u00b7 lighter & controlled","Cable External Rotation":"2 \u00d7 12\u201315 each side \u00b7 very light, elbow tucked","Dumbbell Triceps Kickback":"2 \u00d7 10\u201315 each arm \u00b7 light, slow","Dead Bug":"2 \u00d7 8\u201310 each side \u00b7 bodyweight","Bird Dog":"2 \u00d7 8\u201310 each side \u00b7 bodyweight","Kettlebell March":"2 \u00d7 20\u201330 sec each side \u00b7 KB weight + duration","Russian Twist":"2 \u00d7 8\u201312 each side \u00b7 bodyweight or weighted","Reverse Crunch":"2 \u00d7 10\u201315 \u00b7 bodyweight"};
@@ -3633,6 +3676,75 @@
     var open=store.get("bf_stepprogopen")===true;
     return '<div class="card msec'+(open?' open':'')+'" id="step-progress-card" data-persist="bf_stepprogopen"><button type="button" class="msec-head"><span class="eyebrow">Step Progress</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button><div class="msec-body"><div id="step-progress-body"></div></div></div>';
   }
+  /* ---------- Reports & Data card (Progress screen) ---------- */
+  var RPT_PERIODS=[["30","30 Days"],["90","90 Days"],["6m","6 Months"],["1y","1 Year"],["all","All Time"],["custom","Custom"]];
+  function reportsDataCardHTML(){
+    var open=store.get("bf_reportsopen")===true;
+    var period=state.rptPeriod||"30";
+    var chips=RPT_PERIODS.map(function(p){return '<button type="button" class="ck-quickchip'+(period===p[0]?" done":"")+'" data-rptact="period-'+p[0]+'">'+p[1]+'</button>';}).join('');
+    var customHTML=period==="custom"?('<div class="pmeal-grid" style="margin-top:8px"><div class="pmeal"><label>From</label><input type="date" id="rpt-from" max="'+todayISO()+'" value="'+(state.rptFrom||isoPlusDays(todayISO(),-29))+'"></div><div class="pmeal"><label>To</label><input type="date" id="rpt-to" max="'+todayISO()+'" value="'+(state.rptTo||todayISO())+'"></div></div>'):'';
+    var lb=store.get("bf_lastbackup"),lbTxt=lb?(function(){var d=new Date(lb);return isNaN(d.getTime())?lb:d.toLocaleDateString();})():"Never backed up";
+    return '<div class="card msec'+(open?' open':'')+'" id="reports-data-card" data-persist="bf_reportsopen"><button type="button" class="msec-head"><span class="eyebrow">Reports &amp; Data</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>'
+      +'<div class="msec-body">'
+      +'<div class="rpt-sub" style="margin-top:0">Progress Report</div>'
+      +'<p class="muted-p" style="margin:0 0 8px">Create a clean summary of your body, training, endurance, steps and recovery.</p>'
+      +'<div class="ck-chip-row">'+chips+'</div>'
+      +customHTML
+      +'<button type="button" class="cta" data-rptact="generate" style="margin-top:10px">Generate report</button>'
+      +'<div class="rpt-sub">Data Export</div>'
+      +'<p class="muted-p" style="margin:0 0 8px">Export your Body Fuel Lab records for your own analysis.</p>'
+      +'<button type="button" class="cta ghost accent2" data-rptact="export-csv">Export CSV</button>'
+      +'<div class="rpt-sub">Data Backup</div>'
+      +'<p class="muted-p" style="margin:0 0 4px">Keep a complete copy of your Body Fuel Lab history.</p>'
+      +'<p class="muted-p" style="margin:0 0 8px;font-size:calc(11px*var(--ts,1))">'+esc(lbTxt)+'</p>'
+      +'<button type="button" class="cta ghost accent2" data-rptact="export-backup">Export full backup</button>'
+      +'<label class="cta ghost" style="display:block;text-align:center;margin-top:8px" for="rpt-import-file">Import full backup<input type="file" id="rpt-import-file" accept="application/json,.json" style="display:none"></label>'
+      +'<div id="rpt-import-status"></div>'
+      +'</div></div>';
+  }
+  function csvEscape(v){if(v==null)v="";v=String(v);if(/[",\n\r]/.test(v))v='"'+v.replace(/"/g,'""')+'"';return v;}
+  function exportReportCSV(){
+    try{
+      var range=rptPeriodDates(state.rptPeriod,state.rptFrom,state.rptTo),from=range.from,to=range.to;
+      var rows=[["Date","Category","Metric","Value","Unit","Workout","Exercise","Sets","Reps","Load","Duration","Distance","Steps","Training Steps","Sleep","Calories","Protein","Notes"]];
+      function row(o){rows.push(["Date","Category","Metric","Value","Unit","Workout","Exercise","Sets","Reps","Load","Duration","Distance","Steps","Training Steps","Sleep","Calories","Protein","Notes"].map(function(h){return o[h]!=null?o[h]:"";}));}
+      loadEntries().filter(function(e){return e&&e.date&&rptInRange(e.date,from,to);}).forEach(function(e){
+        ["weight","fat","muscle","waist","hip","chest","armL","armR","thighL","thighR"].forEach(function(k){if(e[k]!=null)row({Date:e.date,Category:"Body",Metric:k,Value:e[k]});});
+      });
+      var tr=loadTraining();Object.keys(tr).filter(function(d){return rptInRange(d,from,to)&&tr[d].done==="done";}).forEach(function(d){row({Date:d,Category:"Training",Metric:"Session",Value:"Completed",Workout:REPORT_TYPE_LABEL[tr[d].type]||tr[d].type,Notes:tr[d].notes||""});});
+      var wo=loadWorkout();Object.keys(wo).forEach(function(dk){Object.keys(wo[dk]).forEach(function(ek){var weeks=wo[dk][ek];Object.keys(weeks).forEach(function(wk){var e=weeks[wk];if(!e||!e.completed||!e.date||!rptInRange(e.date,from,to))return;row({Date:e.date,Category:"Strength",Metric:"Exercise",Exercise:exNameFromSlug(ek),Load:e.weight!=null?e.weight:(e.w1!=null?e.w1:""),Reps:e.reps!=null?e.reps:(e.r1!=null?e.r1:""),Duration:e.time!=null?e.time:""});});});});
+      allDistanceEntries().filter(function(e){return rptInRange(e.date,from,to);}).forEach(function(e){row({Date:e.date,Category:"Distance",Metric:e.type||"distance",Value:e.km,Unit:"km",Duration:((+e.hh||0)*60+(+e.mm||0))+" min",Notes:e.notes||""});});
+      var stepsAll=loadStepsAll();Object.keys(stepsAll).filter(function(d){return rptInRange(d,from,to);}).forEach(function(d){var e=stepsAll[d];row({Date:d,Category:"Steps",Metric:"Daily steps",Steps:e.totalSteps,"Training Steps":e.trainingSteps!=null?e.trainingSteps:""});});
+      var recAll=loadRecoveryAll();Object.keys(recAll).filter(function(d){return rptInRange(d,from,to);}).forEach(function(d){var e=recAll[d];row({Date:d,Category:"Recovery",Metric:"Check-in",Value:e.energy,Notes:e.notes||""});});
+      var slAll=sleepAll();Object.keys(slAll).filter(function(d){return rptInRange(d,from,to);}).forEach(function(d){var e=slAll[d];row({Date:d,Category:"Sleep",Metric:"Duration",Sleep:((e.h||0)+"h "+(e.m||0)+"m")});});
+      var mlAll=store.get("bf_meallog")||{};Object.keys(mlAll).filter(function(d){return rptInRange(d,from,to)&&dayLogged(d);}).forEach(function(d){var t=mealTotals(d);row({Date:d,Category:"Food",Metric:"Daily totals",Calories:t.kcal,Protein:t.p});});
+      var csv=rows.map(function(r){return r.map(csvEscape).join(",");}).join("\r\n");
+      var blob=new Blob([csv],{type:"text/csv;charset=utf-8"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="BodyFuelLab_Report_"+todayISO()+".csv";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);
+    }catch(e){alert("Export could not be created. Your existing data has not been changed.");}
+  }
+  (function(){
+    document.addEventListener("click",function(e){
+      var b=e.target.closest("[data-rptact]");
+      if(b){
+        var act=b.getAttribute("data-rptact");
+        if(act.indexOf("period-")===0){state.rptPeriod=act.slice(7);if($("#reports-data-card"))$("#reports-data-card").outerHTML=reportsDataCardHTML();}
+        else if(act==="generate"){
+          var fromEl=$("#rpt-from"),toEl=$("#rpt-to");
+          if(fromEl)state.rptFrom=fromEl.value||state.rptFrom;
+          if(toEl)state.rptTo=toEl.value||state.rptTo;
+          switchTab("report");renderReport();
+        }
+        else if(act==="export-csv")exportReportCSV();
+        else if(act==="export-backup")exportData();
+      }
+      if(e.target.closest('[data-bkact="confirm-restore"]')&&e.target.closest("#rpt-import-status")){confirmBackupRestore();return;}
+      if(e.target.closest('[data-bkact="cancel-restore"]')&&e.target.closest("#rpt-import-status")){cancelBackupRestore("#rpt-import-status");return;}
+      if(e.target.closest("#report-print-btn")){window.print();return;}
+    });
+    document.addEventListener("change",function(e){
+      var imp=e.target.closest("#rpt-import-file");if(imp&&imp.files&&imp.files[0]){startBackupRestore(imp.files[0],"#rpt-import-status");}
+    });
+  })();
   function monthlyStatsHTML(year,month){
     var stats=monthlyStepsStats(year,month);
     var prev=new Date(year,month-1,1),prevStats=monthlyStepsStats(prev.getFullYear(),prev.getMonth());
@@ -6215,7 +6327,7 @@
     var prog=cutoff?allprog.filter(function(e){return e.date>=cutoff;}):allprog;
     var prof=store.get("bf_profile")||{},tr=(typeof loadTraining==="function"?loadTraining():store.get("bf_training"))||{},sleep=store.get("bf_sleep")||{},wo=store.get("bf_workout")||{};
     var toggle='<div class="prog-range">'+[["1m","1M"],["3m","3M"],["1y","1Y"],["all","All"]].map(function(o){return '<button type="button" data-prange="'+o[0]+'"'+(range===o[0]?' class="on"':'')+'>'+o[1]+'</button>';}).join("")+'</div>';
-    if(!prog.length){el.innerHTML=toggle+'<div class="card"><div class="eyebrow">Progress</div><p class="muted-p" style="margin-top:2px">No weigh-ins in this range yet. Log one on the Body tab, or switch to All.</p></div>'+runningJourneyHTML()+stepProgressCardHTML();progBindRange();if(typeof renderStepProgress==="function")renderStepProgress();return;}
+    if(!prog.length){el.innerHTML=toggle+'<div class="card"><div class="eyebrow">Progress</div><p class="muted-p" style="margin-top:2px">No weigh-ins in this range yet. Log one on the Body tab, or switch to All.</p></div>'+runningJourneyHTML()+stepProgressCardHTML()+reportsDataCardHTML();progBindRange();if(typeof renderStepProgress==="function")renderStepProgress();return;}
     var cards='',first=prog[0],last=prog[prog.length-1];
     function fl(key){var vs=prog.map(function(e){return e[key];}).filter(function(v){return v!=null;});return vs.length?[vs[0],vs[vs.length-1]]:[null,null];}
     var W=fl("weight"),F=fl("fat"),M=fl("muscle"),WA=fl("waist");
@@ -6249,6 +6361,7 @@
     if(tiles)cards+='<div class="prog-two">'+tiles+'</div>';
     cards+=runningJourneyHTML();
     cards+=stepProgressCardHTML();
+    cards+=reportsDataCardHTML();
     el.innerHTML=toggle+cards;progBindRange();
     if(typeof renderStepProgress==="function")renderStepProgress();
   }
@@ -6320,8 +6433,446 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   function allBfKeys(){var ks=[];try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf("bf_")===0)ks.push(k);}}catch(e){}
     if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder","bf_endurance","bf_wordsearch","bf_warmup","bf_exhidden","bf_template","bf_fuelbackup","bf_finisher","bf_foodfav","bf_servingunits","bf_offfav","bf_distance","bf_halfplan","bf_checkpoints","bf_milestones","bf_recovery","bf_roadmapevents","bf_steps","bf_stepgoal"];
     return ks;}
-  function exportData(){try{var data={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)data[k]=v;});var payload={app:"Body Fuel Lab",version:"build 35",exported:new Date().toISOString(),data:data};var blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download="bodyfuel-backup-"+todayISO()+".json";document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Could not export data on this device.");}}
-  function importData(file){if(!file)return;var r=new FileReader();r.onload=function(){try{var obj=JSON.parse(r.result);var data=(obj&&obj.data)?obj.data:obj;if(!data||typeof data!=="object")throw 0;var n=0;Object.keys(data).forEach(function(k){if(k.indexOf("bf_")===0){store.set(k,data[k]);n++;}});if(!n)throw 0;alert("Restored "+n+" items. The app will now reload.");location.reload();}catch(e){alert("That file could not be read as a Body Fuel Lab backup.");}};r.readAsText(file);}
+  /* ---------- full backup / restore (upgrade of the existing export/import; same underlying
+     bf_ keys via allBfKeys(), same download mechanism -- this is NOT a second backup system,
+     just a safer wrapper around the one that already existed) ---------- */
+  var BACKUP_VERSION=1,BFL_BUILD=132;
+  function buildBackupPayload(){var storage={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)storage[k]=v;});return {app:"Body Fuel Lab",backupVersion:BACKUP_VERSION,build:BFL_BUILD,exportedAt:new Date().toISOString(),storage:storage};}
+  function downloadJSON(obj,filename){var blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);}
+  function exportData(){try{downloadJSON(buildBackupPayload(),"BodyFuelLab_FullBackup_"+todayISO()+".json");store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Export could not be created. Your existing data has not been changed.");}}
+  function validateBackupObj(obj){
+    if(!obj||typeof obj!=="object")return {valid:false,reason:"This file does not appear to be a valid Body Fuel Lab backup. Nothing has been changed."};
+    var storage=obj.storage||obj.data;
+    if(obj.app!=="Body Fuel Lab"||!storage||typeof storage!=="object")return {valid:false,reason:"This file does not appear to be a valid Body Fuel Lab backup. Nothing has been changed."};
+    if(obj.backupVersion!=null&&obj.backupVersion>BACKUP_VERSION)return {valid:false,reason:"This backup was made with a newer version of Body Fuel Lab and can't be safely restored here. Nothing has been changed."};
+    var hasAnyBfKey=Object.keys(storage).some(function(k){return k.indexOf("bf_")===0;});
+    if(!hasAnyBfKey)return {valid:false,reason:"This file does not appear to be a valid Body Fuel Lab backup. Nothing has been changed."};
+    return {valid:true,storage:storage,exportedAt:obj.exportedAt||null,build:obj.build||null};
+  }
+  function backupPreviewCounts(storage){
+    function cnt(k,shape){var v=storage[k];if(v==null)return 0;if(shape==="array")return Array.isArray(v)?v.length:0;if(shape==="nested"){var n=0;Object.keys(v).forEach(function(dk){var exs=v[dk]||{};Object.keys(exs).forEach(function(ek){n+=Object.keys(exs[ek]||{}).length;});});return n;}return typeof v==="object"?Object.keys(v).length:0;}
+    return {
+      training:cnt("bf_training"),
+      body:cnt("bf_progress","array"),
+      workout:cnt("bf_workout","nested"),
+      distance:cnt("bf_distance"),
+      steps:cnt("bf_steps"),
+      recovery:cnt("bf_recovery"),
+      sleep:cnt("bf_sleep"),
+      meals:cnt("bf_meallog")
+    };
+  }
+  function backupPreviewHTML(v){
+    var c=backupPreviewCounts(v.storage);
+    var when=v.exportedAt?(function(){var d=new Date(v.exportedAt);return isNaN(d.getTime())?v.exportedAt:d.toLocaleDateString();})():"unknown date";
+    var lines=[];
+    if(c.training)lines.push(c.training+" training records");
+    if(c.body)lines.push(c.body+" body records");
+    if(c.workout)lines.push(c.workout+" exercise history entries");
+    if(c.distance)lines.push(c.distance+" distance sessions");
+    if(c.steps)lines.push(c.steps+" step records");
+    if(c.recovery)lines.push(c.recovery+" recovery records");
+    if(c.sleep)lines.push(c.sleep+" sleep records");
+    if(c.meals)lines.push(c.meals+" food log days");
+    return '<div class="rpt-metric" style="margin-top:10px"><div class="rpt-metric-name">Body Fuel Lab Backup</div><div style="font-size:calc(12px*var(--ts,1));color:var(--ink-soft);margin-bottom:6px">Created: '+esc(when)+(v.build?(" \u00b7 Build "+esc(v.build)):"")+'</div>'
+      +(lines.length?('<ul style="margin:0 0 8px;padding-left:18px;font-size:calc(12.5px*var(--ts,1));color:var(--ink-soft)">'+lines.map(function(l){return "<li>"+esc(l)+"</li>";}).join("")+'</ul>'):'<p class="muted-p" style="margin:0 0 8px">No recognisable records found in this file.</p>')
+      +'<p class="muted-p" style="margin:0 0 10px;font-size:calc(11.5px*var(--ts,1))">Restoring this backup may replace your current Body Fuel Lab data. A safety backup of your current data will be created first.</p>'
+      +'<div style="display:flex;gap:8px"><button type="button" class="cta ghost" data-bkact="cancel-restore" style="margin-top:0;flex:1">Cancel</button><button type="button" class="cta" data-bkact="confirm-restore" style="margin-top:0;flex:1">Create safety backup &amp; restore</button></div></div>';
+  }
+  function startBackupRestore(file,hostSelector){
+    if(!file)return;
+    var r=new FileReader();
+    r.onload=function(){
+      var obj;
+      try{obj=JSON.parse(r.result);}catch(e){state.backupPending=null;renderBackupUI(hostSelector,"This file does not appear to be a valid Body Fuel Lab backup. Nothing has been changed.");return;}
+      var v=validateBackupObj(obj);
+      if(!v.valid){state.backupPending=null;renderBackupUI(hostSelector,v.reason);return;}
+      state.backupPending={storage:v.storage,exportedAt:v.exportedAt,build:v.build,hostSelector:hostSelector};
+      renderBackupUI(hostSelector,null);
+    };
+    r.onerror=function(){renderBackupUI(hostSelector,"This file does not appear to be a valid Body Fuel Lab backup. Nothing has been changed.");};
+    r.readAsText(file);
+  }
+  function renderBackupUI(hostSelector,errorMsg){
+    var host=$(hostSelector);if(!host)return;
+    if(errorMsg){host.innerHTML='<p class="muted-p" style="margin:8px 0 0;color:var(--red)">'+esc(errorMsg)+'</p>';return;}
+    if(state.backupPending&&state.backupPending.hostSelector===hostSelector){host.innerHTML=backupPreviewHTML(state.backupPending);}
+    else{host.innerHTML="";}
+  }
+  function confirmBackupRestore(){
+    var p=state.backupPending;if(!p)return;
+    try{
+      downloadJSON(buildBackupPayload(),"BodyFuelLab_SafetyBackup_"+todayISO()+".json");
+      Object.keys(p.storage).forEach(function(k){if(k.indexOf("bf_")===0)store.set(k,p.storage[k]);});
+      state.backupPending=null;
+      alert("Body Fuel Lab data restored successfully.");
+      location.reload();
+    }catch(e){
+      alert("Restore could not be completed. Your previous Body Fuel Lab data has been preserved.");
+    }
+  }
+  function cancelBackupRestore(hostSelector){state.backupPending=null;var host=$(hostSelector);if(host)host.innerHTML="";}
+  function importData(file){startBackupRestore(file,"#data-import-status");}
+
+  /* ---------- Reports & Data: report generation (read-only across existing BFL storage) ----------
+     Every number in the report is computed live from bf_progress/bf_training/bf_workout/bf_exhist/
+     bf_distance/bf_endurance/bf_cardiohist/bf_steps/bf_recovery/bf_sleep/bf_meallog -- nothing here
+     writes to any of those keys, and nothing here invents a value that isn't backed by a real entry. */
+  var REPORT_CORE_EX=(function(){
+    var names=["Kettlebell March","Russian Twist","Sit-Ups","Dead Bug","Bird Dog","Plank","Side Plank","Hollow Body Hold","Pallof Press","Bear Plank Hold","Cable Crunch","Decline Crunch","Toe Touch Crunch","Controlled Sit-Up","Crunch Machine","Reverse Crunch","Lying Leg Raise","Hanging Knee Raise","Hanging Leg Raise","Flutter Kicks","Heel Taps","Side Bend","Cable Wood Chop","Windshield Wipers","Bicycle Crunch","Mountain Climbers","Plank Shoulder Taps","Plank to Push-Up","Ab Wheel","Swiss Ball Pike","Dragon Flag","Farmer's Carry","Core"];
+    var s={};names.forEach(function(n){s[slug(n)]=true;});return s;
+  })();
+  var REPORT_TYPE_LABEL={lower:"Lower Body",upper:"Upper Body \u2014 Strength + Core",upperarms:"Upper Body \u2014 Shoulders + Biceps",fullbody:"Full Body",endurance:"Endurance Day",recovery:"Recovery Day",rest:"Rest Day",lowimpact:"Low Impact / Mobility",distwalk:"Distance \u2014 Walk",distwalkrun:"Distance \u2014 Walk/Run",distrun:"Distance \u2014 Run",conditioning:"Core / Conditioning"};
+  function rptPeriodDates(period,customFrom,customTo){
+    var to=todayISO(),from;
+    if(period==="30")from=isoPlusDays(to,-29);
+    else if(period==="90")from=isoPlusDays(to,-89);
+    else if(period==="6m")from=isoPlusDays(to,-182);
+    else if(period==="1y")from=isoPlusDays(to,-364);
+    else if(period==="custom"){from=customFrom||isoPlusDays(to,-29);to=customTo&&customTo<=to?customTo:to;}
+    else from="0000-01-01";
+    return {from:from,to:to};
+  }
+  function rptInRange(d,from,to){return d>=from&&d<=to;}
+  function rptFmtDate(iso){if(iso==="0000-01-01")return "the beginning";var d=new Date(iso+"T00:00:00");return d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});}
+  function rptNum(v,dp){if(v==null||isNaN(v))return null;dp=dp==null?1:dp;var f=Math.pow(10,dp);return Math.round(v*f)/f;}
+  function rptDaysBetween(from,to){if(from==="0000-01-01")return null;return Math.max(1,Math.round((new Date(to+"T00:00:00")-new Date(from+"T00:00:00"))/86400000)+1);}
+
+  function rptBody(from,to){
+    var entries=loadEntries().filter(function(e){return e&&e.date&&rptInRange(e.date,from,to);}).sort(function(a,b){return a.date<b.date?-1:1;});
+    var metrics=[
+      {key:"weight",label:"Weight",unit:" kg"},
+      {key:"fat",label:"Body fat %",unit:"%"},
+      {key:"muscle",label:"Muscle",unit:"%",alt:["smm","muscleMass"]},
+      {key:"waist",label:"Waist",unit:" cm"},
+      {key:"hip",label:"Hips",unit:" cm",alt:["hips"]},
+      {key:"chest",label:"Chest",unit:" cm"},
+      {key:"armL",label:"Left arm",unit:" cm"},
+      {key:"armR",label:"Right arm",unit:" cm"},
+      {key:"thighL",label:"Left thigh",unit:" cm"},
+      {key:"thighR",label:"Right thigh",unit:" cm"}
+    ];
+    function valFor(e,m){var v=e[m.key];if(v==null&&m.alt)for(var i=0;i<m.alt.length;i++){if(e[m.alt[i]]!=null){v=e[m.alt[i]];break;}}return v!=null?+v:null;}
+    var rows=[];
+    metrics.forEach(function(m){
+      var series=entries.map(function(e){return {date:e.date,v:valFor(e,m)};}).filter(function(p){return p.v!=null;});
+      if(!series.length)return;
+      var first=series[0].v,latest=series[series.length-1].v;
+      rows.push({label:m.label,unit:m.unit,first:first,latest:latest,change:series.length>1?rptNum(latest-first,1):null,n:series.length,series:series});
+    });
+    var prof=loadProfile();
+    var weightSeries=entries.map(function(e){return {date:e.date,v:e.weight!=null?+e.weight:null};}).filter(function(p){return p.v!=null;});
+    var bmiRow=null;
+    if(prof.height&&weightSeries.length){
+      var hM=prof.height/100,bmiFirst=rptNum(weightSeries[0].v/(hM*hM),1),bmiLatest=rptNum(weightSeries[weightSeries.length-1].v/(hM*hM),1);
+      bmiRow={label:"BMI (calculated)",unit:"",first:bmiFirst,latest:bmiLatest,change:weightSeries.length>1?rptNum(bmiLatest-bmiFirst,1):null,n:weightSeries.length};
+    }
+    return {rows:rows,bmiRow:bmiRow,entryCount:entries.length};
+  }
+
+  function rptTraining(from,to){
+    var tr=loadTraining();
+    var dates=Object.keys(tr).filter(function(d){return rptInRange(d,from,to);}).sort();
+    var completed=dates.filter(function(d){return tr[d]&&tr[d].done==="done";});
+    var byType={};
+    completed.forEach(function(d){var t=tr[d].type||"other";byType[t]=(byType[t]||0)+1;});
+    var wo=loadWorkout(),coreDates={};
+    Object.keys(wo).forEach(function(dk){var exs=wo[dk]||{};Object.keys(exs).forEach(function(ek){
+      if(!REPORT_CORE_EX[ek])return;
+      var weeks=exs[ek]||{};
+      Object.keys(weeks).forEach(function(wk){var e=weeks[wk];if(e&&e.completed&&e.date&&rptInRange(e.date,from,to))coreDates[e.date]=true;});
+    });});
+    var days=rptDaysBetween(from,to),weeksSpan=days?Math.max(1,days/7):null;
+    return {
+      completedCount:completed.length,
+      byType:byType,
+      coreDaysCount:Object.keys(coreDates).length,
+      sessionsPerWeek:weeksSpan?rptNum(completed.length/weeksSpan,1):null,
+      consistencyPct:days?rptNum(completed.length/(days)*7*100/7,0):null
+    };
+  }
+
+  function rptStrength(from,to){
+    var hist=loadExHist(),wo=loadWorkout(),out=[];
+    Object.keys(hist).forEach(function(exKey){
+      var rec=hist[exKey];
+      if(!rec||!rec.last||!rec.last.date||!rptInRange(rec.last.date,from,to))return;
+      var kind=rec.last.kind||"weight";
+      var allEntries=[];
+      Object.keys(wo).forEach(function(dk){var e=(wo[dk]||{})[exKey];if(!e)return;Object.keys(e).forEach(function(wk){var v=e[wk];if(v&&v.completed&&v.date)allEntries.push(v);});});
+      allEntries.sort(function(a,b){return a.date<b.date?-1:1;});
+      if(!allEntries.length)return;
+      var firstEntry=allEntries[0],latestEntry=allEntries[allEntries.length-1];
+      out.push({name:exNameFromSlug(exKey),kind:kind,first:firstEntry,latest:latestEntry,best:rec.best||null});
+    });
+    out.sort(function(a,b){return a.name<b.name?-1:1;});
+    return out;
+  }
+  function exNameFromSlug(exKey){
+    var known=["Sit-Ups","Kettlebell March","Russian Twist","Dead Bug","Bird Dog","Plank","Pallof Press","Farmer Carry","Core","Chest Press","Single-Arm Cable Row","Cable External Rotation","Dumbbell Triceps Kickback","Dumbbell Lateral Raise","Rear Delt Fly","Biceps Curl","Hammer Curl","Reverse Crunch","Squat","Deadlift","Leg Press","Lunge","Romanian Deadlift","Calf Raise","Bench Press","Row","Shoulder Press","Triceps Pushdown","Lat Pulldown","Seated Row","Cable Crunch","Kettlebell Swing","Single Arm Cable Press","Hanging Knee Raise","Hanging Leg Raise","Captain's Chair"];
+    for(var i=0;i<known.length;i++){if(slug(known[i])===exKey)return known[i];}
+    return exKey.split("-").map(function(w){return w.charAt(0).toUpperCase()+w.slice(1);}).join(" ");
+  }
+  function rptStrengthValText(e,kind){
+    if(!e)return null;
+    if(kind==="lrtime"){var f=function(sec){if(sec==null)return null;var m=Math.floor(sec/60),s=Math.round(sec%60);return m+":"+(s<10?"0":"")+s;};var t1=f(e.r1),t2=f(e.r2);var s1=(e.w1!=null?e.w1+" kg":"\u2013")+(t1!=null?" \u00d7 "+t1:"");var s2=(e.w2!=null?e.w2+" kg":"\u2013")+(t2!=null?" \u00d7 "+t2:"");return s1+" / "+s2;}
+    if(kind==="lr"||kind==="two"){var a=(e.w1!=null?e.w1+"\u00d7"+(e.r1!=null?e.r1:"?"):null),b=(e.w2!=null?e.w2+"\u00d7"+(e.r2!=null?e.r2:"?"):null);return [a,b].filter(Boolean).join(" / ")+" kg";}
+    if(kind==="time")return e.time!=null?(e.time+" sec"):null;
+    if(kind==="reps")return e.reps!=null?(e.reps+" reps"):null;
+    if(kind==="load")return e.weight!=null?(e.weight+" kg"):null;
+    if(kind==="weight")return (e.weight!=null?e.weight+" kg":"")+(e.reps!=null?(" \u00d7 "+e.reps):"");
+    return null;
+  }
+
+  function rptDistance(from,to){
+    var all=allDistanceEntries().filter(function(e){return rptInRange(e.date,from,to);});
+    if(!all.length)return {count:0};
+    var totalKm=0,totalMin=0,speeds=[],inclines=[],kneeVals=[];
+    all.forEach(function(e){
+      totalKm+=(+e.km||0);
+      totalMin+=((+e.hh||0)*60+(+e.mm||0));
+      if(e.speed!=null&&e.speed!=="")speeds.push(+e.speed);
+      if(e.incline!=null&&e.incline!=="")inclines.push(+e.incline);
+      if(e.kneeDuring!=null)kneeVals.push(+e.kneeDuring);
+    });
+    var longest=all.reduce(function(a,b){return (+b.km||0)>(+a.km||0)?b:a;});
+    var latest=all[all.length-1];
+    var avgSpeed=speeds.length?rptNum(speeds.reduce(function(a,b){return a+b;},0)/speeds.length,1):null;
+    var avgIncline=inclines.length?rptNum(inclines.reduce(function(a,b){return a+b;},0)/inclines.length,1):null;
+    var avgPaceMinPerKm=totalKm>0?rptNum(totalMin/totalKm,2):null;
+    return {
+      count:all.length,totalKm:rptNum(totalKm,1),avgKm:rptNum(totalKm/all.length,1),
+      longestKm:rptNum(+longest.km,1),longestDate:longest.date,
+      latestKm:rptNum(+latest.km,1),latestDate:latest.date,
+      totalMin:totalMin,avgSpeed:avgSpeed,avgPace:avgPaceMinPerKm,avgIncline:avgIncline,
+      kneeCount:kneeVals.length,avgKnee:kneeVals.length?rptNum(kneeVals.reduce(function(a,b){return a+b;},0)/kneeVals.length,1):null,
+      notes:all.filter(function(e){return e.notes;}).map(function(e){return {date:e.date,note:e.notes};}),
+      series:all.map(function(e){return {date:e.date,km:+e.km||0};})
+    };
+  }
+  function rptCardio(from,to){
+    var all=loadEndur(),dates=Object.keys(all).filter(function(d){return rptInRange(d,from,to);});
+    if(!dates.length)return {count:0};
+    var totalMin=0,totalDist=0,hasDist=false;
+    dates.forEach(function(d){var st=all[d];function add(o){if(!o)return;var m=num(o.min);if(m)totalMin+=m;var dd=num(o.dist);if(dd){totalDist+=dd;hasDist=true;}}add(st.warmup);(st.blocks||[]).forEach(add);});
+    var ch=store.get("bf_cardiohist"),chInRange=(ch&&ch.date&&rptInRange(ch.date,from,to))?ch:null;
+    return {count:dates.length,totalMin:rptNum(totalMin,0),totalDist:hasDist?rptNum(totalDist,2):null,lastSettings:chInRange};
+  }
+
+  function rptSteps(from,to){
+    var all=loadStepsAll(),dates=Object.keys(all).filter(function(d){return rptInRange(d,from,to)&&all[d].totalSteps!=null;}).sort();
+    if(!dates.length)return {count:0};
+    var vals=dates.map(function(d){return all[d].totalSteps;});
+    var total=vals.reduce(function(a,b){return a+b;},0);
+    var avgDaily=Math.round(total/dates.length);
+    var goalDays=dates.filter(function(d){return stepsGoalReached(all[d]);}).length;
+    var highestD=dates.reduce(function(a,b){return all[b].totalSteps>all[a].totalSteps?b:a;});
+    var lowestD=dates.reduce(function(a,b){return all[b].totalSteps<all[a].totalSteps?b:a;});
+    var trainingTotal=dates.reduce(function(s,d){return s+(all[d].trainingSteps||0);},0);
+    return {
+      count:dates.length,total:total,avgDaily:avgDaily,avgWeekly:Math.round(avgDaily*7),
+      highest:all[highestD].totalSteps,highestDate:highestD,
+      lowest:all[lowestD].totalSteps,lowestDate:lowestD,
+      goalDays:goalDays,goalPct:rptNum(goalDays/dates.length*100,0),
+      trainingStepsTotal:trainingTotal||null,
+      series:dates.map(function(d){return {date:d,v:all[d].totalSteps};})
+    };
+  }
+
+  function rptRecovery(from,to){
+    var rec=loadRecoveryAll(),recDates=Object.keys(rec).filter(function(d){return rptInRange(d,from,to);});
+    var sl=sleepAll(),slDates=Object.keys(sl).filter(function(d){return rptInRange(d,from,to)&&(sl[d].h!=null||sl[d].m!=null);});
+    var out={recCount:recDates.length,slCount:slDates.length};
+    if(recDates.length){
+      function avgField(f){var vs=recDates.map(function(d){return rec[d][f];}).filter(function(v){return v!=null;});return vs.length?rptNum(vs.reduce(function(a,b){return a+b;},0)/vs.length,1):null;}
+      out.avgEnergy=avgField("energy");out.avgFatigue=avgField("fatigue");out.avgLegSoreness=avgField("legSoreness");out.avgKnee=avgField("knee");
+    }
+    if(slDates.length){
+      var totalMin=slDates.reduce(function(s,d){return s+((sl[d].h||0)*60+(sl[d].m||0));},0);
+      out.avgSleepMin=Math.round(totalMin/slDates.length);
+      var qDist={};slDates.forEach(function(d){var q=sl[d].quality;if(q)qDist[q]=(qDist[q]||0)+1;});
+      out.qualityDist=qDist;
+    }
+    return out;
+  }
+
+  function rptFeedback(from,to){
+    var tr=loadTraining(),dates=Object.keys(tr).filter(function(d){return rptInRange(d,from,to);});
+    function dist(field){var d={};dates.forEach(function(dt){var v=tr[dt][field];if(v)d[v]=(d[v]||0)+1;});return d;}
+    var diffDist=dist("diff"),kneeDist=dist("knee"),recDist=dist("recovery"),inflDist=dist("inflammation");
+    function total(d){return Object.keys(d).reduce(function(s,k){return s+d[k];},0);}
+    return {diffDist:diffDist,diffCount:total(diffDist),kneeDist:kneeDist,kneeCount:total(kneeDist),recDist:recDist,recCount:total(recDist),inflDist:inflDist,inflCount:total(inflDist)};
+  }
+
+  function rptSessionNotes(from,to){
+    var tr=loadTraining(),dates=Object.keys(tr).filter(function(d){return rptInRange(d,from,to)&&tr[d].notes;}).sort().reverse();
+    return dates.map(function(d){return {date:d,type:REPORT_TYPE_LABEL[tr[d].type]||tr[d].type||"Session",note:tr[d].notes};});
+  }
+
+  function rptFood(from,to){
+    var all=store.get("bf_meallog")||{},dates=Object.keys(all).filter(function(d){return rptInRange(d,from,to)&&dayLogged(d);}).sort();
+    if(!dates.length)return {count:0};
+    var totals=dates.map(function(d){return mealTotals(d);});
+    function avg(f){var vs=totals.map(function(t){return t[f];}).filter(function(v){return v>0;});return vs.length?Math.round(vs.reduce(function(a,b){return a+b;},0)/dates.length):null;}
+    return {count:dates.length,avgKcal:Math.round(totals.reduce(function(s,t){return s+t.kcal;},0)/dates.length),avgProtein:Math.round(totals.reduce(function(s,t){return s+t.p;},0)/dates.length),avgCarbs:Math.round(totals.reduce(function(s,t){return s+t.c;},0)/dates.length),avgFat:Math.round(totals.reduce(function(s,t){return s+t.f;},0)/dates.length)};
+  }
+
+  function rptSimpleLineChart(series,valKey,color){
+    if(!series||series.length<2)return null;
+    var W=300,H=90,padL=6,padR=6,padT=8,padB=8;
+    var vals=series.map(function(p){return p[valKey];});
+    var min=Math.min.apply(null,vals),max=Math.max.apply(null,vals);
+    if(max===min){max=min+1;}
+    function xFor(i){return padL+(i/(series.length-1))*(W-padL-padR);}
+    function yFor(v){return H-padB-((v-min)/(max-min))*(H-padT-padB);}
+    var pts=series.map(function(p,i){return xFor(i)+","+yFor(p[valKey]).toFixed(1);}).join(" ");
+    return '<svg viewBox="0 0 '+W+' '+H+'" class="ck-chart"><polyline points="'+pts+'" fill="none" stroke="'+color+'" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  }
+
+  function renderReport(){
+    var host=$("#report-body");if(!host)return;
+    var range=rptPeriodDates(state.rptPeriod,state.rptFrom,state.rptTo);
+    var from=range.from,to=range.to;
+    var head='<div class="rpt-head"><div class="brand-line">Body Fuel Lab</div><div class="rpt-title">Progress Report</div>'
+      +'<div class="rpt-period">Report period: '+esc(rptFmtDate(from))+' \u2013 '+esc(rptFmtDate(to))+'</div>'
+      +'<div class="rpt-gen">Generated: '+esc(rptFmtDate(todayISO()))+'</div></div>';
+
+    var body=rptBody(from,to);
+    var bodyHTML='<div class="rpt-card"><div class="rpt-h">1. Body</div>';
+    if(!body.rows.length&&!body.bmiRow)bodyHTML+='<p class="rpt-empty">No body measurements recorded in this period.</p>';
+    else{
+      body.rows.forEach(function(r){
+        bodyHTML+='<div class="rpt-metric"><div class="rpt-metric-name">'+esc(r.label)+'</div><div class="rpt-metric-vals"><span>First: '+r.first+r.unit+'</span><span>Latest: '+r.latest+r.unit+'</span>'+(r.change!=null?('<span><b>'+(r.change>=0?"+":"")+r.change+r.unit+'</b></span>'):'')+'</div></div>';
+        if((r.label==="Weight"||r.label==="Body fat %"||r.label==="Muscle")&&r.series.length>=2){var chart=rptSimpleLineChart(r.series,"v","var(--accent)");if(chart)bodyHTML+='<div class="rpt-chart-wrap">'+chart+'</div>';}
+      });
+      if(body.bmiRow){var b=body.bmiRow;bodyHTML+='<div class="rpt-metric"><div class="rpt-metric-name">'+esc(b.label)+'</div><div class="rpt-metric-vals"><span>First: '+b.first+'</span><span>Latest: '+b.latest+'</span>'+(b.change!=null?('<span><b>'+(b.change>=0?"+":"")+b.change+'</b></span>'):'')+'</div></div>';}
+    }
+    bodyHTML+='</div>';
+
+    var tr=rptTraining(from,to);
+    var trainHTML='<div class="rpt-card"><div class="rpt-h">2. Training</div>';
+    if(!tr.completedCount)trainHTML+='<p class="rpt-empty">No completed training sessions recorded in this period.</p>';
+    else{
+      trainHTML+='<div class="rpt-row"><span>Total completed workouts</span><b>'+tr.completedCount+'</b></div>';
+      Object.keys(tr.byType).sort().forEach(function(t){trainHTML+='<div class="rpt-row"><span>'+esc(REPORT_TYPE_LABEL[t]||t)+'</span><b>'+tr.byType[t]+'</b></div>';});
+      if(tr.coreDaysCount)trainHTML+='<div class="rpt-row"><span>Core work recorded</span><b>'+tr.coreDaysCount+' day'+(tr.coreDaysCount===1?"":"s")+'</b></div>';
+      if(tr.sessionsPerWeek!=null)trainHTML+='<div class="rpt-row"><span>Training sessions per week</span><b>'+tr.sessionsPerWeek+'</b></div>';
+      trainHTML+='<p class="rpt-empty" style="margin-top:8px">Total training time is not shown \u2014 BFL does not consistently record session duration across all training types, and a partial total would be misleading.</p>';
+    }
+    trainHTML+='</div>';
+
+    var st=rptStrength(from,to);
+    var strengthHTML='<div class="rpt-card"><div class="rpt-h">3. Strength Progress</div>';
+    if(!st.length)strengthHTML+='<p class="rpt-empty">No strength exercises with enough recorded history in this period.</p>';
+    else st.forEach(function(ex){
+      var firstTxt=rptStrengthValText(ex.first,ex.kind),latestTxt=rptStrengthValText(ex.latest,ex.kind),bestTxt=ex.best?exBestText(ex.best,ex.best.kind||ex.kind):null;
+      strengthHTML+='<div class="rpt-metric"><div class="rpt-metric-name">'+esc(ex.name)+'</div><div class="rpt-metric-vals" style="flex-direction:column;gap:2px">'
+        +(firstTxt?('<span>First recorded: '+esc(firstTxt)+'</span>'):'')
+        +(latestTxt?('<span>Latest: '+esc(latestTxt)+'</span>'):'')
+        +(bestTxt?('<span>Best: '+esc(bestTxt)+'</span>'):'')
+        +'</div></div>';
+    });
+    strengthHTML+='</div>';
+
+    var dist=rptDistance(from,to),cardio=rptCardio(from,to);
+    var endHTML='<div class="rpt-card"><div class="rpt-h">4. Endurance</div>';
+    endHTML+='<div class="rpt-sub">A. Distance Training</div>';
+    if(!dist.count)endHTML+='<p class="rpt-empty">No distance sessions recorded in this period.</p>';
+    else{
+      endHTML+='<div class="rpt-row"><span>Number of sessions</span><b>'+dist.count+'</b></div>'
+        +'<div class="rpt-row"><span>Total distance</span><b>'+dist.totalKm+' km</b></div>'
+        +'<div class="rpt-row"><span>Average km / session</span><b>'+dist.avgKm+' km</b></div>'
+        +'<div class="rpt-row"><span>Longest session</span><b>'+dist.longestKm+' km \u00b7 '+esc(rptFmtDate(dist.longestDate))+'</b></div>'
+        +'<div class="rpt-row"><span>Latest session</span><b>'+dist.latestKm+' km \u00b7 '+esc(rptFmtDate(dist.latestDate))+'</b></div>'
+        +'<div class="rpt-row"><span>Total recorded time</span><b>'+Math.floor(dist.totalMin/60)+'h '+(dist.totalMin%60)+'m</b></div>'
+        +(dist.avgSpeed!=null?('<div class="rpt-row"><span>Average speed</span><b>'+dist.avgSpeed+' km/h</b></div>'):'')
+        +(dist.avgPace!=null?('<div class="rpt-row"><span>Average pace</span><b>'+Math.floor(dist.avgPace)+':'+String(Math.round((dist.avgPace%1)*60)).padStart(2,"0")+' /km</b></div>'):'')
+        +(dist.avgIncline!=null?('<div class="rpt-row"><span>Average incline</span><b>'+dist.avgIncline+'%</b></div>'):'')
+        +(dist.kneeCount?('<div class="rpt-row"><span>Sessions with knee data</span><b>'+dist.kneeCount+' \u00b7 avg '+dist.avgKnee+'/10</b></div>'):'');
+      var dchart=rptSimpleLineChart(dist.series,"km","#BB2528");
+      if(dchart)endHTML+='<div class="rpt-sub" style="margin-top:10px">Distance progression</div><div class="rpt-chart-wrap">'+dchart+'</div>';
+      if(dist.notes.length){endHTML+='<div class="rpt-sub" style="margin-top:10px">Distance-training notes</div>';dist.notes.forEach(function(n){endHTML+='<div class="rpt-note-row"><span class="rpt-note-date">'+esc(rptFmtDate(n.date))+'</span><div class="rpt-note-text">\u201c'+esc(n.note)+'\u201d</div></div>';});}
+    }
+    endHTML+='<div class="rpt-sub" style="margin-top:14px">B. Cardio / Endurance Day</div>';
+    if(!cardio.count)endHTML+='<p class="rpt-empty">No cardio/Endurance Day sessions recorded in this period.</p>';
+    else{
+      endHTML+='<div class="rpt-row"><span>Number of sessions</span><b>'+cardio.count+'</b></div>'
+        +'<div class="rpt-row"><span>Total duration</span><b>'+cardio.totalMin+' min</b></div>'
+        +(cardio.totalDist!=null?('<div class="rpt-row"><span>Total distance (machine)</span><b>'+cardio.totalDist+'</b></div>'):'')
+        +(cardio.lastSettings?('<div class="rpt-row"><span>Most recent machine settings</span><b>'+[cardio.lastSettings.incline?cardio.lastSettings.incline+"% incline":null,cardio.lastSettings.speed?cardio.lastSettings.speed+" km/h":null,cardio.lastSettings.level?"level "+cardio.lastSettings.level:null].filter(Boolean).join(" \u00b7 ")+'</b></div>'):'');
+    }
+    endHTML+='<p class="rpt-empty" style="margin-top:6px">Shown separately from Distance Training \u2014 these are different recorded measurements and are not combined.</p>';
+    endHTML+='</div>';
+
+    var steps=rptSteps(from,to);
+    var stepsHTML='<div class="rpt-card"><div class="rpt-h">5. Steps</div>';
+    if(!steps.count)stepsHTML+='<p class="rpt-empty">No step records in this period.</p>';
+    else{
+      stepsHTML+='<div class="rpt-row"><span>Total steps (recorded days)</span><b>'+steps.total.toLocaleString()+'</b></div>'
+        +'<div class="rpt-row"><span>Average daily steps</span><b>'+steps.avgDaily.toLocaleString()+'</b></div>'
+        +'<div class="rpt-row"><span>Average weekly steps (derived)</span><b>'+steps.avgWeekly.toLocaleString()+'</b></div>'
+        +'<div class="rpt-row"><span>Highest step day</span><b>'+steps.highest.toLocaleString()+' \u00b7 '+esc(rptFmtDate(steps.highestDate))+'</b></div>'
+        +'<div class="rpt-row"><span>Lowest recorded step day</span><b>'+steps.lowest.toLocaleString()+' \u00b7 '+esc(rptFmtDate(steps.lowestDate))+'</b></div>'
+        +'<div class="rpt-row"><span>Days reaching daily goal</span><b>'+steps.goalDays+' / '+steps.count+' ('+steps.goalPct+'%)</b></div>'
+        +(steps.trainingStepsTotal?('<div class="rpt-row"><span>Of which, training steps</span><b>'+steps.trainingStepsTotal.toLocaleString()+'</b></div>'):'');
+      var schart=rptSimpleLineChart(steps.series,"v","#1FA97F");
+      if(schart)stepsHTML+='<div class="rpt-chart-wrap">'+schart+'</div>';
+    }
+    stepsHTML+='</div>';
+
+    var rec=rptRecovery(from,to);
+    var recHTML='<div class="rpt-card"><div class="rpt-h">6. Recovery</div>';
+    if(!rec.recCount&&!rec.slCount)recHTML+='<p class="rpt-empty">No recovery or sleep records in this period.</p>';
+    else{
+      if(rec.slCount){recHTML+='<div class="rpt-row"><span>Sleep entries</span><b>'+rec.slCount+'</b></div><div class="rpt-row"><span>Average sleep duration</span><b>'+Math.floor(rec.avgSleepMin/60)+'h '+(rec.avgSleepMin%60)+'m</b></div>';
+        if(rec.qualityDist){Object.keys(rec.qualityDist).forEach(function(q){recHTML+='<div class="rpt-row"><span>Sleep quality: '+esc(q)+'</span><b>'+rec.qualityDist[q]+'</b></div>';});}}
+      if(rec.recCount){recHTML+='<div class="rpt-row"><span>Recovery check-ins</span><b>'+rec.recCount+'</b></div>';
+        if(rec.avgEnergy!=null)recHTML+='<div class="rpt-row"><span>Average energy</span><b>'+rec.avgEnergy+' / 5</b></div>';
+        if(rec.avgFatigue!=null)recHTML+='<div class="rpt-row"><span>Average general fatigue</span><b>'+rec.avgFatigue+' / 5</b></div>';
+        if(rec.avgLegSoreness!=null)recHTML+='<div class="rpt-row"><span>Average leg soreness</span><b>'+rec.avgLegSoreness+' / 10</b></div>';
+        if(rec.avgKnee!=null)recHTML+='<div class="rpt-row"><span>Average knee (daily check-in)</span><b>'+rec.avgKnee+' / 10</b></div>';}
+    }
+    recHTML+='</div>';
+
+    var fb=rptFeedback(from,to);
+    var fbHTML='<div class="rpt-card"><div class="rpt-h">7. Training Response / Body Feedback</div>';
+    if(!fb.diffCount&&!fb.kneeCount&&!fb.recCount&&!fb.inflCount)fbHTML+='<p class="rpt-empty">No post-workout check-in data recorded in this period.</p>';
+    else{
+      function distLine(label,d,n){if(!n)return "";return '<div class="rpt-row" style="flex-direction:column;align-items:flex-start"><span><b>'+label+'</b> recorded: '+n+' session'+(n===1?"":"s")+'</span><span style="font-size:calc(11.5px*var(--ts,1));color:var(--ink-faint)">'+Object.keys(d).map(function(k){return k+": "+d[k];}).join(" \u00b7 ")+'</span></div>';}
+      fbHTML+=distLine("Difficulty",fb.diffDist,fb.diffCount)+distLine("Knee",fb.kneeDist,fb.kneeCount)+distLine("Recovery (next-day expectation)",fb.recDist,fb.recCount)+distLine("Back / Upper-Back Inflammation",fb.inflDist,fb.inflCount);
+    }
+    fbHTML+='<p class="rpt-empty" style="margin-top:8px">This is a summary of what you recorded, not a medical assessment.</p></div>';
+
+    var notes=rptSessionNotes(from,to);
+    var notesHTML='<div class="rpt-card"><div class="rpt-h">8. Session Notes</div>';
+    if(!notes.length)notesHTML+='<p class="rpt-empty">No session notes recorded in this period.</p>';
+    else notes.forEach(function(n){notesHTML+='<div class="rpt-note-row"><span class="rpt-note-date">'+esc(rptFmtDate(n.date))+'</span><span class="rpt-note-type">'+esc(n.type)+'</span><div class="rpt-note-text">\u201c'+esc(n.note)+'\u201d</div></div>';});
+    notesHTML+='</div>';
+
+    var food=rptFood(from,to);
+    var foodHTML='<div class="rpt-card"><div class="rpt-h">9. Food / Nutrition</div>';
+    if(!food.count)foodHTML+='<p class="rpt-empty">No food log entries in this period.</p>';
+    else foodHTML+='<div class="rpt-row"><span>Days logged</span><b>'+food.count+'</b></div>'
+      +'<div class="rpt-row"><span>Average calories (logged days)</span><b>'+food.avgKcal+' kcal</b></div>'
+      +'<div class="rpt-row"><span>Average protein</span><b>'+food.avgProtein+' g</b></div>'
+      +'<div class="rpt-row"><span>Average carbohydrates</span><b>'+food.avgCarbs+' g</b></div>'
+      +'<div class="rpt-row"><span>Average fat</span><b>'+food.avgFat+' g</b></div>';
+    foodHTML+='</div>';
+
+    var sumHTML='<div class="rpt-card"><div class="rpt-h">10. Overall Period Summary</div>'
+      +'<div class="rpt-row"><span>Report period</span><b>'+esc(rptFmtDate(from))+' \u2013 '+esc(rptFmtDate(to))+'</b></div>';
+    var wRow=body.rows.filter(function(r){return r.label==="Weight";})[0];
+    if(wRow&&wRow.change!=null)sumHTML+='<div class="rpt-row"><span>Weight change</span><b>'+(wRow.change>=0?"+":"")+wRow.change+' kg</b></div>';
+    var fRow=body.rows.filter(function(r){return r.label==="Body fat %";})[0];
+    if(fRow&&fRow.change!=null)sumHTML+='<div class="rpt-row"><span>Body-fat change</span><b>'+(fRow.change>=0?"+":"")+fRow.change+' pp</b></div>';
+    if(tr.completedCount)sumHTML+='<div class="rpt-row"><span>Training sessions completed</span><b>'+tr.completedCount+'</b></div>';
+    if(dist.count)sumHTML+='<div class="rpt-row"><span>Distance sessions</span><b>'+dist.count+' \u00b7 '+dist.totalKm+' km total</b></div>';
+    if(steps.count)sumHTML+='<div class="rpt-row"><span>Average daily steps (recorded days)</span><b>'+steps.avgDaily.toLocaleString()+'</b></div>';
+    if(food.count)sumHTML+='<div class="rpt-row"><span>Average protein (logged days)</span><b>'+food.avgProtein+' g</b></div>';
+    sumHTML+='</div>';
+
+    host.innerHTML=head+bodyHTML+trainHTML+strengthHTML+endHTML+stepsHTML+recHTML+fbHTML+notesHTML+foodHTML+sumHTML;
+  }
   function clearAllData(){if(!confirm("This permanently deletes ALL your Body Fuel Lab data on this device. This cannot be undone."))return;if(!confirm("Are you absolutely sure? Tap OK to erase everything."))return;allBfKeys().forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});location.reload();}
 
   (function(){var m=$("#menu");if(!m)return;
@@ -6338,6 +6889,8 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
       if(e.target.closest("#rule-add")){var ni=$("#rule-new");if(ni){var nv=ni.value.trim();if(nv){var rl=loadRules();rl.push(nv);saveRules(rl);state.ruleEdit=null;renderRules();}}return;}
       if(e.target.closest("#data-export")){exportData();return;}
       if(e.target.closest("#data-clear")){clearAllData();return;}
+      if(e.target.closest('[data-bkact="confirm-restore"]')){confirmBackupRestore();return;}
+      if(e.target.closest('[data-bkact="cancel-restore"]')){cancelBackupRestore("#data-import-status");return;}
     });
     m.addEventListener("change",function(e){
       var sw=e.target.closest(".tsw[data-track]");if(sw){setTrackPref(sw.getAttribute("data-track"),sw.checked);applyTrackPrefs();return;}
