@@ -1824,7 +1824,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 133</b></div>
+            <div class="about-row"><span>Version</span><b>Build 134</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -2007,11 +2007,7 @@
       +'<div class="statline"><span class="k">'+(prof.goalWeight?'Target weight':'Est. target weight')+'</span><span class="v">'+(prof.goalWeight?Number(prof.goalWeight).toFixed(1):targetWeight.toFixed(1))+' <small>kg</small></span></div>';
     var open=store.get("bf_missionopen")===true;
     $("#mission-card").innerHTML=
-      '<div class="mission-msg" style="margin-top:0;margin-bottom:14px">Build the strength, endurance and resilience to complete <b>21.1 km</b> \u2014 and eventually do it across <b>7 continents</b>.</div>'
-      +'<div class="athletic-mile"><div class="am-top"><div class="am-lbl">Next Milestone</div>'+milestoneCheckHTML("royalrun")+'</div><div class="am-name">Royal Run \u2014 10 km</div><div class="am-dist">17 May 2027</div></div>'
-      +'<div class="athletic-mile" style="margin-top:8px"><div class="am-top"><div class="am-lbl">Then</div>'+milestoneCheckHTML("copenhagen")+'</div><div class="am-name">Copenhagen Half Marathon \u2014 2027</div><div class="am-dist">21.1 km</div></div>'
-      +'<div class="athletic-mile accent2" style="margin-top:8px"><div class="am-top"><div class="am-lbl">Long-Term Goal</div>'+milestoneCheckHTML("greatworldrace")+'</div><div class="am-name">The Great World Race \u2014 2029</div><div class="am-dist">7 continents \u00d7 21.1 km \u2014 147.7 km total</div></div>'
-      +'<details class="bf-goal-details" style="margin-top:16px">'
+      '<details class="bf-goal-details" style="margin-top:0">'
         +'<summary>Body composition goal \u2014 '+goal.toFixed(0)+'%'+whyBF+' <button class="whybtn" data-mact="edit">Edit</button></summary>'
         +head
         +(state.missionEdit?missionEditor(goal,prof.goalWeight):'')
@@ -4243,7 +4239,7 @@
       return '<div class="lesson'+(i===ti?' open':'')+'" style="padding:14px 0;border-bottom:1px solid var(--line-soft)"><div class="head"><span style="width:42px;flex:none;font-size:calc(13px*var(--ts,1));font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:'+(i===ti?'var(--accent-deep)':'var(--ink-faint)')+'">'+p.d+'</span><div class="txt"><div class="ttl" style="font-size:calc(18px*var(--ts,1))">'+p.t+'</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div><div class="body">'+dayDetail(p)+'</div></div>';
     }).join("");
   }
-  var WP_TYPES=[["lower","Lower Body"],["upper","Upper Body \u2014 Strength + Core"],["upperarms","Upper Body \u2014 Shoulders + Biceps"],["fullbody","Full Body"],["endurance","Endurance Day"],["recovery","Recovery Day"],["rest","Rest day"],["lowimpact","Low Impact / Mobility"],["distwalk","Distance \u2014 Walk"],["distwalkrun","Distance \u2014 Walk/Run"],["distrun","Distance \u2014 Run"]];
+  var WP_TYPES=[["lower","Lower Body"],["upper","Upper Body \u2014 Strength + Core"],["upperarms","Upper Body \u2014 Shoulders + Biceps"],["fullbody","Full Body"],["endurance","Endurance Day"],["recovery","Recovery Day"],["rest","Rest day"],["lowimpact","Low Impact / Mobility"],["distwalk","Distance \u2014 Walk"]];
   function isStrengthType(t){return t==="lower"||t==="upper"||t==="fullbody"||t==="upperarms";}
   function planWeekDate(){var d=new Date();d.setDate(d.getDate()+(state.planWeekOffset||0)*7);return d;}
   function planWeekKey(){return weekKey(planWeekDate());}
@@ -6906,6 +6902,14 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   if(typeof renderSleepTrend==="function")renderSleepTrend();
   (function(){var c=$("#sleep-trend-card");if(!c)return;c.addEventListener("click",function(e){if(e.target.closest("#sleep-hist-toggle")){state.sleepHistOpen=!state.sleepHistOpen;renderSleepTrend();return;}var rb=e.target.closest("#sleep-hist-range button");if(rb){state.sleepHistRange=+rb.getAttribute("data-val");renderSleepTrend();}});})();
   renderWater();
+  (function(){
+    var wk=sessWeekKey(),all=loadWeekPlans(),m=all[wk];
+    if(m){
+      var changed=false;
+      Object.keys(m).forEach(function(idx){if(m[idx]==="distrun"||m[idx]==="distwalkrun"){m[idx]="distwalk";changed=true;}});
+      if(changed){all[wk]=m;store.set("bf_weekplan",all);}
+    }
+  })();
   (function(){var d=$("#dt-card");if(d&&store.get("bf_dtopen")===true)d.classList.add("open");})();
   (function(){var d=$("#weekly-steps-card");if(d&&store.get("bf_wstepsopen")===true)d.classList.add("open");})();
   (function(){var cc=$("#cycle-setup-card");if(!cc)return;var c=loadCycle();if(!c.start)cc.classList.add("open");else if(store.get("bf_cycopen")===true)cc.classList.add("open");})();
