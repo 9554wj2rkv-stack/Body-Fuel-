@@ -1619,12 +1619,6 @@
           <div id="week-plan"></div>
         </div>
 
-        <div class="card lib-card" id="halfplan-card">
-          <button type="button" class="lib-head" id="halfplan-toggle"><span class="eyebrow" style="margin:0">My Road to 21.1 km \u2192 2029</span><svg class="lib-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-          <div id="hp-summary"></div>
-          <div class="lib-body" id="hp-body"></div>
-        </div>
-
         <div class="card lib-card" id="exlib-card">
           <button type="button" class="lib-head" id="exlib-toggle"><span class="eyebrow" style="margin:0">Exercise library <span id="exlib-count"></span></span><svg class="lib-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div id="exercise-lib" class="lib-body"></div>
@@ -6323,7 +6317,7 @@
     var prog=cutoff?allprog.filter(function(e){return e.date>=cutoff;}):allprog;
     var prof=store.get("bf_profile")||{},tr=(typeof loadTraining==="function"?loadTraining():store.get("bf_training"))||{},sleep=store.get("bf_sleep")||{},wo=store.get("bf_workout")||{};
     var toggle='<div class="prog-range">'+[["1m","1M"],["3m","3M"],["1y","1Y"],["all","All"]].map(function(o){return '<button type="button" data-prange="'+o[0]+'"'+(range===o[0]?' class="on"':'')+'>'+o[1]+'</button>';}).join("")+'</div>';
-    if(!prog.length){el.innerHTML=toggle+'<div class="card"><div class="eyebrow">Progress</div><p class="muted-p" style="margin-top:2px">No weigh-ins in this range yet. Log one on the Body tab, or switch to All.</p></div>'+runningJourneyHTML()+stepProgressCardHTML()+reportsDataCardHTML();progBindRange();if(typeof renderStepProgress==="function")renderStepProgress();return;}
+    if(!prog.length){el.innerHTML=toggle+'<div class="card"><div class="eyebrow">Progress</div><p class="muted-p" style="margin-top:2px">No weigh-ins in this range yet. Log one on the Body tab, or switch to All.</p></div>'+stepProgressCardHTML()+reportsDataCardHTML();progBindRange();if(typeof renderStepProgress==="function")renderStepProgress();return;}
     var cards='',first=prog[0],last=prog[prog.length-1];
     function fl(key){var vs=prog.map(function(e){return e[key];}).filter(function(v){return v!=null;});return vs.length?[vs[0],vs[vs.length-1]]:[null,null];}
     var W=fl("weight"),F=fl("fat"),M=fl("muscle"),WA=fl("waist");
@@ -6355,7 +6349,6 @@
     if(done.length){var wkmap={};done.forEach(function(dt){var d=progParseISO(dt),day=(d.getDay()===0?6:d.getDay()-1);d.setDate(d.getDate()-day);var mk=ovIso(d);wkmap[mk]=(wkmap[mk]||0)+1;});var wks=Object.keys(wkmap).sort().slice(-8),mxw=Math.max.apply(null,wks.map(function(w){return wkmap[w];}));var bars=wks.map(function(w){return '<div class="prog-wkbar"><i style="height:'+Math.max(Math.round(wkmap[w]/mxw*100),8)+'%"></i></div>';}).join("");tiles+='<div class="prog-tile"><div class="k">Training \u00b7 /week</div><div class="prog-wkrow">'+bars+'</div><div class="v" style="font-size:calc(15px*var(--ts,1));margin-top:6px">'+done.length+' total</div></div>';}
     if(sdates.length){var last7=sdates.slice(0,7).map(function(dt){return sleep[dt];}),avgMin=Math.round(last7.reduce(function(a,e){return a+((e.h||0)*60+(e.m||0));},0)/last7.length);tiles+='<div class="prog-tile"><div class="k">Sleep \u00b7 7-night avg</div><div class="v">'+Math.floor(avgMin/60)+'h '+(avgMin%60)+'m</div></div>';}
     if(tiles)cards+='<div class="prog-two">'+tiles+'</div>';
-    cards+=runningJourneyHTML();
     cards+=stepProgressCardHTML();
     cards+=reportsDataCardHTML();
     el.innerHTML=toggle+cards;progBindRange();
