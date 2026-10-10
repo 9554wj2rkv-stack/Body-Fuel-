@@ -668,6 +668,18 @@
   .msec-sum{display:block;margin-top:12px}
   .msec.open .msec-sum{display:none}
   .drop-sub{font-size:calc(13px*var(--ts,1));color:var(--ink-soft);margin-top:3px;font-weight:400}
+  /* Training page: shared collapsible cards (reuses .msec + the global header click handler) */
+  #fuel .msec-head{gap:12px;min-height:44px;-webkit-tap-highlight-color:transparent}
+  #fuel .msec-head:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:10px}
+  #fuel .msec-head .tc-ttl{display:block;flex:1;min-width:0}
+  #fuel .msec-head .tc-ttl .eyebrow{display:block}
+  #fuel .msec-head .chev{width:22px;height:22px;color:var(--accent)}
+  #fuel .msec .tc-sum{display:block;margin-top:4px;line-height:1.35}
+  #fuel .msec.open .tc-sum{display:none}
+  #fuel .msec-body{display:grid;grid-template-rows:0fr;margin-top:0;opacity:0;visibility:hidden;transition:grid-template-rows .3s ease,margin-top .3s ease,opacity .22s ease,visibility 0s linear .3s}
+  #fuel .msec.open .msec-body{grid-template-rows:1fr;margin-top:14px;opacity:1;visibility:visible;transition:grid-template-rows .3s ease,margin-top .3s ease,opacity .25s ease .05s,visibility 0s}
+  #fuel .msec-in{min-height:0;overflow:hidden;margin:-3px;padding:3px}
+  @media (prefers-reduced-motion:reduce){#fuel .msec-body,#fuel .msec.open .msec-body,#fuel .msec-head .chev{transition:none}}
   .tpref{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line-soft);font-size:calc(15px*var(--ts,1));color:var(--ink)}
   .tpref:last-child{border-bottom:0}
   .tpref .sub{font-size:calc(12px*var(--ts,1));color:var(--ink-faint);margin-top:2px}
@@ -1060,16 +1072,6 @@
   .enrm{border:0;background:none;color:var(--ink-faint);font-size:1rem;cursor:pointer;padding:2px 6px}
   .entoggle{width:100%;padding:12px 0;border:1px solid var(--line);background:var(--surface-2);color:var(--ink-soft);border-radius:10px;font-weight:600;cursor:pointer;font-family:var(--font-b)}
   .entoggle.on{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
-  .ws-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-  .ws-status{font-size:.72rem;color:var(--ink-faint);font-weight:700;letter-spacing:.05em;text-transform:uppercase}
-  .ws-count,.ws-time{font-size:.82rem;color:var(--ink-soft);font-variant-numeric:tabular-nums}
-  .ws-grid{display:grid;gap:3px;max-width:370px;margin:0 auto;touch-action:none;-webkit-user-select:none;user-select:none}
-  .ws-cell{aspect-ratio:1/1;border:0;background:var(--surface-2);color:var(--ink);font-size:1rem;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:6px;padding:0;font-family:var(--font-b);-webkit-tap-highlight-color:transparent}
-  .ws-cell.found{background:#FFDE5C;color:#6B4E00}
-  .ws-cell.path,.ws-cell.sel{background:var(--accent);color:#fff}
-  .ws-words{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px auto 0;max-width:340px}
-  .ws-word{font-size:.82rem;font-weight:600;color:var(--ink-soft);padding:4px 10px;background:var(--surface-2);border-radius:999px}
-  .ws-word.done{color:var(--accent);text-decoration:line-through;opacity:.7}
   .warma{padding:12px;border:1px solid var(--line);border-radius:14px;margin-bottom:14px}
   .warma-top{display:flex;align-items:center;justify-content:space-between}
   .wuck{display:flex;align-items:center;gap:4px;font-size:.62rem;color:var(--ink-faint);margin-top:2px;cursor:pointer}
@@ -1265,7 +1267,7 @@
         <div class="card">
           <div class="eyebrow">Today's training</div>
           <div id="today-workout"></div>
-          <button class="cta ghost accent2" data-goto="fuel" style="margin-top:14px">Open training planner</button>
+          <button class="cta ghost accent2" data-goto="fuel" data-tcopen="weekplan-card" style="margin-top:14px">Open training planner</button>
         </div>
 
         <div class="card" id="steps-today-card">
@@ -1579,8 +1581,9 @@
     <!-- ============ TRAINING & FUEL ============ -->
     <section class="screen" id="fuel">
       <div class="stack">
-        <div class="card" id="rest-timer-card">
-          <div class="eyebrow">Rest timer</div>
+        <div class="card msec" id="rest-timer-card">
+          <button type="button" class="msec-head" aria-expanded="false" aria-controls="tc-body-rest"><span class="tc-ttl"><span class="eyebrow">Rest timer</span><span class="drop-sub tc-sum" id="tc-sum-rest"></span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body" id="tc-body-rest"><div class="msec-in">
           <div class="rt-display" id="rt-display">1:00</div>
           <div class="rt-msg" id="rt-msg"></div>
           <div class="rt-quick" id="rt-quick">
@@ -1601,11 +1604,12 @@
             <button type="button" class="rt-btn" id="rt-reset">Reset</button>
           </div>
           <div class="rt-pref" id="rt-pref"></div>
+          </div></div>
         </div>
 
-        <div class="card msec" id="sudoku-card" data-persist="bf_sudopen">
-          <button type="button" class="msec-head"><span class="eyebrow">Brain training · Sudoku</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-          <div class="msec-body">
+        <div class="card msec" id="sudoku-card">
+          <button type="button" class="msec-head" aria-expanded="false" aria-controls="tc-body-sudoku"><span class="tc-ttl"><span class="eyebrow">Brain training · Sudoku</span><span class="drop-sub tc-sum" id="tc-sum-sudoku"></span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body" id="tc-body-sudoku"><div class="msec-in">
             <div class="sud-head"><span class="sud-status" id="sud-status">Hard</span><span class="sud-mist" id="sud-mist">Mistakes: 0/3</span><span class="sud-time" id="sud-time">0:00</span></div>
             <div class="sud-grid" id="sud-grid"></div>
             <div class="sud-pad" id="sud-pad"></div>
@@ -1621,83 +1625,90 @@
               <button type="button" class="sud-diffbtn" data-suddiff="xtrahard">Xtra hard</button>
             </div>
             <div class="sud-foot"><button type="button" class="linkbtn" id="sud-new">New puzzle</button><p class="muted-p" id="sud-msg"></p></div>
-          </div>
+          </div></div>
         </div>
 
-        <div class="card msec" id="wordsearch-card" data-persist="bf_wsopen">
-          <button type="button" class="msec-head"><span class="eyebrow">Brain training · Word search</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-          <div class="msec-body">
-            <div class="ws-head"><span class="ws-status">Powerful words</span><span class="ws-count" id="ws-count">0/8</span><span class="ws-time" id="ws-time">0:00</span></div>
-            <div class="ws-grid" id="ws-grid"></div>
-            <div class="ws-words" id="ws-words"></div>
-            <div class="sud-foot"><button type="button" class="linkbtn" id="ws-new">New puzzle</button><p class="muted-p" id="ws-msg"></p></div>
-          </div>
-        </div>
-
-        <div class="card" id="energy-card" style="padding:14px 16px">
-          <div class="eyebrow" style="margin-bottom:2px">Energy for training</div>
+        <div class="card msec" id="energy-card">
+          <button type="button" class="msec-head" aria-expanded="false" aria-controls="tc-body-energy"><span class="tc-ttl"><span class="eyebrow">Energy for training</span><span class="drop-sub tc-sum" id="tc-sum-energy"></span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body" id="tc-body-energy"><div class="msec-in">
           <div class="seg" data-group="energy" id="energy-seg" style="margin-top:8px"><button data-val="high">High</button><button data-val="medium">Medium</button><button data-val="low">Low</button></div>
           <div class="hab-stat" id="energy-trend" style="margin-top:8px"></div>
+          </div></div>
         </div>
 
-        <div class="card">
-          <div class="eyebrow">Today's session</div>
+        <div class="card msec open" id="session-card">
+          <button type="button" class="msec-head" aria-expanded="true" aria-controls="tc-body-session"><span class="tc-ttl"><span class="eyebrow">Today's session</span><span class="drop-sub tc-sum" id="tc-sum-session"></span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body" id="tc-body-session"><div class="msec-in">
           <div id="today-session"></div>
+          </div></div>
         </div>
 
-        <div class="card" id="habits-card">
-          <div class="eyebrow">Daily habits</div>
+        <div class="card msec" id="habits-card">
+          <button type="button" class="msec-head" aria-expanded="false" aria-controls="tc-body-habits"><span class="tc-ttl"><span class="eyebrow">Daily habits</span><span class="drop-sub tc-sum" id="tc-sum-habits"></span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body" id="tc-body-habits"><div class="msec-in">
           <div style="color:var(--ink-soft);font-size:calc(13.5px*var(--ts,1));margin-bottom:8px">Creatine today &middot; 5 g morning + 5 g evening</div>
           <label class="hab-row"><input type="checkbox" id="hab-creatine-am"> Morning &middot; 5 g</label>
           <label class="hab-row"><input type="checkbox" id="hab-creatine-pm"> Evening &middot; 5 g</label>
           <div class="hab-stat" id="hab-creatine-stat"></div>
+          </div></div>
         </div>
 
-        <div class="card" id="weekplan-card">
-          <div class="eyebrow">Plan this week</div>
+        <div class="card msec" id="weekplan-card">
+          <button type="button" class="msec-head" aria-expanded="false" aria-controls="tc-body-weekplan"><span class="tc-ttl"><span class="eyebrow">Plan this week</span><span class="drop-sub tc-sum" id="tc-sum-weekplan"></span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body" id="tc-body-weekplan"><div class="msec-in">
           <p class="muted-p" id="wp-sub" style="margin-top:-4px">Set what each day is — a training session or rest. Any day can be any session, so move your training to fit the week you've got. Aim for 3 strength sessions.</p>
           <div id="weekplanner"></div>
           <div class="wp-summary" id="wp-summary"></div>
+          </div></div>
         </div>
 
-        <div class="card">
-          <div class="eyebrow">This week's plan</div>
+        <div class="card msec" id="weekview-card">
+          <button type="button" class="msec-head" aria-expanded="false" aria-controls="tc-body-weekview"><span class="tc-ttl"><span class="eyebrow">This week's plan</span><span class="drop-sub tc-sum" id="tc-sum-weekview"></span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body" id="tc-body-weekview"><div class="msec-in">
           <div id="week-plan"></div>
+          </div></div>
         </div>
 
-        <div class="card lib-card" id="exlib-card">
-          <button type="button" class="lib-head" id="exlib-toggle"><span class="eyebrow" style="margin:0">Exercise library <span id="exlib-count"></span></span><svg class="lib-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-          <div id="exercise-lib" class="lib-body"></div>
+        <div class="card msec" id="exlib-card">
+          <button type="button" class="msec-head" aria-expanded="false" aria-controls="tc-body-exlib"><span class="tc-ttl"><span class="eyebrow">Exercise library <span id="exlib-count"></span></span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body" id="tc-body-exlib"><div class="msec-in">
+          <div id="exercise-lib"></div>
+          </div></div>
         </div>
 
-        <div class="card lib-card" id="sprog-card">
-          <button type="button" class="lib-head" id="sprog-toggle"><span class="eyebrow" style="margin:0">Strength progress <span id="sprog-count"></span></span><svg class="lib-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-          <div class="lib-body">
+        <div class="card msec" id="sprog-card">
+          <button type="button" class="msec-head" aria-expanded="false" aria-controls="tc-body-sprog"><span class="tc-ttl"><span class="eyebrow">Strength progress <span id="sprog-count"></span></span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body" id="tc-body-sprog"><div class="msec-in">
             <div id="strength-body"></div>
             <div class="tip" style="margin-top:14px">If your strength is stable or improving while body fat drops, the plan is working — you're keeping muscle while losing fat.</div>
-          </div>
+          </div></div>
         </div>
 
-        <div class="card lib-card" id="incline-card">
-          <button type="button" class="lib-head" id="incline-toggle"><span class="eyebrow" style="margin:0">Incline Walking</span><svg class="lib-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-          <div class="lib-body" id="incline-body"></div>
+        <div class="card msec" id="incline-card">
+          <button type="button" class="msec-head" aria-expanded="false" aria-controls="tc-body-incline"><span class="tc-ttl"><span class="eyebrow">Incline Walking</span><span class="drop-sub tc-sum" id="tc-sum-incline"></span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body" id="tc-body-incline"><div class="msec-in">
+          <div id="incline-body"></div>
+          </div></div>
         </div>
 
-        <div class="card" id="notes-card">
-          <div class="eyebrow">Session notes</div>
+        <div class="card msec" id="notes-card">
+          <button type="button" class="msec-head" aria-expanded="false" aria-controls="tc-body-notes"><span class="tc-ttl"><span class="eyebrow">Session notes</span><span class="drop-sub tc-sum" id="tc-sum-notes"></span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body" id="tc-body-notes"><div class="msec-in">
           <p class="muted-p" style="margin-top:-4px">Your saved workout notes — spot patterns, wins and niggles over time.</p>
           <div id="notes-history"></div>
+          </div></div>
         </div>
 
-        <div class="card msec">
-          <button type="button" class="msec-head"><div><div class="eyebrow">Training food guide</div><div class="drop-sub">What to eat before and after training</div></div><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-          <div class="msec-body">
+        <div class="card msec" id="foodguide-card">
+          <button type="button" class="msec-head" aria-expanded="false" aria-controls="tc-body-foodguide"><span class="tc-ttl"><span class="eyebrow">Training food guide</span><span class="drop-sub tc-sum" id="tc-sum-foodguide">What to eat before and after training</span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="msec-body" id="tc-body-foodguide"><div class="msec-in">
           <div class="fuel-block"><div class="when">Before</div><div class="body"><strong>Protein + carbs, 1–3 hours before</strong><p>A balanced meal beforehand gives you energy to train and helps you feel steady through the session.</p><div class="ex"><b>Try:</b> chicken + rice · oats + chicken</div></div></div>
           <div class="divider"></div>
           <div class="fuel-block"><div class="when after">After</div><div class="body"><strong>Protein + carbs + water, within a couple of hours</strong><p>Eating and rehydrating after training supports recovery and helps refill the energy you used.</p><div class="ex"><b>Try:</b> chicken + potatoes · rice cakes + chicken</div></div></div>
           <div class="tip" id="fuel-tip" style="margin-top:14px"></div>
-          </div>
+          </div></div>
         </div>
+
       </div>
     </section>
 
@@ -1869,7 +1880,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 140</b></div>
+            <div class="about-row"><span>Version</span><b>Build 141</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -3476,13 +3487,12 @@
     if(icProgBound)return;icProgBound=true;
     var card=$("#incline-card");if(!card)return;
     card.addEventListener("click",function(e){
-      var t=e.target.closest("#incline-toggle");if(t){card.classList.toggle("lib-open");return;}
       var sp=e.target.closest("[data-icstatperiod]");if(sp){state.icStatsPeriod=sp.getAttribute("data-icstatperiod");renderInclineProgress();return;}
       var hall=e.target.closest("#ic-hist-all");if(hall){state.icHistAll=!state.icHistAll;renderInclineProgress();return;}
       var hitem=e.target.closest("[data-ichedit]");
       if(hitem){
         var d3=hitem.getAttribute("data-ichedit"),ex2=inclineSession(d3);
-        DCH.sess.set(d3);switchTab("fuel");
+        tcOpen("session-card");DCH.sess.set(d3);switchTab("fuel");
         if(ex2){state.icCheckin={programKey:ex2.program,date:d3,dayKey:ex2.dayKey,plannedMin:ex2.plannedMin,actualMin:ex2.actualMin,status:ex2.status,avgSpeed:ex2.avgSpeed,maxIncline:ex2.maxIncline,distance:ex2.distance,calories:ex2.calories,notes:ex2.notes,effort:ex2.effort,legFatigue:ex2.legFatigue,energy:ex2.energy,knee:ex2.knee,intervalsSnapshot:ex2.intervalsSnapshot||(ex2.program?inclineIntervals(ex2.program):[])};renderTodaySession();}
         return;
       }
@@ -3512,6 +3522,7 @@
     });
   }
   function renderTodaySession(){
+    setTimeout(tcRefresh,0);
     var p=dayEntry(sessWeekKey(),sessIdx()),host=$("#today-session");
     var atToday=sessISO()===todayISO();
     var nav=dayNavHTML("sess");
@@ -4657,6 +4668,7 @@
   function strengthDoneThisWeek(){return strengthDoneInWeek(weekKey(new Date()));}
   function renderWPSummary(){var box=$("#wp-summary");if(!box)return;var off=state.planWeekOffset||0,wk=planWeekKey(),map=weekPlanMap(wk),planned=0;for(var i=0;i<7;i++)if(isStrengthType(map[i]))planned++;var done=strengthDoneInWeek(wk);box.innerHTML='<b>'+planned+'</b> strength session'+(planned===1?'':'s')+' planned '+(off===0?'this week':'that week')+' · aim for 3 — <b>'+done+'</b> completed'+(off===0?' so far':'')+'.';}
   function renderWeekPlanner(){
+    setTimeout(tcRefresh,0);
     var host=$("#weekplanner");if(!host)return;
     var wk=planWeekKey(),map=weekPlanMap(wk);
     var nav='<div class="daynav"><button class="dn-btn" data-wknav="prev" aria-label="Previous week">‹</button><div class="dn-label">'+wkSelLabel()+'</div><button class="dn-btn'+((state.planWeekOffset||0)>=0?' off':'')+'" data-wknav="next" aria-label="Next week">›</button></div>';
@@ -4762,6 +4774,7 @@
       +'<button type="button" class="linkbtn nh-edit" data-nh-edit>Edit</button></div>';
   }
   function renderNotesHistory(){
+    setTimeout(tcRefresh,0);
     var host=$("#notes-history");if(!host)return;
     var arr=loadNotesList();
     if(!arr.length){host.innerHTML='<p class="muted-p" style="margin:6px 0 0">No notes yet. Add one when you log a session and it\u2019ll appear here.</p>';return;}
@@ -5800,7 +5813,7 @@
   function rtBumpPref(sec){var d=rtPrefData();d.counts=d.counts||{};d.counts[sec]=(d.counts[sec]||0)+1;var best=null,bn=-1;Object.keys(d.counts).forEach(function(k){if(d.counts[k]>bn){bn=d.counts[k];best=+k;}});d.pref=best;store.set("bf_resttimer",d);rtRenderPref();}
   function rtRenderPref(){var el=$("#rt-pref");if(!el)return;var d=rtPrefData();el.textContent=d.pref?("Preferred rest time: "+rtLabelSec(d.pref)):"";}
   function rtMsg(t){var m=$("#rt-msg");if(m){m.textContent=t||"";m.classList.toggle("on",!!t);}}
-  function rtRender(){var d=$("#rt-display");if(d)d.textContent=rtFmt(rt.rem);var pa=$("#rt-pause"),re=$("#rt-resume");if(pa)pa.disabled=!rt.running;if(re)re.disabled=!(rt.active&&!rt.running&&rt.rem>0);}
+  function rtRender(){tcRestSum();var d=$("#rt-display");if(d)d.textContent=rtFmt(rt.rem);var pa=$("#rt-pause"),re=$("#rt-resume");if(pa)pa.disabled=!rt.running;if(re)re.disabled=!(rt.active&&!rt.running&&rt.rem>0);}
   function rtClear(){if(rt.timer){clearInterval(rt.timer);rt.timer=null;}rt.running=false;}
   function rtSave(){try{store.set("bf_rttimer",{running:rt.running,active:rt.active,dur:rt.dur,rem:rt.rem,endAt:rt.endAt,startedAt:rt.startedAt});}catch(e){}}
   function rtLoad(){return store.get("bf_rttimer");}
@@ -5944,49 +5957,45 @@
   function sudHint(){var st=sudLoad();if(!st||st.done)return;var i=st.sel;if(i<0||st.puzzle[i]!==0||st.user[i]===st.solution[i]){i=-1;for(var k=0;k<81;k++){if(st.puzzle[k]===0&&st.user[k]!==st.solution[k]){i=k;break;}}}if(i<0)return;sudPush(st,i);st.user[i]=st.solution[i];st.notes[i]=[];st.sel=i;st.done=sudSolved(st);sudSave(st);renderSudoku();}
   var sudTick=null;
   function sudStartTimer(){if(sudTick)return;sudTick=setInterval(function(){var card=$("#sudoku-card");if(!card||!card.classList.contains("open"))return;var st=sudLoad();if(!st||st.done||st.mistakes>=3)return;st.seconds=(st.seconds||0)+1;sudSave(st);var t=$("#sud-time");if(t)t.textContent=sudFmtTime(st.seconds);},1000);}
-  /* ---------- Word Search ---------- */
-  var WS_WORDS=["STRONG","POWER","FOCUS","DRIVE","ENERGY","GRIT","BRAVE","FIERCE","HUSTLE","THRIVE","MIGHTY","ENDURE","SWEAT","GOALS","WARRIOR","BELIEVE","ACHIEVE","STRENGTH","COURAGE","VICTORY","TRIUMPH","BALANCE","HEALTHY","ACTIVE","MUSCLE","SPRINT","EMPOWER","INSPIRE","RADIANT","VIBRANT","CHAMPION","FEARLESS","RESILIENT","CONFIDENT","LIMITLESS","POWERFUL","STRONGER","CAPABLE","UNBROKEN","RISE","BOLD","FUEL","WORTHY","SHINE","GLOW"];
-  var WS_SIZE=10, WS_COUNT=7, WS_DIRS=[[0,1],[1,0],[1,1],[1,-1],[0,-1],[-1,0],[-1,-1],[-1,1]];
-  function wsShuffle(a){for(var i=a.length-1;i>0;i--){var j=(Math.random()*(i+1))|0,t=a[i];a[i]=a[j];a[j]=t;}return a;}
-  function wsTryPlace(grid,N,w){for(var t=0;t<200;t++){var d=WS_DIRS[(Math.random()*WS_DIRS.length)|0],dr=d[0],dc=d[1],r=(Math.random()*N)|0,c=(Math.random()*N)|0,er=r+dr*(w.length-1),ec=c+dc*(w.length-1);if(er<0||er>=N||ec<0||ec>=N)continue;var ok=true;for(var k=0;k<w.length;k++){var g=grid[(r+dr*k)*N+(c+dc*k)];if(g&&g!==w[k]){ok=false;break;}}if(!ok)continue;for(var k2=0;k2<w.length;k2++)grid[(r+dr*k2)*N+(c+dc*k2)]=w[k2];return {w:w,r:r,c:c,dr:dr,dc:dc,found:false};}return null;}
-  function wsGen(){var N=WS_SIZE,grid=new Array(N*N).fill(""),placed=[],pool=wsShuffle(WS_WORDS.filter(function(w){return w.length<=N;}).slice());for(var pi=0;pi<pool.length&&placed.length<WS_COUNT;pi++){var pl=wsTryPlace(grid,N,pool[pi]);if(pl)placed.push(pl);}var A="ABCDEFGHIJKLMNOPQRSTUVWXYZ";for(var i=0;i<grid.length;i++)if(!grid[i])grid[i]=A[(Math.random()*26)|0];return {grid:grid,size:N,words:placed,sel:-1,seconds:0};}
-  function wsLoad(){return store.get("bf_wordsearch")||null;}
-  function wsSave(s){store.set("bf_wordsearch",s);}
-  function wsNew(){var st=wsGen();wsSave(st);return st;}
-  function wsEnd(w){return [w.r+w.dr*(w.w.length-1),w.c+w.dc*(w.w.length-1)];}
-  function wsEq(a,b){return a[0]===b[0]&&a[1]===b[1];}
-  function wsFoundCells(st){var m={};st.words.forEach(function(w){if(w.found)for(var k=0;k<w.w.length;k++)m[(w.r+w.dr*k)*st.size+(w.c+w.dc*k)]=1;});return m;}
-  function renderWordSearch(){
-    var grid=$("#ws-grid");if(!grid)return;var st=wsLoad(),words=$("#ws-words"),cnt=$("#ws-count"),tm=$("#ws-time"),msg=$("#ws-msg");
-    if(!st){grid.innerHTML='<div class="sud-empty">Tap \u201cNew puzzle\u201d to start a word search.</div>';if(words)words.innerHTML="";if(cnt)cnt.textContent="";if(tm)tm.textContent="";if(msg)msg.textContent="";return;}
-    var fc=wsFoundCells(st),html="";
-    for(var i=0;i<st.size*st.size;i++){var cls="ws-cell";if(fc[i])cls+=" found";if(i===st.sel)cls+=" sel";html+='<button type="button" class="'+cls+'" data-ws="'+i+'">'+st.grid[i]+'</button>';}
-    grid.style.gridTemplateColumns="repeat("+st.size+",1fr)";grid.innerHTML=html;
-    if(words)words.innerHTML=st.words.map(function(w){return '<span class="ws-word'+(w.found?" done":"")+'">'+w.w+'</span>';}).join("");
-    var found=st.words.filter(function(w){return w.found;}).length;
-    if(cnt)cnt.textContent=found+"/"+st.words.length;
-    if(tm)tm.textContent=sudFmtTime(st.seconds||0);
-    if(msg)msg.textContent=(found===st.words.length&&st.words.length)?"All found \u2014 brilliant! \ud83d\udcaa":"";
-  }
-  function wsTap(idx){var st=wsLoad();if(!st)return;var N=st.size,rc=[Math.floor(idx/N),idx%N];
-    if(st.sel<0){st.sel=idx;wsSave(st);renderWordSearch();return;}
-    if(st.sel===idx){st.sel=-1;wsSave(st);renderWordSearch();return;}
-    var a=[Math.floor(st.sel/N),st.sel%N],matched=null;
-    for(var i=0;i<st.words.length;i++){var w=st.words[i];if(w.found)continue;var s=[w.r,w.c],e=wsEnd(w);if((wsEq(a,s)&&wsEq(rc,e))||(wsEq(a,e)&&wsEq(rc,s))){w.found=true;matched=w;break;}}
-    st.sel=matched?-1:idx;wsSave(st);renderWordSearch();
-  }
-  var wsTick=null;
-  function wsStartTimer(){if(wsTick)return;wsTick=setInterval(function(){var card=$("#wordsearch-card");if(!card||!card.classList.contains("open"))return;var st=wsLoad();if(!st)return;var done=st.words.filter(function(w){return w.found;}).length===st.words.length;if(done)return;st.seconds=(st.seconds||0)+1;wsSave(st);var t=$("#ws-time");if(t)t.textContent=sudFmtTime(st.seconds);},1000);}
-  var wsDrag={on:false,anchor:-1,path:[]};
-  function wsIdxFromPoint(x,y){var el=document.elementFromPoint(x,y);if(!el||!el.closest)return -1;var c=el.closest("[data-ws]");return c?+c.getAttribute("data-ws"):-1;}
-  function wsLineCells(N,a,b){var ar=Math.floor(a/N),ac=a%N,br=Math.floor(b/N),bc=b%N,dr=br-ar,dc=bc-ac;if(!(dr===0||dc===0||Math.abs(dr)===Math.abs(dc)))return null;var sr=dr>0?1:dr<0?-1:0,sc=dc>0?1:dc<0?-1:0,len=Math.max(Math.abs(dr),Math.abs(dc))+1,cells=[];for(var k=0;k<len;k++)cells.push((ar+sr*k)*N+(ac+sc*k));return cells;}
-  function wsPaintPath(cells){var g=$("#ws-grid");if(!g)return;$all(".ws-cell.path",g).forEach(function(el){el.classList.remove("path");});(cells||[]).forEach(function(i){var el=g.querySelector('[data-ws="'+i+'"]');if(el)el.classList.add("path");});}
-  var wsBound=false;
-  function wsBind(){if(wsBound)return;wsBound=true;var card=$("#wordsearch-card");if(!card)return;
-    card.addEventListener("pointerdown",function(e){var cell=e.target.closest&&e.target.closest("[data-ws]");if(!cell||!wsLoad())return;wsDrag.on=true;wsDrag.anchor=+cell.getAttribute("data-ws");wsDrag.path=[wsDrag.anchor];wsPaintPath(wsDrag.path);e.preventDefault();});
-    document.addEventListener("pointermove",function(e){if(!wsDrag.on)return;var st=wsLoad();if(!st)return;var idx=wsIdxFromPoint(e.clientX,e.clientY);if(idx<0)return;var cells=wsLineCells(st.size,wsDrag.anchor,idx);if(cells){wsDrag.path=cells;wsPaintPath(cells);}e.preventDefault();},{passive:false});
-    document.addEventListener("pointerup",function(){if(!wsDrag.on)return;wsDrag.on=false;var st=wsLoad();if(st&&wsDrag.path&&wsDrag.path.length>=2){var p=wsDrag.path,a=[Math.floor(p[0]/st.size),p[0]%st.size],b=[Math.floor(p[p.length-1]/st.size),p[p.length-1]%st.size];for(var i=0;i<st.words.length;i++){var w=st.words[i];if(w.found)continue;var s=[w.r,w.c],en=wsEnd(w);if((wsEq(a,s)&&wsEq(b,en))||(wsEq(a,en)&&wsEq(b,s))){w.found=true;wsSave(st);break;}}}wsDrag.path=[];wsPaintPath([]);renderWordSearch();});
-  }
+  /* ---------- Training page: collapsed-card summaries + helpers (UI only, reads existing data, writes nothing) ---------- */
+  function tcSet(id,txt){var el=document.getElementById("tc-sum-"+id);if(el&&el.textContent!==txt)el.textContent=txt;}
+  function tcPlural(n,one,many){return n+" "+(n===1?one:(many||one+"s"));}
+  function tcRestSum(){try{
+    var t;
+    if(rt.running)t="Running · "+rtFmt(rtRemNow())+" left";
+    else if(rt.active&&rt.rem>0)t="Paused · "+rtFmt(rt.rem)+" left";
+    else if(rt.doneFired&&!rt.active&&rt.rem<=0)t="Rest complete — ready for next set";
+    else{var pf=rtPrefData().pref;t="Ready · "+(pf?"preferred rest "+rtLabelSec(pf):rtLabelSec(rt.dur));}
+    tcSet("rest",t);}catch(e){}}
+  function tcRefresh(){try{
+    tcRestSum();
+    var st=sudLoad(),sd;
+    if(!st)sd="Tap to open and start a puzzle";
+    else if(st.done)sd="Solved · "+sudFmtTime(st.seconds||0);
+    else if((st.mistakes||0)>=3)sd="Out of mistakes · start a new puzzle";
+    else sd=((SUD_DIFF[st.diff]||{}).label||"Puzzle")+" · "+sudFmtTime(st.seconds||0)+" · Mistakes "+(st.mistakes||0)+"/3";
+    tcSet("sudoku",sd);
+    var en=energyToday();tcSet("energy",en?"Today: "+en.charAt(0).toUpperCase()+en.slice(1):"Not set today");
+    var p=dayEntry(sessWeekKey(),sessIdx()),lg=todayLog();
+    tcSet("session",dayName[p.d]+" · "+p.t+" · "+(lg.done==="done"?"Completed":lg.done==="skipped"?"Skipped":"Not completed yet"));
+    var cs=creatineSlots(todayISO());tcSet("habits","Creatine today: "+((cs.am?1:0)+(cs.pm?1:0))+"/2 doses");
+    var map=weekPlanMap(planWeekKey()),np=0;for(var i=0;i<7;i++)if(map[i]&&map[i]!=="rest")np++;
+    tcSet("weekplan",tcPlural(np,"workout")+" planned · "+wkSelLabel());
+    tcSet("weekview","Today: "+dayEntry(weekKey(new Date()),todayIdx()).t);
+    var mon=mondayOf(new Date()),sun=new Date(mon);sun.setDate(sun.getDate()+6);
+    var ic=inclineSessionList(ovIso(mon),ovIso(sun)).filter(function(e){return e.status!=="skipped";}).length;
+    tcSet("incline",ic?tcPlural(ic,"session")+" this week":"No sessions this week");
+    var nn=loadNotesList().length;tcSet("notes",nn?tcPlural(nn,"saved entry","saved entries"):"No saved entries");
+  }catch(e){}}
+  function tcOpen(id){var c=document.getElementById(id);if(!c||!c.classList.contains("msec"))return;c.classList.add("open");var h=c.querySelector(".msec-head");if(h)h.setAttribute("aria-expanded","true");}
+  (function(){var f=document.getElementById("fuel");if(!f)return;var tm=null;
+    function later(ms){clearTimeout(tm);tm=setTimeout(tcRefresh,ms);}
+    f.addEventListener("click",function(){later(0);});
+    f.addEventListener("change",function(){later(0);});
+    f.addEventListener("input",function(){later(400);});
+    document.addEventListener("click",function(e){var o=e.target.closest("[data-tcopen]");if(o)tcOpen(o.getAttribute("data-tcopen"));});
+    document.addEventListener("visibilitychange",function(){if(!document.hidden)tcRefresh();});
+  })();
   function refreshFuel(){$("#fuel-tip").innerHTML=fuelTips[state.fTime];renderFuelTarget();renderEnergy();renderHabits();renderNotesHistory();bindNotesHistory();rtRender();rtRenderPref();}
   function renderFuelTarget(){
     var el=$("#fuel-target-card");if(!el)return;
@@ -6498,7 +6507,7 @@
   (function(){var sm=$("#save-meal");if(sm)sm.addEventListener("click",saveMealLog);})();
   $("#save-profile").addEventListener("click",saveProfile);
 
-  document.addEventListener("click",function(e){var wc=e.target.closest("#why-cals");if(wc){var box=document.getElementById("why-cals-out");if(box){var show=box.style.display==="none";box.style.display=show?"block":"none";if(show)box.innerHTML=calcBreakdownHTML();wc.textContent=show?"Hide breakdown":"Why this number?";}return;}var w=e.target.closest("[data-why]");if(w){openWhy(w.getAttribute("data-why"));return;}var h=e.target.closest(".lesson > .head");if(h){h.parentNode.classList.toggle("open");}var mh=e.target.closest(".msec-head");if(mh&&!mh.closest("#menu")){var sec=mh.closest(".msec");sec.classList.toggle("open");var pk=sec.getAttribute("data-persist");if(pk)store.set(pk,sec.classList.contains("open"));}});
+  document.addEventListener("click",function(e){var wc=e.target.closest("#why-cals");if(wc){var box=document.getElementById("why-cals-out");if(box){var show=box.style.display==="none";box.style.display=show?"block":"none";if(show)box.innerHTML=calcBreakdownHTML();wc.textContent=show?"Hide breakdown":"Why this number?";}return;}var w=e.target.closest("[data-why]");if(w){openWhy(w.getAttribute("data-why"));return;}var h=e.target.closest(".lesson > .head");if(h){h.parentNode.classList.toggle("open");}var mh=e.target.closest(".msec-head");if(mh&&!mh.closest("#menu")){var sec=mh.closest(".msec");sec.classList.toggle("open");var pk=sec.getAttribute("data-persist");if(pk)store.set(pk,sec.classList.contains("open"));if(sec.closest("#fuel")){mh.setAttribute("aria-expanded",sec.classList.contains("open")?"true":"false");tcRefresh();}}});
   $("#wp-more").addEventListener("click",function(){var a=$("#wp-macros");a.classList.toggle("on");$("#wp-more").textContent=a.classList.contains("on")?"Hide macros ▴":"Add macros (optional) ▾";});
   $("#ml-food").addEventListener("change",function(){state.mlFood=this.value;state.mlState=null;var d=byKey[this.value];state.mlServ=(d&&d.defg)?d.defg:null;renderMlState();if(d&&d.defg&&$("#ml-grams"))$("#ml-grams").value=d.defg;});
   (function(){var ms=$("#ml-state");if(!ms)return;ms.addEventListener("click",function(e){var b=e.target.closest("[data-serv]");if(!b)return;var v=b.getAttribute("data-serv");if(v==="custom"){state.mlServ="custom";if($("#ml-grams")){$("#ml-grams").value="";$("#ml-grams").focus();}}else{state.mlServ=+v;if($("#ml-grams"))$("#ml-grams").value=v;}$all("#ml-serv .serv-chip").forEach(function(x){x.classList.toggle("on",x.getAttribute("data-serv")===v);});});})();
@@ -6770,7 +6779,7 @@
     if(typeof renderStepProgress==="function")renderStepProgress();
   }
   function switchTab(tab){
-$all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-tab")===tab);});$all('.screen').forEach(function(s){s.classList.remove("active");});var screen=document.getElementById(tab);void screen.offsetWidth;screen.classList.add("active");if(tab==="progress"&&typeof renderHealthScore==="function")renderHealthScore();if(tab==="prog"&&typeof renderProg==="function")renderProg();if(tab==="recovery"&&typeof renderRecoveryTab==="function")renderRecoveryTab();if(tab==="today"){state.stepsEditDate=null;state.stepsEntryOpen=false;if(typeof renderStepsToday==="function")renderStepsToday();if(typeof renderWeeklySteps==="function")renderWeeklySteps();}$("#title").textContent=titles[tab][0];$("#subtitle").textContent=titles[tab][1];var wb=$("#hdr-week");if(wb){wb.style.display=tab==="today"?"block":"none";if(tab==="today")renderWeekBadge();}window.scrollTo({top:0,behavior:"auto"});}
+$all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-tab")===tab);});$all('.screen').forEach(function(s){s.classList.remove("active");});var screen=document.getElementById(tab);void screen.offsetWidth;screen.classList.add("active");if(tab==="progress"&&typeof renderHealthScore==="function")renderHealthScore();if(tab==="prog"&&typeof renderProg==="function")renderProg();if(tab==="recovery"&&typeof renderRecoveryTab==="function")renderRecoveryTab();if(tab==="today"){state.stepsEditDate=null;state.stepsEntryOpen=false;if(typeof renderStepsToday==="function")renderStepsToday();if(typeof renderWeeklySteps==="function")renderWeeklySteps();}if(tab==="fuel"&&typeof tcRefresh==="function")tcRefresh();$("#title").textContent=titles[tab][0];$("#subtitle").textContent=titles[tab][1];var wb=$("#hdr-week");if(wb){wb.style.display=tab==="today"?"block":"none";if(tab==="today")renderWeekBadge();}window.scrollTo({top:0,behavior:"auto"});}
   $all('nav button').forEach(function(btn){btn.addEventListener("click",function(){switchTab(btn.getAttribute("data-tab"));});});
   document.addEventListener("click",function(e){var g=e.target.closest("[data-goto]");if(g)switchTab(g.getAttribute("data-goto"));});
 
@@ -6790,7 +6799,7 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   (function(){try{if(store.get("bf_fuelbackup"))return;var keys=["bf_workout","bf_exhist","bf_training","bf_exorder","bf_weekplan","bf_core","bf_cardioday","bf_cardiohist","bf_endurance"],snap={_at:new Date().toISOString(),_note:"Auto snapshot of Fuel training data before Edit-Workout feature."},any=false;keys.forEach(function(k){var v=store.get(k);if(v!=null){snap[k]=v;any=true;}});if(any)store.set("bf_fuelbackup",snap);}catch(e){}})();
   (function(){var h=store.get("bf_exhidden");if(h&&h._ubseed)return;h=h||{};h.upper=h.upper||[];["Lat Pulldown","Seated Row"].forEach(function(n){if(h.upper.indexOf(n)<0)h.upper.push(n);});h._ubseed=true;store.set("bf_exhidden",h);})();
   if(typeof exHistBackfill==="function")exHistBackfill();
-  refreshFuel();renderExerciseLib();icRestore();renderTodaySession();renderWeekPlan();renderStrength();renderHalfPlan();renderWeekPlanner();bindWeekPlanner();rtInit();renderInclineProgress();bindInclineProgress();bindAddedTraining();renderRecoveryTab();bindRecoveryTab();
+  refreshFuel();renderExerciseLib();icRestore();renderTodaySession();renderWeekPlan();renderStrength();renderHalfPlan();renderWeekPlanner();bindWeekPlanner();rtInit();renderInclineProgress();tcRefresh();bindInclineProgress();bindAddedTraining();renderRecoveryTab();bindRecoveryTab();
   function applyTheme(v){document.documentElement.setAttribute("data-theme",v);$all('[data-group="theme"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===v);});var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute("content",v==="light"?"#FFF4F8":(v==="barbie"?"#FFE6F2":"#A9E2BF"));}
   var TYP_FACTOR={signature:1,modern:1,simple:1.05};
   var BASE_TS=1.075; /* app-wide default font size bump -- the Small/Default/Large text-size setting in Menu scales from this new larger baseline instead of from 1 (eased down half a size from the 1.15 bump) */
@@ -6841,7 +6850,7 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   /* ---------- full backup / restore (upgrade of the existing export/import; same underlying
      bf_ keys via allBfKeys(), same download mechanism -- this is NOT a second backup system,
      just a safer wrapper around the one that already existed) ---------- */
-  var BACKUP_VERSION=1,BFL_BUILD=140;
+  var BACKUP_VERSION=1,BFL_BUILD=141;
   function buildBackupPayload(){var storage={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)storage[k]=v;});return {app:"Body Fuel Lab",backupVersion:BACKUP_VERSION,build:BFL_BUILD,exportedAt:new Date().toISOString(),storage:storage};}
   function downloadJSON(obj,filename){var blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);}
   function exportData(){try{downloadJSON(buildBackupPayload(),"BodyFuelLab_FullBackup_"+todayISO()+".json");store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Export could not be created. Your existing data has not been changed.");}}
@@ -7348,8 +7357,7 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   (function(){var d=$("#dt-card");if(d&&store.get("bf_dtopen")===true)d.classList.add("open");})();
   (function(){var d=$("#weekly-steps-card");if(d&&store.get("bf_wstepsopen")===true)d.classList.add("open");})();
   (function(){var cc=$("#cycle-setup-card");if(!cc)return;var c=loadCycle();if(!c.start)cc.classList.add("open");else if(store.get("bf_cycopen")===true)cc.classList.add("open");})();
-  (function(){var sc=$("#sudoku-card");if(!sc)return;if(store.get("bf_sudopen")===true)sc.classList.add("open");renderSudoku();sudStartTimer();sc.addEventListener("click",function(e){var nw=e.target.closest("#sud-new");if(nw){sc.classList.add("open");sudNew();renderSudoku();return;}var db=e.target.closest("[data-suddiff]");if(db){sc.classList.add("open");sudNew(db.getAttribute("data-suddiff"));renderSudoku();return;}var tl=e.target.closest("[data-sudtool]");if(tl){var a=tl.getAttribute("data-sudtool");if(a==="undo")sudUndo();else if(a==="erase")sudErase();else if(a==="pencil")sudPencil();else if(a==="hint")sudHint();return;}var cell=e.target.closest("[data-sud]");if(cell){sudSelect(+cell.getAttribute("data-sud"));return;}var pn=e.target.closest("[data-sudn]");if(pn){sudInput(+pn.getAttribute("data-sudn"));return;}});})();
-  (function(){var wc=$("#wordsearch-card");if(!wc)return;if(store.get("bf_wsopen")===true)wc.classList.add("open");renderWordSearch();wsStartTimer();wsBind();wc.addEventListener("click",function(e){var nw=e.target.closest("#ws-new");if(nw){wc.classList.add("open");wsNew();renderWordSearch();return;}});})();
+  (function(){var sc=$("#sudoku-card");if(!sc)return;renderSudoku();sudStartTimer();sc.addEventListener("click",function(e){var nw=e.target.closest("#sud-new");if(nw){sc.classList.add("open");sudNew();renderSudoku();return;}var db=e.target.closest("[data-suddiff]");if(db){sc.classList.add("open");sudNew(db.getAttribute("data-suddiff"));renderSudoku();return;}var tl=e.target.closest("[data-sudtool]");if(tl){var a=tl.getAttribute("data-sudtool");if(a==="undo")sudUndo();else if(a==="erase")sudErase();else if(a==="pencil")sudPencil();else if(a==="hint")sudHint();return;}var cell=e.target.closest("[data-sud]");if(cell){sudSelect(+cell.getAttribute("data-sud"));return;}var pn=e.target.closest("[data-sudn]");if(pn){sudInput(+pn.getAttribute("data-sudn"));return;}});})();
   (function(){var c=$("#sleep-card");if(!c)return;c.addEventListener("click",function(e){var qb=e.target.closest("#sl-quality button");if(qb){$all("#sl-quality button").forEach(function(b){b.classList.remove("on");});qb.classList.add("on");return;}if(e.target.closest("#sl-save")){saveSleep();}});c.addEventListener("input",function(e){if(e.target&&e.target.hasAttribute&&e.target.hasAttribute("data-stg"))sleepUpdatePcts();});})();
   renderMenu();applyTrackPrefs();
   renderPortionMemory();renderPortionList();syncWpButtons();
@@ -7357,8 +7365,6 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   renderWeekBadge();var _wb=$("#hdr-week");if(_wb)_wb.style.display="block";
   (function(){var wfT=$("#wf-toggle");if(wfT)wfT.addEventListener("click",function(){var g=$("#glance-card");wfT.textContent=g.classList.toggle("expanded")?"See less":"See more";});})();
   (function(){var fc=$("#focus-chips");if(fc)fc.addEventListener("click",function(e){var c=e.target.closest("[data-wk]");if(!c)return;var w=loadWeek(),k=c.getAttribute("data-wk");w[k]=!focusDone(k);saveWeek(w);renderWeekFocus();});})();
-  (function(){var t=$("#exlib-toggle");if(t)t.addEventListener("click",function(){var c=$("#exlib-card");if(c)c.classList.toggle("lib-open");});})();
-  (function(){var t=$("#sprog-toggle");if(t)t.addEventListener("click",function(){var c=$("#sprog-card");if(c)c.classList.toggle("lib-open");});})();
   (function(){["cw-weight","cw-goalw","cw-train"].forEach(function(id){var el=$("#"+id);if(el)el.addEventListener("input",saveCalc);});})();
   (function(){var mc=$("#mission-card");if(mc)mc.addEventListener("click",function(e){
     var ms=e.target.closest("[data-msid]");
