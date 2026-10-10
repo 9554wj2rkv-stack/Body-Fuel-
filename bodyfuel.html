@@ -27,7 +27,7 @@
     --shadow-sm:0 1px 2px rgba(30,90,60,.08), 0 6px 18px rgba(30,90,60,.11);
     --r:15px; --r-sm:11px;
     --font-d:'DM Serif Display',Georgia,serif; --font-b:'DM Sans',-apple-system,sans-serif; --font-a:'Schibsted Grotesk',sans-serif;
-    --maxw:448px; --ts:1;
+    --maxw:448px; --ts:1.15;
   }
   html[data-theme="light"]{
     --bg:#FFF4F8; --surface:#FFFDF9; --surface-2:#F7E6D6;
@@ -812,6 +812,11 @@
   .fs-row-top{display:flex;justify-content:space-between;font-size:calc(13px*var(--ts,1));margin-bottom:4px;color:var(--ink-soft)}
   .fs-row-top b{color:var(--ink);font-weight:700}
   .food-meal-card .food-meal-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px}
+  .food-meal-breakfast{background:#FFF6D6;border-color:#F0D36A}
+  .food-meal-lunch{background:#E1F5E4;border-color:#8FD6A3}
+  .food-meal-dinner{background:#E0ECFB;border-color:#8FB8EE}
+  .food-meal-snack{background:#FFE7D2;border-color:#F3AE72}
+  .food-meal-breakfast .food-add-btn,.food-meal-lunch .food-add-btn,.food-meal-dinner .food-add-btn,.food-meal-snack .food-add-btn{background:rgba(255,255,255,.55)}
   .food-meal-head .fmn{font-size:calc(15px*var(--ts,1));font-weight:700;letter-spacing:.01em;color:var(--ink)}
   .food-meal-head .fmk{font-family:var(--font-b);font-size:calc(13px*var(--ts,1));font-weight:700;color:var(--accent)}
   .food-add-btn{display:block;width:100%;margin-top:9px;border:1px dashed var(--line);background:transparent;color:var(--accent);font-family:var(--font-b);font-weight:600;font-size:calc(13.5px*var(--ts,1));padding:9px;border-radius:10px;cursor:pointer;transition:.18s ease}
@@ -1167,6 +1172,38 @@
   .rpt-head .rpt-period{font-size:calc(13px*var(--ts,1));color:var(--ink-soft);margin-top:6px}
   .rpt-head .rpt-gen{font-size:calc(11px*var(--ts,1));color:var(--ink-faint);margin-top:2px}
   .rpt-chart-wrap{margin-top:8px}
+  /* ---------- Incline Treadmill Programs ---------- */
+  .ic-pick{display:block;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface-2);border-radius:12px;padding:13px 15px;margin-bottom:8px;cursor:pointer;font-family:var(--font-b)}
+  .ic-pick b{display:block;font-size:calc(16.5px*var(--ts,1));color:var(--ink);font-weight:700}
+  .ic-pick span{display:block;font-size:calc(14px*var(--ts,1));color:var(--ink-faint);margin-top:3px}
+  .ic-pick.skip{color:var(--ink-faint);text-align:center;background:none;border-style:dashed;margin-bottom:0}
+  .ic-iv-row{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-radius:9px;font-size:calc(14.5px*var(--ts,1));color:var(--ink-soft)}
+  .ic-iv-row.cur{background:var(--accent-soft);color:var(--accent-deep);font-weight:700}
+  .ic-iv-row.done{opacity:.45;text-decoration:line-through}
+  .ic-timer-big{text-align:center;padding:14px 0 6px}
+  .ic-timer-time{font-family:var(--font-d);font-weight:700;font-size:calc(48px*var(--ts,1));color:var(--ink);line-height:1}
+  .ic-timer-sub{font-size:calc(13px*var(--ts,1));color:var(--ink-faint);text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+  .ic-timer-vals{display:flex;justify-content:center;gap:24px;margin-top:12px}
+  .ic-timer-vals div{text-align:center}
+  .ic-timer-vals b{display:block;font-size:calc(25px*var(--ts,1));color:var(--accent)}
+  .ic-timer-vals span{font-size:calc(12.5px*var(--ts,1));color:var(--ink-faint);text-transform:uppercase;letter-spacing:.05em}
+  .ic-timer-next{text-align:center;font-size:calc(14.5px*var(--ts,1));color:var(--ink-faint);margin-top:10px}
+  .ic-timer-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+  .ic-timer-btns button{border:1px solid var(--line);background:var(--surface-2);color:var(--ink);border-radius:11px;padding:13px;font-family:var(--font-b);font-weight:600;font-size:calc(15.5px*var(--ts,1));cursor:pointer}
+  .ic-timer-btns button.ic-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .ic-timer-btns button:disabled{opacity:.4}
+  .ic-end{color:var(--red);border-color:var(--red)!important;font-size:calc(15.5px*var(--ts,1))}
+  .ic-safety{font-size:calc(13px*var(--ts,1));color:var(--ink-faint);margin-top:10px;line-height:1.5}
+  .ic-edit-iv{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:6px;align-items:center;margin-bottom:6px}
+  .ic-edit-iv input{width:100%;box-sizing:border-box;border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:9px 7px;font-family:var(--font-b);font-size:calc(14.5px*var(--ts,1))}
+  .ic-edit-rm{border:0;background:none;color:var(--ink-faint);font-size:calc(18px*var(--ts,1));cursor:pointer;line-height:1}
+  .ic-prog-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line-soft);margin-bottom:6px}
+  .ic-prog-row b{font-size:calc(15px*var(--ts,1))}
+  .ic-hist-item{border-top:1px solid var(--line-soft);padding:10px 0}
+  .ic-hist-item{cursor:pointer}
+  .ic-hist-item:first-child{border-top:0}
+  .ic-hist-top{display:flex;justify-content:space-between;font-size:calc(14.5px*var(--ts,1));color:var(--ink);font-weight:600}
+  .ic-hist-meta{font-size:calc(13px*var(--ts,1));color:var(--ink-faint);margin-top:3px}
   @media print{
     body *{visibility:hidden}
     #report, #report *{visibility:visible}
@@ -1263,25 +1300,25 @@
           <div id="food-summary-main"></div>
         </div>
 
-        <div class="card food-meal-card">
+        <div class="card food-meal-card food-meal-breakfast">
           <div class="food-meal-head"><span class="fmn">Breakfast</span><span class="fmk" id="fm-kcal-breakfast">0 kcal</span></div>
           <div id="fm-items-breakfast"></div>
           <div class="food-add-wrap" id="food-add-wrap-breakfast"><button type="button" class="food-add-btn" data-addmeal="breakfast">+ Add food</button></div>
         </div>
 
-        <div class="card food-meal-card">
+        <div class="card food-meal-card food-meal-lunch">
           <div class="food-meal-head"><span class="fmn">Lunch</span><span class="fmk" id="fm-kcal-lunch">0 kcal</span></div>
           <div id="fm-items-lunch"></div>
           <div class="food-add-wrap" id="food-add-wrap-lunch"><button type="button" class="food-add-btn" data-addmeal="lunch">+ Add food</button></div>
         </div>
 
-        <div class="card food-meal-card">
+        <div class="card food-meal-card food-meal-dinner">
           <div class="food-meal-head"><span class="fmn">Dinner</span><span class="fmk" id="fm-kcal-dinner">0 kcal</span></div>
           <div id="fm-items-dinner"></div>
           <div class="food-add-wrap" id="food-add-wrap-dinner"><button type="button" class="food-add-btn" data-addmeal="dinner">+ Add food</button></div>
         </div>
 
-        <div class="card food-meal-card">
+        <div class="card food-meal-card food-meal-snack">
           <div class="food-meal-head"><span class="fmn">Snacks</span><span class="fmk" id="fm-kcal-snack">0 kcal</span></div>
           <div id="fm-items-snack"></div>
           <div class="food-add-wrap" id="food-add-wrap-snack"><button type="button" class="food-add-btn" data-addmeal="snack">+ Add food</button></div>
@@ -1632,6 +1669,11 @@
           </div>
         </div>
 
+        <div class="card lib-card" id="incline-card">
+          <button type="button" class="lib-head" id="incline-toggle"><span class="eyebrow" style="margin:0">Incline Walking</span><svg class="lib-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="lib-body" id="incline-body"></div>
+        </div>
+
         <div class="card" id="notes-card">
           <div class="eyebrow">Session notes</div>
           <p class="muted-p" style="margin-top:-4px">Your saved workout notes — spot patterns, wins and niggles over time.</p>
@@ -1818,7 +1860,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 134</b></div>
+            <div class="about-row"><span>Version</span><b>Build 138</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -3098,6 +3140,368 @@
     });
     document.addEventListener("change",function(e){var t=e.target;if(t&&t.getAttribute&&t.getAttribute("data-fin")){var dk=dkOf(t);if(dk){var o={};o[t.getAttribute("data-fin")]=t.value;finSave(dk,o);}}});
   }
+  /* ---------- Incline Treadmill Programs (new, isolated storage: bf_incline) ----------
+     Sessions keyed by ISO date, the same convention already used by bf_distance/bf_steps, so
+     weekly/monthly stats and "jump to a day to edit" reuse the app's existing date-based pattern.
+     Never touches bf_workout/bf_training/bf_finisher/bf_endurance/bf_distance. A completed/partial
+     session stores a SNAPSHOT of the intervals actually used that day, so later edits to a custom
+     program never retroactively change historical records. This replaces the old free-text
+     "Finisher — Incline Walk" card in the same slot (after exercises, before the check-in); the
+     old bf_finisher functions above are left in place, unused, and any data already in bf_finisher
+     is untouched. */
+  var INCLINE_DEFAULTS={
+    advanced:{name:"Advanced Incline",blurb:"Recommended after upper-body training",
+      intervals:[[0,3,4.0,4],[3,7,4.2,8],[7,12,4.0,10],[12,17,3.8,12],[17,22,4.2,8.5],[22,25,3.5,2]]},
+    recovery:{name:"Recovery Incline",blurb:"Recommended after leg day or whole-body training",
+      intervals:[[0,3,3.5,0],[3,6,4.0,3],[6,10,4.0,5],[10,13,3.8,3],[13,15,3.5,0]]},
+    endurance:{name:"Advanced Endurance Climb",blurb:"Optional — challenging incline, best after upper-body training",
+      intervals:[[0,4,4.0,4],[4,9,4.2,8],[9,14,4.0,10],[14,19,3.8,12],[19,24,4.0,10],[24,27,4.2,8.5],[27,30,3.5,2]]}
+  };
+  var INCLINE_ORDER=["advanced","recovery","endurance"];
+  var INCLINE_KNEE=["None","Mild","Moderate","Severe"];
+  var INCLINE_STATUS=[["completed","Completed"],["partial","Partially completed"],["skipped","Skipped"]];
+  var INCLINE_DAY_REC={Tue:"recovery",Wed:"advanced",Thu:"endurance",Sat:"recovery",Sun:"recovery"};
+  function loadIncline(){var d=store.get("bf_incline");return (d&&typeof d==="object")?d:{};}
+  function saveIncline(d){store.set("bf_incline",d);}
+  function inclineIsCustom(key){var d=loadIncline();return !!(d.custom&&d.custom[key]&&d.custom[key].length);}
+  function inclineIntervals(key){var d=loadIncline(),c=d.custom&&d.custom[key];return (c&&c.length)?c:INCLINE_DEFAULTS[key].intervals;}
+  function inclineProgramDef(key){var base=INCLINE_DEFAULTS[key];if(!base)return null;var ivs=inclineIntervals(key);return {key:key,name:base.name,blurb:base.blurb,intervals:ivs,mins:ivs.length?ivs[ivs.length-1][1]:0,isCustom:inclineIsCustom(key)};}
+  function inclineSaveCustom(key,ivs){var d=loadIncline();d.custom=d.custom||{};d.custom[key]=ivs;saveIncline(d);}
+  function inclineRestoreDefault(key){var d=loadIncline();if(d.custom)delete d.custom[key];saveIncline(d);}
+  function inclineDuplicateInto(fromKey,toKey){var ivs=inclineIntervals(fromKey).map(function(iv){return iv.slice();});inclineSaveCustom(toKey,ivs);}
+  function inclineSessionsAll(){var d=loadIncline();return (d.sessions&&typeof d.sessions==="object")?d.sessions:{};}
+  function inclineSession(dateISO){return inclineSessionsAll()[dateISO]||null;}
+  function inclineSaveSession(dateISO,patch){var d=loadIncline();d.sessions=d.sessions||{};var s=d.sessions[dateISO]||{};for(var k in patch)s[k]=patch[k];d.sessions[dateISO]=s;saveIncline(d);}
+  function inclineSessionList(from,to){var all=inclineSessionsAll();return Object.keys(all).filter(function(d){return (!from||d>=from)&&(!to||d<=to);}).sort().map(function(d){return Object.assign({date:d},all[d]);});}
+  function inclineRecommend(dayAbbr,why){if(INCLINE_DAY_REC[dayAbbr])return INCLINE_DAY_REC[dayAbbr];if(why==="upper"||why==="upperarms"||why==="upperai")return "advanced";if(why==="lower"||why==="fullbody")return "recovery";return null;}
+  function icIvDurMin(iv){return iv[1]-iv[0];}
+  function icIvDurSec(iv){return Math.round((iv[1]-iv[0])*60);}
+  function icFmtClock(sec){sec=Math.max(0,Math.round(sec));var m=Math.floor(sec/60),s=sec%60;return m+":"+(s<10?"0":"")+s;}
+  function icRebuildIntervalsFromDurations(rows){var t=0,out=[];rows.forEach(function(r){var d=Math.max(0.5,r.dur||0);out.push([t,Math.round((t+d)*100)/100,r.speed,r.incline]);t+=d;});return out;}
+  function statusLabel(s){var o=INCLINE_STATUS.filter(function(x){return x[0]===s;})[0];return o?o[1]:s;}
+  /* self-contained scale/chip builders (separate from ckScaleHTML/ckChipsHTML so they can take a
+     pre-selected value for editing a previously saved session, without touching those functions) */
+  function icScaleHTML(name,min,max,lowCap,highCap,sel){
+    var btns="";for(var i=min;i<=max;i++)btns+='<button type="button" class="ck-scale-btn'+(sel===i?" on":"")+'" data-ckscale="'+name+'" data-val="'+i+'">'+i+'</button>';
+    var cap=(lowCap||highCap)?('<div class="ck-scale-cap"><span>'+(lowCap||'')+'</span><span>'+(highCap||'')+'</span></div>'):'';
+    return '<div class="ck-scale-row" data-ckscalegroup="'+name+'">'+btns+'</div>'+cap;
+  }
+  function icChipsHTML(name,options,sel){return '<div class="ck-chip-row" data-ckchipgroup="'+name+'">'+options.map(function(o){return '<button type="button" class="ck-chip'+(sel===o?" on":"")+'" data-ckchip="'+name+'" data-val="'+esc(o)+'">'+esc(o)+'</button>';}).join('')+'</div>';}
+  /* ---- live interval timer (same endAt-timestamp pattern as the rest timer `rt`, so it recovers
+     correctly after the screen locks or the tab is backgrounded -- never assumes it kept ticking) ---- */
+  var ic={key:null,date:null,dayKey:null,idx:0,remSec:0,running:false,active:false,endAt:0,timer:null,_ac:null,maxReachedIdx:-1,started:false};
+  function icIntervalsCur(){return ic.key?inclineIntervals(ic.key):[];}
+  function icSaveState(){try{store.set("bf_ictimer",{key:ic.key,date:ic.date,dayKey:ic.dayKey,idx:ic.idx,remSec:ic.remSec,running:ic.running,active:ic.active,endAt:ic.endAt,maxReachedIdx:ic.maxReachedIdx,started:ic.started});}catch(e){}}
+  function icRemNow(){return (ic.running&&ic.endAt)?Math.max(0,Math.ceil((ic.endAt-Date.now())/1000)):ic.remSec;}
+  function icTotalRemSec(){var ivs=icIntervalsCur();if(!ivs.length)return 0;var rem=icRemNow();for(var i=ic.idx+1;i<ivs.length;i++)rem+=icIvDurSec(ivs[i]);return rem;}
+  function icPrimeAudio(){try{var AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;if(!ic._ac)ic._ac=new AC();if(ic._ac.state==="suspended")ic._ac.resume();}catch(e){}}
+  function icBeep(){try{if(!ic._ac)return;var ctx=ic._ac,t=ctx.currentTime,o=ctx.createOscillator(),g=ctx.createGain();o.type="sine";o.frequency.value=660;o.connect(g);g.connect(ctx.destination);g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(0.3,t+0.01);g.gain.setValueAtTime(0.3,t+0.18);g.gain.exponentialRampToValueAtTime(0.0001,t+0.3);o.start(t);o.stop(t+0.32);}catch(e){}}
+  function icVibe(pattern){if(navigator.vibrate){try{navigator.vibrate(pattern);}catch(e){}}}
+  function icClear(){if(ic.timer){clearInterval(ic.timer);ic.timer=null;}ic.running=false;}
+  function icRender(){
+    var big=$("#ic-time");if(big)big.textContent=icFmtClock(icRemNow());
+    var tot=$("#ic-totrem");if(tot)tot.textContent=icFmtClock(icTotalRemSec());
+    var ivs=icIntervalsCur(),cur=ivs[ic.idx];
+    if(cur){
+      var sp=$("#ic-speed");if(sp)sp.textContent=cur[2]+" km/h";
+      var inc=$("#ic-incline");if(inc)inc.textContent=cur[3]+"%";
+      var nx=ivs[ic.idx+1],nxEl=$("#ic-next");if(nxEl)nxEl.textContent=nx?("Next: "+nx[2]+" km/h · "+nx[3]+"% incline"):"Final interval";
+      var cnt=$("#ic-count");if(cnt)cnt.textContent=(ic.idx+1)+" / "+ivs.length;
+    }
+    $all(".ic-iv-row").forEach(function(row){var i=+row.getAttribute("data-iv");row.classList.toggle("cur",i===ic.idx&&ic.started);row.classList.toggle("done",i<ic.idx);});
+    var re2=$("#ic-resume");if(re2)re2.textContent=ic.started?"Resume":"Start";
+    var pa=$("#ic-pause");if(pa)pa.disabled=!ic.running;
+    var re=$("#ic-resume");if(re)re.disabled=!(ic.active&&!ic.running&&ic.remSec>0);
+    var pv=$("#ic-prev");if(pv)pv.disabled=ic.idx<=0;
+    var nxb=$("#ic-next-iv");if(nxb)nxb.disabled=ic.idx>=ivs.length-1;
+  }
+  function icTick(){
+    var rem=icRemNow();ic.remSec=rem;icRender();
+    if(ic.running&&rem<=0){
+      var ivs=icIntervalsCur();
+      if(ic.idx<ivs.length-1){
+        icBeep();icVibe([200,100,200]);
+        ic.idx++;ic.remSec=icIvDurSec(ivs[ic.idx]);ic.maxReachedIdx=Math.max(ic.maxReachedIdx,ic.idx);ic.endAt=Date.now()+ic.remSec*1000;icSaveState();icRender();
+      }else{
+        icBeep();icVibe([300,150,300,150,500]);
+        ic.running=false;ic.active=false;icClear();icSaveState();
+        icOpenCheckin("completed");
+      }
+    }
+  }
+  function icRun(){icClear();ic.running=true;ic.endAt=Date.now()+icRemNow()*1000;icSaveState();ic.timer=setInterval(icTick,250);icTick();}
+  function icStart(key,dayKey,dateISO){
+    icClear();var def=inclineProgramDef(key);if(!def||!def.intervals.length)return;
+    ic.key=key;ic.date=dateISO;ic.dayKey=dayKey;ic.idx=0;ic.remSec=icIvDurSec(def.intervals[0]);ic.active=true;ic.maxReachedIdx=0;ic.started=false;
+    icPrimeAudio();icSaveState();renderTodaySession();
+  }
+  function icPause(){if(ic.running){ic.remSec=icRemNow();icClear();ic.endAt=0;icSaveState();icRender();}}
+  function icResume(){if(!ic.running&&ic.active&&ic.remSec>0){ic.started=true;icPrimeAudio();icRun();}}
+  function icNextInterval(){var ivs=icIntervalsCur();if(ic.idx>=ivs.length-1)return;ic.idx++;ic.remSec=icIvDurSec(ivs[ic.idx]);ic.maxReachedIdx=Math.max(ic.maxReachedIdx,ic.idx);if(ic.running)ic.endAt=Date.now()+ic.remSec*1000;icSaveState();icRender();}
+  function icPrevInterval(){if(ic.idx<=0)return;ic.idx--;var ivs=icIntervalsCur();ic.remSec=icIvDurSec(ivs[ic.idx]);if(ic.running)ic.endAt=Date.now()+ic.remSec*1000;icSaveState();icRender();}
+  function icElapsedActualSec(){var ivs=icIntervalsCur(),sec=0;for(var i=0;i<ic.maxReachedIdx;i++)sec+=icIvDurSec(ivs[i]);var cur=ivs[ic.maxReachedIdx];if(cur){var full=icIvDurSec(cur),remNow=(ic.idx===ic.maxReachedIdx)?icRemNow():0;sec+=remNow?(full-remNow):full;}return sec;}
+  function icOpenCheckin(defaultStatus){
+    var ivs=icIntervalsCur();
+    var plannedSec=ivs.reduce(function(s,iv){return s+icIvDurSec(iv);},0);
+    var reachedIvs=ivs.slice(0,ic.maxReachedIdx+1);
+    var actualSec=icElapsedActualSec();
+    var durSum=reachedIvs.reduce(function(s,iv){return s+icIvDurSec(iv);},0)||1;
+    var avgSpeed=reachedIvs.length?Math.round((reachedIvs.reduce(function(s,iv){return s+iv[2]*icIvDurSec(iv);},0)/durSum)*10)/10:null;
+    var maxIncline=reachedIvs.length?Math.max.apply(null,reachedIvs.map(function(iv){return iv[3];})):null;
+    state.icCheckin={programKey:ic.key,date:ic.date,dayKey:ic.dayKey,plannedMin:Math.round(plannedSec/60),actualMin:Math.round(actualSec/60),status:defaultStatus,avgSpeed:avgSpeed,maxIncline:maxIncline,intervalsSnapshot:ivs};
+    ic.key=null;ic.active=false;icSaveState();
+    renderTodaySession();
+  }
+  function icEnd(){var wasStarted=ic.started;icClear();ic.active=false;icSaveState();icOpenCheckin(wasStarted?"partial":"skipped");}
+  function icRestore(){
+    var saved=store.get("bf_ictimer");
+    if(!saved||!saved.key){return;}
+    if(saved.date!==todayISO()){try{store.set("bf_ictimer",null);}catch(e){}return;}
+    ic.key=saved.key;ic.date=saved.date;ic.dayKey=saved.dayKey;ic.idx=saved.idx||0;ic.maxReachedIdx=saved.maxReachedIdx!=null?saved.maxReachedIdx:ic.idx;ic.started=!!saved.started;
+    if(saved.running&&saved.endAt){
+      var rem=Math.ceil((saved.endAt-Date.now())/1000);
+      if(rem>0){ic.remSec=rem;ic.active=true;icRun();}
+      else{ic.remSec=0;ic.active=true;ic.running=false;icSaveState();}
+    }else if(saved.active){ic.active=true;ic.remSec=saved.remSec||0;ic.running=false;}
+  }
+  /* ---- card markup ---- */
+  function icTimerCardHTML(){
+    var ivs=icIntervalsCur(),cur=ivs[ic.idx],def=INCLINE_DEFAULTS[ic.key];if(!cur||!def)return '';
+    var rows=ivs.map(function(iv,i){return '<div class="ic-iv-row'+(i===ic.idx&&ic.started?' cur':'')+(i<ic.idx?' done':'')+'" data-iv="'+i+'"><span>'+icFmtClock(iv[0]*60)+'–'+icFmtClock(iv[1]*60)+'</span><span>'+iv[2]+' km/h</span><span>'+iv[3]+'% incline</span></div>';}).join('');
+    return '<div class="warma">'
+      +'<div class="warma-top"><span class="eyebrow" style="margin:0">'+esc(def.name)+'</span><span class="muted-p" id="ic-count" style="margin:0">'+(ic.idx+1)+' / '+ivs.length+'</span></div>'
+      +'<div class="ic-timer-big"><div class="ic-timer-time" id="ic-time">'+icFmtClock(icRemNow())+'</div><div class="ic-timer-sub">interval remaining</div></div>'
+      +'<div class="ic-timer-vals"><div><b id="ic-speed">'+cur[2]+' km/h</b><span>Speed</span></div><div><b id="ic-incline">'+cur[3]+'%</b><span>Incline</span></div><div><b id="ic-totrem">'+icFmtClock(icTotalRemSec())+'</b><span>Total left</span></div></div>'
+      +'<div class="ic-timer-next" id="ic-next">'+(ivs[ic.idx+1]?('Next: '+ivs[ic.idx+1][2]+' km/h · '+ivs[ic.idx+1][3]+'% incline'):'Final interval')+'</div>'
+      +'<div class="ic-timer-btns">'
+        +'<button type="button" id="ic-prev" data-icact="prev"'+(ic.idx<=0?' disabled':'')+'>← Previous</button>'
+        +'<button type="button" id="ic-next-iv" data-icact="next"'+(ic.idx>=ivs.length-1?' disabled':'')+'>Next →</button>'
+        +'<button type="button" id="ic-pause" class="ic-primary" data-icact="pause"'+(!ic.running?' disabled':'')+'>Pause</button>'
+        +'<button type="button" id="ic-resume" class="ic-primary" data-icact="resume"'+(!(ic.active&&!ic.running&&ic.remSec>0)?' disabled':'')+'>'+(ic.started?'Resume':'Start')+'</button>'
+      +'</div>'
+      +'<button type="button" class="cta ghost ic-end" data-icact="end" style="margin-top:8px">End workout</button>'
+      +'<div class="ic-iv-list" style="margin-top:14px">'+rows+'</div>'
+      +'<p class="ic-safety">Reduce intensity or stop if you notice knee pain, dizziness or anything unusual.</p>'
+      +'</div>';
+  }
+  function icCheckinFormHTML(){
+    var c=state.icCheckin;if(!c)return "";
+    var prog=INCLINE_DEFAULTS[c.programKey];
+    var statusSeg='<div class="ratergrp"><div class="rl">Status</div><div class="opts" data-rgrp="ic-status">'+INCLINE_STATUS.map(function(o){return '<button type="button" class="'+(c.status===o[0]?"on":"")+'" data-val="'+o[0]+'">'+o[1]+'</button>';}).join("")+'</div></div>';
+    return '<div class="warma" id="ic-checkin-wrap">'
+      +'<div class="warma-top"><span class="eyebrow" style="margin:0">Incline Session Check-in</span></div>'
+      +'<p class="muted-p" style="margin:6px 0 10px">'+(prog?esc(prog.name):"Incline walk")+(c.plannedMin?(' · planned '+c.plannedMin+' min'):'')+'</p>'
+      +statusSeg
+      +'<div class="pmeal-grid" style="margin-top:4px"><div class="pmeal"><label>Actual duration (min)</label><input id="ic-ck-min" type="text" inputmode="numeric" value="'+esc(c.actualMin!=null?c.actualMin:"")+'"></div><div class="pmeal"><label>Avg speed (km/h)</label><input id="ic-ck-speed" type="text" inputmode="decimal" value="'+esc(c.avgSpeed!=null?c.avgSpeed:"")+'"></div></div>'
+      +'<div class="pmeal-grid" style="margin-top:10px"><div class="pmeal"><label>Max incline reached (%)</label><input id="ic-ck-incline" type="text" inputmode="decimal" value="'+esc(c.maxIncline!=null?c.maxIncline:"")+'"></div><div class="pmeal"><label>Distance (optional, km)</label><input id="ic-ck-dist" type="text" inputmode="decimal" value="'+esc(c.distance!=null?c.distance:"")+'"></div></div>'
+      +'<div class="pmeal-grid" style="margin-top:10px"><div class="pmeal"><label>Calories (optional)</label><input id="ic-ck-cal" type="text" inputmode="numeric" value="'+esc(c.calories!=null?c.calories:"")+'"></div><div class="pmeal"></div></div>'
+      +'<div class="ck-label" style="margin-top:12px">Perceived effort</div>'+icScaleHTML("ic-effort",1,10,"Very easy","Max effort",c.effort)
+      +'<div class="ck-label" style="margin-top:10px">Leg fatigue</div>'+icScaleHTML("ic-legfatigue",1,10,"None","Severe",c.legFatigue)
+      +'<div class="ck-label" style="margin-top:10px">Energy level</div>'+icScaleHTML("ic-energy",1,10,"Very low","Very high",c.energy)
+      +'<div class="ck-label" style="margin-top:10px">Knee discomfort</div>'+icChipsHTML("ic-knee",INCLINE_KNEE,c.knee)
+      +'<textarea id="ic-ck-notes" class="mealinput" rows="2" placeholder="Session notes (optional)" style="width:100%;box-sizing:border-box;resize:vertical;margin-top:10px">'+esc(c.notes||"")+'</textarea>'
+      +'<p class="ic-safety">Reduce intensity or stop if you notice knee pain, dizziness or anything unusual.</p>'
+      +'<button type="button" class="cta" id="ic-ck-save" style="margin-top:4px">Save incline session</button>'
+      +'<button type="button" class="linkbtn" id="ic-ck-discard">Discard</button>'
+      +'</div>';
+  }
+  function icSummaryCardHTML(e){
+    var label=e.status==="skipped"?"Skipped":((INCLINE_DEFAULTS[e.program]||{}).name||"Incline walk");
+    var rows='';
+    if(e.status!=="skipped"){
+      rows+='<div class="statline"><span class="k">Status</span><span class="v">'+esc(statusLabel(e.status))+'</span></div>';
+      if(e.actualMin!=null)rows+='<div class="statline"><span class="k">Duration</span><span class="v">'+e.actualMin+' min'+(e.plannedMin?(' / '+e.plannedMin+' planned'):'')+'</span></div>';
+      if(e.avgSpeed!=null)rows+='<div class="statline"><span class="k">Avg speed</span><span class="v">'+e.avgSpeed+' km/h</span></div>';
+      if(e.maxIncline!=null)rows+='<div class="statline"><span class="k">Max incline</span><span class="v">'+e.maxIncline+'%</span></div>';
+      if(e.effort!=null)rows+='<div class="statline"><span class="k">Effort</span><span class="v">'+e.effort+'/10</span></div>';
+      if(e.knee)rows+='<div class="statline"><span class="k">Knee discomfort</span><span class="v">'+esc(e.knee)+'</span></div>';
+    }
+    return '<div class="warma"><div class="warma-top"><span class="eyebrow" style="margin:0">'+esc(label)+'</span><button type="button" class="fin-toggle" data-icedit="1">Edit</button></div>'+rows+'</div>';
+  }
+  function inclineProgramCardHTML(dayKey,why,dayAbbr){
+    var dateISO=sessISO();
+    var head='<div class="ai-sec">Incline Treadmill</div>';
+    if(state.icCheckin&&state.icCheckin.date===dateISO)return head+icCheckinFormHTML();
+    if(ic.active&&ic.date===dateISO&&ic.dayKey===dayKey)return head+icTimerCardHTML();
+    var existing=inclineSession(dateISO);
+    if(existing)return head+icSummaryCardHTML(existing);
+    var rec=inclineRecommend(dayAbbr,why);
+    var opts=INCLINE_ORDER.map(function(k){
+      var def=inclineProgramDef(k),isRec=rec===k;
+      return '<button type="button" class="ic-pick" data-icpick="'+k+'" data-icdk="'+esc(dayKey)+'"><b>'+esc(def.name)+(isRec?' · Recommended':'')+'</b><span>'+def.mins+' min'+(def.blurb?' · '+esc(def.blurb):'')+'</span></button>';
+    }).join('');
+    opts+='<button type="button" class="ic-pick skip" data-icpick="skip" data-icdk="'+esc(dayKey)+'">Skip incline today</button>';
+    return head+'<div class="warma"><div class="warma-top"><span class="eyebrow" style="margin:0">Incline Finisher</span></div>'
+      +'<p class="muted-p" style="margin:6px 0 10px">Would you like to finish today’s training with an incline walk?</p>'
+      +opts+'</div>';
+  }
+  var icBound=false;
+  function bindInclineFinisher(){
+    if(icBound)return;icBound=true;
+    var host=$("#today-session");if(!host)return;
+    host.addEventListener("click",function(e){
+      var pick=e.target.closest("[data-icpick]");
+      if(pick){
+        var val=pick.getAttribute("data-icpick"),dk=pick.getAttribute("data-icdk"),dateISO=sessISO();
+        if(val==="skip"){inclineSaveSession(dateISO,{program:null,status:"skipped",dayKey:dk,savedAt:new Date().toISOString()});renderTodaySession();if(typeof renderInclineProgress==="function")renderInclineProgress();return;}
+        if(dateISO===todayISO()){icStart(val,dk,dateISO);}
+        else{
+          var def=inclineProgramDef(val),ivs=def.intervals,durSum=ivs.reduce(function(s,iv){return s+icIvDurSec(iv);},0)||1;
+          var avgSpeed=Math.round((ivs.reduce(function(s,iv){return s+iv[2]*icIvDurSec(iv);},0)/durSum)*10)/10;
+          var maxIncline=Math.max.apply(null,ivs.map(function(iv){return iv[3];}));
+          state.icCheckin={programKey:val,date:dateISO,dayKey:dk,plannedMin:def.mins,actualMin:def.mins,status:"completed",avgSpeed:avgSpeed,maxIncline:maxIncline,intervalsSnapshot:ivs};
+          renderTodaySession();
+        }
+        return;
+      }
+      var edit=e.target.closest("[data-icedit]");
+      if(edit){
+        var dateISO2=sessISO(),ex=inclineSession(dateISO2);
+        if(ex){state.icCheckin={programKey:ex.program,date:dateISO2,dayKey:ex.dayKey,plannedMin:ex.plannedMin,actualMin:ex.actualMin,status:ex.status,avgSpeed:ex.avgSpeed,maxIncline:ex.maxIncline,distance:ex.distance,calories:ex.calories,notes:ex.notes,effort:ex.effort,legFatigue:ex.legFatigue,energy:ex.energy,knee:ex.knee,intervalsSnapshot:ex.intervalsSnapshot||(ex.program?inclineIntervals(ex.program):[])};renderTodaySession();}
+        return;
+      }
+      var act=e.target.closest("[data-icact]");
+      if(act){var a=act.getAttribute("data-icact");if(a==="pause")icPause();else if(a==="resume")icResume();else if(a==="next")icNextInterval();else if(a==="prev")icPrevInterval();else if(a==="end")icEnd();return;}
+      var rg=e.target.closest('[data-rgrp="ic-status"] button');
+      if(rg){var grp=rg.closest('[data-rgrp="ic-status"]');$all("button",grp).forEach(function(b){b.classList.toggle("on",b===rg);});return;}
+      var scaleBtn=e.target.closest("[data-ckscale]");
+      if(scaleBtn&&scaleBtn.closest("#ic-checkin-wrap")){var sg=scaleBtn.closest("[data-ckscalegroup]");$all("button",sg).forEach(function(b){b.classList.toggle("on",b===scaleBtn);});return;}
+      var chipBtn=e.target.closest("[data-ckchip]");
+      if(chipBtn&&chipBtn.closest("#ic-checkin-wrap")){var cg=chipBtn.closest("[data-ckchipgroup]");$all("button",cg).forEach(function(b){b.classList.toggle("on",b===chipBtn);});return;}
+      var save=e.target.closest("#ic-ck-save");
+      if(save){icSaveCheckin(host);return;}
+      var disc=e.target.closest("#ic-ck-discard");
+      if(disc){state.icCheckin=null;renderTodaySession();return;}
+    });
+    document.addEventListener("visibilitychange",function(){if(!document.hidden&&ic.running){icPrimeAudio();icTick();}});
+  }
+  function icSaveCheckin(host){
+    var c=state.icCheckin;if(!c)return;
+    var wrap=host.querySelector("#ic-checkin-wrap");if(!wrap)return;
+    function scaleVal(name){var g=wrap.querySelector('[data-ckscalegroup="'+name+'"]');var on=g?g.querySelector("button.on"):null;return on?+on.getAttribute("data-val"):null;}
+    function chipVal(name){var g=wrap.querySelector('[data-ckchipgroup="'+name+'"]');var on=g?g.querySelector("button.on"):null;return on?on.getAttribute("data-val"):null;}
+    function statusVal(){var g=wrap.querySelector('[data-rgrp="ic-status"]');var on=g?g.querySelector("button.on"):null;return on?on.getAttribute("data-val"):c.status;}
+    var minEl=wrap.querySelector("#ic-ck-min"),spEl=wrap.querySelector("#ic-ck-speed"),inEl=wrap.querySelector("#ic-ck-incline"),distEl=wrap.querySelector("#ic-ck-dist"),calEl=wrap.querySelector("#ic-ck-cal"),notesEl=wrap.querySelector("#ic-ck-notes");
+    var entry={
+      program:c.programKey,dayKey:c.dayKey,plannedMin:c.plannedMin,
+      actualMin:num(minEl?minEl.value:null),status:statusVal(),
+      avgSpeed:num(spEl?spEl.value:null),maxIncline:num(inEl?inEl.value:null),
+      distance:num(distEl?distEl.value:null),calories:num(calEl?calEl.value:null),
+      effort:scaleVal("ic-effort"),legFatigue:scaleVal("ic-legfatigue"),energy:scaleVal("ic-energy"),knee:chipVal("ic-knee"),
+      notes:notesEl?notesEl.value.trim():"",
+      intervalsSnapshot:c.intervalsSnapshot||[],savedAt:new Date().toISOString()
+    };
+    inclineSaveSession(c.date,entry);
+    state.icCheckin=null;
+    renderTodaySession();
+    if(typeof renderInclineProgress==="function")renderInclineProgress();
+  }
+  /* ---- Incline Progress: stats, history, editable programs (Training tab lib-card) ---- */
+  function inclineStatsHTML(range){
+    var from=null,now=new Date();
+    if(range==="week"){var mon=new Date(now);var dow=(mon.getDay()===0?6:mon.getDay()-1);mon.setDate(mon.getDate()-dow);from=ovIso(mon);}
+    else if(range==="month"){from=ovIso(new Date(now.getFullYear(),now.getMonth(),1));}
+    var list=inclineSessionList(from,null).filter(function(e){return e.status!=="skipped";});
+    if(!list.length)return '<p class="muted-p" style="margin:8px 0 0">No incline sessions recorded yet'+(range!=="all"?" in this range":"")+'.</p>';
+    var totalMin=0,totalDist=0,distN=0,maxInc=0,effSum=0,effN=0,progCount={},kneeDist={};
+    list.forEach(function(e){
+      if(e.actualMin!=null)totalMin+=e.actualMin;
+      if(e.distance!=null){totalDist+=e.distance;distN++;}
+      if(e.maxIncline!=null&&e.maxIncline>maxInc)maxInc=e.maxIncline;
+      if(e.effort!=null){effSum+=e.effort;effN++;}
+      if(e.program)progCount[e.program]=(progCount[e.program]||0)+1;
+      if(e.knee)kneeDist[e.knee]=(kneeDist[e.knee]||0)+1;
+    });
+    var mostProg=null,mostN=0;Object.keys(progCount).forEach(function(k){if(progCount[k]>mostN){mostN=progCount[k];mostProg=k;}});
+    var rows='<div class="statline"><span class="k">Sessions</span><span class="v">'+list.length+'</span></div>'
+      +'<div class="statline"><span class="k">Total minutes</span><span class="v">'+totalMin+'</span></div>'
+      +(distN?('<div class="statline"><span class="k">Total distance</span><span class="v">'+(Math.round(totalDist*10)/10)+' km</span></div>'):'')
+      +(mostProg?('<div class="statline"><span class="k">Most used program</span><span class="v">'+esc((INCLINE_DEFAULTS[mostProg]||{}).name||mostProg)+'</span></div>'):'')
+      +(maxInc?('<div class="statline"><span class="k">Highest incline reached</span><span class="v">'+maxInc+'%</span></div>'):'')
+      +(effN?('<div class="statline"><span class="k">Average perceived effort</span><span class="v">'+(Math.round(effSum/effN*10)/10)+' / 10</span></div>'):'');
+    var kneeKeys=Object.keys(kneeDist);
+    if(kneeKeys.length)rows+='<div class="statline"><span class="k">Knee discomfort</span><span class="v">'+esc(kneeKeys.map(function(k){return k+": "+kneeDist[k];}).join(" · "))+'</span></div>';
+    return rows;
+  }
+  function inclineHistoryHTML(){
+    var list=inclineSessionList(null,null).slice().reverse();
+    if(!list.length)return '<p class="muted-p" style="margin:8px 0 0">No incline sessions yet.</p>';
+    var shown=state.icHistAll?list:list.slice(0,6);
+    var html=shown.map(function(e){
+      var label=e.status==="skipped"?"Skipped":((INCLINE_DEFAULTS[e.program]||{}).name||"Incline walk");
+      var meta=[fmtNoteDate(e.date)];
+      if(e.status!=="skipped"){if(e.actualMin!=null)meta.push(e.actualMin+" min");if(e.effort!=null)meta.push("effort "+e.effort+"/10");}
+      return '<div class="ic-hist-item" data-ichedit="'+e.date+'"><div class="ic-hist-top"><span>'+esc(label)+'</span><span>'+esc(statusLabel(e.status))+'</span></div><div class="ic-hist-meta">'+esc(meta.join(" · "))+'</div></div>';
+    }).join("");
+    if(list.length>6)html+='<button type="button" class="linkbtn" id="ic-hist-all">'+(state.icHistAll?"Show less":"View all ("+list.length+")")+'</button>';
+    return html;
+  }
+  function inclineProgramEditHTML(key){
+    var def=inclineProgramDef(key);
+    var rows=def.intervals.map(function(iv){
+      return '<div class="ic-edit-iv"><input data-icfield="dur" type="text" inputmode="decimal" value="'+icIvDurMin(iv)+'" placeholder="min"><input data-icfield="speed" type="text" inputmode="decimal" value="'+iv[2]+'" placeholder="km/h"><input data-icfield="incline" type="text" inputmode="decimal" value="'+iv[3]+'" placeholder="%"><button type="button" class="ic-edit-rm" data-icrmiv="1" title="Remove interval">✕</button></div>';
+    }).join('');
+    return '<div class="ic-prog-edit" data-icprogkey="'+key+'">'
+      +'<div class="ic-prog-row"><b>'+esc(def.name)+'</b><span class="muted-p" style="margin:0">'+def.mins+' min'+(def.isCustom?' · custom':'')+'</span></div>'
+      +'<div class="ic-edit-head muted-p" style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:6px;font-size:calc(12px*var(--ts,1));text-transform:uppercase;letter-spacing:.04em;margin:8px 0 4px"><span>Min</span><span>Speed</span><span>Incline %</span><span></span></div>'
+      +rows
+      +'<button type="button" class="linkbtn" data-icaddiv="'+key+'" style="margin-top:2px">+ Add interval</button>'
+      +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">'
+        +'<button type="button" class="cta ghost accent2" data-icsaveprog="'+key+'" style="flex:1;margin-top:0">Save as custom</button>'
+        +(def.isCustom?('<button type="button" class="cta ghost" data-icrestoreprog="'+key+'" style="flex:1;margin-top:0">Restore original</button>'):'')
+      +'</div>'
+      +'<div class="pmeal-grid" style="margin-top:10px"><div class="pmeal"><label>Duplicate into</label><select data-icdupinto="'+key+'"><option value="">Choose program…</option>'+INCLINE_ORDER.filter(function(k){return k!==key;}).map(function(k){return '<option value="'+k+'">'+esc(INCLINE_DEFAULTS[k].name)+'</option>';}).join('')+'</select></div><div class="pmeal"></div></div>'
+      +'</div>';
+  }
+  function renderInclineProgress(){
+    var host=$("#incline-body");if(!host)return;
+    var period=state.icStatsPeriod||"all";
+    var chips=[["week","This week"],["month","This month"],["all","All time"]].map(function(p){return '<button type="button" class="ck-quickchip'+(period===p[0]?" done":"")+'" data-icstatperiod="'+p[0]+'">'+p[1]+'</button>';}).join('');
+    var statsBlock='<div class="ck-chip-row" style="margin-bottom:6px">'+chips+'</div>'+inclineStatsHTML(period);
+    var histBlock='<div class="eyebrow" style="margin:16px 0 6px">History</div>'+inclineHistoryHTML();
+    var editBlock='<div class="eyebrow" style="margin:16px 0 6px">Edit programs</div>'+INCLINE_ORDER.map(inclineProgramEditHTML).join('<div class="divider"></div>');
+    host.innerHTML=statsBlock+histBlock+editBlock;
+  }
+  var icProgBound=false;
+  function bindInclineProgress(){
+    if(icProgBound)return;icProgBound=true;
+    var card=$("#incline-card");if(!card)return;
+    card.addEventListener("click",function(e){
+      var t=e.target.closest("#incline-toggle");if(t){card.classList.toggle("lib-open");return;}
+      var sp=e.target.closest("[data-icstatperiod]");if(sp){state.icStatsPeriod=sp.getAttribute("data-icstatperiod");renderInclineProgress();return;}
+      var hall=e.target.closest("#ic-hist-all");if(hall){state.icHistAll=!state.icHistAll;renderInclineProgress();return;}
+      var hitem=e.target.closest("[data-ichedit]");
+      if(hitem){
+        var d3=hitem.getAttribute("data-ichedit"),ex2=inclineSession(d3);
+        DCH.sess.set(d3);switchTab("fuel");
+        if(ex2){state.icCheckin={programKey:ex2.program,date:d3,dayKey:ex2.dayKey,plannedMin:ex2.plannedMin,actualMin:ex2.actualMin,status:ex2.status,avgSpeed:ex2.avgSpeed,maxIncline:ex2.maxIncline,distance:ex2.distance,calories:ex2.calories,notes:ex2.notes,effort:ex2.effort,legFatigue:ex2.legFatigue,energy:ex2.energy,knee:ex2.knee,intervalsSnapshot:ex2.intervalsSnapshot||(ex2.program?inclineIntervals(ex2.program):[])};renderTodaySession();}
+        return;
+      }
+      var addiv=e.target.closest("[data-icaddiv]");
+      if(addiv){var wrap2=addiv.closest("[data-icprogkey]");addiv.insertAdjacentHTML("beforebegin",'<div class="ic-edit-iv"><input data-icfield="dur" type="text" inputmode="decimal" value="3" placeholder="min"><input data-icfield="speed" type="text" inputmode="decimal" value="4.0" placeholder="km/h"><input data-icfield="incline" type="text" inputmode="decimal" value="5" placeholder="%"><button type="button" class="ic-edit-rm" data-icrmiv="1" title="Remove interval">✕</button></div>');return;}
+      var rmiv=e.target.closest("[data-icrmiv]");
+      if(rmiv){var row=rmiv.closest(".ic-edit-iv"),wrap4=rmiv.closest("[data-icprogkey]");if(wrap4.querySelectorAll(".ic-edit-iv").length>1)row.remove();return;}
+      var saveprog=e.target.closest("[data-icsaveprog]");
+      if(saveprog){
+        var key3=saveprog.getAttribute("data-icsaveprog"),wrap3=saveprog.closest("[data-icprogkey]");
+        var rows3=$all(".ic-edit-iv",wrap3).map(function(r){return {dur:num(r.querySelector('[data-icfield="dur"]').value)||0,speed:num(r.querySelector('[data-icfield="speed"]').value)||0,incline:num(r.querySelector('[data-icfield="incline"]').value)||0};}).filter(function(r){return r.dur>0;});
+        if(!rows3.length){alert("Add at least one interval.");return;}
+        inclineSaveCustom(key3,icRebuildIntervalsFromDurations(rows3));
+        renderInclineProgress();
+        return;
+      }
+      var restoreprog=e.target.closest("[data-icrestoreprog]");
+      if(restoreprog){inclineRestoreDefault(restoreprog.getAttribute("data-icrestoreprog"));renderInclineProgress();return;}
+    });
+    card.addEventListener("change",function(e){
+      var dup=e.target.closest("[data-icdupinto]");
+      if(dup&&dup.value){
+        var from=dup.getAttribute("data-icdupinto"),to=dup.value;
+        if(confirm("Copy "+((INCLINE_DEFAULTS[from]||{}).name||from)+"’s intervals into "+((INCLINE_DEFAULTS[to]||{}).name||to)+"? This replaces its current custom intervals.")){inclineDuplicateInto(from,to);renderInclineProgress();}else dup.value="";
+        return;
+      }
+    });
+  }
   function renderTodaySession(){
     var p=dayEntry(sessWeekKey(),sessIdx()),host=$("#today-session");
     var atToday=sessISO()===todayISO();
@@ -3135,9 +3539,9 @@
       else{abody=aEditBtn+'<div id="ex-log" data-dayk="'+adk+'" data-wk="'+awk+'"><div class="ai-sec">Shoulders + Biceps</div>'+aMain.map(function(n){return renderExCard(adk,n,awk,UPPERARMS_TARGET[n],"two");}).join("")+'<div class="ai-sec">Core</div>'+aCore.map(function(n){return renderExCard(adk,n,awk,UPPERARMS_TARGET[n],UPPERARMS_KIND[n]);}).join("")+'</div>';}
       var asl=sessionLogHTML(upperInflammationSeg());
       host.innerHTML=nav+ahead+sessCompleteHTML()+warmAHTML()+abody
-        +inclineFinHTML(adk)
+        +inclineProgramCardHTML(adk,p.why,p.d)
         +'<div class="divider"></div>'+asl+addedTrainingHTML()+whyPills(p);
-      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindSessionLog();bindFinisher();bindUpperOrder();return;
+      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindSessionLog();bindInclineFinisher();bindUpperOrder();return;
     }
     if(p.why==="upper"){
       var udk="upper-body-strength",uwk=sessWeekKey();
@@ -3149,8 +3553,8 @@
       if(uedit){ubody=uEditBtn+'<div class="ai-sec">Upper Body</div>'+upperReorderHTML(uMain,"main","upper")+'<div class="ai-sec">Core</div>'+upperReorderHTML(uCore,"core","upper");}
       else{ubody=uEditBtn+'<div id="ex-log" data-dayk="'+udk+'" data-wk="'+uwk+'"><div class="ai-sec">Upper Body</div>'+uMain.map(function(n){return renderExCard(udk,n,uwk,UPPER_TARGET[n],"two");}).join("")+'<div class="ai-sec">Core</div>'+uCore.map(function(n){return renderExCard(udk,n,uwk,UPPER_TARGET[n],UPPER_KIND[n]);}).join("")+'</div>';}
       var usl=sessionLogHTML(upperInflammationSeg());
-      host.innerHTML=nav+uhead+sessCompleteHTML()+warmAHTML()+ufocus+ubody+inclineFinHTML(udk)+'<div class="divider"></div>'+usl+addedTrainingHTML()+whyPills(p);
-      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindSessionLog();bindUpperOrder();bindFinisher();return;
+      host.innerHTML=nav+uhead+sessCompleteHTML()+warmAHTML()+ufocus+ubody+inclineProgramCardHTML(udk,p.why,p.d)+'<div class="divider"></div>'+usl+addedTrainingHTML()+whyPills(p);
+      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindSessionLog();bindUpperOrder();bindInclineFinisher();return;
     }
     if(p.why==="upperai"){
       var dk=slug(p.t),wk2=sessWeekKey();
@@ -3163,8 +3567,9 @@
       else{aibody=aiEditBtn+'<div id="ex-log" data-dayk="'+dk+'" data-wk="'+wk2+'"><div class="ai-sec">Upper Body</div>'+aiMain.map(function(n){return renderExCard(dk,n,wk2,UPPERAI_TARGET[n]);}).join("")+'<div class="ai-sec">Core</div>'+aiCore.map(function(n){return renderExCard(dk,n,wk2,UPPERAI_TARGET[n]);}).join("")+'</div>';}
       var pcu=postCheckinHTML(),aisn=sessionNotesOnlyHTML();
       host.innerHTML=nav+head2+sessCompleteHTML()+warmAHTML()+focus+aibody
+        +inclineProgramCardHTML(dk,p.why,p.d)
         +(pcu?'<div class="divider"></div>'+pcu:'')+aisn+addedTrainingHTML()+whyPills(p);
-      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindUpperOrder();return;
+      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindUpperOrder();bindInclineFinisher();return;
     }
     if(p.why==="lowimpact"){
       var pcl=postCheckinHTML(),lisn=sessionNotesOnlyHTML();
@@ -3200,8 +3605,8 @@
     var ex=(isCore?coreHeaderHTML(sessWeekKey()):'')+editBtn+'<div id="ex-log" data-dayk="'+dayKey+'" data-wk="'+sessWeekKey()+'">'+exBody+'</div>'+(isCore?coreFinishHTML(sessWeekKey()):'');
     var cardio=(p.finish||p.why==="conditioning")?cardioHTML(p):'';
     var notes=p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'';
-    host.innerHTML=nav+head+sessCompleteHTML()+warm+meta+ex+cardio+(isStrengthType(p.why)?inclineFinHTML(dayKey):'')+vestHTML()+notes+'<div class="divider"></div>'+sessionLogHTML()+addedTrainingHTML()+whyPills(p);
-    bindExLog();bindCardio();bindWarm();bindWarmA();bindSessionLog();bindSessComplete();bindCheckin();bindExOrder();bindFinisher();
+    host.innerHTML=nav+head+sessCompleteHTML()+warm+meta+ex+cardio+(isStrengthType(p.why)?inclineProgramCardHTML(dayKey,p.why,p.d):'')+vestHTML()+notes+'<div class="divider"></div>'+sessionLogHTML()+addedTrainingHTML()+whyPills(p);
+    bindExLog();bindCardio();bindWarm();bindWarmA();bindSessionLog();bindSessComplete();bindCheckin();bindExOrder();bindInclineFinisher();
   }
   /* per-exercise logbook */
   function slug(s){return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}
@@ -3706,6 +4111,7 @@
       allDistanceEntries().filter(function(e){return rptInRange(e.date,from,to);}).forEach(function(e){row({Date:e.date,Category:"Distance",Metric:e.type||"distance",Value:e.km,Unit:"km",Duration:((+e.hh||0)*60+(+e.mm||0))+" min",Notes:e.notes||""});});
       var stepsAll=loadStepsAll();Object.keys(stepsAll).filter(function(d){return rptInRange(d,from,to);}).forEach(function(d){var e=stepsAll[d];row({Date:d,Category:"Steps",Metric:"Daily steps",Steps:e.totalSteps,"Training Steps":e.trainingSteps!=null?e.trainingSteps:""});});
       var recAll=loadRecoveryAll();Object.keys(recAll).filter(function(d){return rptInRange(d,from,to);}).forEach(function(d){var e=recAll[d];row({Date:d,Category:"Recovery",Metric:"Check-in",Value:e.energy,Notes:e.notes||""});});
+      inclineSessionList(from,to).filter(function(e){return e.status!=="skipped";}).forEach(function(e){row({Date:e.date,Category:"Incline",Metric:(INCLINE_DEFAULTS[e.program]||{}).name||e.program||"Incline walk",Value:e.status,Duration:e.actualMin!=null?e.actualMin+" min":"",Distance:e.distance!=null?e.distance:"",Notes:e.notes||""});});
       var slAll=sleepAll();Object.keys(slAll).filter(function(d){return rptInRange(d,from,to);}).forEach(function(d){var e=slAll[d];row({Date:d,Category:"Sleep",Metric:"Duration",Sleep:((e.h||0)+"h "+(e.m||0)+"m")});});
       var mlAll=store.get("bf_meallog")||{};Object.keys(mlAll).filter(function(d){return rptInRange(d,from,to)&&dayLogged(d);}).forEach(function(d){var t=mealTotals(d);row({Date:d,Category:"Food",Metric:"Daily totals",Calories:t.kcal,Protein:t.p});});
       var csv=rows.map(function(r){return r.map(csvEscape).join(",");}).join("\r\n");
@@ -6375,10 +6781,11 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   (function(){try{if(store.get("bf_fuelbackup"))return;var keys=["bf_workout","bf_exhist","bf_training","bf_exorder","bf_weekplan","bf_core","bf_cardioday","bf_cardiohist","bf_endurance"],snap={_at:new Date().toISOString(),_note:"Auto snapshot of Fuel training data before Edit-Workout feature."},any=false;keys.forEach(function(k){var v=store.get(k);if(v!=null){snap[k]=v;any=true;}});if(any)store.set("bf_fuelbackup",snap);}catch(e){}})();
   (function(){var h=store.get("bf_exhidden");if(h&&h._ubseed)return;h=h||{};h.upper=h.upper||[];["Lat Pulldown","Seated Row"].forEach(function(n){if(h.upper.indexOf(n)<0)h.upper.push(n);});h._ubseed=true;store.set("bf_exhidden",h);})();
   if(typeof exHistBackfill==="function")exHistBackfill();
-  refreshFuel();renderExerciseLib();renderTodaySession();renderWeekPlan();renderStrength();renderHalfPlan();renderWeekPlanner();bindWeekPlanner();rtInit();bindAddedTraining();renderRecoveryTab();bindRecoveryTab();
+  refreshFuel();renderExerciseLib();icRestore();renderTodaySession();renderWeekPlan();renderStrength();renderHalfPlan();renderWeekPlanner();bindWeekPlanner();rtInit();renderInclineProgress();bindInclineProgress();bindAddedTraining();renderRecoveryTab();bindRecoveryTab();
   function applyTheme(v){document.documentElement.setAttribute("data-theme",v);$all('[data-group="theme"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===v);});var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute("content",v==="light"?"#FFF4F8":(v==="barbie"?"#FFE6F2":"#A9E2BF"));}
   var TYP_FACTOR={signature:1,modern:1,simple:1.05};
-  function applyScale(){var ts=parseFloat(store.get("bf_textscale")||"1")||1;var typ=store.get("bf_typography")||"signature";document.documentElement.style.setProperty("--ts",(ts*(TYP_FACTOR[typ]||1)).toFixed(3));}
+  var BASE_TS=1.075; /* app-wide default font size bump -- the Small/Default/Large text-size setting in Menu scales from this new larger baseline instead of from 1 (eased down half a size from the 1.15 bump) */
+  function applyScale(){var ts=parseFloat(store.get("bf_textscale")||"1")||1;var typ=store.get("bf_typography")||"signature";document.documentElement.style.setProperty("--ts",(ts*(TYP_FACTOR[typ]||1)*BASE_TS).toFixed(3));}
   function applyTextScale(v){store.set("bf_textscale",v);$all('[data-group="ts"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===v);});applyScale();}
   function applyTypography(v){store.set("bf_typography",v);document.documentElement.setAttribute("data-type",v);$all('[data-group="typography"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-val")===v);});applyScale();}
   /* ================= MENU control center ================= */
@@ -6420,12 +6827,12 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   function renderMenu(){renderMenuProfile();renderTrackPrefs();renderRules();renderDataStatus();if(typeof renderRtSettings==="function")renderRtSettings();}
 
   function allBfKeys(){var ks=[];try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf("bf_")===0)ks.push(k);}}catch(e){}
-    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder","bf_endurance","bf_wordsearch","bf_warmup","bf_exhidden","bf_template","bf_fuelbackup","bf_finisher","bf_foodfav","bf_servingunits","bf_offfav","bf_distance","bf_halfplan","bf_checkpoints","bf_milestones","bf_recovery","bf_roadmapevents","bf_steps","bf_stepgoal"];
+    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder","bf_endurance","bf_wordsearch","bf_warmup","bf_exhidden","bf_template","bf_fuelbackup","bf_finisher","bf_foodfav","bf_servingunits","bf_offfav","bf_distance","bf_halfplan","bf_checkpoints","bf_milestones","bf_recovery","bf_roadmapevents","bf_steps","bf_stepgoal","bf_incline"];
     return ks;}
   /* ---------- full backup / restore (upgrade of the existing export/import; same underlying
      bf_ keys via allBfKeys(), same download mechanism -- this is NOT a second backup system,
      just a safer wrapper around the one that already existed) ---------- */
-  var BACKUP_VERSION=1,BFL_BUILD=132;
+  var BACKUP_VERSION=1,BFL_BUILD=138;
   function buildBackupPayload(){var storage={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)storage[k]=v;});return {app:"Body Fuel Lab",backupVersion:BACKUP_VERSION,build:BFL_BUILD,exportedAt:new Date().toISOString(),storage:storage};}
   function downloadJSON(obj,filename){var blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);}
   function exportData(){try{downloadJSON(buildBackupPayload(),"BodyFuelLab_FullBackup_"+todayISO()+".json");store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Export could not be created. Your existing data has not been changed.");}}
@@ -6448,7 +6855,8 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
       steps:cnt("bf_steps"),
       recovery:cnt("bf_recovery"),
       sleep:cnt("bf_sleep"),
-      meals:cnt("bf_meallog")
+      meals:cnt("bf_meallog"),
+      incline:(function(){var v=storage["bf_incline"];return (v&&v.sessions)?Object.keys(v.sessions).length:0;})()
     };
   }
   function backupPreviewHTML(v){
@@ -6463,6 +6871,7 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
     if(c.recovery)lines.push(c.recovery+" recovery records");
     if(c.sleep)lines.push(c.sleep+" sleep records");
     if(c.meals)lines.push(c.meals+" food log days");
+    if(c.incline)lines.push(c.incline+" incline sessions");
     return '<div class="rpt-metric" style="margin-top:10px"><div class="rpt-metric-name">Body Fuel Lab Backup</div><div style="font-size:calc(12px*var(--ts,1));color:var(--ink-soft);margin-bottom:6px">Created: '+esc(when)+(v.build?(" \u00b7 Build "+esc(v.build)):"")+'</div>'
       +(lines.length?('<ul style="margin:0 0 8px;padding-left:18px;font-size:calc(12.5px*var(--ts,1));color:var(--ink-soft)">'+lines.map(function(l){return "<li>"+esc(l)+"</li>";}).join("")+'</ul>'):'<p class="muted-p" style="margin:0 0 8px">No recognisable records found in this file.</p>')
       +'<p class="muted-p" style="margin:0 0 10px;font-size:calc(11.5px*var(--ts,1))">Restoring this backup may replace your current Body Fuel Lab data. A safety backup of your current data will be created first.</p>'
@@ -6581,6 +6990,20 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
     };
   }
 
+  function rptIncline(from,to){
+    var list=inclineSessionList(from,to).filter(function(e){return e.status!=="skipped";});
+    if(!list.length)return null;
+    var totalMin=0,totalDist=0,distN=0,maxInc=0,effSum=0,effN=0,progCount={};
+    list.forEach(function(e){
+      if(e.actualMin!=null)totalMin+=e.actualMin;
+      if(e.distance!=null){totalDist+=e.distance;distN++;}
+      if(e.maxIncline!=null&&e.maxIncline>maxInc)maxInc=e.maxIncline;
+      if(e.effort!=null){effSum+=e.effort;effN++;}
+      if(e.program)progCount[e.program]=(progCount[e.program]||0)+1;
+    });
+    var mostProg=null,mostN=0;Object.keys(progCount).forEach(function(k){if(progCount[k]>mostN){mostN=progCount[k];mostProg=k;}});
+    return {count:list.length,totalMin:totalMin,totalDist:distN?Math.round(totalDist*10)/10:null,maxInc:maxInc||null,avgEffort:effN?Math.round(effSum/effN*10)/10:null,mostProg:mostProg};
+  }
   function rptStrength(from,to){
     var hist=loadExHist(),wo=loadWorkout(),out=[];
     Object.keys(hist).forEach(function(exKey){
@@ -6747,6 +7170,16 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
       if(tr.coreDaysCount)trainHTML+='<div class="rpt-row"><span>Core work recorded</span><b>'+tr.coreDaysCount+' day'+(tr.coreDaysCount===1?"":"s")+'</b></div>';
       if(tr.sessionsPerWeek!=null)trainHTML+='<div class="rpt-row"><span>Training sessions per week</span><b>'+tr.sessionsPerWeek+'</b></div>';
       trainHTML+='<p class="rpt-empty" style="margin-top:8px">Total training time is not shown \u2014 BFL does not consistently record session duration across all training types, and a partial total would be misleading.</p>';
+    }
+    var incl=rptIncline(from,to);
+    if(incl){
+      trainHTML+='<div class="rpt-sub" style="margin-top:12px">Incline Walking</div>'
+        +'<div class="rpt-row"><span>Incline sessions completed</span><b>'+incl.count+'</b></div>'
+        +'<div class="rpt-row"><span>Total incline minutes</span><b>'+incl.totalMin+'</b></div>'
+        +(incl.totalDist!=null?('<div class="rpt-row"><span>Total recorded distance</span><b>'+incl.totalDist+' km</b></div>'):'')
+        +(incl.mostProg?('<div class="rpt-row"><span>Most frequently selected program</span><b>'+esc((INCLINE_DEFAULTS[incl.mostProg]||{}).name||incl.mostProg)+'</b></div>'):'')
+        +(incl.maxInc!=null?('<div class="rpt-row"><span>Highest incline reached</span><b>'+incl.maxInc+'%</b></div>'):'')
+        +(incl.avgEffort!=null?('<div class="rpt-row"><span>Average perceived effort</span><b>'+incl.avgEffort+' / 10</b></div>'):'');
     }
     trainHTML+='</div>';
 
