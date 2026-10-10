@@ -812,11 +812,20 @@
   .fs-row-top{display:flex;justify-content:space-between;font-size:calc(13px*var(--ts,1));margin-bottom:4px;color:var(--ink-soft)}
   .fs-row-top b{color:var(--ink);font-weight:700}
   .food-meal-card .food-meal-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px}
-  .food-meal-breakfast{background:#FFF6D6;border-color:#F0D36A}
-  .food-meal-lunch{background:#E1F5E4;border-color:#8FD6A3}
-  .food-meal-dinner{background:#E0ECFB;border-color:#8FB8EE}
-  .food-meal-snack{background:#FFE7D2;border-color:#F3AE72}
-  .food-meal-breakfast .food-add-btn,.food-meal-lunch .food-add-btn,.food-meal-dinner .food-add-btn,.food-meal-snack .food-add-btn{background:rgba(255,255,255,.55)}
+  .food-meal-breakfast,.food-meal-lunch,.food-meal-dinner,.food-meal-snack{border:none;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+  .food-meal-breakfast{background:#F6DC3E}
+  .food-meal-lunch{background:#4FB876}
+  .food-meal-dinner{background:#4F8FE0}
+  .food-meal-snack{background:#E8672E}
+  .food-meal-breakfast .fmn,.food-meal-lunch .fmn,.food-meal-dinner .fmn,.food-meal-snack .fmn{color:#1A1A1A}
+  .food-meal-breakfast .fmk,.food-meal-lunch .fmk,.food-meal-dinner .fmk,.food-meal-snack .fmk{color:rgba(26,26,26,.7)}
+  .food-meal-breakfast .food-add-btn,.food-meal-lunch .food-add-btn,.food-meal-dinner .food-add-btn,.food-meal-snack .food-add-btn{background:#fff;border:1px dashed rgba(0,0,0,.22);color:#1A1A1A}
+  .food-meal-breakfast .food-add-btn:active,.food-meal-lunch .food-add-btn:active,.food-meal-dinner .food-add-btn:active,.food-meal-snack .food-add-btn:active{background:#f2f2f2}
+  .food-meal-breakfast .ml-item,.food-meal-lunch .ml-item,.food-meal-dinner .ml-item,.food-meal-snack .ml-item{border-bottom-color:rgba(0,0,0,.14)}
+  .food-meal-breakfast .ml-item .nm,.food-meal-lunch .ml-item .nm,.food-meal-dinner .ml-item .nm,.food-meal-snack .ml-item .nm{color:#1A1A1A}
+  .food-meal-breakfast .ml-item .ma,.food-meal-lunch .ml-item .ma,.food-meal-dinner .ml-item .ma,.food-meal-snack .ml-item .ma{color:rgba(26,26,26,.65)}
+  .food-meal-breakfast .ml-item .mrm,.food-meal-lunch .ml-item .mrm,.food-meal-dinner .ml-item .mrm,.food-meal-snack .ml-item .mrm{color:rgba(26,26,26,.65)}
+  .food-meal-breakfast .ml-empty,.food-meal-lunch .ml-empty,.food-meal-dinner .ml-empty,.food-meal-snack .ml-empty{color:rgba(26,26,26,.65)}
   .food-meal-head .fmn{font-size:calc(15px*var(--ts,1));font-weight:700;letter-spacing:.01em;color:var(--ink)}
   .food-meal-head .fmk{font-family:var(--font-b);font-size:calc(13px*var(--ts,1));font-weight:700;color:var(--accent)}
   .food-add-btn{display:block;width:100%;margin-top:9px;border:1px dashed var(--line);background:transparent;color:var(--accent);font-family:var(--font-b);font-weight:600;font-size:calc(13.5px*var(--ts,1));padding:9px;border-radius:10px;cursor:pointer;transition:.18s ease}
@@ -1860,7 +1869,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 138</b></div>
+            <div class="about-row"><span>Version</span><b>Build 140</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -6832,7 +6841,7 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   /* ---------- full backup / restore (upgrade of the existing export/import; same underlying
      bf_ keys via allBfKeys(), same download mechanism -- this is NOT a second backup system,
      just a safer wrapper around the one that already existed) ---------- */
-  var BACKUP_VERSION=1,BFL_BUILD=138;
+  var BACKUP_VERSION=1,BFL_BUILD=140;
   function buildBackupPayload(){var storage={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)storage[k]=v;});return {app:"Body Fuel Lab",backupVersion:BACKUP_VERSION,build:BFL_BUILD,exportedAt:new Date().toISOString(),storage:storage};}
   function downloadJSON(obj,filename){var blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);}
   function exportData(){try{downloadJSON(buildBackupPayload(),"BodyFuelLab_FullBackup_"+todayISO()+".json");store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Export could not be created. Your existing data has not been changed.");}}
