@@ -1331,6 +1331,35 @@
   /* Meal cards keep their solid colours in every theme, so scope dark-ink variables inside them */
   .food-meal-card{--ink:#1A1A1A;--ink-soft:rgba(26,26,26,.78);--ink-faint:rgba(26,26,26,.62);--line:rgba(0,0,0,.2);--line-soft:rgba(0,0,0,.12);--surface:#FFFFFF;--surface-2:rgba(255,255,255,.72);--accent:#1A1A1A;--accent-deep:#1A1A1A;--accent-soft:rgba(255,255,255,.6);--on-accent:#FFFFFF;color:#1A1A1A}
   .food-meal-card .fmn,.food-meal-card .fmk{color:#1A1A1A}
+  /* Post-Weights Cardio card */
+  .pwc{margin:14px 0 4px;padding:14px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);box-shadow:var(--shadow-sm)}
+  .pwc .msec-head{padding:0;background:none;border:0;width:100%;text-align:left;font-family:inherit;color:inherit;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;cursor:pointer}
+  .pwc .tc-ttl{display:block;flex:1;min-width:0}
+  .pwc .tc-ttl .eyebrow{display:block;margin:0}
+  .pwc .tc-sum{display:block;margin-top:4px;line-height:1.35}
+  .pwc.open .tc-sum{display:none}
+  .pwc .chev{width:22px;height:22px;color:var(--accent);flex:none;transition:transform .25s}
+  .pwc.open .chev{transform:rotate(180deg)}
+  .pwc .pwc-seg{display:flex;width:100%}
+  .pwc .pwc-seg button{flex:1;min-width:0;padding:10px 6px;font-size:calc(13.5px*var(--ts,1))}
+  .pwc-clockbox{margin:12px 0 4px;padding:14px;border-radius:14px;background:var(--surface-2);text-align:center}
+  .pwc-lbl{font-size:calc(13px*var(--ts,1));font-weight:700;color:var(--ink-soft)}
+  .pwc-clock{font-size:calc(46px*var(--ts,1));font-weight:800;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums;color:var(--ink);margin:4px 0}
+  .pwc-clock.reached{color:var(--green)}
+  .pwc-sub{font-size:calc(13px*var(--ts,1));color:var(--ink-soft);line-height:1.4}
+  .pwc-bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin:6px 0}
+  .pwc-bar i{display:block;height:100%;width:0;background:var(--accent);border-radius:99px;transition:width .5s linear}
+  .pwc-mach{font-size:calc(15px*var(--ts,1));font-weight:700;color:var(--ink);margin-top:4px}
+  .pwc-last,.pwc-legacy{font-size:calc(13px*var(--ts,1));color:var(--ink-soft);margin-top:10px;line-height:1.4}
+  .pwc-legacy{padding:8px 10px;border-radius:10px;background:var(--surface-2);margin:0 0 10px}
+  .pwc-done{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:12px;background:var(--accent-soft);margin-bottom:10px}
+  .pwc-done b{font-size:calc(13px*var(--ts,1));color:var(--accent-deep)}
+  .pwc-done span{font-size:calc(14.5px*var(--ts,1));font-weight:600;color:var(--ink);line-height:1.4}
+  .pwc-msg{min-height:0;font-size:calc(13px*var(--ts,1));color:var(--red);margin-top:8px;font-weight:600}
+  .pwc-msg:empty{display:none}
+  .pwc-log{display:flex;flex-direction:column;gap:3px;margin-top:10px;font-size:calc(13px*var(--ts,1));color:var(--ink-soft)}
+  .pwc input.bad{border-color:var(--red)}
+  .pwc .linkbtn{display:block;margin:10px 0 0}
   @media print{
     body *{visibility:hidden}
     #report, #report *{visibility:visible}
@@ -1802,7 +1831,7 @@
         </div>
 
         <div class="card msec" id="incline-card">
-          <button type="button" class="msec-head" aria-expanded="false" aria-controls="tc-body-incline"><span class="tc-ttl"><span class="eyebrow">Incline Walking</span><span class="drop-sub tc-sum" id="tc-sum-incline"></span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+          <button type="button" class="msec-head" aria-expanded="false" aria-controls="tc-body-incline"><span class="tc-ttl"><span class="eyebrow">Incline Walking history</span><span class="drop-sub tc-sum" id="tc-sum-incline"></span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body" id="tc-body-incline"><div class="msec-in">
           <div id="incline-body"></div>
           </div></div>
@@ -2003,7 +2032,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 143</b></div>
+            <div class="about-row"><span>Version</span><b>Build 144</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -3602,8 +3631,7 @@
     var chips=[["week","This week"],["month","This month"],["all","All time"]].map(function(p){return '<button type="button" class="ck-quickchip'+(period===p[0]?" done":"")+'" data-icstatperiod="'+p[0]+'">'+p[1]+'</button>';}).join('');
     var statsBlock='<div class="ck-chip-row" style="margin-bottom:6px">'+chips+'</div>'+inclineStatsHTML(period);
     var histBlock='<div class="eyebrow" style="margin:16px 0 6px">History</div>'+inclineHistoryHTML();
-    var editBlock='<div class="eyebrow" style="margin:16px 0 6px">Edit programs</div>'+INCLINE_ORDER.map(inclineProgramEditHTML).join('<div class="divider"></div>');
-    host.innerHTML=statsBlock+histBlock+editBlock;
+    host.innerHTML=statsBlock+histBlock;
   }
   var icProgBound=false;
   function bindInclineProgress(){
@@ -3616,7 +3644,6 @@
       if(hitem){
         var d3=hitem.getAttribute("data-ichedit"),ex2=inclineSession(d3);
         tcOpen("session-card");DCH.sess.set(d3);switchTab("fuel");
-        if(ex2){state.icCheckin={programKey:ex2.program,date:d3,dayKey:ex2.dayKey,plannedMin:ex2.plannedMin,actualMin:ex2.actualMin,status:ex2.status,avgSpeed:ex2.avgSpeed,maxIncline:ex2.maxIncline,distance:ex2.distance,calories:ex2.calories,notes:ex2.notes,effort:ex2.effort,legFatigue:ex2.legFatigue,energy:ex2.energy,knee:ex2.knee,intervalsSnapshot:ex2.intervalsSnapshot||(ex2.program?inclineIntervals(ex2.program):[])};renderTodaySession();}
         return;
       }
       var addiv=e.target.closest("[data-icaddiv]");
@@ -3643,6 +3670,288 @@
         return;
       }
     });
+  }
+  /* ---------- Post-Weights Cardio (new, isolated storage: bf_postcardio) ----------
+     One record per workout date (ISO, same convention as bf_incline/bf_distance). Replaces the old
+     "Cardio finish" (bf_training.cardio/bf_cardiohist) and "Incline Finisher" (bf_incline) cards on the
+     active workout screen. Those old keys are never modified; their history is still read for the
+     "Earlier log" lines, reports and backups. All timing is timestamp based (Date.now()), so locked
+     screens / backgrounding / reopening cannot make elapsed time drift. */
+  var PWC_TARGET=1200,PWC_DEF={incline:"9",speed:"3.0",level:"7"},pwcOpen={},pwcEdit={},pwcTimer=null,pwcBound=false,pwcReached={};
+  function pwcAll(){var d=store.get("bf_postcardio");return (d&&typeof d==="object"&&!Array.isArray(d))?d:{};}
+  function pwcGet(iso){return pwcAll()[iso]||null;}
+  function pwcPatch(iso,fn){var all=pwcAll(),r=all[iso]||{v:1};fn(r);r.updatedAt=Date.now();all[iso]=r;store.set("bf_postcardio",all);return r;}
+  function pwcNum(v){if(v==null)return null;var s=String(v).trim();if(!/^(\d+([.,]\d*)?|[.,]\d+)$/.test(s))return null;var n=parseFloat(s.replace(",","."));return isFinite(n)?n:null;}
+  function pwcFmt(n,kind){if(n==null)return "";var s=String(Math.round(n*100)/100);if(kind==="speed"&&s.indexOf(".")<0)s+=".0";return s;}
+  function pwcRange(vals,kind){vals=vals.filter(function(x){return x!=null;});if(!vals.length)return "";var mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals);return mn===mx?pwcFmt(mn,kind):pwcFmt(mn,kind)+"–"+pwcFmt(mx,kind);}
+  function pwcMin(sec){return sec>0?Math.max(1,Math.round(sec/60)):0;}
+  function pwcClock(sec){sec=Math.max(0,Math.floor(sec));var m=Math.floor(sec/60),s=sec%60;return (m<10?"0":"")+m+":"+(s<10?"0":"")+s;}
+  function pwcEl(start){return Math.max(0,Math.floor((Date.now()-start)/1000));}
+  function pwcName(m){return m==="stairs"?"StairMaster":"Incline Walk";}
+  function pwcCur(rec){var p=(rec&&rec.plan)||{};return {incline:p.incline!=null?p.incline:PWC_DEF.incline,speed:p.speed!=null?p.speed:PWC_DEF.speed,level:p.level!=null?p.level:PWC_DEF.level};}
+  function pwcMachine(rec){return (rec&&(rec.machine==="stairs"||rec.machine==="incline"))?rec.machine:"incline";}
+  function pwcSummaryText(rec){
+    if(!rec)return "";
+    if(rec.finished){
+      var parts=[pwcName(rec.machine)],e=rec.easeIn&&rec.easeIn.sec>0?pwcMin(rec.easeIn.sec)+" min ease-in":"",s=rec.steady&&rec.steady.sec>0?pwcMin(rec.steady.sec)+" min steady":"";
+      var dur=[e,s].filter(Boolean).join(" + ");if(dur)parts.push(dur);
+      var ch=(rec.steady&&rec.steady.changes)||[];
+      if(rec.machine==="stairs"){var lv=pwcRange(ch.map(function(c){return c.level;}));if(lv)parts.push((lv.indexOf("–")>=0?"levels ":"level ")+lv);}
+      else{var ic=pwcRange(ch.map(function(c){return c.incline;})),sp=pwcRange(ch.map(function(c){return c.speed;}),"speed");if(ic)parts.push(ic+"%");if(sp)parts.push(sp+" km/h");}
+      if(rec.cooldown&&rec.cooldown.sec>0)parts.push(pwcMin(rec.cooldown.sec)+" min cooldown");
+      return parts.join(" · ");
+    }
+    if(rec.skipped)return "Skipped today";
+    if(rec.phase==="easein"&&rec.easeIn&&rec.easeIn.start)return pwcName(rec.machine)+" · Ease-in "+pwcClock(pwcEl(rec.easeIn.start));
+    if(rec.phase==="steady"&&rec.steady&&rec.steady.start){var el=pwcEl(rec.steady.start);return pwcName(rec.machine)+" · Steady "+(el<PWC_TARGET?pwcClock(PWC_TARGET-el)+" left":"target reached");}
+    return "";
+  }
+  function pwcLegacyLines(iso){
+    var out=[],t=loadTraining()[iso],c=t&&t.cardio;
+    if(c&&(c.incline||c.speed||c.level||c.inclineMin||c.stairsMin)&&t.cardioOn!==false){
+      var mode=c.mode==="both"?"Incline Walk + StairMaster":(c.mode==="stairs"?"StairMaster":"Incline Walk"),p=[mode];
+      if(c.duration)p.push(c.duration+" min");if(c.incline)p.push(c.incline+"% incline");if(c.speed)p.push(c.speed+" km/h");if(c.level)p.push("level "+c.level);
+      out.push("Earlier cardio log: "+p.join(" · "));
+    }
+    var s=inclineSession(iso);
+    if(s&&s.status!=="skipped"){var q=[((INCLINE_DEFAULTS[s.program]||{}).name||"Incline walk"),statusLabel(s.status)];if(s.actualMin!=null)q.push(s.actualMin+" min");out.push("Earlier incline finisher: "+q.join(" · "));}
+    return out;
+  }
+  function pwcLastLine(iso){
+    var all=pwcAll(),ds=Object.keys(all).filter(function(d){return d<iso&&all[d].finished;}).sort();
+    if(ds.length){var d=ds[ds.length-1];return "Last: "+pwcSummaryText(all[d])+" · "+dchLabel(d);}
+    return cardioLastLine();
+  }
+  function pwcFieldsHTML(machine,grp,vals){
+    function f(label,key){var v=vals[key];if(typeof v==="number")v=pwcFmt(v,key==="speed"?"speed":null);return '<div class="pmeal"><label>'+label+'</label><input type="text" inputmode="decimal" autocomplete="off" data-pwcf="'+key+'" data-pwcg="'+grp+'" value="'+esc(v!=null?v:"")+'"></div>';}
+    return machine==="stairs"?'<div class="pmeal-grid">'+f("StairMaster level","level")+'<div class="pmeal"></div></div>':'<div class="pmeal-grid">'+f("Incline (%)","incline")+f("Speed (km/h)","speed")+'</div>';
+  }
+  function pwcChipsHTML(sel,skipOn){
+    return '<div class="seg pwc-seg" role="radiogroup" aria-label="Machine">'
+      +[["incline","Incline Walk"],["stairs","StairMaster"],["skip","Skip today"]].map(function(o){var on=(o[0]==="skip")?skipOn:(!skipOn&&sel===o[0]);return '<button type="button" role="radio" aria-checked="'+(on?"true":"false")+'" class="'+(on?"on":"")+'" data-pwcm="'+o[0]+'">'+o[1]+'</button>';}).join("")+'</div>';
+  }
+  function pwcClockHTML(){return '<div class="pwc-clockbox"><div class="pwc-lbl" id="pwc-clk-l"></div><div class="pwc-clock" id="pwc-clock" role="timer" aria-live="off">00:00</div><div class="pwc-bar" id="pwc-bar"><i id="pwc-barfill"></i></div><div class="pwc-sub" id="pwc-clk-s"></div></div>';}
+  function pwcManualHTML(rec,iso){
+    var m=pwcMachine(rec),cur=pwcCur(rec);
+    function mins(sec){return sec>0?String(Math.round(sec/60*10)/10):"";}
+    var e=rec&&rec.easeIn?mins(rec.easeIn.sec):"",s=rec&&rec.steady?mins(rec.steady.sec):"",c=rec&&rec.cooldown?mins(rec.cooldown.sec):"";
+    var lastCh=rec&&rec.steady&&rec.steady.changes&&rec.steady.changes.length?rec.steady.changes[rec.steady.changes.length-1]:null;
+    var vals=lastCh?{incline:lastCh.incline,speed:lastCh.speed,level:lastCh.level}:cur;
+    if(rec&&rec.finished&&pwcEdit[iso]&&rec.plan)vals=cur;
+    return '<p class="muted-p" style="margin:0 0 10px">'+(rec&&rec.finished?"Edit what you actually did.":"Log what you actually did.")+'</p>'
+      +pwcChipsHTML(m,false)
+      +'<div class="label" style="margin-top:12px">Machine settings used</div>'+pwcFieldsHTML(m,"plan",vals)
+      +'<div class="pmeal-grid" style="margin-top:10px"><div class="pmeal"><label>Ease-in (min)</label><input type="text" inputmode="decimal" id="pwc-e-ease" value="'+esc(e)+'"></div><div class="pmeal"><label>Steady (min)</label><input type="text" inputmode="decimal" id="pwc-e-steady" value="'+esc(s)+'"></div></div>'
+      +'<div class="pmeal-grid" style="margin-top:10px"><div class="pmeal"><label>Cooldown (min, optional)</label><input type="text" inputmode="decimal" id="pwc-e-cool" value="'+esc(c)+'"></div><div class="pmeal"></div></div>'
+      +'<div class="pwc-msg" id="pwc-msg" role="status"></div>'
+      +'<button type="button" class="cta" data-pwcact="edit-save" style="margin-top:12px">Save cardio</button>'
+      +((rec&&rec.finished)?'<button type="button" class="linkbtn" data-pwcact="edit-cancel">Cancel</button>':'');
+  }
+  function pwcBodyHTML(rec,iso,isToday){
+    var legacy=pwcLegacyLines(iso).map(function(l){return '<div class="pwc-legacy">'+esc(l)+'</div>';}).join("");
+    var m=pwcMachine(rec),cur=pwcCur(rec),h=legacy;
+    if(rec&&rec.finished&&!pwcEdit[iso]){
+      var cdRun=rec.cooldown&&rec.cooldown.start&&!rec.cooldown.end;
+      h+='<div class="pwc-done"><b>Saved</b><span>'+esc(pwcSummaryText(rec))+'</span></div>';
+      var rows='';
+      if(rec.easeIn&&rec.easeIn.sec>0)rows+='<div class="statline"><span class="k">Ease-in</span><span class="v">'+pwcClock(rec.easeIn.sec)+'</span></div>';
+      if(rec.steady&&rec.steady.sec>0)rows+='<div class="statline"><span class="k">Steady cardio</span><span class="v">'+pwcClock(rec.steady.sec)+(rec.steady.sec>=PWC_TARGET?' · target reached':' of 20:00')+'</span></div>';
+      if(rec.cooldown&&rec.cooldown.sec>0)rows+='<div class="statline"><span class="k">Cooldown</span><span class="v">'+pwcClock(rec.cooldown.sec)+'</span></div>';
+      h+=rows;
+      if(cdRun)h+=pwcClockHTML()+'<button type="button" class="cta" data-pwcact="cd-stop" style="margin-top:10px">Stop cooldown</button>';
+      else{
+        if(isToday&&!(rec.cooldown&&rec.cooldown.sec>0))h+='<button type="button" class="cta ghost" data-pwcact="cd-start" style="margin-top:10px">Add easy cooldown (optional)</button>';
+        h+='<button type="button" class="linkbtn" data-pwcact="edit">Edit</button>';
+      }
+      return h;
+    }
+    if(!isToday||pwcEdit[iso])return h+pwcManualHTML(rec,iso);
+    if(rec&&!rec.finished&&rec.phase==="easein"){
+      var es=(rec.easeIn&&rec.easeIn.settings)||cur;
+      return h+'<div class="pwc-mach">'+pwcName(m)+'</div>'+pwcClockHTML()
+        +'<p class="muted-p" style="margin:8px 0 4px">Ease in for 3–5 min at a comfortable setting. This is a guide — take longer if you need.</p>'
+        +'<div class="label" style="margin-top:10px">Ease-in settings (what you use on the machine)</div>'+pwcFieldsHTML(m,"ease",es)
+        +'<div class="label" style="margin-top:12px">Steady cardio settings — confirm or edit, then start</div>'+pwcFieldsHTML(m,"plan",cur)
+        +'<div class="pwc-msg" id="pwc-msg" role="status"></div>'
+        +'<button type="button" class="cta" data-pwcact="steady-start" style="margin-top:10px">Start steady cardio</button>'
+        +'<button type="button" class="cta ghost" data-pwcact="finish" style="margin-top:8px">Finish &amp; save</button>';
+    }
+    if(rec&&!rec.finished&&rec.phase==="steady"){
+      var ch=(rec.steady&&rec.steady.changes)||[],draft=(rec.steady&&rec.steady.draft)||ch[ch.length-1]||cur;
+      var log=ch.length>1?'<div class="pwc-log">'+ch.map(function(c,i){var t=m==="stairs"?"level "+pwcFmt(c.level):pwcFmt(c.incline)+"% · "+pwcFmt(c.speed,"speed")+" km/h";return '<span>'+(i===0?"Start":pwcClock(c.at))+" — "+t+'</span>';}).join("")+'</div>':'';
+      return h+'<div class="pwc-mach">'+pwcName(m)+(rec.easeIn&&rec.easeIn.sec>0?' · ease-in '+pwcMin(rec.easeIn.sec)+' min':'')+'</div>'+pwcClockHTML()
+        +'<div class="label" style="margin-top:12px">Steady settings — change anytime, then confirm</div>'+pwcFieldsHTML(m,"live",draft)
+        +'<div class="pwc-msg" id="pwc-msg" role="status"></div>'+log
+        +'<button type="button" class="cta ghost" data-pwcact="steady-confirm" style="margin-top:10px">Confirm setting change</button>'
+        +'<button type="button" class="cta" data-pwcact="finish" style="margin-top:8px">Finish &amp; save</button>';
+    }
+    /* setup */
+    var skipOn=!!(rec&&rec.skipped&&!rec.finished);
+    h+=pwcChipsHTML(m,skipOn);
+    if(skipOn)return h+'<p class="muted-p" style="margin:10px 0 0">Skipped today. You can still finish your workout — pick a machine above if you change your mind.</p>';
+    var last=pwcLastLine(iso);
+    return h+(last?'<div class="pwc-last">'+esc(last)+'</div>':'')
+      +'<div class="label" style="margin-top:12px">Settings for this session</div>'+pwcFieldsHTML(m,"plan",cur)
+      +'<p class="muted-p" style="margin:8px 0 0">Adjust the machine yourself. Changes here apply to this session only — the next session starts at '+(m==="stairs"?'level 7':'9% / 3.0 km/h')+' again.</p>'
+      +'<div class="pwc-msg" id="pwc-msg" role="status"></div>'
+      +'<button type="button" class="cta" data-pwcact="easein-start" style="margin-top:12px">Start ease-in</button>'
+      +'<button type="button" class="linkbtn" data-pwcact="edit">Log manually instead</button>';
+  }
+  function pwcHTML(dayKey){
+    var iso=sessISO(),rec=pwcGet(iso),isToday=iso===todayISO();
+    var done=!!(rec&&(rec.finished||rec.skipped)),open=(iso in pwcOpen)?pwcOpen[iso]:!done;
+    var sum=pwcSummaryText(rec)||(pwcLegacyLines(iso)[0]||"Not started");
+    var chev='<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+    return '<div class="pwc msec'+(open?' open':'')+'" id="pwc-card" data-pwcdk="'+esc(dayKey||"")+'"><button type="button" class="msec-head" aria-expanded="'+(open?'true':'false')+'" aria-controls="pwc-body"><span class="tc-ttl"><span class="eyebrow">Post-Weights Cardio</span><span class="drop-sub tc-sum" id="pwc-sum">'+esc(sum)+'</span></span>'+chev+'</button>'
+      +'<div class="msec-body" id="pwc-body"><div class="msec-in" id="pwc-in">'+pwcBodyHTML(rec,iso,isToday)+'</div></div></div>';
+  }
+  function pwcRerender(){
+    var card=document.getElementById("pwc-card");if(!card)return;
+    var tmp=document.createElement("div");tmp.innerHTML=pwcHTML(card.getAttribute("data-pwcdk"));
+    var fresh=tmp.firstChild;fresh.classList.toggle("open",card.classList.contains("open")&&!pwcCollapseNext);
+    card.parentNode.replaceChild(fresh,card);pwcStartTick();
+  }
+  var pwcCollapseNext=false;
+  function pwcTickOnce(){
+    var iso=sessISO(),rec=pwcGet(iso),clk=document.getElementById("pwc-clock");
+    var sumEl=document.getElementById("pwc-sum");
+    if(sumEl&&rec&&!rec.finished)sumEl.textContent=pwcSummaryText(rec)||sumEl.textContent;
+    if(!clk||!rec)return false;
+    var lbl=document.getElementById("pwc-clk-l"),sub=document.getElementById("pwc-clk-s"),fill=document.getElementById("pwc-barfill"),bar=document.getElementById("pwc-bar");
+    var el,txt,pct=null,reached=false;
+    if(!rec.finished&&rec.phase==="easein"&&rec.easeIn&&rec.easeIn.start){
+      el=pwcEl(rec.easeIn.start);txt=pwcClock(el);if(lbl)lbl.textContent="Ease-in · counting up";if(sub)sub.textContent=el<180?"Guide: 3–5 min — take longer if you need.":(el<=300?"Within the 3–5 min guide.":"Past 5 min — that is fine, start steady when you are ready.");pct=null;
+    }else if(!rec.finished&&rec.phase==="steady"&&rec.steady&&rec.steady.start){
+      el=pwcEl(rec.steady.start);reached=el>=PWC_TARGET;txt=reached?"+"+pwcClock(el-PWC_TARGET):pwcClock(PWC_TARGET-el);pct=Math.min(100,el/PWC_TARGET*100);
+      if(lbl)lbl.textContent=reached?"Target reached ✓":"Steady cardio · 20 min target";
+      if(sub)sub.textContent=reached?("Elapsed "+pwcClock(el)+" — finish & save when you are ready."):("Elapsed "+pwcClock(el)+" of 20:00");
+      if(reached&&!pwcReached[iso]){pwcReached[iso]=true;try{if(navigator.vibrate)navigator.vibrate([200,100,200]);}catch(e){}}
+    }else if(rec.finished&&rec.cooldown&&rec.cooldown.start&&!rec.cooldown.end){
+      el=pwcEl(rec.cooldown.start);txt=pwcClock(el);if(lbl)lbl.textContent="Easy cooldown";if(sub)sub.textContent="Easy pace — stop when you are done.";
+    }else return false;
+    clk.textContent=txt;clk.classList.toggle("reached",reached);
+    if(bar)bar.style.display=pct==null?"none":"";if(fill&&pct!=null)fill.style.width=pct+"%";
+    return true;
+  }
+  function pwcStartTick(){if(pwcTimer){clearInterval(pwcTimer);pwcTimer=null;}if(pwcTickOnce())pwcTimer=setInterval(function(){if(!pwcTickOnce()){clearInterval(pwcTimer);pwcTimer=null;}},1000);}
+  function pwcReadFields(grp,machine,root){
+    var out={},ok=true,need=machine==="stairs"?["level"]:["incline","speed"];
+    need.forEach(function(k){var inp=(root||document).querySelector('[data-pwcf="'+k+'"][data-pwcg="'+grp+'"]');var n=pwcNum(inp?inp.value:null);if(n==null)ok=false;out[k]=n;});
+    return ok?out:null;
+  }
+  function pwcMsg(t){var m=document.getElementById("pwc-msg");if(m)m.textContent=t||"";}
+  var PWC_BADMSG="Enter a number for each setting (decimals are fine, e.g. 8.5).";
+  function pwcAct(act){
+    var iso=sessISO(),rec=pwcGet(iso),m=pwcMachine(rec),now=Date.now(),isToday=iso===todayISO();
+    var dk=(document.getElementById("pwc-card")||{getAttribute:function(){return "";}}).getAttribute("data-pwcdk");
+    if(act==="easein-start"){
+      if(!isToday||(rec&&(rec.finished||rec.phase==="easein"||rec.phase==="steady")))return;
+      var cur=pwcReadFields("plan",m);if(!cur){pwcMsg(PWC_BADMSG);return;}
+      pwcPatch(iso,function(r){r.dayKey=dk;r.machine=m;r.skipped=false;r.plan={incline:String(pwcFmt(cur.incline)),speed:pwcFmt(cur.speed,"speed"),level:String(pwcFmt(cur.level))};if(m==="stairs"){r.plan.incline=PWC_DEF.incline;r.plan.speed=PWC_DEF.speed;}else{r.plan.level=PWC_DEF.level;}r.phase="easein";r.easeIn={start:now,settings:JSON.parse(JSON.stringify(r.plan))};});
+      pwcRerender();return;
+    }
+    if(act==="steady-start"){
+      if(!rec||rec.finished||rec.phase!=="easein")return;
+      var st=pwcReadFields("plan",m);if(!st){pwcMsg(PWC_BADMSG);return;}
+      var es=pwcReadFields("ease",m);
+      pwcPatch(iso,function(r){
+        if(r.phase!=="easein")return;
+        var cs=(r.easeIn&&r.easeIn.settings)||{};if(es){cs=m==="stairs"?{level:pwcFmt(es.level)}:{incline:pwcFmt(es.incline),speed:pwcFmt(es.speed,"speed")};}
+        r.easeIn.settings=cs;r.easeIn.end=now;r.easeIn.sec=Math.max(0,Math.floor((now-r.easeIn.start)/1000));
+        r.plan=m==="stairs"?{incline:PWC_DEF.incline,speed:PWC_DEF.speed,level:pwcFmt(st.level)}:{incline:pwcFmt(st.incline),speed:pwcFmt(st.speed,"speed"),level:PWC_DEF.level};
+        var c0={at:0};if(m==="stairs")c0.level=st.level;else{c0.incline=st.incline;c0.speed=st.speed;}
+        r.steady={start:now,changes:[c0]};r.phase="steady";
+      });
+      pwcRerender();return;
+    }
+    if(act==="steady-confirm"){
+      if(!rec||rec.finished||rec.phase!=="steady")return;
+      var lv=pwcReadFields("live",m);if(!lv){pwcMsg(PWC_BADMSG);return;}
+      var last=rec.steady.changes[rec.steady.changes.length-1];
+      var same=m==="stairs"?last.level===lv.level:(last.incline===lv.incline&&last.speed===lv.speed);
+      if(same){pwcMsg("These settings are already confirmed.");return;}
+      pwcPatch(iso,function(r){var c={at:pwcEl(r.steady.start)};if(m==="stairs")c.level=lv.level;else{c.incline=lv.incline;c.speed=lv.speed;}r.steady.changes.push(c);delete r.steady.draft;});
+      pwcRerender();return;
+    }
+    if(act==="finish"){
+      if(!rec||rec.finished||(rec.phase!=="easein"&&rec.phase!=="steady"))return;
+      pwcPatch(iso,function(r){
+        if(r.finished)return;
+        if(r.phase==="easein"){r.easeIn.end=now;r.easeIn.sec=Math.max(0,Math.floor((now-r.easeIn.start)/1000));}
+        else if(r.phase==="steady"){r.steady.end=now;r.steady.sec=Math.max(0,Math.floor((now-r.steady.start)/1000));}
+        r.finished=true;r.phase="done";r.savedAt=now;
+      });
+      pwcOpen[iso]=false;pwcCollapseNext=true;pwcRerender();pwcCollapseNext=false;return;
+    }
+    if(act==="cd-start"){
+      if(!rec||!rec.finished||!isToday||(rec.cooldown&&(rec.cooldown.start||rec.cooldown.sec)))return;
+      pwcPatch(iso,function(r){r.cooldown={start:now};});pwcOpen[iso]=true;pwcRerender();return;
+    }
+    if(act==="cd-stop"){
+      if(!rec||!rec.finished||!rec.cooldown||!rec.cooldown.start||rec.cooldown.end)return;
+      pwcPatch(iso,function(r){r.cooldown.end=now;r.cooldown.sec=Math.max(0,Math.floor((now-r.cooldown.start)/1000));});pwcRerender();return;
+    }
+    if(act==="edit"){
+      pwcEdit[iso]=true;
+      if(rec&&rec.finished){var ch=(rec.steady&&rec.steady.changes)||[],l=ch[ch.length-1];if(l)pwcPatch(iso,function(r){r.plan=m==="stairs"?{incline:PWC_DEF.incline,speed:PWC_DEF.speed,level:pwcFmt(l.level)}:{incline:pwcFmt(l.incline),speed:pwcFmt(l.speed,"speed"),level:PWC_DEF.level};});}
+      var cd=document.getElementById("pwc-card");if(cd)cd.classList.add("open");pwcOpen[iso]=true;pwcRerender();return;
+    }
+    if(act==="edit-cancel"){delete pwcEdit[iso];pwcRerender();return;}
+    if(act==="edit-save"){
+      var mm=pwcMachine(rec),sv=pwcReadFields("plan",mm);if(!sv){pwcMsg(PWC_BADMSG);return;}
+      function mv(id){var el=document.getElementById(id),t=el?el.value.trim():"";if(t==="")return 0;var n=pwcNum(t);return n;}
+      var e=mv("pwc-e-ease"),s=mv("pwc-e-steady"),c=mv("pwc-e-cool");
+      if(e==null||s==null||c==null){pwcMsg("Enter minutes as numbers (decimals are fine).");return;}
+      if(e===0&&s===0&&c===0){pwcMsg("Enter at least one duration, or choose Skip today.");return;}
+      pwcPatch(iso,function(r){
+        function keep(old,newMin){var o=old&&old.sec>0?old.sec:0;return (pwcMin(o)===Math.round(newMin)&&Math.abs(o/60-newMin)<0.5)?o:Math.round(newMin*60);}
+        r.dayKey=r.dayKey||dk;r.machine=mm;r.skipped=false;
+        var oldCh=(r.steady&&r.steady.changes)||[],lc=oldCh[oldCh.length-1],sameSet=lc&&(mm==="stairs"?lc.level===sv.level:(lc.incline===sv.incline&&lc.speed===sv.speed));
+        var ch=sameSet?oldCh:[(function(){var o={at:0};if(mm==="stairs")o.level=sv.level;else{o.incline=sv.incline;o.speed=sv.speed;}return o;})()];
+        r.easeIn={sec:keep(r.easeIn,e),settings:(r.easeIn&&r.easeIn.settings)||undefined};
+        r.steady={sec:keep(r.steady,s),changes:ch};
+        var cs=keep(r.cooldown,c);r.cooldown=cs>0?{sec:cs}:undefined;if(!r.cooldown)delete r.cooldown;
+        r.finished=true;r.phase="done";r.savedAt=r.savedAt||Date.now();r.manual=r.manual||!(r.easeIn&&r.easeIn.start);
+      });
+      delete pwcEdit[iso];pwcOpen[iso]=false;pwcCollapseNext=true;pwcRerender();pwcCollapseNext=false;return;
+    }
+  }
+  function bindPwc(){
+    var host=$("#today-session");if(!host)return;
+    if(!pwcBound){
+      pwcBound=true;
+      host.addEventListener("click",function(e){
+        var card=e.target.closest&&e.target.closest("#pwc-card");if(!card)return;
+        var hd=e.target.closest(".msec-head");if(hd){pwcOpen[sessISO()]=!card.classList.contains("open");return;}
+        var mb=e.target.closest("[data-pwcm]");
+        if(mb){
+          var v=mb.getAttribute("data-pwcm"),iso=sessISO(),rec=pwcGet(iso);
+          if(rec&&(rec.phase==="easein"||rec.phase==="steady"))return;
+          if(v==="skip"){
+            if(rec&&rec.finished){pwcMsg("Your saved cardio is kept — Skip does not erase it.");return;}
+            if(pwcEdit[iso]){pwcMsg("Choose a machine to log, or cancel.");return;}
+            pwcPatch(iso,function(r){r.dayKey=card.getAttribute("data-pwcdk");r.skipped=true;r.phase="setup";});
+          }else{
+            pwcPatch(iso,function(r){r.dayKey=r.dayKey||card.getAttribute("data-pwcdk");r.machine=v;r.skipped=false;if(!r.phase)r.phase="setup";});
+          }
+          pwcRerender();return;
+        }
+        var ab=e.target.closest("[data-pwcact]");if(ab){e.preventDefault();pwcAct(ab.getAttribute("data-pwcact"));}
+      });
+      host.addEventListener("change",function(e){
+        var inp=e.target.closest&&e.target.closest("[data-pwcf]");if(!inp)return;
+        var iso=sessISO(),f=inp.getAttribute("data-pwcf"),g=inp.getAttribute("data-pwcg"),val=inp.value.trim().replace(",",".");
+        if(pwcNum(val)==null&&val!==""){inp.classList.add("bad");return;}inp.classList.remove("bad");
+        pwcPatch(iso,function(r){
+          if(g==="plan"){r.plan=r.plan||{};r.plan[f]=val;}
+          else if(g==="ease"&&r.easeIn){r.easeIn.settings=r.easeIn.settings||{};r.easeIn.settings[f]=val;}
+          else if(g==="live"&&r.steady){r.steady.draft=r.steady.draft||{};var lc=r.steady.changes[r.steady.changes.length-1];Object.keys(lc).forEach(function(k){if(k!=="at"&&r.steady.draft[k]==null)r.steady.draft[k]=lc[k];});r.steady.draft[f]=pwcNum(val);}
+        });
+      });
+      document.addEventListener("visibilitychange",function(){if(!document.hidden)pwcTickOnce();});
+      window.addEventListener("pageshow",function(){pwcTickOnce();});
+    }
+    pwcStartTick();
   }
   function renderTodaySession(){
     setTimeout(tcRefresh,0);
@@ -3682,9 +3991,9 @@
       else{abody=aEditBtn+'<div id="ex-log" data-dayk="'+adk+'" data-wk="'+awk+'"><div class="ai-sec">Shoulders + Biceps</div>'+aMain.map(function(n){return renderExCard(adk,n,awk,UPPERARMS_TARGET[n],"two");}).join("")+'<div class="ai-sec">Core</div>'+aCore.map(function(n){return renderExCard(adk,n,awk,UPPERARMS_TARGET[n],UPPERARMS_KIND[n]);}).join("")+'</div>';}
       var asl=sessionLogHTML(upperInflammationSeg());
       host.innerHTML=nav+ahead+sessCompleteHTML()+warmAHTML()+abody
-        +inclineProgramCardHTML(adk,p.why,p.d)
+        +pwcHTML(adk)
         +'<div class="divider"></div>'+asl+addedTrainingHTML()+whyPills(p);
-      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindSessionLog();bindInclineFinisher();bindUpperOrder();return;
+      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindSessionLog();bindPwc();bindUpperOrder();return;
     }
     if(p.why==="upper"){
       var udk="upper-body-strength",uwk=sessWeekKey();
@@ -3696,8 +4005,8 @@
       if(uedit){ubody=uEditBtn+'<div class="ai-sec">Upper Body</div>'+upperReorderHTML(uMain,"main","upper")+'<div class="ai-sec">Core</div>'+upperReorderHTML(uCore,"core","upper");}
       else{ubody=uEditBtn+'<div id="ex-log" data-dayk="'+udk+'" data-wk="'+uwk+'"><div class="ai-sec">Upper Body</div>'+uMain.map(function(n){return renderExCard(udk,n,uwk,UPPER_TARGET[n],"two");}).join("")+'<div class="ai-sec">Core</div>'+uCore.map(function(n){return renderExCard(udk,n,uwk,UPPER_TARGET[n],UPPER_KIND[n]);}).join("")+'</div>';}
       var usl=sessionLogHTML(upperInflammationSeg());
-      host.innerHTML=nav+uhead+sessCompleteHTML()+warmAHTML()+ufocus+ubody+inclineProgramCardHTML(udk,p.why,p.d)+'<div class="divider"></div>'+usl+addedTrainingHTML()+whyPills(p);
-      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindSessionLog();bindUpperOrder();bindInclineFinisher();return;
+      host.innerHTML=nav+uhead+sessCompleteHTML()+warmAHTML()+ufocus+ubody+pwcHTML(udk)+'<div class="divider"></div>'+usl+addedTrainingHTML()+whyPills(p);
+      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindSessionLog();bindUpperOrder();bindPwc();return;
     }
     if(p.why==="upperai"){
       var dk=slug(p.t),wk2=sessWeekKey();
@@ -3710,9 +4019,9 @@
       else{aibody=aiEditBtn+'<div id="ex-log" data-dayk="'+dk+'" data-wk="'+wk2+'"><div class="ai-sec">Upper Body</div>'+aiMain.map(function(n){return renderExCard(dk,n,wk2,UPPERAI_TARGET[n]);}).join("")+'<div class="ai-sec">Core</div>'+aiCore.map(function(n){return renderExCard(dk,n,wk2,UPPERAI_TARGET[n]);}).join("")+'</div>';}
       var pcu=postCheckinHTML(),aisn=sessionNotesOnlyHTML();
       host.innerHTML=nav+head2+sessCompleteHTML()+warmAHTML()+focus+aibody
-        +inclineProgramCardHTML(dk,p.why,p.d)
+        +pwcHTML(dk)
         +(pcu?'<div class="divider"></div>'+pcu:'')+aisn+addedTrainingHTML()+whyPills(p);
-      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindUpperOrder();bindInclineFinisher();return;
+      bindExLog();bindWarmA();bindSessComplete();bindCheckin();bindUpperOrder();bindPwc();return;
     }
     if(p.why==="lowimpact"){
       var pcl=postCheckinHTML(),lisn=sessionNotesOnlyHTML();
@@ -3746,10 +4055,10 @@
     var editBtn='<div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button type="button" class="linkbtn" id="ex-editorder" data-okey="'+okey+'">'+(editing?'Done':'Edit order')+'</button></div>';
     var exBody=editing?reorderListHTML(names):dayExCardsHTML(names,dayKey,sessWeekKey(),isCore,tmap);
     var ex=(isCore?coreHeaderHTML(sessWeekKey()):'')+editBtn+'<div id="ex-log" data-dayk="'+dayKey+'" data-wk="'+sessWeekKey()+'">'+exBody+'</div>'+(isCore?coreFinishHTML(sessWeekKey()):'');
-    var cardio=(p.finish||p.why==="conditioning")?cardioHTML(p):'';
+    var cardio=(p.finish||p.why==="conditioning"||isStrengthType(p.why))?pwcHTML(dayKey):'';
     var notes=p.notes?'<p class="muted-p" style="margin-top:14px">'+p.notes+'</p>':'';
-    host.innerHTML=nav+head+sessCompleteHTML()+warm+meta+ex+cardio+(isStrengthType(p.why)?inclineProgramCardHTML(dayKey,p.why,p.d):'')+vestHTML()+notes+'<div class="divider"></div>'+sessionLogHTML()+addedTrainingHTML()+whyPills(p);
-    bindExLog();bindCardio();bindWarm();bindWarmA();bindSessionLog();bindSessComplete();bindCheckin();bindExOrder();bindInclineFinisher();
+    host.innerHTML=nav+head+sessCompleteHTML()+warm+meta+ex+cardio+vestHTML()+notes+'<div class="divider"></div>'+sessionLogHTML()+addedTrainingHTML()+whyPills(p);
+    bindExLog();bindWarm();bindWarmA();bindSessionLog();bindSessComplete();bindCheckin();bindExOrder();bindPwc();
   }
   /* per-exercise logbook */
   function slug(s){return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}
@@ -4255,6 +4564,7 @@
       var stepsAll=loadStepsAll();Object.keys(stepsAll).filter(function(d){return rptInRange(d,from,to);}).forEach(function(d){var e=stepsAll[d];row({Date:d,Category:"Steps",Metric:"Daily steps",Steps:e.totalSteps,"Training Steps":e.trainingSteps!=null?e.trainingSteps:""});});
       var recAll=loadRecoveryAll();Object.keys(recAll).filter(function(d){return rptInRange(d,from,to);}).forEach(function(d){var e=recAll[d];row({Date:d,Category:"Recovery",Metric:"Check-in",Value:e.energy,Notes:e.notes||""});});
       inclineSessionList(from,to).filter(function(e){return e.status!=="skipped";}).forEach(function(e){row({Date:e.date,Category:"Incline",Metric:(INCLINE_DEFAULTS[e.program]||{}).name||e.program||"Incline walk",Value:e.status,Duration:e.actualMin!=null?e.actualMin+" min":"",Distance:e.distance!=null?e.distance:"",Notes:e.notes||""});});
+      (function(){var pc=pwcAll();Object.keys(pc).filter(function(d){return rptInRange(d,from,to)&&pc[d].finished;}).sort().forEach(function(d){var e=pc[d],ch=(e.steady&&e.steady.changes)||[];row({Date:d,Category:"Post-Weights Cardio",Metric:pwcName(e.machine),Value:pwcSummaryText(e),Duration:(((e.easeIn&&e.easeIn.sec)||0)+((e.steady&&e.steady.sec)||0)+((e.cooldown&&e.cooldown.sec)||0)>0?(Math.round((((e.easeIn&&e.easeIn.sec)||0)+((e.steady&&e.steady.sec)||0)+((e.cooldown&&e.cooldown.sec)||0))/6)/10)+" min":""),Notes:"ease-in "+Math.round(((e.easeIn&&e.easeIn.sec)||0)/6)/10+" min; steady "+Math.round(((e.steady&&e.steady.sec)||0)/6)/10+" min"+(e.cooldown&&e.cooldown.sec?"; cooldown "+Math.round(e.cooldown.sec/6)/10+" min":"")});});})();
       var slAll=sleepAll();Object.keys(slAll).filter(function(d){return rptInRange(d,from,to);}).forEach(function(d){var e=slAll[d];row({Date:d,Category:"Sleep",Metric:"Duration",Sleep:((e.h||0)+"h "+(e.m||0)+"m")});});
       var mlAll=store.get("bf_meallog")||{};Object.keys(mlAll).filter(function(d){return rptInRange(d,from,to)&&dayLogged(d);}).forEach(function(d){var t=mealTotals(d);row({Date:d,Category:"Food",Metric:"Daily totals",Calories:t.kcal,Protein:t.p});});
       var csv=rows.map(function(r){return r.map(csvEscape).join(",");}).join("\r\n");
@@ -6350,6 +6660,7 @@
     var tr=store.get("bf_training")||{},tg=store.get("bf_targets")||{},strength=0,cond=0,tread=0,incl=[],spd=[],mins=0,move=0,rest=0;
     days.forEach(function(d){var t=tr[d],p=ovDayType(d),done=t&&t.done==="done";
       if(done){if(p&&p.why==="conditioning")cond++;else if(p&&p.log)strength++;}
+      var pcr=pwcGet(d);if(pcr&&pcr.finished&&pcr.machine!=="stairs"&&pcr.steady&&pcr.steady.changes&&pcr.steady.changes.length){tread++;pcr.steady.changes.forEach(function(x){if(x.incline!=null)incl.push(x.incline);if(x.speed!=null)spd.push(x.speed);});mins+=Math.round(((pcr.easeIn&&pcr.easeIn.sec)||0)/60+(pcr.steady.sec||0)/60);}
       var c=t&&t.cardio;if(c&&(c.incline||c.speed)){tread++;if(num(c.incline)!=null)incl.push(num(c.incline));if(num(c.speed)!=null)spd.push(num(c.speed));if(num(c.duration)!=null)mins+=num(c.duration);}
       if(done||(tg[d]&&tg[d].movement))move++;else rest++;});
     function av(a){return a.length?a.reduce(function(x,y){return x+y;},0)/a.length:null;}
@@ -6919,7 +7230,7 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   renderLearn();
 
   (function(){var wp=store.get("bf_weekplan");if(wp){var ch=false;Object.keys(wp).forEach(function(wk){var m=wp[wk];if(m)Object.keys(m).forEach(function(i){if(m[i]==="condonly"){m[i]="cardio";ch=true;}});});if(ch)store.set("bf_weekplan",wp);}var tr=store.get("bf_training");if(tr){var c2=false;Object.keys(tr).forEach(function(d){if(tr[d]&&tr[d].type==="condonly"){tr[d].type="cardio";c2=true;}});if(c2)store.set("bf_training",tr);}})();
-  (function(){try{if(store.get("bf_fuelbackup"))return;var keys=["bf_workout","bf_exhist","bf_training","bf_exorder","bf_weekplan","bf_core","bf_cardioday","bf_cardiohist","bf_endurance"],snap={_at:new Date().toISOString(),_note:"Auto snapshot of Fuel training data before Edit-Workout feature."},any=false;keys.forEach(function(k){var v=store.get(k);if(v!=null){snap[k]=v;any=true;}});if(any)store.set("bf_fuelbackup",snap);}catch(e){}})();
+  (function(){try{if(store.get("bf_fuelbackup"))return;var keys=["bf_workout","bf_exhist","bf_training","bf_exorder","bf_weekplan","bf_core","bf_cardioday","bf_cardiohist","bf_endurance","bf_postcardio"],snap={_at:new Date().toISOString(),_note:"Auto snapshot of Fuel training data before Edit-Workout feature."},any=false;keys.forEach(function(k){var v=store.get(k);if(v!=null){snap[k]=v;any=true;}});if(any)store.set("bf_fuelbackup",snap);}catch(e){}})();
   (function(){var h=store.get("bf_exhidden");if(h&&h._ubseed)return;h=h||{};h.upper=h.upper||[];["Lat Pulldown","Seated Row"].forEach(function(n){if(h.upper.indexOf(n)<0)h.upper.push(n);});h._ubseed=true;store.set("bf_exhidden",h);})();
   if(typeof exHistBackfill==="function")exHistBackfill();
   refreshFuel();renderExerciseLib();icRestore();renderTodaySession();renderWeekPlan();renderStrength();renderHalfPlan();renderWeekPlanner();bindWeekPlanner();rtInit();renderInclineProgress();tcRefresh();bindInclineProgress();bindAddedTraining();renderRecoveryTab();bindRecoveryTab();
@@ -7003,12 +7314,12 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   function renderMenu(){renderMenuProfile();renderTrackPrefs();renderRules();renderDataStatus();if(typeof renderRtSettings==="function")renderRtSettings();}
 
   function allBfKeys(){var ks=[];try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf("bf_")===0)ks.push(k);}}catch(e){}
-    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_appearance","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder","bf_endurance","bf_wordsearch","bf_warmup","bf_exhidden","bf_template","bf_fuelbackup","bf_finisher","bf_foodfav","bf_servingunits","bf_offfav","bf_distance","bf_halfplan","bf_checkpoints","bf_milestones","bf_recovery","bf_roadmapevents","bf_steps","bf_stepgoal","bf_incline"];
+    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_appearance","bf_postcardio","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder","bf_endurance","bf_wordsearch","bf_warmup","bf_exhidden","bf_template","bf_fuelbackup","bf_finisher","bf_foodfav","bf_servingunits","bf_offfav","bf_distance","bf_halfplan","bf_checkpoints","bf_milestones","bf_recovery","bf_roadmapevents","bf_steps","bf_stepgoal","bf_incline"];
     return ks;}
   /* ---------- full backup / restore (upgrade of the existing export/import; same underlying
      bf_ keys via allBfKeys(), same download mechanism -- this is NOT a second backup system,
      just a safer wrapper around the one that already existed) ---------- */
-  var BACKUP_VERSION=1,BFL_BUILD=143;
+  var BACKUP_VERSION=1,BFL_BUILD=144;
   function buildBackupPayload(){var storage={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)storage[k]=v;});return {app:"Body Fuel Lab",backupVersion:BACKUP_VERSION,build:BFL_BUILD,exportedAt:new Date().toISOString(),storage:storage};}
   function downloadJSON(obj,filename){var blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);}
   function exportData(){try{downloadJSON(buildBackupPayload(),"BodyFuelLab_FullBackup_"+todayISO()+".json");store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Export could not be created. Your existing data has not been changed.");}}
@@ -7032,7 +7343,8 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
       recovery:cnt("bf_recovery"),
       sleep:cnt("bf_sleep"),
       meals:cnt("bf_meallog"),
-      incline:(function(){var v=storage["bf_incline"];return (v&&v.sessions)?Object.keys(v.sessions).length:0;})()
+      incline:(function(){var v=storage["bf_incline"];return (v&&v.sessions)?Object.keys(v.sessions).length:0;})(),
+      postcardio:(function(){var v=storage["bf_postcardio"];return (v&&typeof v==="object")?Object.keys(v).length:0;})()
     };
   }
   function backupPreviewHTML(v){
@@ -7048,6 +7360,7 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
     if(c.sleep)lines.push(c.sleep+" sleep records");
     if(c.meals)lines.push(c.meals+" food log days");
     if(c.incline)lines.push(c.incline+" incline sessions");
+    if(c.postcardio)lines.push(c.postcardio+" post-weights cardio records");
     return '<div class="rpt-metric" style="margin-top:10px"><div class="rpt-metric-name">Body Fuel Lab Backup</div><div style="font-size:calc(12px*var(--ts,1));color:var(--ink-soft);margin-bottom:6px">Created: '+esc(when)+(v.build?(" \u00b7 Build "+esc(v.build)):"")+'</div>'
       +(lines.length?('<ul style="margin:0 0 8px;padding-left:18px;font-size:calc(12.5px*var(--ts,1));color:var(--ink-soft)">'+lines.map(function(l){return "<li>"+esc(l)+"</li>";}).join("")+'</ul>'):'<p class="muted-p" style="margin:0 0 8px">No recognisable records found in this file.</p>')
       +'<p class="muted-p" style="margin:0 0 10px;font-size:calc(11.5px*var(--ts,1))">Restoring this backup may replace your current Body Fuel Lab data. A safety backup of your current data will be created first.</p>'
@@ -7357,6 +7670,15 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
         +(incl.maxInc!=null?('<div class="rpt-row"><span>Highest incline reached</span><b>'+incl.maxInc+'%</b></div>'):'')
         +(incl.avgEffort!=null?('<div class="rpt-row"><span>Average perceived effort</span><b>'+incl.avgEffort+' / 10</b></div>'):'');
     }
+    (function(){var pc=pwcAll(),ds=Object.keys(pc).filter(function(d){return rptInRange(d,from,to)&&pc[d].finished;}).sort();if(!ds.length)return;
+      var n=ds.length,steady=0,ease=0,cool=0,mc={incline:0,stairs:0};
+      ds.forEach(function(d){var e=pc[d];steady+=(e.steady&&e.steady.sec)||0;ease+=(e.easeIn&&e.easeIn.sec)||0;cool+=(e.cooldown&&e.cooldown.sec)||0;mc[e.machine==="stairs"?"stairs":"incline"]++;});
+      trainHTML+='<div class="rpt-sub" style="margin-top:12px">Post-Weights Cardio</div>'
+        +'<div class="rpt-row"><span>Sessions recorded</span><b>'+n+'</b></div>'
+        +'<div class="rpt-row"><span>Incline Walk / StairMaster</span><b>'+mc.incline+' / '+mc.stairs+'</b></div>'
+        +'<div class="rpt-row"><span>Average steady cardio</span><b>'+Math.round(steady/n/60)+' min</b></div>'
+        +'<div class="rpt-row"><span>Total cardio minutes (actual)</span><b>'+Math.round((steady+ease+cool)/60)+'</b></div>';
+    })();
     trainHTML+='</div>';
 
     var st=rptStrength(from,to);
