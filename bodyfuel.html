@@ -2032,7 +2032,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 144</b></div>
+            <div class="about-row"><span>Version</span><b>Build 145</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -3677,7 +3677,7 @@
      active workout screen. Those old keys are never modified; their history is still read for the
      "Earlier log" lines, reports and backups. All timing is timestamp based (Date.now()), so locked
      screens / backgrounding / reopening cannot make elapsed time drift. */
-  var PWC_TARGET=1200,PWC_DEF={incline:"9",speed:"3.0",level:"7"},pwcOpen={},pwcEdit={},pwcTimer=null,pwcBound=false,pwcReached={};
+  var PWC_TARGET=1200,PWC_DEF={incline:"9",speed:"3.0",level:"7",easeLevel:"6"},pwcOpen={},pwcEdit={},pwcTimer=null,pwcBound=false,pwcReached={};
   function pwcAll(){var d=store.get("bf_postcardio");return (d&&typeof d==="object"&&!Array.isArray(d))?d:{};}
   function pwcGet(iso){return pwcAll()[iso]||null;}
   function pwcPatch(iso,fn){var all=pwcAll(),r=all[iso]||{v:1};fn(r);r.updatedAt=Date.now();all[iso]=r;store.set("bf_postcardio",all);return r;}
@@ -3767,7 +3767,7 @@
     }
     if(!isToday||pwcEdit[iso])return h+pwcManualHTML(rec,iso);
     if(rec&&!rec.finished&&rec.phase==="easein"){
-      var es=(rec.easeIn&&rec.easeIn.settings)||cur;
+      var es=(rec.easeIn&&rec.easeIn.settings)||cur;if(m==="stairs"&&es.level==null)es={level:PWC_DEF.easeLevel};
       return h+'<div class="pwc-mach">'+pwcName(m)+'</div>'+pwcClockHTML()
         +'<p class="muted-p" style="margin:8px 0 4px">Ease in for 3–5 min at a comfortable setting. This is a guide — take longer if you need.</p>'
         +'<div class="label" style="margin-top:10px">Ease-in settings (what you use on the machine)</div>'+pwcFieldsHTML(m,"ease",es)
@@ -3791,8 +3791,8 @@
     if(skipOn)return h+'<p class="muted-p" style="margin:10px 0 0">Skipped today. You can still finish your workout — pick a machine above if you change your mind.</p>';
     var last=pwcLastLine(iso);
     return h+(last?'<div class="pwc-last">'+esc(last)+'</div>':'')
-      +'<div class="label" style="margin-top:12px">Settings for this session</div>'+pwcFieldsHTML(m,"plan",cur)
-      +'<p class="muted-p" style="margin:8px 0 0">Adjust the machine yourself. Changes here apply to this session only — the next session starts at '+(m==="stairs"?'level 7':'9% / 3.0 km/h')+' again.</p>'
+      +'<div class="label" style="margin-top:12px">'+(m==="stairs"?'Steady level (warm-up starts at 6, then step up to this)':'Settings for this session')+'</div>'+pwcFieldsHTML(m,"plan",cur)
+      +'<p class="muted-p" style="margin:8px 0 0">Adjust the machine yourself. Changes here apply to this session only — the next session starts at '+(m==="stairs"?'level 6 for warm-up, then level 7':'9% / 3.0 km/h')+' again.</p>'
       +'<div class="pwc-msg" id="pwc-msg" role="status"></div>'
       +'<button type="button" class="cta" data-pwcact="easein-start" style="margin-top:12px">Start ease-in</button>'
       +'<button type="button" class="linkbtn" data-pwcact="edit">Log manually instead</button>';
@@ -3847,7 +3847,7 @@
     if(act==="easein-start"){
       if(!isToday||(rec&&(rec.finished||rec.phase==="easein"||rec.phase==="steady")))return;
       var cur=pwcReadFields("plan",m);if(!cur){pwcMsg(PWC_BADMSG);return;}
-      pwcPatch(iso,function(r){r.dayKey=dk;r.machine=m;r.skipped=false;r.plan={incline:String(pwcFmt(cur.incline)),speed:pwcFmt(cur.speed,"speed"),level:String(pwcFmt(cur.level))};if(m==="stairs"){r.plan.incline=PWC_DEF.incline;r.plan.speed=PWC_DEF.speed;}else{r.plan.level=PWC_DEF.level;}r.phase="easein";r.easeIn={start:now,settings:JSON.parse(JSON.stringify(r.plan))};});
+      pwcPatch(iso,function(r){r.dayKey=dk;r.machine=m;r.skipped=false;r.plan={incline:String(pwcFmt(cur.incline)),speed:pwcFmt(cur.speed,"speed"),level:String(pwcFmt(cur.level))};if(m==="stairs"){r.plan.incline=PWC_DEF.incline;r.plan.speed=PWC_DEF.speed;}else{r.plan.level=PWC_DEF.level;}r.phase="easein";r.easeIn={start:now,settings:JSON.parse(JSON.stringify(r.plan))};if(m==="stairs")r.easeIn.settings={level:PWC_DEF.easeLevel};});
       pwcRerender();return;
     }
     if(act==="steady-start"){
@@ -7319,7 +7319,7 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   /* ---------- full backup / restore (upgrade of the existing export/import; same underlying
      bf_ keys via allBfKeys(), same download mechanism -- this is NOT a second backup system,
      just a safer wrapper around the one that already existed) ---------- */
-  var BACKUP_VERSION=1,BFL_BUILD=144;
+  var BACKUP_VERSION=1,BFL_BUILD=145;
   function buildBackupPayload(){var storage={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)storage[k]=v;});return {app:"Body Fuel Lab",backupVersion:BACKUP_VERSION,build:BFL_BUILD,exportedAt:new Date().toISOString(),storage:storage};}
   function downloadJSON(obj,filename){var blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);}
   function exportData(){try{downloadJSON(buildBackupPayload(),"BodyFuelLab_FullBackup_"+todayISO()+".json");store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Export could not be created. Your existing data has not been changed.");}}
