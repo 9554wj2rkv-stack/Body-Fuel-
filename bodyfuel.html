@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Body Fuel Lab">
-<meta name="theme-color" content="#E3F4EA">
+<meta name="theme-color" content="#A9E2BF">
 <script>(function(){try{var g=function(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}};var a=g("bf_appearance");if(["light","dark","mint","barbie","system"].indexOf(a)<0){var t=g("bf_theme");a=t==="light"?"light":(t==="barbie"?"barbie":"mint")}var r=a==="system"?((window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light"):a;var h=document.documentElement;h.setAttribute("data-theme",r);h.setAttribute("data-appearance",a)}catch(e){}})();</script>
 <title>Body Fuel Lab</title>
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -16,14 +16,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#E3F4EA; --surface:#FFFFFF; --surface-2:#EFF9F3; --raised:#FFFFFF;
-    --ink:#1E3A2D; --ink-soft:#52705F; --ink-faint:#7F9B8C;
-    --line:#D3E8DB; --line-soft:#E6F3EB;
-    --accent:#1FA97F; --accent-deep:#147A5A; --accent-soft:#D6F1E3; --on-accent:#FFFFFF;
+    --bg:#A9E2BF; --surface:#FFFFFF; --surface-2:#D6F2E2; --raised:#FFFFFF;
+    --ink:#11281E; --ink-soft:#2F5444; --ink-faint:#4F8E6E;
+    --line:#86C3A0; --line-soft:#D3ECDD;
+    --accent:#147A5A; --accent-deep:#0F6249; --accent-soft:#E6F7EE; --on-accent:#FFFFFF;
     --accent2:#E2704A; --accent2-deep:#B85332; --accent2-soft:#FBE3DA;
-    --header-bg:rgba(227,244,234,.9); --nav-bg:rgba(255,255,255,.95);
-    --green:#3F9E5C; --amber:#C28A2E; --red:#D2627A;
-    --p:#D98A9E; --c:#C9A23E; --v:#3F9E5C; --f:#7C9CB0;
+    --header-bg:rgba(169,226,191,.92); --nav-bg:rgba(169,226,191,.97);
+    --green:#2E7A60; --amber:#C28A2E; --red:#C9572A;
+    --p:#628EC8; --c:#D99B50; --v:#2E7A60; --f:#78A98A;
     --shadow:0 1px 2px rgba(30,90,60,.05), 0 6px 16px rgba(30,90,60,.07);
     --shadow-sm:0 1px 2px rgba(30,90,60,.05), 0 2px 8px rgba(30,90,60,.05);
     --r:16px; --r-sm:12px;
@@ -31,38 +31,38 @@
     --maxw:448px; --ts:1.15;
   }
   html[data-theme="light"]{
-    --bg:#F6F7F9; --surface:#FFFFFF; --surface-2:#F1F3F5; --raised:#FFFFFF;
-    --ink:#1D2428; --ink-soft:#55616A; --ink-faint:#85919A;
-    --line:#E2E6EA; --line-soft:#EDF0F2;
-    --accent:#1E9A82; --accent-deep:#137562; --accent-soft:#DDF3EE; --on-accent:#FFFFFF;
+    --bg:#FFFFFF; --surface:#FFFFFF; --surface-2:#F4F4F6; --raised:#FFFFFF;
+    --ink:#0D0D0D; --ink-soft:#5A5A62; --ink-faint:#6E6E76;
+    --line:#E2E2E6; --line-soft:#F1F1F3;
+    --accent:#0D0D0D; --accent-deep:#0D0D0D; --accent-soft:#F1F1F3; --on-accent:#FFFFFF;
     --accent2:#E2704A; --accent2-deep:#B85332; --accent2-soft:#FBE3DA;
-    --green:#3F9E5C; --amber:#B7791F; --red:#D2506A;
-    --p:#D98A9E; --c:#C9A23E; --v:#3F9E5C; --f:#7C9CB0;
+    --green:#2E7A60; --amber:#B7791F; --red:#C9572A;
+    --p:#628EC8; --c:#D99B50; --v:#2E7A60; --f:#78A98A;
     --shadow:0 1px 2px rgba(20,30,40,.05), 0 6px 16px rgba(20,30,40,.06);
     --shadow-sm:0 1px 2px rgba(20,30,40,.04), 0 2px 8px rgba(20,30,40,.04);
-    --header-bg:rgba(246,247,249,.92); --nav-bg:rgba(255,255,255,.96);
+    --header-bg:rgba(255,255,255,.94); --nav-bg:rgba(255,255,255,.97);
   }
   html[data-theme="dark"]{
     color-scheme:dark;
-    --bg:#17191A; --surface:#212425; --surface-2:#2A2E2F; --raised:#3A3F40;
-    --ink:#ECEFEE; --ink-soft:#AAB4B1; --ink-faint:#8A9693;
-    --line:#363B3C; --line-soft:#2C3031;
-    --accent:#45C79E; --accent-deep:#7FE3C0; --accent-soft:#1E3A31; --on-accent:#0C1F18;
+    --bg:#101010; --surface:#101010; --surface-2:#1E1E21; --raised:#1E1E21;
+    --ink:#FFFFFF; --ink-soft:#A8A8B0; --ink-faint:#8A8A92;
+    --line:#2F2F33; --line-soft:#2A2A2E;
+    --accent:#F2F2F2; --accent-deep:#FFFFFF; --accent-soft:#2A2A2E; --on-accent:#101010;
     --accent2:#F08A63; --accent2-deep:#F5A98A; --accent2-soft:#3A2B24;
-    --green:#5CC98B; --amber:#E3AE50; --red:#F07890;
-    --p:#E6A0B2; --c:#E0BC5A; --v:#5CC98B; --f:#8FB0C6;
+    --green:#6CC39B; --amber:#F3C46B; --red:#F0905E;
+    --p:#628EC8; --c:#D99B50; --v:#6CC39B; --f:#78A98A;
     --shadow:0 1px 2px rgba(0,0,0,.3), 0 6px 16px rgba(0,0,0,.25);
     --shadow-sm:0 1px 2px rgba(0,0,0,.25);
-    --header-bg:rgba(23,25,26,.92); --nav-bg:rgba(33,36,37,.96);
+    --header-bg:rgba(16,16,16,.94); --nav-bg:rgba(16,16,16,.97);
   }
   /* Typography (independent of theme) — Signature = default :root fonts */
   html[data-type="modern"]{--font-d:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;--font-b:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;--font-a:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
   html[data-type="simple"]{--font-d:"Helvetica Neue",Helvetica,system-ui,Arial,"Segoe UI",Roboto,sans-serif;--font-b:"Helvetica Neue",Helvetica,system-ui,Arial,"Segoe UI",Roboto,sans-serif;--font-a:"Helvetica Neue",Helvetica,system-ui,Arial,"Segoe UI",Roboto,sans-serif;}
   html[data-theme="barbie"]{
-    --bg:#FFE6F2; --surface:#FFFFFF; --surface-2:#FFD9EC;
-    --ink:#3D0A24; --ink-soft:#8A335C; --ink-faint:#BE6F96;
-    --line:#FBC0DD; --line-soft:#FFDCEE;
-    --accent:#E91E8C; --accent-deep:#C2156F; --accent-soft:#FFD3E9;
+    --bg:#FFE6F2; --surface:#FFFFFF; --surface-2:#FFD6EA;
+    --ink:#3D0A24; --ink-soft:#7E2A52; --ink-faint:#A84A78;
+    --line:#F6B3D3; --line-soft:#FFDCEE;
+    --accent:#C2156F; --accent-deep:#A8115E; --accent-soft:#FFE0EF;
     --accent2:#2E8FA6; --accent2-deep:#20687A; --accent2-soft:#D9F0F5;
     --green:#2FA36B; --amber:#C8851A; --red:#E0556E;
     --p:#DE7AA0; --c:#C8851A; --v:#2FA36B; --f:#C065A8;
@@ -2111,7 +2111,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 153</b></div>
+            <div class="about-row"><span>Version</span><b>Build 154</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -7811,10 +7811,10 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   (function(){var pend=false;function sched(){if(pend)return;pend=true;(window.requestAnimationFrame||setTimeout)(function(){pend=false;cxEnhance();});}
     try{var mo=new MutationObserver(sched);CX_SCREENS.forEach(function(id){var sc=document.getElementById(id);if(sc)mo.observe(sc,{childList:true,subtree:true});});}catch(e){}
     cxEnhance();setTimeout(cxEnhance,300);})();
-  var APPEARANCES=["light","dark","mint","barbie","system"],THEME_META={light:"#F6F7F9",dark:"#17191A",mint:"#E3F4EA",barbie:"#FFE6F2"};
+  var APPEARANCES=["light","dark","mint","barbie","system"],THEME_META={light:"#FFFFFF",dark:"#101010",mint:"#A9E2BF",barbie:"#FFE6F2"};
   function getAppearance(){var a=store.get("bf_appearance");if(APPEARANCES.indexOf(a)>=0)return a;var t=store.get("bf_theme");return t==="light"?"light":(t==="barbie"?"barbie":"mint");}
   function resolveAppearance(a){if(a==="system"){return(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light";}return a;}
-  function applyTheme(a){if(APPEARANCES.indexOf(a)<0)a=getAppearance();var r=resolveAppearance(a),h=document.documentElement;h.setAttribute("data-appearance",a);h.setAttribute("data-theme",r);$all('[data-group="appearance"] button').forEach(function(b){var on=b.getAttribute("data-val")===a;b.classList.toggle("on",on);b.setAttribute("aria-checked",on?"true":"false");});var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute("content",THEME_META[r]||"#E3F4EA");}
+  function applyTheme(a){if(APPEARANCES.indexOf(a)<0)a=getAppearance();var r=resolveAppearance(a),h=document.documentElement;h.setAttribute("data-appearance",a);h.setAttribute("data-theme",r);$all('[data-group="appearance"] button').forEach(function(b){var on=b.getAttribute("data-val")===a;b.classList.toggle("on",on);b.setAttribute("aria-checked",on?"true":"false");});var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute("content",THEME_META[r]||"#A9E2BF");}
   function setAppearance(a){if(APPEARANCES.indexOf(a)<0)return;store.set("bf_appearance",a);applyTheme(a);}
   (function(){var apr=document.querySelector('[data-group="appearance"]');if(apr)apr.addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;setAppearance(b.getAttribute("data-val"));});try{var mq=window.matchMedia("(prefers-color-scheme: dark)"),fn=function(){if(getAppearance()==="system")applyTheme("system");};if(mq.addEventListener)mq.addEventListener("change",fn);else if(mq.addListener)mq.addListener(fn);}catch(e){}})();
   var TYP_FACTOR={signature:1,modern:1,simple:1.05};
@@ -7866,7 +7866,7 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   /* ---------- full backup / restore (upgrade of the existing export/import; same underlying
      bf_ keys via allBfKeys(), same download mechanism -- this is NOT a second backup system,
      just a safer wrapper around the one that already existed) ---------- */
-  var BACKUP_VERSION=1,BFL_BUILD=153;
+  var BACKUP_VERSION=1,BFL_BUILD=154;
   function buildBackupPayload(){var storage={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)storage[k]=v;});return {app:"Body Fuel Lab",backupVersion:BACKUP_VERSION,build:BFL_BUILD,exportedAt:new Date().toISOString(),storage:storage};}
   function downloadJSON(obj,filename){var blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);}
   function exportData(){try{downloadJSON(buildBackupPayload(),"BodyFuelLab_FullBackup_"+todayISO()+".json");store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Export could not be created. Your existing data has not been changed.");}}
