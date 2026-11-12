@@ -1273,6 +1273,26 @@
   nav button.on{color:var(--accent-deep);background:var(--accent-soft);font-weight:700}
   html[data-theme="dark"] nav button.on{color:var(--accent)}
   main{padding:14px 14px calc(96px + env(safe-area-inset-bottom))}
+  /* Weekly focus editor + BFL Food links */
+  #focus-body{display:flex;flex-direction:column;gap:10px}
+  #focus-chips{display:flex;gap:7px;flex-wrap:wrap}
+  .fchip{cursor:default;background:var(--accent-soft);border-color:var(--accent-soft);color:var(--accent-deep)}
+  html[data-theme="dark"] .fchip{color:var(--accent)}
+  .wf-open{margin-top:2px}
+  .wf-empty{color:var(--ink-soft);font-size:calc(14px*var(--ts,1));font-weight:600}
+  .wf-sub{font-weight:700;font-size:calc(14px*var(--ts,1));display:flex;justify-content:space-between;align-items:center}
+  .wf-count{color:var(--ink-soft);font-weight:600}
+  .wf-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+  .wf-opt{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:11px 8px;font:600 calc(14px*var(--ts,1)) var(--font-b);cursor:pointer;min-height:44px}
+  .wf-opt.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+  .wf-opt:disabled{opacity:.4;cursor:not-allowed}
+  .wf-acts{display:flex;gap:8px;margin-top:10px}
+  .wf-acts .cta{flex:1;margin:0}
+  #wf-clear:disabled{opacity:.4}
+  a.bflfood-link{display:flex;align-items:center;justify-content:center;text-decoration:none;box-sizing:border-box;width:100%}
+  nav a.navext{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink-faint);font-family:var(--font-b);font-size:calc(10.5px*min(var(--ts,1),1.12));font-weight:600;padding:6px 0 5px;border-radius:12px;line-height:1.1;text-decoration:none;overflow:hidden}
+  nav a.navext svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  nav a.navext span{display:block;max-width:100%;white-space:normal;text-align:center;line-height:1.05;font-size:.92em}
   /* Appearance picker (circle preview above label, raised selected tile, scrolls if narrow) */
   .appr{display:flex;gap:4px;background:var(--surface-2);border:1px solid var(--line);border-radius:16px;padding:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
   .appr::-webkit-scrollbar{display:none}
@@ -1401,13 +1421,12 @@
           <div class="eyebrow">Today's training</div>
           <div id="today-workout"></div>
           <button class="cta ghost accent2" data-goto="fuel" data-tcopen="weekplan-card" style="margin-top:14px">Open training planner</button>
+          <a class="cta ghost bflfood-link" data-bflfood href="#" target="_blank" rel="noopener noreferrer" style="margin-top:8px">Open BFL Food ↗</a>
         </div>
 
         <div class="card glance" id="glance-card">
-          <div class="glance-foc"><span class="eyebrow">This Week's Focus</span><div id="focus-chips"></div></div>
-          <button type="button" id="wf-toggle" class="see-more">See more</button>
-          <div id="wf-msg" class="wf-msg"></div>
-          <div id="week-focus"></div>
+          <div class="eyebrow">This Week's Focus</div>
+          <div id="focus-body"></div>
         </div>
 
         <div class="card cyc-card" id="cycle-insight" style="display:none"></div>
@@ -1424,23 +1443,9 @@
           <div class="msec-body"><div id="weekly-steps-body"></div></div>
         </div>
 
-        <div class="card" id="food-summary-card">
-          <div class="eyebrow">Food</div>
-          <div id="food-summary"></div>
-          <button class="cta ghost accent2" data-goto="food" style="margin-top:12px">Open Food Log</button>
-        </div>
-
         <div class="card msec" id="sleep-card">
           <button type="button" class="msec-head"><span style="display:block"><span class="eyebrow" style="display:block">Sleep Check-In</span><span class="drop-sub" id="sleep-summary" style="display:block"></span></span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body"><div id="sleep-checkin"></div></div>
-        </div>
-
-        <div class="card msec" id="dt-card" data-persist="bf_dtopen">
-          <button type="button" class="msec-head"><span class="eyebrow">Daily targets</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
-          <div class="msec-body">
-            <div id="daily-body"></div>
-            <button class="linkbtn" id="reset-day">Reset water &amp; movement</button>
-          </div>
         </div>
 
         <div id="checkin-nudge"></div>
@@ -2032,7 +2037,7 @@
           <button type="button" class="msec-head"><span class="eyebrow">About Body Fuel Lab</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
           <div class="msec-body">
             <p class="muted-p" style="margin:2px 0 14px">Body Fuel Lab helps you understand your body, fuel it properly, train with intention, and build sustainable health habits.</p>
-            <div class="about-row"><span>Version</span><b>Build 145</b></div>
+            <div class="about-row"><span>Version</span><b>Build 146</b></div>
             <div class="about-row"><span>Privacy policy</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Terms of use</span><b class="ink-faint">Coming soon</b></div>
             <div class="about-row"><span>Contact / feedback</span><b class="ink-faint">Coming soon</b></div>
@@ -2075,7 +2080,7 @@
   <nav>
     <button class="on" data-tab="today"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/></svg>Today</button>
     <button data-tab="fuel"><svg viewBox="0 0 24 24"><path d="M3 13h4l2-6 4 12 2-6h6"/></svg>Training</button>
-    <button data-tab="food"><svg viewBox="0 0 24 24"><path d="M3 11h18"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 4v3"/></svg>Food</button>
+    <a class="navext" data-bflfood href="#" target="_blank" rel="noopener noreferrer" aria-label="BFL Food (opens in a new tab)"><svg viewBox="0 0 24 24"><path d="M3 11h18"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 4v3"/></svg><span>BFL Food ↗</span></a>
     <button data-tab="progress"><svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="m4 15 4-5 4 3 7-8"/><circle cx="19" cy="5" r="0.6"/></svg>Body</button>
     <button data-tab="recovery"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>Recovery</button>
     <button data-tab="prog"><svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="m4 14 4-4 3 3 6-7"/></svg>Progress</button>
@@ -2091,6 +2096,8 @@
   var store=(function(){var mem={},ok=false;try{localStorage.setItem('__t','1');localStorage.removeItem('__t');ok=true;}catch(e){}
     return{get:function(k){try{return ok?JSON.parse(localStorage.getItem(k)):(mem[k]||null);}catch(e){return mem[k]||null;}},
       set:function(k,v){try{ok?localStorage.setItem(k,JSON.stringify(v)):(mem[k]=v);return true;}catch(e){mem[k]=v;return false;}}};})();
+  var BFL_FOOD_URL="https://9554wj2rkv-stack.github.io/BFL-FOOD-/";
+  var NULLEL=document.createElement("div");
   function $(s,c){return (c||document).querySelector(s);}
   function $all(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s));}
   function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
@@ -2961,7 +2968,7 @@
       +'<li><b>Measure your fats.</b> Oils and butter are easy to over-pour \u2014 weigh them.</li>'
       +'<li><b>Eat back around training.</b> Put more of your carbs near your workout for energy and recovery.</li>'
       +'</ul>';
-    $("#daily-body").innerHTML=html;
+    ($("#daily-body")||NULLEL).innerHTML=html;
   }
   function renderWater(){var box=$("#water-track");if(!box)return;var t=loadTargets();box.innerHTML=tRow("water","Water",t.water,2500,"ml",[["+250 ml",250],["+500 ml",500]],true,true);}
   function proteinFeedback(){
@@ -5368,33 +5375,44 @@
   function savePicks(p){store.set("bf_focuspick",p);}
   function autoDone(k){if(k==="protein")return proteinDaysThisWeek()>=7;if(k==="sessions")return trainingDoneThisWeek()>=3;if(k==="weight")return weightLoggedThisWeek();if(k==="portions")return portionsThisWeek()>=3;return false;}
   function focusDone(k){var w=loadWeek();return (k in w)?!!w[k]:autoDone(k);}
+  /* ---------- This Week's Focus (manual, per calendar week; storage: bf_weekfocus = {mondayISO:[ids]}) ---------- */
+  var FOCUS_OPTS=[["recovery","Recovery"],["upper","Upper body"],["lower","Lower body"],["core","Core"],["arms","Arms"],["legs","Legs"],["glutes","Glutes"],["steps","Steps"]];
+  var FOCUS_MAX=3,focusDraft=null,focusDraftWk=null;
+  function focusAll(){var d=store.get("bf_weekfocus");return (d&&typeof d==="object"&&!Array.isArray(d))?d:{};}
+  function focusSaved(wk){var v=focusAll()[wk||weekKey()];return Array.isArray(v)?v.filter(function(x){return FOCUS_OPTS.some(function(o){return o[0]===x;});}).slice(0,FOCUS_MAX):[];}
+  function focusLabel(id){for(var i=0;i<FOCUS_OPTS.length;i++)if(FOCUS_OPTS[i][0]===id)return FOCUS_OPTS[i][1];return id;}
+  function focusSave(ids){var all=focusAll();all[weekKey()]=ids.slice(0,FOCUS_MAX);store.set("bf_weekfocus",all);}
   function renderWeekFocus(){
-    var w=loadWeek(),sess=trainingDoneThisWeek(),port=portionsThisWeek(),wt=weightLoggedThisWeek(),prot=proteinDaysThisWeek();
-    var picks=loadPicks(),vis=picks.length?picks:["protein","sessions","walk"];
-    var defs=[
-      {key:"protein",auto:prot>=7,label:"Hit my protein target",hint:"",cnt:prot,total:7},
-      {key:"sessions",auto:sess>=3,label:"Complete 3 training sessions",hint:"",cnt:sess,total:3},
-      {key:"walk",auto:false,label:"Walk or yoga once",hint:""},
-      {key:"rest",auto:false,label:"Take 2 full rest days",hint:""},
-      {key:"weight",auto:wt,label:"Log weight / body fat once",hint:wt?"done":"this week"},
-      {key:"portions",auto:port>=3,label:"Save 3 weighed portions",hint:"",cnt:port,total:3}
-    ];
-    function rowHtml(d){
-      var done=focusDone(d.key),extra=vis.indexOf(d.key)<0,picked=picks.indexOf(d.key)>-1,right;
-      if(d.total){var f=Math.min(d.cnt,d.total),sq='';for(var i=0;i<d.total;i++){sq+='<span class="fsq'+(i<f?' f':'')+'"></span>';}right='<span class="fmeta"><span class="fsqs">'+sq+'</span><span class="fcnt">'+d.cnt+'/'+d.total+(d.key==="protein"?" days":"")+'</span></span>';}
-      else right=d.hint?'<span class="wh">'+d.hint+'</span>':'';
-      var pin='<button type="button" class="wpin'+(picked?' on':'')+'" data-pin="'+d.key+'" aria-label="Choose as focus">'+(picked?'\u2605':'\u2606')+'</button>';
-      return '<div class="wrow'+(done?' done':'')+(extra?' wf-extra':'')+'" data-wk="'+d.key+'"><span class="chk">'+(done?'\u2713':'')+'</span><span class="wl">'+d.label+'</span>'+right+pin+'</div>';
+    var box=$("#focus-body");if(!box)return;
+    var wk=weekKey();
+    if(focusDraft&&focusDraftWk!==wk){focusDraft=null;focusDraftWk=null;}
+    var h;
+    if(focusDraft){
+      var n=focusDraft.length;
+      h='<div class="wf-edit"><div class="wf-sub">Choose up to 3 <span class="wf-count">'+n+'/3</span></div><div class="wf-opts" role="group" aria-label="Weekly focus options">'+
+        FOCUS_OPTS.map(function(o){var on=focusDraft.indexOf(o[0])>-1,dis=!on&&n>=FOCUS_MAX;return '<button type="button" class="wf-opt'+(on?' on':'')+'" data-fo="'+o[0]+'" aria-pressed="'+on+'"'+(dis?' disabled':'')+'>'+o[1]+'</button>';}).join("")+
+        '</div><div class="wf-acts"><button type="button" class="cta" id="wf-save">Save</button><button type="button" class="cta ghost" id="wf-cancel">Cancel</button></div>'+
+        '<button type="button" class="see-more" id="wf-clear"'+(n?'':' disabled')+'>Clear all</button></div>';
+    }else{
+      var sel=focusSaved(wk);
+      if(sel.length)h='<div id="focus-chips">'+sel.map(function(k){return '<span class="fchip">'+focusLabel(k)+'</span>';}).join("")+'</div><button type="button" class="cta ghost wf-open" id="wf-edit">Edit focus</button>';
+      else h='<div class="wf-empty">Choose this week’s focus</div><button type="button" class="cta ghost wf-open" id="wf-edit">Edit focus</button>';
     }
-    var order=[];
-    defs.forEach(function(d){if(vis.indexOf(d.key)>-1)order.push(d);});
-    defs.forEach(function(d){if(vis.indexOf(d.key)<0)order.push(d);});
-    $("#week-focus").innerHTML=order.map(rowHtml).join("");
-    var shortLabel={protein:"Protein",sessions:"Training",walk:"Walk",rest:"Rest days",weight:"Weigh-in",portions:"Portions"};
-    var byKey={};defs.forEach(function(d){byKey[d.key]=d;});
-    var fc=$("#focus-chips");
-    if(fc)fc.innerHTML=vis.map(function(k){var d=byKey[k];if(!d)return"";var done=focusDone(k);return '<span class="fchip'+(done?' done':'')+'" data-wk="'+k+'">'+(done?'\u2713 ':'')+(shortLabel[k]||d.label)+'</span>';}).join("");
+    box.innerHTML=h;
   }
+  function focusOpenEditor(){focusDraft=focusSaved().slice();focusDraftWk=weekKey();renderWeekFocus();}
+  (function(){var b=$("#focus-body");if(!b)return;b.addEventListener("click",function(e){
+    var t=e.target.closest("button");if(!t)return;
+    if(t.id==="wf-edit"){focusOpenEditor();return;}
+    if(!focusDraft)return;
+    if(t.id==="wf-cancel"){focusDraft=null;focusDraftWk=null;renderWeekFocus();return;}
+    if(t.id==="wf-save"){focusSave(focusDraft);focusDraft=null;focusDraftWk=null;renderWeekFocus();return;}
+    if(t.id==="wf-clear"){focusDraft=[];renderWeekFocus();return;}
+    var id=t.getAttribute("data-fo");if(!id||t.disabled)return;
+    var i=focusDraft.indexOf(id);if(i>-1)focusDraft.splice(i,1);else if(focusDraft.length<FOCUS_MAX)focusDraft.push(id);
+    renderWeekFocus();
+  });})();
+  document.addEventListener("visibilitychange",function(){if(!document.hidden)renderWeekFocus();});
 
   /* ---------- weigh & learn + week-focus events ---------- */
   $("#wp-pick").addEventListener("click",function(){$("#wp-file").click();});
@@ -5404,7 +5422,6 @@
   $('[data-rgrp="wp-verdict"]').addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;state.wp.verdict=b.getAttribute("data-val");syncWpButtons();});
   $("#wp-save").addEventListener("click",savePortion);
   $("#portion-list").addEventListener("click",function(e){var b=e.target.closest("[data-pdel]");if(!b)return;if(!confirm("Remove this portion card?"))return;var arr=loadPortions().filter(function(x){return x.id!==b.getAttribute("data-pdel");});store.set("bf_portions",arr);renderPortionList();renderWeekFocus();});
-  $("#week-focus").addEventListener("click",function(e){var pin=e.target.closest(".wpin");if(pin){var pk=pin.getAttribute("data-pin"),p=loadPicks(),i=p.indexOf(pk);if(i>-1)p.splice(i,1);else{if(p.length>=3){flash("#wf-msg","Pick up to 3 — unpin one first");return;}p.push(pk);}savePicks(p);renderWeekFocus();return;}var r=e.target.closest("[data-wk]");if(!r)return;var w=loadWeek(),k=r.getAttribute("data-wk");w[k]=!focusDone(k);saveWeek(w);renderWeekFocus();});
 
   /* exercise library */
   var exercises=[
@@ -6869,13 +6886,13 @@
   $("#overview-body").addEventListener("click",function(e){var b=e.target.closest("[data-ovmore]");if(!b)return;var box=document.getElementById("ovd-"+b.getAttribute("data-ovmore"));if(!box)return;var open=box.classList.toggle("open");b.textContent=open?"Hide details ▴":"Show details ▾";});
   $all('[data-build]').forEach(function(box){box.addEventListener("click",function(e){var t=e.target.closest(".tag");if(!t)return;var cat=t.getAttribute("data-bcat"),item=t.getAttribute("data-item"),sel=state.build[cat]||[];if(item==="None"){sel=[];}else{var i=sel.indexOf(item);if(i>=0)sel.splice(i,1);else sel.push(item);}state.build[cat]=sel;renderBuildChips();renderBuilt();});});
 
-  $("#daily-body").addEventListener("click",function(e){var b=e.target.closest("button");if(!b||b.classList.contains("whybtn"))return;var t=loadTargets();if(b.hasAttribute("data-mv")){t.movement=!t.movement;}else if(b.hasAttribute("data-tk")){t[b.getAttribute("data-tk")]=(t[b.getAttribute("data-tk")]||0)+(+b.getAttribute("data-amt"));}else return;saveTargets(t);renderDailyTargets();});
-  $("#daily-body").addEventListener("change",function(e){var inp=e.target.closest("input[data-set]");if(!inp)return;var t=loadTargets(),k=inp.getAttribute("data-set"),val=num(inp.value);if(val==null||val<0)val=0;t[k]=val;saveTargets(t);renderDailyTargets();});
+  ($("#daily-body")||NULLEL).addEventListener("click",function(e){var b=e.target.closest("button");if(!b||b.classList.contains("whybtn"))return;var t=loadTargets();if(b.hasAttribute("data-mv")){t.movement=!t.movement;}else if(b.hasAttribute("data-tk")){t[b.getAttribute("data-tk")]=(t[b.getAttribute("data-tk")]||0)+(+b.getAttribute("data-amt"));}else return;saveTargets(t);renderDailyTargets();});
+  ($("#daily-body")||NULLEL).addEventListener("change",function(e){var inp=e.target.closest("input[data-set]");if(!inp)return;var t=loadTargets(),k=inp.getAttribute("data-set"),val=num(inp.value);if(val==null||val<0)val=0;t[k]=val;saveTargets(t);renderDailyTargets();});
   (function(){var wt=$("#water-track");if(!wt)return;
     wt.addEventListener("click",function(e){var b=e.target.closest("button");if(!b||!b.hasAttribute("data-tk"))return;var t=loadTargets();t[b.getAttribute("data-tk")]=(t[b.getAttribute("data-tk")]||0)+(+b.getAttribute("data-amt"));saveTargets(t);renderWater();});
     wt.addEventListener("change",function(e){var inp=e.target.closest("input[data-set]");if(!inp)return;var t=loadTargets(),k=inp.getAttribute("data-set"),val=num(inp.value);if(val==null||val<0)val=0;t[k]=val;saveTargets(t);renderWater();});
   })();
-  $("#reset-day").addEventListener("click",function(){saveTargets({protein:0,carbs:0,water:0,fibre:0,movement:false});renderDailyTargets();renderWater();});
+  ($("#reset-day")||NULLEL).addEventListener("click",function(){saveTargets({protein:0,carbs:0,water:0,fibre:0,movement:false});renderDailyTargets();renderWater();});
 
   $("#fa-pick").addEventListener("click",function(){$("#fa-file").click();});
   if($("#fa-front-pick"))$("#fa-front-pick").addEventListener("click",function(){$("#fa-front-file").click();});
@@ -7314,12 +7331,12 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   function renderMenu(){renderMenuProfile();renderTrackPrefs();renderRules();renderDataStatus();if(typeof renderRtSettings==="function")renderRtSettings();}
 
   function allBfKeys(){var ks=[];try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf("bf_")===0)ks.push(k);}}catch(e){}
-    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_appearance","bf_postcardio","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder","bf_endurance","bf_wordsearch","bf_warmup","bf_exhidden","bf_template","bf_fuelbackup","bf_finisher","bf_foodfav","bf_servingunits","bf_offfav","bf_distance","bf_halfplan","bf_checkpoints","bf_milestones","bf_recovery","bf_roadmapevents","bf_steps","bf_stepgoal","bf_incline"];
+    if(!ks.length)ks=["bf_profile","bf_progress","bf_meallog","bf_targets","bf_library","bf_training","bf_workout","bf_week","bf_review","bf_textscale","bf_fuckit","bf_cycle","bf_theme","bf_appearance","bf_postcardio","bf_weekfocus","bf_habits","bf_energy","bf_protein","bf_start","bf_weekplan","bf_core","bf_resttimer","bf_typography","bf_trackprefs","bf_rules","bf_goalmeta","bf_lastbackup","bf_rtsettings","bf_sudoku","bf_cardioday","bf_sudodiff","bf_exorder","bf_endurance","bf_wordsearch","bf_warmup","bf_exhidden","bf_template","bf_fuelbackup","bf_finisher","bf_foodfav","bf_servingunits","bf_offfav","bf_distance","bf_halfplan","bf_checkpoints","bf_milestones","bf_recovery","bf_roadmapevents","bf_steps","bf_stepgoal","bf_incline"];
     return ks;}
   /* ---------- full backup / restore (upgrade of the existing export/import; same underlying
      bf_ keys via allBfKeys(), same download mechanism -- this is NOT a second backup system,
      just a safer wrapper around the one that already existed) ---------- */
-  var BACKUP_VERSION=1,BFL_BUILD=145;
+  var BACKUP_VERSION=1,BFL_BUILD=146;
   function buildBackupPayload(){var storage={};allBfKeys().forEach(function(k){var v=store.get(k);if(v!=null)storage[k]=v;});return {app:"Body Fuel Lab",backupVersion:BACKUP_VERSION,build:BFL_BUILD,exportedAt:new Date().toISOString(),storage:storage};}
   function downloadJSON(obj,filename){var blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"});var url=URL.createObjectURL(blob);var a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(url);a.remove();},150);}
   function exportData(){try{downloadJSON(buildBackupPayload(),"BodyFuelLab_FullBackup_"+todayISO()+".json");store.set("bf_lastbackup",new Date().toISOString());renderDataStatus();}catch(e){alert("Export could not be created. Your existing data has not been changed.");}}
@@ -7841,10 +7858,9 @@ $all('nav button').forEach(function(b){b.classList.toggle("on",b.getAttribute("d
   (function(){var c=$("#sleep-card");if(!c)return;c.addEventListener("click",function(e){var qb=e.target.closest("#sl-quality button");if(qb){$all("#sl-quality button").forEach(function(b){b.classList.remove("on");});qb.classList.add("on");return;}if(e.target.closest("#sl-save")){saveSleep();}});c.addEventListener("input",function(e){if(e.target&&e.target.hasAttribute&&e.target.hasAttribute("data-stg"))sleepUpdatePcts();});})();
   renderMenu();applyTrackPrefs();
   renderPortionMemory();renderPortionList();syncWpButtons();
+  (function(){var ls=document.querySelectorAll("[data-bflfood]");for(var i=0;i<ls.length;i++)ls[i].setAttribute("href",BFL_FOOD_URL);})();
   renderWeekFocus();
   renderWeekBadge();var _wb=$("#hdr-week");if(_wb)_wb.style.display="block";
-  (function(){var wfT=$("#wf-toggle");if(wfT)wfT.addEventListener("click",function(){var g=$("#glance-card");wfT.textContent=g.classList.toggle("expanded")?"See less":"See more";});})();
-  (function(){var fc=$("#focus-chips");if(fc)fc.addEventListener("click",function(e){var c=e.target.closest("[data-wk]");if(!c)return;var w=loadWeek(),k=c.getAttribute("data-wk");w[k]=!focusDone(k);saveWeek(w);renderWeekFocus();});})();
   (function(){["cw-weight","cw-goalw","cw-train"].forEach(function(id){var el=$("#"+id);if(el)el.addEventListener("input",saveCalc);});})();
   (function(){var mc=$("#mission-card");if(mc)mc.addEventListener("click",function(e){
     var ms=e.target.closest("[data-msid]");
